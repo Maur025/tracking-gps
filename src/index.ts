@@ -1,12 +1,9 @@
-import express, { Express } from 'express';
+import app from 'app';
 
-const app: Express = express();
-const port: number = 3000;
+const { getApp, start } = app;
 
-app.use(express.json());
-
-app.get('/', (req, res) => {
+getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
 });
 
-app.listen(port, () => console.log(`Server runnning on port: ${port}`));
+start();
