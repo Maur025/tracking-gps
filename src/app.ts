@@ -5,7 +5,9 @@ import { installCache } from '@config/dns-cache';
 
 installCache();
 
-const app: ServerBuilderResponse = new ServerBuilder(environment.PORT)
+const app: ServerBuilderResponse = ServerBuilder.builder()
+	.setHost(environment.HOST)
+	.setPort(environment.PORT)
 	.applyMiddlewares()
 	.applyRoutes()
 	.configureServer()
