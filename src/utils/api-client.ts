@@ -30,7 +30,10 @@ const request = <T>(
 	};
 
 	return fromFetch(url, allOptions).pipe(
-		timeout(120000),
+		timeout({
+			each: 120000,
+			with: () => throwError(() => new ApiException(408, 'Connection Timeout')),
+		}),
 		switchMap(response => {
 			if (!response.ok) {
 				return from(
