@@ -2,13 +2,16 @@ import ServerBuilderResponse from '@models/interface/server-builder-response.int
 import IServerBuilder from '@models/interface/server-builder.interface';
 import express, { Application } from 'express';
 import { Server } from 'http';
-// import compresion from 'compression';
-// import cors from 'cors';
+import cors from 'cors';
+import compression from 'compression';
+import DEFAULT_LIMITS from './default-server-limits';
+import commonException from '@utils/common-exception';
 
 export default class ServerBuilder implements IServerBuilder {
 	private readonly app: Application;
 	private host: string | null = null;
 	private port: number | null = null;
+	private staticPath: string | null = null;
 
 	private constructor() {
 		this.app = express();
@@ -28,29 +31,54 @@ export default class ServerBuilder implements IServerBuilder {
 		return this;
 	}
 
-	public applyMiddlewares(): this {
-		// Implement the logic to apply middlewares
+	public setStaticPath(staticPath: string): this {
+		this.staticPath = staticPath;
 		return this;
 	}
+
+	public applyMiddlewares(): this {
+		this.app?.use(compression());
+		this.setCors();
+		this.app?.use(express.json({ limit: DEFAULT_LIMITS.LIMIT_JSON }));
+		this.app?.use(express.text({ limit: DEFAULT_LIMITS.LIMIT_TEXT }));
+		this.setUrlencoded();
+
+		return this;
+	}
+
+	private readonly setCors = (): void => {
+		this.app?.use(
+			cors({
+				origin: '*',
+				optionsSuccessStatus: 200,
+			})
+		);
+	};
+
+	private readonly setUrlencoded = (): void => {
+		this.app?.use(
+			express.urlencoded({
+				extended: true,
+				parameterLimit: DEFAULT_LIMITS.LIMIT_PARAMETER,
+				limit: DEFAULT_LIMITS.LIMIT_URLENCODED,
+			})
+		);
+	};
 
 	public applyRoutes(): this {
 		// Implement the logic to apply routes
 		return this;
 	}
 
-	public configureServer(): this {
-		// this.app.use(
-		// 	cors({
-		// 		origin: '*',
-		// 	})
-		// );
-		// Implement the logic to configure the server
+	public configureStatic(): this {
+		this.app?.use('/', express.static(this.staticPath ?? 'public'));
+
 		return this;
 	}
 
 	public build(): ServerBuilderResponse {
 		if (!this.port) {
-			throw new Error(
+			throw commonException(
 				'Port not set. Please set the port before building the server.'
 			);
 		}
@@ -60,7 +88,7 @@ export default class ServerBuilder implements IServerBuilder {
 
 	public start(): Server {
 		if (!this.port) {
-			throw new Error(
+			throw commonException(
 				'Port not set. Please set the port before starting the server.'
 			);
 		}
