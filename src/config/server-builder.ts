@@ -1,6 +1,6 @@
 import ServerBuilderResponse from '@models/interface/server-builder-response.interface';
 import IServerBuilder from '@models/interface/server-builder.interface';
-import express, { Application } from 'express';
+import express, { Application, Router } from 'express';
 import { Server } from 'http';
 import cors from 'cors';
 import compression from 'compression';
@@ -65,8 +65,8 @@ export default class ServerBuilder implements IServerBuilder {
 		);
 	};
 
-	public applyRoutes(): this {
-		// Implement the logic to apply routes
+	public applyRoutes(router: Router): this {
+		this.app?.use('/api', router);
 		return this;
 	}
 
