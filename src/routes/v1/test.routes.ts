@@ -1,13 +1,9 @@
+import TestController from '@controllers/test.controller';
 import { Router } from 'express';
 
 const router = Router();
+const testController = new TestController();
 
-router.get('/', (_req, res) => {
-	res.json([
-		{ id: 1, nombre: 'prueba 1' },
-		{ id: 2, nombre: 'prueba 2' },
-		{ id: 3, nombre: 'prueba 3' },
-	]);
-});
+router.get('/', testController.getTest);
 
 export default router;
