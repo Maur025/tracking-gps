@@ -1,0 +1,28 @@
+import environment from '@config/env';
+import { getAllRequest } from '@config/service-request-default';
+import TrackingResponse from '@models/dto/response/tracking-response';
+import { GetAllRequest } from '@models/interface/service-request.interface';
+import { get } from '@utils/api-client';
+import { Observable } from 'rxjs';
+
+export default class TrackService {
+	private readonly baseUrl = `${environment.BACKEND_URL}/trackingdb`;
+	private readonly resource = 'tracks';
+
+	public readonly getAll = (
+		request: GetAllRequest
+	): Observable<TrackingResponse> => {
+		const localRequest: GetAllRequest = { ...getAllRequest, ...request };
+		const { size, page, sortBy, descending, keyword } = localRequest;
+
+		let queryParams: string = `?size=${size}&page=${page}&sortBy=${sortBy}&descending=${descending}`;
+
+		if (keyword) {
+			queryParams += `&keyword=${keyword}`;
+		}
+
+		return get<TrackingResponse>(
+			`${this.baseUrl}/${this.resource}${queryParams}`
+		);
+	};
+}

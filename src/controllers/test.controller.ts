@@ -1,3 +1,5 @@
+import TrackingResponse from '@models/dto/response/tracking-response';
+import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { Get, Route, Tags } from 'tsoa';
@@ -7,16 +9,21 @@ import { Get, Route, Tags } from 'tsoa';
 export default class TestController {
 	@Get('/')
 	public getTest(req: Request, res: Response): void {
-		const data: object[] = [
-			{ id: 1, nombre: 'prueba 1' },
-			{ id: 2, nombre: 'prueba 2' },
-			{ id: 3, nombre: 'prueba 3' },
-		];
+		const service = new TrackService();
 
-		res.status(StatusCodes.OK).json({
-			status: 'success',
-			message: 'Data retrieved successfully',
-			data: data,
+		service.getAll({ size: 100 }).subscribe({
+			next: (response: TrackingResponse) => {
+				const data = response.content;
+
+				res.status(StatusCodes.OK).json({
+					status: 'success',
+					message: 'Data retrieved successfully',
+					data: data,
+				});
+			},
+			error: error => {
+				console.error('OCURRIO UN ERROR EN EL CONSUMO DEL SERVICIO', error);
+			},
 		});
 	}
 }
