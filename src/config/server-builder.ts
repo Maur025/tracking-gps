@@ -21,8 +21,11 @@ export default class ServerBuilder implements IServerBuilder {
 		return new ServerBuilder();
 	}
 
-	public setHost(host: string): this {
-		this.host = host;
+	public setHost(host: string | undefined): this {
+		if (host) {
+			this.host = host;
+		}
+
 		return this;
 	}
 

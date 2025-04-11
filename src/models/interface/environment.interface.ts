@@ -1,5 +1,5 @@
 export default interface Environment {
-	HOST: string;
+	HOST: string | undefined;
 	PORT: number;
 	STATIC_PATH: string;
 
