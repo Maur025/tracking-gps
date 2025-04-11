@@ -8,9 +8,10 @@ installCache();
 const app: ServerBuilderResponse = ServerBuilder.builder()
 	.setHost(environment.HOST)
 	.setPort(environment.PORT)
+	.setStaticPath(environment.STATIC_PATH)
 	.applyMiddlewares()
 	.applyRoutes()
-	.configureServer()
+	.configureStatic()
 	.build();
 
 export default app;
