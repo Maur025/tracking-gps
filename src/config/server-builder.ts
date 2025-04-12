@@ -6,19 +6,20 @@ import cors from 'cors';
 import compression from 'compression';
 import DEFAULT_LIMITS from './default-server-limits';
 import commonException from '@utils/common-exception';
+import { autoInjectable, container, inject } from 'tsyringe';
 
+@autoInjectable()
 export default class ServerBuilder implements IServerBuilder {
-	private readonly app: Application;
 	private host: string | null = null;
 	private port: number | null = null;
 	private staticPath: string | null = null;
 
-	private constructor() {
-		this.app = express();
-	}
+	constructor(
+		@inject('Application') private readonly app: Application | null = null
+	) {}
 
 	public static builder(): ServerBuilder {
-		return new ServerBuilder();
+		return container.resolve(ServerBuilder);
 	}
 
 	public setHost(host: string | undefined): this {
