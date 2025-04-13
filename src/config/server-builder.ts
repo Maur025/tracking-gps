@@ -6,17 +6,15 @@ import cors from 'cors';
 import compression from 'compression';
 import DEFAULT_LIMITS from './default-server-limits';
 import commonException from '@utils/common-exception';
-import { autoInjectable, container, inject } from 'tsyringe';
-
-@autoInjectable()
+import { container, inject, injectable } from 'tsyringe';
+import { TOKENS } from './ioc/token';
+@injectable()
 export default class ServerBuilder implements IServerBuilder {
 	private host: string | null = null;
 	private port: number | null = null;
 	private staticPath: string | null = null;
 
-	constructor(
-		@inject('Application') private readonly app: Application | null = null
-	) {}
+	constructor(@inject(TOKENS.Application) private readonly app: Application) {}
 
 	public static builder(): ServerBuilder {
 		return container.resolve(ServerBuilder);
