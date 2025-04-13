@@ -1,8 +1,13 @@
 import http from 'http';
 import https from 'https';
 import CacheableLookup from 'cacheable-lookup';
+import { container } from 'tsyringe';
+import { TOKENS } from './ioc/token';
 
-const cacheableLookup = new CacheableLookup();
+const cacheableLookup = container.resolve<CacheableLookup>(
+	TOKENS.CacheableLookup
+);
+
 let isInstalled = false;
 
 export const installCache = (): void => {

@@ -1,3 +1,4 @@
+import ErrorResponse from '@models/dto/error-response';
 import TrackingResponse from '@models/dto/response/tracking-response';
 import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
@@ -21,8 +22,12 @@ export default class TestController {
 					data: data,
 				});
 			},
-			error: error => {
-				console.error('OCURRIO UN ERROR EN EL CONSUMO DEL SERVICIO', error);
+			error: (error: ErrorResponse) => {
+				res.status(StatusCodes.REQUEST_TIMEOUT).json({
+					detail: error.status ?? error.cause?.code,
+					message: error.cause?.message ?? error.message,
+					code: StatusCodes.INTERNAL_SERVER_ERROR,
+				});
 			},
 		});
 	}
