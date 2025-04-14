@@ -3,7 +3,7 @@ import TrackingResponse from '@models/dto/response/tracking-response';
 import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { connect } from 'socket/client/socket-client';
+import { connect } from '@socket/client/socket-client';
 import { Route, Tags } from 'tsoa';
 
 @Route('tests')
