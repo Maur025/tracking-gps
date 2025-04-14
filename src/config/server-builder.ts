@@ -8,6 +8,8 @@ import DEFAULT_LIMITS from './default-server-limits';
 import commonException from '@utils/common-exception';
 import { container, inject, injectable } from 'tsyringe';
 import { TOKENS } from './ioc/token';
+import { ServerBuilderSchema } from '@models/schemas/server-builder-schema';
+import { errorValidate } from '@utils/zod-exception';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {
 	private host: string | null = null;
@@ -79,30 +81,36 @@ export default class ServerBuilder implements IServerBuilder {
 	}
 
 	public build(): ServerBuilderResponse {
-		if (!this.port) {
-			throw commonException(
-				'Port not set. Please set the port before building the server.'
-			);
-		}
+		this.validate();
 
 		return { getApp: () => this.app, start: () => this.start() };
 	}
 
 	public start(): Server {
-		if (!this.port) {
-			throw commonException(
-				'Port not set. Please set the port before starting the server.'
-			);
-		}
-
 		if (!this.host) {
 			return this.app?.listen(this.port, () => this.getMessageSuccess());
 		}
 
-		return this.app?.listen(this.port, this.host, () =>
+		return this.app?.listen(this.port!, this.host, () =>
 			this.getMessageSuccess()
 		);
 	}
+
+	private readonly validate = () => {
+		const result = ServerBuilderSchema.safeParse({
+			host: this.host,
+			port: this.port,
+			staticPath: this.staticPath,
+			app: this.app,
+		});
+
+		if (!result.success) {
+			errorValidate(
+				result.error,
+				'Any property no set. Please set before starting server'
+			);
+		}
+	};
 
 	private readonly getMessageSuccess = (): void => {
 		console.info(`Server running on ${this.host ?? 'localhost'}:${this.port}`);
