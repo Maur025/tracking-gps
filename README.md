@@ -8,4 +8,9 @@ Use the following command to install dependencies:
 # RUNNING
 To run the project in developer mode, execute the following command:
 
-    pnpm run dev
+    pnpm dev
+
+# RUN TESTS
+To run test, execute the following command:
+   
+    pnpm test
