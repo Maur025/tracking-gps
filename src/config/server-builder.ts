@@ -5,7 +5,6 @@ import { Server } from 'http';
 import cors from 'cors';
 import compression from 'compression';
 import DEFAULT_LIMITS from './default-server-limits';
-import commonException from '@utils/common-exception';
 import { container, inject, injectable } from 'tsyringe';
 import { TOKENS } from './ioc/token';
 import { ServerBuilderSchema } from '@models/schemas/server-builder-schema';

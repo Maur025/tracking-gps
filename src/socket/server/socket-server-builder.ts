@@ -7,6 +7,8 @@ import SocketServerBuilderResponse from '@models/interface/socket-server-builder
 import environment from '@config/env';
 
 import type { Server as HttpServer } from 'node:http';
+import { socketErrors } from './socket-errors';
+import { Topics } from '@models/enums/topics.enum';
 
 @injectable()
 export default class SocketServerBuilder {
@@ -41,10 +43,11 @@ export default class SocketServerBuilder {
 		const httpServer = createServer(this.app);
 		const ioServer = this.createSocketServer(httpServer);
 
-		ioServer.on('connection', this.listenersFunction);
+		ioServer.on(Topics.CONNECTION, this.listenersFunction);
+		ioServer.on(Topics.ERROR, socketErrors);
 
 		return {
-			getSocketServer: () => ioServer,
+			getIoServer: () => ioServer,
 			startListening: () => this.startListening(httpServer),
 		};
 	}

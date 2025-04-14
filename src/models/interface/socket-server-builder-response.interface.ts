@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 
 export default interface SocketServerBuilderResponse {
-	getSocketServer(): Server;
+	getIoServer(): Server;
 	startListening(): void;
 }
