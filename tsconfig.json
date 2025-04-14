@@ -41,7 +41,8 @@
 			"@utils/*": ["utils/*"],
 			"@middlewares/*": ["middlewares/*"],
 			"@config/*": ["config/*"],
-			"@routes/*": ["routes/*"]
+			"@routes/*": ["routes/*"],
+			"@socket/*": ["socket/*"]
 		},
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
 		// "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -123,6 +124,6 @@
 		// "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
 		"skipLibCheck": true /* Skip type checking all .d.ts files. */
 	},
-	"include": ["src/**/*"],
+	"include": ["src/**/*", "test/unit/utils/sum.test.ts"],
 	"exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts", "dist"]
 }
