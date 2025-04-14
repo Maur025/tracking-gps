@@ -42,7 +42,8 @@
 			"@middlewares/*": ["middlewares/*"],
 			"@config/*": ["config/*"],
 			"@routes/*": ["routes/*"],
-			"@socket/*": ["socket/*"]
+			"@socket/*": ["socket/*"],
+			"@cache/*": ["cache/*"]
 		},
 		// "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
 		// "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
