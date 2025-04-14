@@ -5,5 +5,7 @@ const router = Router();
 const testController = new TestController();
 
 router.get('/', testController.getTest);
+router.get('/two', testController.getTestTwo);
+router.get('/test-socket', testController.testSocket);
 
 export default router;
