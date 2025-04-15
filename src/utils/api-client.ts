@@ -37,7 +37,7 @@ const request = <T>(
 		switchMap(response => {
 			if (!response.ok) {
 				return from(
-					response.json()?.then(errorBody => {
+					response.json()?.then((errorBody: any) => {
 						throw new ApiException(
 							response.status,
 							errorBody.message || 'Error desconocido'
