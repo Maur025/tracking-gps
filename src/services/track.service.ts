@@ -1,5 +1,7 @@
 import environment from '@config/env';
 import { getAllRequest } from '@config/service-request-default';
+import ApiResponse from '@models/dto/api-response';
+import MultiResponse from '@models/dto/multi-response';
 import TrackingResponse from '@models/dto/response/tracking-response';
 import { GetAllRequest } from '@models/interface/service-request.interface';
 import { get } from '@utils/api-client';
@@ -11,7 +13,7 @@ export default class TrackService {
 
 	public readonly getAll = (
 		request: GetAllRequest
-	): Observable<TrackingResponse> => {
+	): Observable<ApiResponse<TrackingResponse>> => {
 		const localRequest: GetAllRequest = { ...getAllRequest, ...request };
 		const { size, page, sortBy, descending, keyword } = localRequest;
 
@@ -21,7 +23,7 @@ export default class TrackService {
 			queryParams += `&keyword=${keyword}`;
 		}
 
-		return get<TrackingResponse>(
+		return get<ApiResponse<TrackingResponse>>(
 			`${this.baseUrl}/${this.resource}${queryParams}`
 		);
 	};

@@ -5,6 +5,8 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
 import { Route, Tags } from 'tsoa';
+import MultiResponse from '@models/dto/multi-response';
+import ApiResponse from '@models/dto/api-response';
 
 @Route('tests')
 @Tags('Tests')
@@ -13,14 +15,13 @@ export default class TestController {
 		const service = new TrackService();
 
 		service.getAll({ size: 100 }).subscribe({
-			next: (response: TrackingResponse) => {
-				const data = response.content;
-
-				res.status(StatusCodes.OK).json({
-					status: 'success',
-					message: 'Data retrieved successfully',
-					data: data,
-				});
+			next: (response: ApiResponse<TrackingResponse>) => {
+				res.status(StatusCodes.OK).json(
+					MultiResponse.builder<TrackingResponse>()
+						.code(StatusCodes.OK)
+						.data([...(response.content as TrackingResponse[])])
+						.build()
+				);
 			},
 			error: (error: ErrorResponse) => {
 				res.status(StatusCodes.REQUEST_TIMEOUT).json({
