@@ -1,6 +1,3 @@
-import ApiResponse from '../api-response';
+import DataResponse from '../data-response';
 
-export default interface TrackingResponse
-	extends ApiResponse<TrackingResponse> {
-	id: string;
-}
+export default class TrackingResponse extends DataResponse {}
