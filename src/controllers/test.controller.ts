@@ -7,12 +7,22 @@ import { connect } from '@socket/client/socket-track-client';
 import { Route, Tags } from 'tsoa';
 import MultiResponse from '@models/dto/multi-response';
 import ApiResponse from '@models/dto/api-response';
+import TestCmd from 'command/test.cmd';
 
 @Route('tests')
 @Tags('Tests')
 export default class TestController {
 	public getTest = (req: Request, res: Response): void => {
 		const service = new TrackService();
+		const testCmd = new TestCmd();
+
+		testCmd
+			.withRequest({
+				testId: 'prueba',
+				price: 25,
+				name: 'ESTO ES UNA PRUEBA',
+			})
+			.execute();
 
 		service.getAll({ size: 100 }).subscribe({
 			next: (response: ApiResponse<TrackingResponse>) => {
