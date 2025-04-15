@@ -18,6 +18,7 @@ export default defineConfig({
 			'@routes': path.resolve(__dirname, 'src/routes'),
 			'@socket': path.resolve(__dirname, 'src/socket'),
 			'@cache': path.resolve(__dirname, 'src/cache'),
+			'@command': path.resolve(__dirname, 'src/command'),
 		},
 	},
 });
