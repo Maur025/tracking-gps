@@ -1,30 +1,24 @@
 import environment from '@config/env';
-import { getAllRequest } from '@config/service-request-default';
-import ApiResponse from '@models/dto/api-response';
 import TrackingResponse from '@models/dto/response/tracking-response';
-import { GetAllRequest } from '@models/interface/service-request.interface';
-import { get } from '@utils/api-client';
-import { Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
+import AbstractApiService from '../utils/abstract-api-service';
+import { Observable } from 'rxjs';
+import ApiResponse from '@models/dto/api-response';
+import { get } from '@utils/api-client';
+
 @singleton()
-export default class TrackService {
-	private readonly baseUrl = `${environment.BACKEND_URL}/trackingdb`;
-	private readonly resource = 'tracks';
+export default class TrackService extends AbstractApiService<TrackingResponse> {
+	constructor() {
+		super({
+			baseUrl: `${environment.BACKEND_URL}/trackingdb`,
+			resource: 'tracks',
+		});
+	}
 
-	public readonly getAll = (
-		request: GetAllRequest
-	): Observable<ApiResponse<TrackingResponse>> => {
-		const localRequest: GetAllRequest = { ...getAllRequest, ...request };
-		const { size, page, sortBy, descending, keyword } = localRequest;
-
-		let queryParams: string = `?size=${size}&page=${page}&sortBy=${sortBy}&descending=${descending}`;
-
-		if (keyword) {
-			queryParams += `&keyword=${keyword}`;
-		}
-
-		return get<ApiResponse<TrackingResponse>>(
-			`${this.baseUrl}/${this.resource}${queryParams}`
+	public readonly getAllCustom = (): Observable<
+		ApiResponse<TrackingResponse>
+	> =>
+		get<ApiResponse<TrackingResponse>>(
+			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}?size=2&page=1`
 		);
-	};
 }
