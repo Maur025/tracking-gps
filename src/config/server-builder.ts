@@ -7,13 +7,14 @@ import compression from 'compression';
 import DEFAULT_LIMITS from './default-server-limits';
 import { container, inject, injectable } from 'tsyringe';
 import { TOKENS } from './ioc/token';
-import { ServerBuilderSchema } from '@models/schemas/server-builder-schema';
+import {
+	ServerBuilderRequest,
+	ServerBuilderSchema,
+} from '@models/schemas/server-builder-schema';
 import { errorValidate } from '@utils/zod-exception';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {
-	private host: string | null = null;
-	private port: number | null = null;
-	private staticPath: string | null = null;
+	private request?: ServerBuilderRequest;
 
 	constructor(@inject(TOKENS.Application) private readonly app: Application) {}
 
@@ -21,21 +22,9 @@ export default class ServerBuilder implements IServerBuilder {
 		return container.resolve(ServerBuilder);
 	}
 
-	public setHost(host: string | undefined): this {
-		if (host) {
-			this.host = host;
-		}
+	public withRequest(request: ServerBuilderRequest): this {
+		this.request = { ...request };
 
-		return this;
-	}
-
-	public setPort(port: number): this {
-		this.port = port;
-		return this;
-	}
-
-	public setStaticPath(staticPath: string): this {
-		this.staticPath = staticPath;
 		return this;
 	}
 
@@ -74,7 +63,8 @@ export default class ServerBuilder implements IServerBuilder {
 	}
 
 	public configureStatic(): this {
-		this.app?.use('/', express.static(this.staticPath ?? 'public'));
+		const { staticPath } = this.request ?? {};
+		this.app?.use('/', express.static(staticPath ?? 'public'));
 
 		return this;
 	}
@@ -86,20 +76,18 @@ export default class ServerBuilder implements IServerBuilder {
 	}
 
 	public start(): Server {
-		if (!this.host) {
-			return this.app?.listen(this.port, () => this.getMessageSuccess());
+		const { host, port } = this.request ?? {};
+
+		if (!host) {
+			return this.app?.listen(port, () => this.getMessageSuccess());
 		}
 
-		return this.app?.listen(this.port!, this.host, () =>
-			this.getMessageSuccess()
-		);
+		return this.app?.listen(port!, host, () => this.getMessageSuccess());
 	}
 
 	private readonly validate = () => {
 		const result = ServerBuilderSchema.safeParse({
-			host: this.host,
-			port: this.port,
-			staticPath: this.staticPath,
+			...this.request,
 			app: this.app,
 		});
 
@@ -112,6 +100,8 @@ export default class ServerBuilder implements IServerBuilder {
 	};
 
 	private readonly getMessageSuccess = (): void => {
-		console.info(`Server running on ${this.host ?? 'localhost'}:${this.port}`);
+		const { host, port } = this.request ?? {};
+
+		console.info(`Server running on ${host ?? 'localhost'}:${port}`);
 	};
 }

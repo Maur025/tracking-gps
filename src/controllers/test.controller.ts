@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
 import { Route, Tags } from 'tsoa';
-import MultiResponse from '@models/dto/multi-response';
 import ApiResponse from '@models/dto/api-response';
 import TestCmd from '@command/test.cmd';
+import MultiResponseBuilder from '@models/dto/multi-response-builder';
 
 @Route('tests')
 @Tags('Tests')
@@ -25,14 +25,15 @@ export default class TestController {
 			.execute();
 
 		service.getAll({ size: 100 }).subscribe({
-			next: (response: ApiResponse<TrackingResponse>) => {
-				res.status(StatusCodes.OK).json(
-					MultiResponse.builder<TrackingResponse>()
-						.code(StatusCodes.OK)
-						.data([...(response.content as TrackingResponse[])])
-						.build()
-				);
-			},
+			next: (response: ApiResponse<TrackingResponse>) =>
+				MultiResponseBuilder.builder<TrackingResponse>()
+					.res(res)
+					.withResponse({
+						code: StatusCodes.OK,
+						message: 'SUCCESS',
+						data: response as TrackingResponse[],
+					})
+					.restResponse(),
 			error: (error: ErrorResponse) => {
 				res.status(StatusCodes.REQUEST_TIMEOUT).json({
 					detail: error.status ?? error.cause?.code,
