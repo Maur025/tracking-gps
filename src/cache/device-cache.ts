@@ -1,6 +1,7 @@
 import Device from '@models/interface/track/device.interface';
-
-class DeviceCache {
+import { singleton } from 'tsyringe';
+@singleton()
+export default class DeviceCache {
 	private deviceList: Device[] = [];
 
 	public readonly getAll = (): Device[] => {
@@ -15,6 +16,3 @@ class DeviceCache {
 		this.deviceList = [];
 	};
 }
-
-const deviceCache = new DeviceCache();
-export default deviceCache;

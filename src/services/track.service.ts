@@ -5,7 +5,8 @@ import TrackingResponse from '@models/dto/response/tracking-response';
 import { GetAllRequest } from '@models/interface/service-request.interface';
 import { get } from '@utils/api-client';
 import { Observable } from 'rxjs';
-
+import { singleton } from 'tsyringe';
+@singleton()
 export default class TrackService {
 	private readonly baseUrl = `${environment.BACKEND_URL}/trackingdb`;
 	private readonly resource = 'tracks';

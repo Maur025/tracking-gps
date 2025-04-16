@@ -8,15 +8,19 @@ import { Route, Tags } from 'tsoa';
 import ApiResponse from '@models/dto/api-response';
 import TestCmd from '@command/test.cmd';
 import MultiResponseBuilder from '@models/dto/multi-response-builder';
+import { inject, injectable } from 'tsyringe';
 
 @Route('tests')
 @Tags('Tests')
+@injectable()
 export default class TestController {
-	public getTest = (req: Request, res: Response): void => {
-		const service = new TrackService();
-		const testCmd = new TestCmd();
+	constructor(
+		@inject(TrackService) private readonly trackService: TrackService,
+		@inject(TestCmd) private readonly testCmd: TestCmd
+	) {}
 
-		testCmd
+	public getTest = (req: Request, res: Response): void => {
+		this.testCmd
 			.withRequest({
 				testId: 'prueba',
 				price: 25,
@@ -24,7 +28,7 @@ export default class TestController {
 			})
 			.execute();
 
-		service.getAll({ size: 100 }).subscribe({
+		this.trackService.getAll({ size: 100 }).subscribe({
 			next: (response: ApiResponse<TrackingResponse>) =>
 				MultiResponseBuilder.builder<TrackingResponse>()
 					.res(res)

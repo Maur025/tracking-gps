@@ -1,5 +1,6 @@
 import AbstractCommand from '@utils/abstract-command';
-
+import { singleton } from 'tsyringe';
+@singleton()
 export default class TestCmd extends AbstractCommand<Request, void> {
 	protected validate(input: Request | undefined): void {
 		console.log('SE SUPONE QUE AQUI SE DEBE REALIZAR UNA VALIDACION');

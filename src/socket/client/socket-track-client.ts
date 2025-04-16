@@ -14,6 +14,6 @@ export const connect = (): void => {
 	});
 
 	socket.on(Topics.DEVICES, payload => {
-		// console.log(payload);
+		console.log(payload);
 	});
 };
