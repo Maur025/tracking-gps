@@ -1,7 +1,6 @@
 import environment from '@config/env';
 import { getAllRequest } from '@config/service-request-default';
 import ApiResponse from '@models/dto/api-response';
-import MultiResponse from '@models/dto/multi-response';
 import TrackingResponse from '@models/dto/response/tracking-response';
 import { GetAllRequest } from '@models/interface/service-request.interface';
 import { get } from '@utils/api-client';

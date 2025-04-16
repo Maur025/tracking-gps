@@ -7,9 +7,11 @@ import routes from '@routes/index.routes';
 installCache();
 
 const app: ServerBuilderResponse = ServerBuilder.builder()
-	.setHost(environment.HOST)
-	.setPort(environment.PORT)
-	.setStaticPath(environment.STATIC_PATH)
+	.withRequest({
+		host: environment.HOST,
+		port: environment.PORT,
+		staticPath: environment.STATIC_PATH,
+	})
 	.applyMiddlewares()
 	.applyRoutes(routes)
 	.configureStatic()

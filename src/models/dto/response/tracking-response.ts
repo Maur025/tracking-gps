@@ -1,3 +1,3 @@
 import DataResponse from '../data-response';
 
-export default class TrackingResponse extends DataResponse {}
+export default interface TrackingResponse extends DataResponse {}
