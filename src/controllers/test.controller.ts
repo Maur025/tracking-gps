@@ -28,14 +28,14 @@ export default class TestController {
 			})
 			.execute();
 
-		this.trackService.getAll({ size: 100 }).subscribe({
+		this.trackService.getAllPaginated({ size: 10 }).subscribe({
 			next: (response: ApiResponse<TrackingResponse>) =>
 				MultiResponseBuilder.builder<TrackingResponse>()
 					.res(res)
 					.withResponse({
 						code: StatusCodes.OK,
 						message: 'SUCCESS',
-						data: response as TrackingResponse[],
+						data: response.content as TrackingResponse[],
 					})
 					.restResponse(),
 			error: (error: ErrorResponse) => {

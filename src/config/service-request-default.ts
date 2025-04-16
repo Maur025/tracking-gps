@@ -1,6 +1,6 @@
-import { GetAllRequest } from '@models/interface/service-request.interface';
+import { GetAllPaginatedRequest } from '@models/interface/service-request.interface';
 
-export const getAllRequest: GetAllRequest = {
+export const getAllPaginatedDefault: GetAllPaginatedRequest = {
 	size: 100,
 	page: 1,
 	sortBy: 'id',
