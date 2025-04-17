@@ -10,7 +10,8 @@ export const connect = (): void => {
 
 	socket.on(Topics.CONNECT, () => {
 		console.info(`connect to Track with ID: ${socket.id}`);
-		socket.emit('message', 'enviando');
+
+		socket.emit(Topics.MESSAGE, 'enviando');
 	});
 
 	socket.on(Topics.DEVICES, payload => {

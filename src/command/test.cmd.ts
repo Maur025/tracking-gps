@@ -1,4 +1,4 @@
-import AbstractCommand from '@utils/abstract-command';
+import { AbstractCommand } from '@maur025/core-commands';
 import { singleton } from 'tsyringe';
 @singleton()
 export default class TestCmd extends AbstractCommand<Request, void> {

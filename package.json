@@ -14,6 +14,7 @@
 	"license": "ISC",
 	"packageManager": "pnpm@10.8.1",
 	"dependencies": {
+		"@maur025/core-commands": "2.0.0-beta.9",
 		"better-sqlite3": "^11.9.1",
 		"cacheable-lookup": "^7.0.0",
 		"compression": "^1.8.0",
