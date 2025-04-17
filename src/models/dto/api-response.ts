@@ -1,6 +1,5 @@
-import DataResponse from './data-response';
-
-export default interface ApiResponse<T extends DataResponse> {
+import BaseData from './base-data';
+export default interface ApiResponse<T extends BaseData> {
 	code?: number;
 	success?: boolean;
 	message?: string;

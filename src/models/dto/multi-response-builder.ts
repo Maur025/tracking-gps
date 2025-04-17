@@ -1,12 +1,12 @@
-import DataResponse from './data-response';
+import BaseData from './base-data';
 import MultiResponse from './multi-response';
 import { Response } from 'express';
 
-export default class MultiResponseBuilder<T extends DataResponse> {
+export default class MultiResponseBuilder<T extends BaseData> {
 	protected response: MultiResponse<T> | undefined;
 	private _res: Response | undefined;
 
-	public static builder<I extends DataResponse>(): MultiResponseBuilder<I> {
+	public static builder<I extends BaseData>(): MultiResponseBuilder<I> {
 		return new MultiResponseBuilder<I>();
 	}
 

@@ -1,3 +1,3 @@
-import DataResponse from '../data-response';
+import BaseData from '../base-data';
 
-export default interface DeviceResponse extends DataResponse {}
+export default interface DeviceResponse extends BaseData {}
