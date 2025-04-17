@@ -9,7 +9,7 @@ import {
 } from '@models/interface/service-request.interface';
 import { delet, get, post, put } from './api-client';
 import ApiResponse from '@models/dto/api-response';
-import DataResponse from '@models/dto/data-response';
+import DataResponse from '@models/dto/base-data';
 import { Observable } from 'rxjs';
 
 export default abstract class AbstractApiService<R extends DataResponse> {

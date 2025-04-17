@@ -1,7 +1,7 @@
 import BaseResponse from './base-response';
-import DataResponse from './data-response';
+import BaseData from './base-data';
 
-export default interface SingleResponse<T extends DataResponse>
+export default interface SingleResponse<T extends BaseData>
 	extends BaseResponse {
 	data?: T;
 }

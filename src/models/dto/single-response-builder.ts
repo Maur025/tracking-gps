@@ -1,12 +1,12 @@
-import DataResponse from './data-response';
+import BaseData from './base-data';
 import SingleResponse from './single-response';
 import { Response } from 'express';
 
-export default class SingleResponseBuilder<T extends DataResponse> {
+export default class SingleResponseBuilder<T extends BaseData> {
 	protected response: SingleResponse<T> | undefined;
 	private _res: Response | undefined;
 
-	public static builder<I extends DataResponse>(): SingleResponseBuilder<I> {
+	public static builder<I extends BaseData>(): SingleResponseBuilder<I> {
 		return new SingleResponseBuilder<I>();
 	}
 

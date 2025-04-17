@@ -8,4 +8,6 @@ export enum Topics {
 	DEVICES = 'devices',
 	DEVICE_NEW = 'device.new',
 	DEVICE_TRACK = 'device.track',
+	DEVICE_UNSUBSCRIBE_ALL = 'device.unsubscribe.all',
+	DEVICE_SUBSCRIBE = 'device.subscribe',
 }

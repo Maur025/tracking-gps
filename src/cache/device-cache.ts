@@ -1,4 +1,4 @@
-import Device from '@models/interface/track/device.interface';
+import Device from '@models/entity/device';
 import { singleton } from 'tsyringe';
 @singleton()
 export default class DeviceCache {
