@@ -8,18 +8,19 @@ const clientReply: SocketClient = connect();
 export const socketReply = (socket: Socket) => {
 	clientReply.on(Topics.MESSAGE, payload => {
 		console.log(payload);
-		socket.emit('message', payload);
+
+		socket.emit(Topics.MESSAGE, payload);
 	});
 
 	clientReply.on(Topics.DEVICES, payload => {
-		socket.emit('devices', payload);
+		socket.emit(Topics.MESSAGE, payload);
 	});
 
 	clientReply.on(Topics.DEVICE_NEW, payload => {
-		socket.emit('device.new', payload);
+		socket.emit(Topics.DEVICE_NEW, payload);
 	});
 
 	clientReply.on(Topics.DEVICE_TRACK, payload => {
-		socket.emit('device.track', payload);
+		socket.emit(Topics.DEVICE_TRACK, payload);
 	});
 };
