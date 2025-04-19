@@ -8,11 +8,10 @@ import {
 	UpdateRequest,
 } from '@models/interface/service-request.interface';
 import { delet, get, post, put } from './api-client';
-import ApiResponse from '@models/dto/api-response';
-import DataResponse from '@models/dto/base-data';
 import { Observable } from 'rxjs';
+import { ApiResponse, BaseData } from '@maur025/core-model-data';
 
-export default abstract class AbstractApiService<R extends DataResponse> {
+export default abstract class AbstractApiService<R extends BaseData> {
 	constructor(protected readonly apiRequest: ApiServiceRequest) {}
 
 	public readonly getAllPaginated = (

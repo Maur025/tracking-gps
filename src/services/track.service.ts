@@ -3,8 +3,8 @@ import TrackingResponse from '@models/dto/response/tracking-response';
 import { singleton } from 'tsyringe';
 import AbstractApiService from '../utils/abstract-api-service';
 import { Observable } from 'rxjs';
-import ApiResponse from '@models/dto/api-response';
 import { get } from '@utils/api-client';
+import { ApiResponse } from '@maur025/core-model-data';
 
 @singleton()
 export default class TrackService extends AbstractApiService<TrackingResponse> {

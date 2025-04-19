@@ -40,7 +40,7 @@ const request = <T>(
 					response.json()?.then((errorBody: any) => {
 						throw new ApiException(
 							response.status,
-							errorBody.message || 'Error desconocido'
+							errorBody.message ?? 'Error desconocido'
 						);
 					})
 				);

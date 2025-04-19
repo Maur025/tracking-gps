@@ -1,14 +1,16 @@
-import ErrorResponse from '@models/dto/error-response';
 import TrackingResponse from '@models/dto/response/tracking-response';
 import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
 import { Route, Tags } from 'tsoa';
-import ApiResponse from '@models/dto/api-response';
 import TestCmd from '@command/test.cmd';
-import MultiResponseBuilder from '@models/dto/multi-response-builder';
 import { inject, injectable } from 'tsyringe';
+import {
+	ApiResponse,
+	ErrorResponse,
+	MultiResponseBuilder,
+} from '@maur025/core-model-data';
 
 @Route('tests')
 @Tags('Tests')
@@ -37,7 +39,7 @@ export default class TestController {
 						message: 'SUCCESS',
 						data: response.content as TrackingResponse[],
 					})
-					.restResponse(),
+					.send(),
 			error: (error: ErrorResponse) => {
 				res.status(StatusCodes.REQUEST_TIMEOUT).json({
 					detail: error.status ?? error.cause?.code,
