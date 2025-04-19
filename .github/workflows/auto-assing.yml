@@ -1,4 +1,4 @@
-name: Auto assign PRs
+name: Auto assign PR
 
 on:
   pull_request:
@@ -9,4 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto assign PR
-        uses: kentaro-m/auto-assign@v1.2.1
+        uses: ahmadnassri/action-auto-assign@v2
+        with:
+          config: .github/auto_assign.yml
