@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@maur025/core-commands':
-        specifier: 2.0.0-beta.9
-        version: 2.0.0-beta.9
+        specifier: ^1.0.0
+        version: 1.0.0
       better-sqlite3:
         specifier: ^11.9.1
         version: 11.9.1
@@ -349,8 +349,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.9':
     resolution: {integrity: sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ==}
 
-  '@maur025/core-commands@2.0.0-beta.9':
-    resolution: {integrity: sha512-hZEZ99LwoMF4R5e2CzSPQVmC06k0TGDXoSoMIO7be61ckkKhJM4tnE79bBHZy3/7et7m/uS3XiId+Gr21cDtMw==}
+  '@maur025/core-commands@1.0.0':
+    resolution: {integrity: sha512-lwWp3o3IuNRKoltrZFw34qNRS3n9ytiSzT1B2tUQaJ23Hnm5OH++jDQ273BKPeG81wNAqky4iLx+LwKgN8yNAQ==}
     engines: {node: '>=18'}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2188,7 +2188,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@maur025/core-commands@2.0.0-beta.9': {}
+  '@maur025/core-commands@1.0.0': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
