@@ -1,0 +1,12 @@
+name: Auto assign PRs
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+jobs:
+  auto-assign:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Auto assign PR
+        uses: kentaro-m/auto-assign@v1.2.1
