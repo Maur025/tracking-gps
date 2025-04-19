@@ -9,6 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Auto assign PR
-        uses: ahmadnassri/action-auto-assign@v2
+        uses: peter-evans/assign-issue@v2
         with:
-          config: .github/auto_assign.yml
+          assignees: Maur025
+
+      - name: Add reviewer
+        uses: madrapps/add-reviewers@v1
+        with:
+          reviewers: Maur025
