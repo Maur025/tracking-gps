@@ -2,6 +2,7 @@ import DeviceCache from '@cache/device-cache';
 import { AbstractCommand } from '@maur025/core-commands';
 import Device from '@models/entity/device';
 import { Topics } from '@models/enums/topics.enum';
+import { syncAndEnrichDevices } from '@utils/device-sync-enrich-data';
 import { Socket } from 'socket.io-client';
 import { inject, singleton } from 'tsyringe';
 
@@ -13,16 +14,13 @@ export default class DeviceResyncCmd extends AbstractCommand<Request, void> {
 
 	protected run(request: Request): void {
 		const { deviceList, socketClient } = request;
-		this.deviceCache.updateAll(deviceList);
 
-		const deviceCacheList = this.deviceCache.getAll();
-
-		const idsList: string[] = deviceCacheList?.map(({ id }) => id ?? '');
+		const idList: string[] = deviceList?.map(({ id }) => id ?? '');
 
 		socketClient.emit(Topics.DEVICE_UNSUBSCRIBE_ALL, '');
-		socketClient.emit(Topics.DEVICE_SUBSCRIBE, [...idsList]);
+		socketClient.emit(Topics.DEVICE_SUBSCRIBE, [...idList]);
 
-		// ADD logica de comparacion para sincronizar
+		this.deviceCache.updateAll(syncAndEnrichDevices(deviceList));
 	}
 }
 
