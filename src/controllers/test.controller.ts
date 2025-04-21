@@ -11,6 +11,8 @@ import {
 	ErrorResponse,
 	MultiResponseBuilder,
 } from '@maur025/core-model-data';
+import DeviceCache from '@cache/device-cache';
+import RouteCache from '@cache/route-cache';
 
 @Route('tests')
 @Tags('Tests')
@@ -18,7 +20,9 @@ import {
 export default class TestController {
 	constructor(
 		@inject(TrackService) private readonly trackService: TrackService,
-		@inject(TestCmd) private readonly testCmd: TestCmd
+		@inject(TestCmd) private readonly testCmd: TestCmd,
+		@inject(DeviceCache) private readonly deviceCache: DeviceCache,
+		@inject(RouteCache) private readonly routeCache: RouteCache
 	) {}
 
 	public getTest = (req: Request, res: Response): void => {
@@ -58,5 +62,13 @@ export default class TestController {
 		connect();
 
 		res.status(StatusCodes.OK).json({ message: 'Successfull' });
+	};
+
+	public readonly currentDevices = (req: Request, res: Response): void => {
+		res.status(StatusCodes.OK).json(this.deviceCache.getAll());
+	};
+
+	public readonly currentRoutes = (req: Request, res: Response): void => {
+		res.status(StatusCodes.OK).json(this.routeCache.getAll());
 	};
 }

@@ -1,18 +1,21 @@
 import DeviceCache from '@cache/device-cache';
-import { AbstractCommand } from '@maur025/core-commands';
+import { AbstractAsyncCommand } from '@command/AbstractAsyncCommand';
 import Device from '@models/entity/device';
 import { Topics } from '@models/enums/topics.enum';
-import { syncAndEnrichDevices } from '@utils/device-sync-enrich-data';
+import { syncAndEnrichDevices } from '@services/device/device-sync-enrich-data';
 import { Socket } from 'socket.io-client';
 import { inject, singleton } from 'tsyringe';
 
 @singleton()
-export default class DeviceResyncCmd extends AbstractCommand<Request, void> {
+export default class DeviceResyncCmd extends AbstractAsyncCommand<
+	Request,
+	void
+> {
 	constructor(@inject(DeviceCache) private readonly deviceCache: DeviceCache) {
 		super();
 	}
 
-	protected run(request: Request): void {
+	protected async run(request: Request): Promise<void> {
 		const { deviceList, socketClient } = request;
 
 		const idList: string[] = deviceList?.map(({ id }) => id ?? '');
@@ -20,7 +23,9 @@ export default class DeviceResyncCmd extends AbstractCommand<Request, void> {
 		socketClient.emit(Topics.DEVICE_UNSUBSCRIBE_ALL, '');
 		socketClient.emit(Topics.DEVICE_SUBSCRIBE, [...idList]);
 
-		this.deviceCache.updateAll(syncAndEnrichDevices(deviceList));
+		const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
+
+		this.deviceCache.updateAll(newDeviceList);
 	}
 }
 

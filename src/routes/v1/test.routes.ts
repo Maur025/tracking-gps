@@ -8,5 +8,7 @@ const testController = container.resolve(TestController);
 router.get('/', testController.getTest);
 router.get('/two', testController.getTestTwo);
 router.get('/test-socket', testController.testSocket);
+router.get('/current/devices', testController.currentDevices);
+router.get('/current/routes', testController.currentRoutes);
 
 export default router;
