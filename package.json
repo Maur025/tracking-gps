@@ -12,7 +12,7 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"packageManager": "pnpm@10.8.1",
+	"packageManager": "pnpm@10.9.0",
 	"dependencies": {
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-model-data": "^1.0.1",
