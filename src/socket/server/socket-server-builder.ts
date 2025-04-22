@@ -9,6 +9,7 @@ import environment from '@config/env';
 import type { Server as HttpServer } from 'node:http';
 import { socketErrors } from './socket-errors';
 import { Topics } from '@models/enums/topics.enum';
+import { loggerInfo } from '@utils/logger';
 
 @injectable()
 export default class SocketServerBuilder {
@@ -62,10 +63,10 @@ export default class SocketServerBuilder {
 
 	private readonly startListening = (httpServer: HttpServer): void => {
 		httpServer.listen(environment.PORT, () => {
-			console.info(
-				`Server express and io running on: ${environment.HOST ?? 'localhost'}:${
-					environment.PORT
-				}`
+			loggerInfo(
+				`Server Express and server IO running on: ${
+					environment.HOST ?? 'localhost'
+				}:${environment.PORT}`
 			);
 		});
 	};

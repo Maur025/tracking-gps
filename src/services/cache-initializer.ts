@@ -1,6 +1,6 @@
 import { concatMap, from, Observable, of, tap } from 'rxjs';
 import { container } from 'tsyringe';
-import RouteService from './route.service';
+import RouteService from './routes/route.service';
 import RouteCache from '@cache/route-cache';
 import { handleAsArray } from '@utils/handle-response';
 

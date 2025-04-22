@@ -21,5 +21,4 @@ export const setupSections = (route: RouteResponse) => {
 			};
 		}
 	);
-	console.log(route);
 };

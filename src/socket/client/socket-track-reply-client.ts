@@ -1,5 +1,6 @@
 import environment from '@config/env';
 import { Topics } from '@models/enums/topics.enum';
+import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 
 let socketReply: Socket | null = null;
@@ -12,7 +13,7 @@ export const connect = (): Socket => {
 		});
 
 		socketReply.on(Topics.CONNECT, () => {
-			console.info(`reply connect to Track with ID: ${socketReply?.id}`);
+			loggerInfo(`reply connect to Track with ID: ${socketReply?.id}`);
 		});
 	}
 

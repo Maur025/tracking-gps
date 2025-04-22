@@ -4,6 +4,7 @@ import State from './state';
 import { BaseData } from '@maur025/core-model-data';
 import Track from './track';
 import Stop from './stop';
+import Route from './route';
 
 export default interface Device extends BaseData {
 	config: Config;
@@ -16,7 +17,5 @@ export default interface Device extends BaseData {
 	isReady?: boolean;
 	tracksCoord?: [number, number][];
 	stops?: Stop[];
-	routeSelected?: {
-		completed?: number;
-	};
+	routeSelected?: Route;
 }

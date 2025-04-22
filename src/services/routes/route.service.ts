@@ -6,8 +6,7 @@ import { get } from '@utils/api-client';
 import { handleAsArray } from '@utils/handle-response';
 import { catchError, map, Observable, of } from 'rxjs';
 import { singleton } from 'tsyringe';
-import Point from '../models/entity/point';
-import { setupSections } from './routes/setup-sections';
+import { setupSections } from './setup-sections';
 
 @singleton()
 export default class RouteService extends AbstractApiService<RouteResponse> {

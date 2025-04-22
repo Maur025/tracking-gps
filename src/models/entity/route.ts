@@ -16,4 +16,5 @@ export default interface Route extends BaseDataAudit {
 	frecuency: string;
 	extend?: number[];
 	sections?: Section[];
+	completed?: number;
 }
