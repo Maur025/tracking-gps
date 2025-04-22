@@ -12,13 +12,15 @@ interface Request {
 
 const deviceCache = container.resolve(DeviceCache);
 
+const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
+
 export const deviceSync = async (request: Request): Promise<void> => {
 	const { deviceList, socketClient } = request;
 
 	const idList: string[] = deviceList?.map(({ id }) => id ?? '');
 
-	socketClient.emit(Topics.DEVICE_UNSUBSCRIBE_ALL, '');
-	socketClient.emit(Topics.DEVICE_SUBSCRIBE, [...idList]);
+	socketClient.emit(DEVICE_UNSUBSCRIBE_ALL, '');
+	socketClient.emit(DEVICE_SUBSCRIBE, [...idList]);
 
 	const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
 

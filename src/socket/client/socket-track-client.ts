@@ -5,19 +5,21 @@ import { deviceSync } from '@services/device/device-sync';
 import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 
+const { CONNECT, MESSAGE, DEVICES } = Topics;
+
 export const connect = (): void => {
 	const socket: Socket = io(environment.TRACK_URL, {
 		reconnection: true,
 		reconnectionDelay: 10000,
 	});
 
-	socket.on(Topics.CONNECT, () => {
+	socket.on(CONNECT, () => {
 		loggerInfo(`Connect to Track with ID: ${socket.id}`);
 
-		socket.emit(Topics.MESSAGE, 'enviando');
+		socket.emit(MESSAGE, 'enviando');
 	});
 
-	socket.on(Topics.DEVICES, (payload: Device[]) =>
+	socket.on(DEVICES, (payload: Device[]) =>
 		deviceSync({ deviceList: [...payload], socketClient: socket })
 	);
 };
