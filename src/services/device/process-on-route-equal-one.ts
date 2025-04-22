@@ -6,25 +6,30 @@ import WsTrackResponse from '@models/dto/response/ws-track-response';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { getStopsInRoute } from '@services/routes/get-stops-in-route';
 import { getTrackingCoordinates } from './device-sync-common';
+import RouteCache from '@cache/route-cache';
+import Route from '@models/entity/route';
 
 const wsDeviceService = container.resolve(WsDeviceService);
+const routeCache = container.resolve(RouteCache);
 
 export const processOnRouteEqualOne = (
 	device: Device
 ): Observable<WsTrackResponse> => {
-	const { id } = device;
-
-	console.log(id);
+	const { id, states } = device;
 
 	if (!id) {
 		console.warn(`device without id founded`);
-
 		return of();
 	}
 
+	const routeList: Route[] = routeCache.getAll();
+
 	return wsDeviceService.getTracks({ deviceId: id }).pipe(
 		tap((response: WsTrackResponse) => {
-			console.log('se realizo la asignacion');
+			if (!response) {
+				device.isReady = false;
+				return;
+			}
 
 			device.tracks = response.tracks ?? [];
 			const { tracks } = device;
@@ -35,11 +40,14 @@ export const processOnRouteEqualOne = (
 
 			device.stops = getStopsInRoute(tracks);
 			device.tracksCoord = getTrackingCoordinates(device);
-			device.routeSelected = {};
 
-			if (tracks.length) {
-				//console.log(device);
-			}
+			device.routeSelected = routeList.find(
+				({ id }) => id === states?.ID_ROUTE
+			);
+
+			// Logic needs to be completed
+
+			device.isReady = true;
 		}),
 		catchError((error: ErrorResponse) => {
 			console.error('Error ocurred in process on route equal one: ', error);

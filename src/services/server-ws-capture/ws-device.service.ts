@@ -1,7 +1,5 @@
 import environment from '@config/env';
-import { ApiResponse } from '@maur025/core-model-data';
 import DeviceResponse from '@models/dto/response/device-response';
-import TrackingResponse from '@models/dto/response/tracking-response';
 import WsTrackResponse from '@models/dto/response/ws-track-response';
 import AbstractApiService from '@utils/abstract-api-service';
 import { get } from '@utils/api-client';

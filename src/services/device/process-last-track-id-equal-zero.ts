@@ -19,7 +19,11 @@ export const processByLasTrackIdEqualZero = (
 
 	return wsDeviceService.getHistoryTracks({ deviceId: id }).pipe(
 		tap((response: WsTrackResponse) => {
-			console.log(response);
+			device.tracks = response.tracks ?? [];
+
+			// Logic needs to be completed
+
+			device.isReady = true;
 		}),
 		catchError((error: ErrorResponse) => {
 			console.error(`Error ocurred in getHistoryTracks`);

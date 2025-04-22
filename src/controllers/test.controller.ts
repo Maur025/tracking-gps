@@ -4,7 +4,6 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
 import { Route, Tags } from 'tsoa';
-import TestCmd from '@command/test.cmd';
 import { inject, injectable } from 'tsyringe';
 import {
 	ApiResponse,
@@ -20,20 +19,11 @@ import RouteCache from '@cache/route-cache';
 export default class TestController {
 	constructor(
 		@inject(TrackService) private readonly trackService: TrackService,
-		@inject(TestCmd) private readonly testCmd: TestCmd,
 		@inject(DeviceCache) private readonly deviceCache: DeviceCache,
 		@inject(RouteCache) private readonly routeCache: RouteCache
 	) {}
 
 	public getTest = (req: Request, res: Response): void => {
-		this.testCmd
-			.withRequest({
-				testId: 'prueba',
-				price: 25,
-				name: 'ESTO ES UNA PRUEBA',
-			})
-			.execute();
-
 		this.trackService.getAllPaginated({ size: 10 }).subscribe({
 			next: (response: ApiResponse<TrackingResponse>) =>
 				MultiResponseBuilder.builder<TrackingResponse>()

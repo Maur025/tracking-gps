@@ -1,11 +1,9 @@
-import DeviceResyncCmd from '@command/device/device-resync.cmd';
 import environment from '@config/env';
 import Device from '@models/entity/device';
 import { Topics } from '@models/enums/topics.enum';
+import { deviceSync } from '@services/device/device-sync';
+import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
-import { container } from 'tsyringe';
-
-const deviceResyncCmd = container.resolve(DeviceResyncCmd);
 
 export const connect = (): void => {
 	const socket: Socket = io(environment.TRACK_URL, {
@@ -14,17 +12,12 @@ export const connect = (): void => {
 	});
 
 	socket.on(Topics.CONNECT, () => {
-		console.info(`connect to Track with ID: ${socket.id}`);
+		loggerInfo(`Connect to Track with ID: ${socket.id}`);
 
 		socket.emit(Topics.MESSAGE, 'enviando');
 	});
 
 	socket.on(Topics.DEVICES, (payload: Device[]) =>
-		deviceResyncCmd
-			.withRequest({
-				deviceList: [...payload],
-				socketClient: socket,
-			})
-			.execute()
+		deviceSync({ deviceList: [...payload], socketClient: socket })
 	);
 };
