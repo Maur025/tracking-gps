@@ -65,7 +65,7 @@ export default class SocketServerBuilder {
 		httpServer.listen(environment.PORT, () => {
 			loggerInfo(
 				`Server Express and server IO running on: ${
-					environment.HOST ?? 'localhost'
+					environment.HOST ?? 'http://localhost'
 				}:${environment.PORT}`
 			);
 		});

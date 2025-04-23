@@ -34,9 +34,7 @@ export default class RouteService extends AbstractApiService<RouteResponse> {
 				return response;
 			}),
 			catchError((error: ErrorResponse) => {
-				console.error(`Error ocurred in query getAll routes.`, error);
-
-				return of();
+				throw new Error(`Error ocurred in query getAll routes: ${error.cause}`);
 			})
 		);
 }

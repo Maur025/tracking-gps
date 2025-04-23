@@ -11,8 +11,6 @@ const routeService = container.resolve(RouteService);
 export const cacheInitializer = (): Observable<unknown> => {
 	const routes$ = routeService.getAll();
 
-	// const users$ = agregar implementacion
-
 	return of(null).pipe(
 		concatMap(() => routes$),
 		tap(response => {
