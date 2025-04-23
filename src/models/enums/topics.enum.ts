@@ -3,6 +3,9 @@ export enum Topics {
 	ERROR = 'error',
 	CONNECTION = 'connection',
 	CONNECT = 'connect',
+	RECONNECT_ATTEMPT = 'reconnect_attempt',
+	RECONNECT_FAILED = 'reconnect_failed',
+	RECONNECT = 'reconnect',
 	// CUSTOM TOPICS
 	MESSAGE = 'message',
 	DEVICES = 'devices',

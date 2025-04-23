@@ -12,8 +12,8 @@ export const loggerWarn = (message: string) => {
 	logger.warn(message);
 };
 
-export const loggerError = (message: string) => {
-	logger.error(message);
+export const loggerError = (message: string, error?: Error) => {
+	logger.error(message, error);
 };
 
 export const loggerDebug = (message: string) => {
