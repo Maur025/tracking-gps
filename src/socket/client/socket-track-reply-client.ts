@@ -6,7 +6,7 @@ import { clientCommonEvent } from './client-common-event';
 
 let socketReply: Socket | null = null;
 
-export const connect = (): Socket => {
+export const connectReply = (): Socket => {
 	if (!socketReply) {
 		socketReply = io(environment.TRACK_URL, {
 			reconnection: true,
@@ -18,7 +18,7 @@ export const connect = (): Socket => {
 		clientCommonEvent({
 			socketClient: socketReply,
 			clientName: 'track-reply-client',
-			serverUrl: environment.BACKEND_URL,
+			serverUrl: environment.TRACK_URL,
 		});
 
 		socketReply.on(Topics.CONNECT, () => {
