@@ -6,6 +6,7 @@ import ioServer from '@socket/server/io-server';
 import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@services/cache-initializer';
 import { loggerError } from '@utils/logger';
+import { beginTest } from '@socket/client/test-client';
 
 const { getApp } = app;
 
@@ -21,5 +22,7 @@ cacheInitializer().subscribe({
 	},
 	complete: () => {
 		socketTrackClient.connect();
+
+		beginTest();
 	},
 });
