@@ -37,19 +37,36 @@ const request = <T>(
 		switchMap(response => {
 			if (!response.ok) {
 				return from(
-					response.json()?.then((errorBody: any) => {
-						throw new ApiException(
-							response.status,
-							errorBody.message ?? 'Error desconocido'
-						);
-					})
+					isJson(response)
+						? response.json()?.then((errorBody: any) => {
+								throw new ApiException(
+									response.status,
+									errorBody.message ?? 'Error desconocido'
+								);
+						  })
+						: response.text().then((text: string) => {
+								throw new ApiException(
+									response.status,
+									`Error not JSON: ${text}`
+								);
+						  })
 				);
 			}
 
-			return from(response.json() as Promise<T>);
+			return isJson(response)
+				? from(response.json() as Promise<T>)
+				: Promise.reject(
+						new ApiException(response.status, 'Response not JSON')
+				  );
 		}),
 		catchError(error => throwError(() => error))
 	);
+};
+
+export const isJson = (response: Response): boolean => {
+	const contentType: string = response?.headers?.get('content-type') ?? '';
+
+	return contentType.includes('application/json');
 };
 
 export const get = <T>(
