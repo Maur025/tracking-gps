@@ -5,7 +5,7 @@ import app from 'app';
 import ioServer from '@socket/server/io-server';
 import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@services/cache-initializer';
-import { loggerError } from '@utils/logger';
+import { loggerError, loggerInfo } from '@utils/logger';
 import { beginTest } from '@socket/client/test-client';
 
 const { getApp } = app;
@@ -18,7 +18,8 @@ ioServer.startListening();
 
 cacheInitializer().subscribe({
 	error: error => {
-		loggerError(`Error occurred while initializing cache -> `, error);
+		loggerError(`error occurred while initializing cache -> `, error);
+		loggerInfo(`client sockets will not be initialized.`);
 	},
 	complete: () => {
 		socketTrackClient.connect();
