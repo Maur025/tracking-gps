@@ -6,6 +6,7 @@ import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 
+const CLIENT_NAME: string = 'track-client';
 const { CONNECT, MESSAGE, DEVICES } = Topics;
 
 export const connect = (): void => {
@@ -18,13 +19,13 @@ export const connect = (): void => {
 
 	clientCommonEvent({
 		socketClient: socket,
-		clientName: 'track-client',
+		clientName: CLIENT_NAME,
 		serverUrl: environment.TRACK_URL,
 	});
 
 	socket.on(CONNECT, () => {
 		loggerInfo(
-			`[track-client] connected to socket-server ${environment.TRACK_URL} with id: ${socket.id}`
+			`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socket.id}'`
 		);
 
 		socket.emit(MESSAGE, 'enviando');

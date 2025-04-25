@@ -26,7 +26,7 @@ const {
 } = Topics;
 
 export const socketListeners = (socket: Socket): void => {
-	loggerInfo(`[socket-server] new client [${socket.id}] connected.`);
+	loggerInfo(`[socket-server] new client '${socket.id}' connected.`);
 
 	socket.on(MESSAGE, payload => clientReply.emit(MESSAGE, payload));
 
