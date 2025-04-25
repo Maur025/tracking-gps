@@ -72,7 +72,7 @@ export default class LoggerWinston {
 
 		return text
 			.replace(/\[(.*?)\]/g, (_, content) => color(`[${content}]`))
-			.replace(/(http[s]?:\/\/[^\s]+)/g, (_, url) => color(url))
+			.replace(/(http[s]?:\/\/[^\s]+)/g, (_, url) => chalk.underline.gray(url))
 			.replace(/'([^']+)'/g, (_, quoted) => color(`'${quoted}'`))
 			.replace(/"([^"]+)"/g, (_, quoted) => color(`"${quoted}"`))
 			.replace(/\b([A-Z_]{2,})\b/g, match => color(match));

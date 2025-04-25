@@ -4,6 +4,9 @@ import RouteService from './routes/route.service';
 import RouteCache from '@cache/route-cache';
 import { handleAsArray } from '@utils/handle-response';
 import GeofenceService from './geofence/geofence.service';
+import { ApiResponse } from '@maur025/core-model-data';
+import GeofenceResponse from '@models/dto/response/geofence-response';
+import { geofenceCacheInit } from './geofence-cache-init';
 
 const routeCache = container.resolve(RouteCache);
 
@@ -22,8 +25,8 @@ export const cacheInitializer = (): Observable<unknown> => {
 			routeCache.updateAll([...responseData]);
 		}),
 		concatMap(() => geofence$),
-		tap(response => {
-			console.log(response);
+		tap((response: ApiResponse<GeofenceResponse>) => {
+			geofenceCacheInit(handleAsArray(response));
 		})
 	);
 };

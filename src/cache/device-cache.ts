@@ -12,7 +12,7 @@ export default class DeviceCache {
 		this.deviceList = [...newDeviceList];
 	};
 
-	public readonly clearList = (): void => {
+	public readonly clearCache = (): void => {
 		this.deviceList = [];
 	};
 }
