@@ -7,7 +7,12 @@
 		"dev": "ts-node-dev -r tsconfig-paths/register --respawn src/index.ts",
 		"build": "tsc && tsc-alias",
 		"start": "node dist/index.js",
-		"test": "vitest"
+		"test:all": "vitest",
+		"test:all:watch": "vitest --watch",
+		"test": "vitest --config vitest.unit.config.ts",
+		"test:watch": "vitest --config vitest.unit.config.ts --watch",
+		"test:integration": "vitest --config vitest.integration.config.ts",
+		"test:integration:watch": "vitest --config vitest.integration.config.ts --watch"
 	},
 	"keywords": [],
 	"author": "",

@@ -4,6 +4,7 @@ import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 
+const CLIENT_NAME: string = 'track-reply-client';
 let socketReply: Socket | null = null;
 
 export const connectReply = (): Socket => {
@@ -17,13 +18,13 @@ export const connectReply = (): Socket => {
 
 		clientCommonEvent({
 			socketClient: socketReply,
-			clientName: 'track-reply-client',
+			clientName: CLIENT_NAME,
 			serverUrl: environment.TRACK_URL,
 		});
 
 		socketReply.on(Topics.CONNECT, () => {
 			loggerInfo(
-				`[track-reply-client] connected to socket-server ${environment.TRACK_URL} with id: ${socketReply?.id}`
+				`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socketReply?.id}'`
 			);
 		});
 	}

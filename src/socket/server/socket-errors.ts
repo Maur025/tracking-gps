@@ -1,3 +1,5 @@
+import { loggerError } from '@utils/logger';
+
 export const socketErrors = (error: Error): void => {
-	console.error(`Error has occurred with cause: ${error}`);
+	loggerError(`Error has occurred with cause: `, error);
 };
