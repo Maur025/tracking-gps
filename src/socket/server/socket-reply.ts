@@ -26,9 +26,7 @@ const {
 
 export const socketReply = (socket: Socket) => {
 	// CLIENT-REPLY EMIT IN SOCKET-SERVER TO FINAL CONSUMING
-	clientReply.on(MESSAGE, payload => {
-		socket.emit(MESSAGE, payload);
-	});
+	clientReply.on(MESSAGE, payload => socket.emit(MESSAGE, payload));
 
 	clientReply.on(DEVICE, payload => socket.emit(DEVICE, payload));
 
