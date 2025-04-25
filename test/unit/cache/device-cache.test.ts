@@ -17,7 +17,7 @@ describe('Device Cache Tests', () => {
 
 	beforeEach(() => {
 		cache = container.resolve(DeviceCache);
-		cache.clearList();
+		cache.clearCache();
 	});
 
 	test('test new instance should be equal empty', () => {
@@ -42,7 +42,7 @@ describe('Device Cache Tests', () => {
 		expect(beforeResult).toBeDefined();
 		expect(beforeResult).toHaveLength(deviceList.length);
 
-		cache.clearList();
+		cache.clearCache();
 
 		const result = cache.getAll();
 		expect(result).toBeDefined();

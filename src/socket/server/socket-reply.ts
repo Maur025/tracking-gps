@@ -40,7 +40,11 @@ export const socketReply = (socket: Socket) => {
 
 	clientReply.on(DEVICE_REMOVE, payload => socket.emit(DEVICE_REMOVE, payload));
 
-	clientReply.on(DEVICE_TRACKS, payload => socket.emit(DEVICE_TRACKS, payload));
+	clientReply.on(DEVICE_TRACKS, payload => {
+		console.log(payload);
+
+		socket.emit(DEVICE_TRACKS, payload);
+	});
 
 	clientReply.on(DEVICE_SETUP, payload => socket.emit(DEVICE_SETUP, payload));
 

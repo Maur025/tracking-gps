@@ -1,4 +1,3 @@
-import { getAllPaginatedDefault } from '@config/service-request-default';
 import ApiServiceRequest from '@models/interface/api-service-request.interface';
 import {
 	CreateRequest,
@@ -14,16 +13,13 @@ import { ApiResponse, BaseData } from '@maur025/core-model-data';
 export default abstract class AbstractApiService<R extends BaseData> {
 	constructor(protected readonly apiRequest: ApiServiceRequest) {}
 
-	public readonly getAllPaginated = (
-		request: GetAllPaginatedRequest
-	): Observable<ApiResponse<R>> => {
-		const localRequest: GetAllPaginatedRequest = {
-			...getAllPaginatedDefault,
-			...request,
-		};
-
-		const { size, page, sortBy, descending, keyword } = localRequest;
-
+	public readonly getAllPaginated = ({
+		size = 100,
+		page = 0,
+		sortBy = 'id',
+		descending = true,
+		keyword = undefined,
+	}: GetAllPaginatedRequest): Observable<ApiResponse<R>> => {
 		let queryParams: string = `?size=${size}&page=${page}&sortBy=${sortBy}&descending=${descending}`;
 
 		if (keyword) {
@@ -33,25 +29,26 @@ export default abstract class AbstractApiService<R extends BaseData> {
 		return get<ApiResponse<R>>(this.getUrl(queryParams));
 	};
 
-	public readonly getById = (
-		request: GetByIdRequest
-	): Observable<ApiResponse<R>> =>
-		get<ApiResponse<R>>(`${this.getUrl()}/${request?.id}`);
+	public readonly getById = ({
+		id,
+	}: GetByIdRequest): Observable<ApiResponse<R>> =>
+		get<ApiResponse<R>>(`${this.getUrl()}/${id}`);
 
-	public readonly create = (
-		request: CreateRequest
-	): Observable<ApiResponse<R>> =>
-		post<ApiResponse<R>>(this.getUrl(), request.data);
+	public readonly create = ({
+		data,
+	}: CreateRequest): Observable<ApiResponse<R>> =>
+		post<ApiResponse<R>>(this.getUrl(), data);
 
-	public readonly update = (
-		request: UpdateRequest
-	): Observable<ApiResponse<R>> =>
-		put<ApiResponse<R>>(`${this.getUrl()}/${request?.id}`, request.data);
+	public readonly update = ({
+		id,
+		data,
+	}: UpdateRequest): Observable<ApiResponse<R>> =>
+		put<ApiResponse<R>>(`${this.getUrl()}/${id}`, data);
 
-	public readonly delete = (
-		request: DeleteRequest
-	): Observable<ApiResponse<R>> =>
-		delet<ApiResponse<R>>(`${this.getUrl()}/${request?.id}`);
+	public readonly delete = ({
+		id,
+	}: DeleteRequest): Observable<ApiResponse<R>> =>
+		delet<ApiResponse<R>>(`${this.getUrl()}/${id}`);
 
 	private readonly getUrl = (queryParams: string = ''): string => {
 		const { baseUrl, resource, prefix = '' } = { ...this.apiRequest };

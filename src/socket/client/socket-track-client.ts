@@ -7,7 +7,8 @@ import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 
 const CLIENT_NAME: string = 'track-client';
-const { CONNECT, MESSAGE, DEVICES } = Topics;
+const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_TRACKS, DEVICE_LAST } =
+	Topics;
 
 export const connect = (): void => {
 	const socket: Socket = io(environment.TRACK_URL, {
@@ -34,4 +35,12 @@ export const connect = (): void => {
 	socket.on(DEVICES, (payload: Device[]) =>
 		deviceSync({ deviceList: [...payload], socketClient: socket })
 	);
+
+	socket.on(DEVICE_TRACKS, payload => {
+		console.log(payload);
+	});
+
+	socket.on(DEVICE_LAST, payload => {
+		console.log(payload);
+	});
 };
