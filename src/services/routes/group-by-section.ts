@@ -3,7 +3,7 @@ import Point from '@models/entity/point';
 export const groupBySection = (pointList: Point[]): Map<number, Point[]> => {
 	const groupsBySectionMap: Map<number, Point[]> = new Map();
 
-	if (!pointList || !pointList.length) {
+	if (!pointList?.length) {
 		return groupsBySectionMap;
 	}
 

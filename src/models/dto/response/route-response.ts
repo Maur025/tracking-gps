@@ -1,6 +1,6 @@
 import { BaseDataAudit } from '@maur025/core-model-data';
 import DistrictResponse from './district-response';
-import pointResponse from './point-response';
+import PointResponse from './point-response';
 import SectionResponse from './section-response';
 
 export default interface RouteResponse extends BaseDataAudit {
@@ -12,7 +12,7 @@ export default interface RouteResponse extends BaseDataAudit {
 	max_split_mt?: number;
 	district_id: number;
 	district: DistrictResponse;
-	points: pointResponse[];
+	points: PointResponse[];
 	frecuency: string;
 	extend?: number[];
 	sections?: SectionResponse[];

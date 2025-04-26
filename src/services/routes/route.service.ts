@@ -4,7 +4,7 @@ import RouteResponse from '@models/dto/response/route-response';
 import AbstractApiService from '@utils/abstract-api-service';
 import { get } from '@utils/api-client';
 import { handleAsArray } from '@utils/handle-response';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { setupSections } from './setup-sections';
 
@@ -34,7 +34,13 @@ export default class RouteService extends AbstractApiService<RouteResponse> {
 				return response;
 			}),
 			catchError((error: ErrorResponse) => {
-				throw new Error(`Error ocurred in query getAll routes: ${error.cause}`);
+				throw new Error(
+					`Error ocurred in query getAll routes: ${
+						typeof error?.cause === 'object'
+							? JSON.stringify(error.cause)
+							: error?.cause
+					}`
+				);
 			})
 		);
 }
