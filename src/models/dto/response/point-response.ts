@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 
-export default interface pointResponse extends BaseData {
+export default interface PointResponse extends BaseData {
 	route_id?: string;
 	section?: number;
 	lat?: number;

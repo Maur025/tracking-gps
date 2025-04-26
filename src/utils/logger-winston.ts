@@ -14,7 +14,7 @@ if (!fs.existsSync(environment.LOG_PATH)) {
 
 @singleton()
 export default class LoggerWinston {
-	private logger = createLogger({
+	private readonly logger = createLogger({
 		format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), json()),
 		transports: [
 			new transports.Console({
@@ -46,7 +46,7 @@ export default class LoggerWinston {
 		],
 	});
 
-	private coloredByLevel = (level: string, text: string): string => {
+	private readonly coloredByLevel = (level: string, text: string): string => {
 		switch (level) {
 			case 'ERROR':
 				return red(text);
@@ -67,12 +67,12 @@ export default class LoggerWinston {
 		}
 	};
 
-	private highlightMessage = (level: string, text: string): string => {
+	private readonly highlightMessage = (level: string, text: string): string => {
 		const color = (text: string) => this.coloredByLevel(level, text);
 
 		return text
 			.replace(/\[(.*?)\]/g, (_, content) => color(`[${content}]`))
-			.replace(/(http[s]?:\/\/[^\s]+)/g, (_, url) => chalk.underline.gray(url))
+			.replace(/(https?:\/\/\S+)/g, (_, url) => chalk.underline.gray(url))
 			.replace(/'([^']+)'/g, (_, quoted) => color(`'${quoted}'`))
 			.replace(/"([^"]+)"/g, (_, quoted) => color(`"${quoted}"`))
 			.replace(/\b([A-Z_]{2,})\b/g, match => color(match));

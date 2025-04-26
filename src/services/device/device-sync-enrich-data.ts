@@ -17,24 +17,22 @@ export const syncAndEnrichDevices = async (
 ): Promise<Device[]> => {
 	const deviceList: Device[] = [...devices];
 
-	if (!deviceList.length) {
-		return deviceList;
-	}
-
-	await lastValueFrom(
-		from(deviceList).pipe(
-			mergeMap(
-				device =>
-					syncDevice(device).pipe(
-						catchError(error => {
-							loggerError(`Error syncing device ${device.id}`, error);
-							return of();
-						})
-					),
-				20
+	if (deviceList.length) {
+		await lastValueFrom(
+			from(deviceList).pipe(
+				mergeMap(
+					device =>
+						syncDevice(device).pipe(
+							catchError(error => {
+								loggerError(`Error syncing device ${device.id}`, error);
+								return of();
+							})
+						),
+					20
+				)
 			)
-		)
-	);
+		);
+	}
 
 	return deviceList;
 };

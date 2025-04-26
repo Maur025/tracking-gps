@@ -31,7 +31,7 @@ const getDataAsJson = (data?: string): GeofenceData[] => {
 		return Array.isArray(dataJson) ? dataJson : [dataJson];
 	} catch (error) {
 		loggerWarn(
-			`Error to trying convert string to json, returning empty array.`
+			`Error to trying convert string to json, returning empty array. ${error}`
 		);
 
 		return [];
