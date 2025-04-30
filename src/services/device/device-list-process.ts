@@ -14,15 +14,16 @@ const deviceCache = container.resolve(DeviceCache);
 
 const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
 
-export const deviceSync = async (request: Request): Promise<void> => {
-	const { deviceList, socketClient } = request;
-
+export const deviceListProcess = async ({
+	deviceList,
+	socketClient,
+}: Request): Promise<void> => {
+	deviceCache.clear();
 	const idList: string[] = deviceList?.map(({ id }) => id ?? '');
 
 	socketClient.emit(DEVICE_UNSUBSCRIBE_ALL, '');
 	socketClient.emit(DEVICE_SUBSCRIBE, [...idList]);
 
 	const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
-
-	deviceCache.updateAll(newDeviceList);
+	deviceCache.addMany(newDeviceList);
 };

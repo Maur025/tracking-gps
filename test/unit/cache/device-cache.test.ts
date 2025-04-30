@@ -5,22 +5,20 @@ import Device from '../../../src/models/entity/device';
 
 describe('Device Cache Tests', () => {
 	const deviceList: Partial<Device>[] = [
-		{
-			isReady: true,
-		},
-		{ isReady: false },
-		{ isReady: false },
-		{ isReady: true },
+		{ id: '1', isReady: true },
+		{ id: '2', isReady: false },
+		{ id: '3', isReady: false },
+		{ id: '4', isReady: true },
 	];
 
 	let cache: DeviceCache;
 
 	beforeEach(() => {
 		cache = container.resolve(DeviceCache);
-		cache.clearCache();
+		cache.clear();
 	});
 
-	test('test new instance should be equal empty', () => {
+	test('test getAll in new instance should be equal empty', () => {
 		const result = cache.getAll();
 
 		expect(result).toBeDefined();
@@ -28,30 +26,31 @@ describe('Device Cache Tests', () => {
 		expect(result).toEqual([]);
 	});
 
-	test('test updateAll should add new device list', () => {
-		cache.updateAll(deviceList);
-		const result = cache.getAll();
+	test('test addMany should add batch of devices to cache', () => {
+		cache.addMany(deviceList);
+
+		const result: number = cache.size();
 
 		expect(result).toBeDefined();
-		expect(result).toHaveLength(deviceList.length);
+		expect(result).toBe(deviceList.length);
 	});
 
-	test('test clearList should clear device cache', () => {
-		cache.updateAll(deviceList);
-		const beforeResult = cache.getAll();
-		expect(beforeResult).toBeDefined();
-		expect(beforeResult).toHaveLength(deviceList.length);
+	test('test clear should clear device cache', () => {
+		cache.addMany(deviceList);
+		const sizeBefore: number = cache.size();
 
-		cache.clearCache();
+		expect(sizeBefore).toBeDefined();
+		expect(sizeBefore).toBe(deviceList.length);
 
-		const result = cache.getAll();
+		cache.clear();
+
+		const result: number = cache.size();
 		expect(result).toBeDefined();
-		expect(result).toHaveLength(0);
-		expect(result).toEqual([]);
+		expect(result).toBe(0);
 	});
 
-	test('test getAll should return a new array copy', () => {
-		cache.updateAll(deviceList);
+	test('test getAll should return a inmutable objects', () => {
+		cache.addMany(deviceList);
 
 		const original = cache.getAll();
 		const copy = cache.getAll();

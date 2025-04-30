@@ -10,7 +10,7 @@ const environment: Environment = {
 	STATIC_PATH: STATIC_PATH ?? 'public',
 
 	BACKEND_URL: BACKEND_URL ?? 'http://172.20.50.60:9988',
-	TRACK_URL: TRACK_URL ?? 'http://172.20.60.7777',
+	TRACK_URL: TRACK_URL ?? 'http://172.20.50.60:7777',
 	LOG_LEVEL: LOG_LEVEL ?? 'info',
 	LOG_PATH: path.resolve(process.cwd(), LOG_PATH ?? 'logs'),
 };

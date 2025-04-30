@@ -7,13 +7,13 @@ import Stop from './stop';
 import Route from './route';
 
 export default interface Device extends BaseData {
-	config: Config;
-	type: string;
-	elapsed: number;
-	setup: Setup;
+	config?: Config;
+	type?: string;
+	elapsed?: number;
+	setup?: Setup;
 	states: State;
 	tracks: Track[];
-	last: Track;
+	last?: Track;
 	isReady?: boolean;
 	tracksCoord?: [number, number][];
 	stops?: Stop[];
