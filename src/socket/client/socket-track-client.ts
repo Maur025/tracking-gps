@@ -1,10 +1,11 @@
 import environment from '@config/env';
 import Device from '@models/entity/device';
 import { Topics } from '@models/enums/topics.enum';
-import { deviceSync } from '@services/device/device-sync';
+import { deviceListProcess } from '@services/device/device-list-process';
 import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
+import { deviceProcess } from '@services/device/device-process';
 
 const CLIENT_NAME: string = 'track-client';
 const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_TRACKS, DEVICE_LAST } =
@@ -33,11 +34,15 @@ export const connect = (): void => {
 	});
 
 	socket.on(DEVICES, (payload: Device[]) =>
-		deviceSync({ deviceList: [...payload], socketClient: socket })
+		deviceListProcess({ deviceList: [...payload], socketClient: socket })
+	);
+
+	socket.on(DEVICE, payload =>
+		deviceProcess({ deviceData: { ...payload }, socketClient: socket })
 	);
 
 	socket.on(DEVICE_TRACKS, payload => {
-		console.log(payload);
+		// console.log(payload);
 	});
 
 	socket.on(DEVICE_LAST, payload => {

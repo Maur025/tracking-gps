@@ -8,12 +8,14 @@ import { container } from 'tsyringe';
 const geofenceCache = container.resolve(GeofenceCache);
 
 export const geofenceCacheInit = (responseList: GeofenceResponse[]): void => {
+	geofenceCache.clear();
+
 	const geofenceList: Geofence[] = responseList?.map(geofence => ({
 		...geofence,
 		data: getDataAsJson(geofence.data),
 	}));
 
-	geofenceCache.updateAll(geofenceList);
+	geofenceCache.addMany(geofenceList);
 };
 
 const getDataAsJson = (data?: string): GeofenceData[] => {

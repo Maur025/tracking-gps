@@ -1,18 +1,15 @@
 import Device from '@models/entity/device';
 import { singleton } from 'tsyringe';
+import AbstractCache from './abstract-cache';
 @singleton()
-export default class DeviceCache {
-	private deviceList: Device[] = [];
+export default class DeviceCache extends AbstractCache<Device> {
+	private readonly deviceMap: Map<string, Device> = new Map<string, Device>();
 
-	public readonly getAll = (): Device[] => {
-		return [...this.deviceList];
-	};
+	public getMap(): Map<string, Device> {
+		return this.deviceMap;
+	}
 
-	public readonly updateAll = (newDeviceList: Device[]): void => {
-		this.deviceList = [...newDeviceList];
-	};
-
-	public readonly clearCache = (): void => {
-		this.deviceList = [];
-	};
+	protected getResource(): string {
+		return 'Device';
+	}
 }

@@ -1,19 +1,16 @@
 import Geofence from '@models/entity/geofence';
 import { singleton } from 'tsyringe';
+import AbstractCache from './abstract-cache';
 
 @singleton()
-export default class GeofenceCache {
-	private geofenceList: Geofence[] = [];
+export default class GeofenceCache extends AbstractCache<Geofence> {
+	private geofenceMap: Map<string, Geofence> = new Map<string, Geofence>();
 
-	public readonly getAll = (): Geofence[] => {
-		return [...this.geofenceList];
-	};
+	protected getMap(): Map<string, Geofence> {
+		return this.geofenceMap;
+	}
 
-	public readonly updateAll = (newGeofenceList: Geofence[]): void => {
-		this.geofenceList = [...newGeofenceList];
-	};
-
-	public readonly clearCache = (): void => {
-		this.geofenceList = [];
-	};
+	protected getResource(): string {
+		return 'Geofence';
+	}
 }

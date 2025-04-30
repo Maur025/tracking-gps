@@ -50,7 +50,9 @@ export const socketReply = (socket: Socket) => {
 
 	clientReply.on(DEVICE_CONFIG, payload => socket.emit(DEVICE_CONFIG, payload));
 
-	clientReply.on(DEVICE_LAST, payload => socket.emit(DEVICE_LAST, payload));
+	clientReply.on(DEVICE_LAST, payload => {
+		socket.emit(DEVICE_LAST, payload);
+	});
 
 	clientReply.on(DEVICE_CLEARED, payload =>
 		socket.emit(DEVICE_CLEARED, payload)
@@ -60,9 +62,11 @@ export const socketReply = (socket: Socket) => {
 		socket.emit(DEVICE_TRACK_END, payload)
 	);
 
-	clientReply.on(DEVICE_SUBSCRIBE, payload =>
-		socket.emit(DEVICE_SUBSCRIBE, payload)
-	);
+	clientReply.on(DEVICE_SUBSCRIBE, payload => {
+		console.log('PAYLOAD DE SUBSCRIBE: ', payload);
+
+		socket.emit(DEVICE_SUBSCRIBE, payload);
+	});
 
 	clientReply.on(DEVICE_UNSUBSCRIBE, payload =>
 		socket.emit(DEVICE_UNSUBSCRIBE, payload)
