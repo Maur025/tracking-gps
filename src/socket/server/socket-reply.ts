@@ -3,6 +3,8 @@ import { connectReply } from '@socket/client/socket-track-reply-client';
 import { Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
+import Track from '@models/entity/track';
+import { geofenceVerify } from '@services/reply-client/geofence-verify';
 
 const clientReply: SocketClient = connectReply();
 
@@ -38,11 +40,7 @@ export const socketReply = (socket: Socket) => {
 
 	clientReply.on(DEVICE_REMOVE, payload => socket.emit(DEVICE_REMOVE, payload));
 
-	clientReply.on(DEVICE_TRACKS, payload => {
-		console.log(payload);
-
-		socket.emit(DEVICE_TRACKS, payload);
-	});
+	clientReply.on(DEVICE_TRACKS, payload => socket.emit(DEVICE_TRACKS, payload));
 
 	clientReply.on(DEVICE_SETUP, payload => socket.emit(DEVICE_SETUP, payload));
 
@@ -50,7 +48,13 @@ export const socketReply = (socket: Socket) => {
 
 	clientReply.on(DEVICE_CONFIG, payload => socket.emit(DEVICE_CONFIG, payload));
 
-	clientReply.on(DEVICE_LAST, payload => {
+	clientReply.on(DEVICE_LAST, (payload: { id: string; last: Track }) => {
+		geofenceVerify({
+			deviceId: payload.id,
+			lastTrack: { ...payload.last },
+			socketServer: socket,
+		});
+
 		socket.emit(DEVICE_LAST, payload);
 	});
 
@@ -62,11 +66,9 @@ export const socketReply = (socket: Socket) => {
 		socket.emit(DEVICE_TRACK_END, payload)
 	);
 
-	clientReply.on(DEVICE_SUBSCRIBE, payload => {
-		console.log('PAYLOAD DE SUBSCRIBE: ', payload);
-
-		socket.emit(DEVICE_SUBSCRIBE, payload);
-	});
+	clientReply.on(DEVICE_SUBSCRIBE, payload =>
+		socket.emit(DEVICE_SUBSCRIBE, payload)
+	);
 
 	clientReply.on(DEVICE_UNSUBSCRIBE, payload =>
 		socket.emit(DEVICE_UNSUBSCRIBE, payload)
