@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
-import { Coord, MultiCoordPath } from '@models/types/coord.type';
 import { GeofenceType } from '@models/types/geofence.type';
+import { Coordinate } from 'ol/coordinate';
 
 export default interface GeofenceDataResponse extends BaseData {
 	uuid?: number;
@@ -9,5 +9,5 @@ export default interface GeofenceDataResponse extends BaseData {
 	area?: number;
 	radius?: number;
 	type?: GeofenceType;
-	coords?: MultiCoordPath | Coord;
+	coords?: Coordinate | Coordinate[] | Coordinate[][] | Coordinate[][][];
 }

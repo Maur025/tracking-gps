@@ -4,6 +4,7 @@ import Geofence from '@models/entity/geofence';
 import GeofenceData from '@models/entity/geofence-data';
 import { loggerWarn } from '@utils/logger';
 import { container } from 'tsyringe';
+import { v4 as uuidv4 } from 'uuid';
 
 const geofenceCache = container.resolve(GeofenceCache);
 
@@ -24,13 +25,20 @@ const getDataAsJson = (data?: string): GeofenceData[] => {
 	}
 
 	try {
-		const dataJson: GeofenceData[] = JSON.parse(data);
+		const dataJson: unknown = JSON.parse(data);
 
 		if (!dataJson) {
 			return [];
 		}
 
-		return Array.isArray(dataJson) ? dataJson : [dataJson];
+		const dataList: GeofenceData[] = Array.isArray(dataJson)
+			? dataJson
+			: [dataJson];
+
+		return dataList.map(geofenceData => ({
+			...geofenceData,
+			internalId: uuidv4(),
+		}));
 	} catch (error) {
 		loggerWarn(
 			`Error to trying convert string to json, returning empty array. ${error}`

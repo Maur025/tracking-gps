@@ -45,6 +45,6 @@ export const connect = (): void => {
 	);
 
 	socket.on(DEVICE_LAST, payload => {
-		console.log(payload);
+		// console.log(payload);
 	});
 };

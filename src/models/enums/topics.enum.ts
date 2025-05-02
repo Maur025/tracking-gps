@@ -22,4 +22,7 @@ export enum Topics {
 	DEVICE_UNSUBSCRIBE = 'device.unsubscribe',
 	DEVICE_UNSUBSCRIBE_ALL = 'device.unsubscribe.all',
 	DEVICE_SUBSCRIBE = 'device.subscribe',
+	// GEOFENCE TOPICS
+	GEOFENCE_IN = 'geofence.in',
+	GEOFENCE_OUT = 'geofence.out',
 }
