@@ -12,8 +12,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@maur025/core-model-data':
-        specifier: ^1.1.0
-        version: 1.1.0
+        specifier: ^1.1.1
+        version: 1.1.1
       better-sqlite3:
         specifier: ^11.9.1
         version: 11.9.1
@@ -375,8 +375,8 @@ packages:
     resolution: {integrity: sha512-Wt9yMFQlc/3GemhgbXmnSBpBRKup2zRPrSrfG9JQ9X0ITG26fE8EYAlN0/mzSXmTrq2DAL/UwSup9K1zNAL4oQ==}
     engines: {node: '>=18'}
 
-  '@maur025/core-model-data@1.1.0':
-    resolution: {integrity: sha512-e9eSylXBmM6sBlcQOj49pf04zeD67XhfMaFf05KPCY9DSVlOHXgt1qWemqJ11xYrrnCkyeFPNCVHRReRKW4aCg==}
+  '@maur025/core-model-data@1.1.1':
+    resolution: {integrity: sha512-ol4gD8d1DqPJoU8cNdBrqW86p3fDP6+vr+OgUteZIQlEAZKt9Mnz13DmJkHncEO0GsYrl5ZxRsQqh8kJBuHkgQ==}
     engines: {node: '>=18'}
 
   '@nodelib/fs.scandir@2.1.5':
@@ -2361,7 +2361,7 @@ snapshots:
 
   '@maur025/core-commands@1.0.1': {}
 
-  '@maur025/core-model-data@1.1.0':
+  '@maur025/core-model-data@1.1.1':
     dependencies:
       zod: 3.24.3
 
