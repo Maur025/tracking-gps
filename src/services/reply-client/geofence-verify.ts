@@ -2,20 +2,19 @@ import GeofenceCache from '@cache/geofence-cache';
 import Track from '@models/entity/track';
 import { Socket } from 'socket.io';
 import { container } from 'tsyringe';
-import { SingleIoResponseBuilder } from '@maur025/core-model-data';
-import DeviceCache from '@cache/device-cache';
-import Device from '@models/entity/device';
-import { Polygon } from 'ol/geom';
-import { fromLonLat } from 'ol/proj';
-import { Coordinate } from 'ol/coordinate';
+import { getGeofenceInList } from './geofence/verify-in-out/get-geofence-in-list';
+import { emitSocketResponse } from '@utils/emit-socket-response';
+import GeofenceInIoResponse from '@models/dto/response/socket/geofence-in-io-response';
+import { Topics } from '../../models/enums/topics.enum';
+import GeofenceIn from '@models/entity/geofence-in';
+import GeofenceIoResponse from '@models/dto/response/socket/geofence-io-response';
 
 interface Request {
 	deviceId: string;
 	lastTrack: Track;
 	socketServer: Socket;
 }
-
-const deviceCache = container.resolve(DeviceCache);
+const { GEOFENCE_IN } = Topics;
 const geofenceCache = container.resolve(GeofenceCache);
 
 export const geofenceVerify = ({
@@ -23,51 +22,47 @@ export const geofenceVerify = ({
 	lastTrack,
 	socketServer,
 }: Request): void => {
-	const { lon, lat } = lastTrack;
-
-	const device: Device | undefined = deviceCache.getById(deviceId);
-
-	if (!device) {
-		return;
-	}
-
 	if (!geofenceCache.size()) {
 		return;
 	}
 
-	for (const { data, name } of geofenceCache.getIterable()) {
-		// console.log(geofence.name);
-		if (!data) {
-			return;
-		}
+	const geofenceInList: GeofenceIn[] = getGeofenceInList({
+		deviceId,
+		lastTrack,
+	});
 
-		for (const { coords, type } of data) {
-			if (type === 'POINTS') {
-				continue;
-			}
+	console.log(geofenceInList);
+	console.log('=================================');
 
-			const polygon = new Polygon(
-				coords?.map(coord => {
-					if (Array.isArray(coord)) {
-						return coord.map(coordinate => {
-							if (typeof coordinate == 'object') {
-								return fromLonLat(coordinate as Coordinate);
-							}
-							return [];
-						});
-					}
+	const geofenceInIoResponse: GeofenceInIoResponse = getGeofenceInIoResponse(
+		deviceId,
+		geofenceInList
+	);
 
-					return [];
-				}) ?? []
-			);
+	emitSocketResponse<GeofenceInIoResponse>({
+		data: geofenceInIoResponse,
+		socket: socketServer,
+		eventType: GEOFENCE_IN,
+		message: ``,
+	});
+};
 
-			const isInside: boolean = polygon.intersectsCoordinate(
-				fromLonLat([lon ?? 0, lat ?? 0])
-			);
+const getGeofenceInIoResponse = (
+	deviceId: string,
+	geofenceInList: GeofenceIn[]
+): GeofenceInIoResponse => {
+	const geofenceInIdList: string[] = geofenceInList.map(
+		({ geofenceId }) => geofenceId
+	);
 
-			console.log(
-				`SE ENCUENTRA DENTRO O FUERA ${isInside} DE LA GEOCERCA ${name} en alguna seccion.`
-			);
-		}
+	const geofenceInIdSet: Set<string> = new Set(geofenceInIdList);
+
+	let geofenceIoResponseList: GeofenceIoResponse[] = [];
+
+	for (const geofenceId of geofenceInIdSet) {
+		// const geofenceIoResponse: GeofenceIoResponse = [];
+		console.log(geofenceId);
 	}
+
+	return { deviceId, geofences: geofenceIoResponseList, isInside: true };
 };

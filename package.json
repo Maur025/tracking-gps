@@ -20,7 +20,7 @@
 	"packageManager": "pnpm@10.9.0",
 	"dependencies": {
 		"@maur025/core-commands": "^1.0.1",
-		"@maur025/core-model-data": "^1.1.0",
+		"@maur025/core-model-data": "^1.1.1",
 		"better-sqlite3": "^11.9.1",
 		"cacheable-lookup": "^7.0.0",
 		"chalk": "^5.4.1",
