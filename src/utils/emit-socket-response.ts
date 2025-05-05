@@ -4,21 +4,23 @@ import {
 	SingleIoResponse,
 	SingleIoResponseBuilder,
 } from '@maur025/core-model-data';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { v4 as uuidv4 } from 'uuid';
 
 interface Request<T> {
 	data: T | T[];
-	socket: Socket;
 	eventType: string;
 	message?: string;
+	socket?: Socket;
+	ioServer?: Server;
 }
 
 export const emitSocketResponse = <R>({
 	data,
-	socket,
 	eventType,
 	message,
+	socket,
+	ioServer,
 }: Request<R>): void => {
 	const id: string = uuidv4();
 	const timestamp: string = new Date().toISOString();
@@ -30,13 +32,19 @@ export const emitSocketResponse = <R>({
 
 	if (Array.isArray(data)) {
 		payload = MultiIoResponseBuilder.builder<R>()
-			.withResponse({ id, timestamp, eventType, message })
+			.withResponse({ id, timestamp, eventType, message, data })
 			.build();
 	} else {
 		payload = SingleIoResponseBuilder.builder<R>()
-			.withResponse({ id, timestamp, eventType, message })
+			.withResponse({ id, timestamp, eventType, message, data })
 			.build();
 	}
 
-	socket.emit(eventType, payload);
+	if (!socket && ioServer) {
+		ioServer.emit(eventType, payload);
+
+		return;
+	}
+
+	socket?.emit(eventType, payload);
 };

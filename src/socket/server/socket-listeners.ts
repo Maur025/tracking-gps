@@ -1,4 +1,4 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import { socketReply } from './socket-reply';
 import { loggerInfo } from '@utils/logger';
@@ -25,7 +25,7 @@ const {
 	DEVICE_UNSUBSCRIBE_ALL,
 } = Topics;
 
-export const socketListeners = (socket: Socket): void => {
+export const socketListeners = (socket: Socket, io: Server): void => {
 	loggerInfo(`[socket-server] new client '${socket.id}' connected.`);
 
 	socket.on(MESSAGE, payload => clientReply.emit(MESSAGE, payload));
@@ -68,5 +68,5 @@ export const socketListeners = (socket: Socket): void => {
 		clientReply.emit(DEVICE_UNSUBSCRIBE_ALL, payload)
 	);
 
-	socketReply(socket);
+	socketReply(socket, io);
 };

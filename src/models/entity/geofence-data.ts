@@ -1,7 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import { GeofenceCoord } from '@models/types/geofence-coord';
 import { GeofenceType } from '@models/types/geofence.type';
-import { Coordinate } from 'ol/coordinate';
 
 export default interface GeofenceData extends BaseData {
 	internalId: string;

@@ -11,5 +11,5 @@ export default interface GeofenceDataIoResponse {
 	type?: GeofenceType;
 	coords?: GeofenceCoord;
 	name?: string;
-	isInside: boolean;
+	isInside?: boolean;
 }

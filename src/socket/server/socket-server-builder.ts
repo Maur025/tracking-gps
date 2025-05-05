@@ -14,7 +14,7 @@ import { loggerInfo } from '@utils/logger';
 @injectable()
 export default class SocketServerBuilder {
 	private app: Application | null = null;
-	private listenersFunction: (socket: Socket) => void = () => {};
+	private listenersFunction: (socket: Socket, io: Server) => void = () => {};
 
 	public static builder() {
 		return container.resolve(SocketServerBuilder);
@@ -27,7 +27,7 @@ export default class SocketServerBuilder {
 	}
 
 	public setListenersFunction(
-		listenersFunction: (socket: Socket) => void
+		listenersFunction: (socket: Socket, io: Server) => void
 	): this {
 		this.listenersFunction = listenersFunction;
 
@@ -44,7 +44,9 @@ export default class SocketServerBuilder {
 		const httpServer = createServer(this.app);
 		const ioServer = this.createSocketServer(httpServer);
 
-		ioServer.on(Topics.CONNECTION, this.listenersFunction);
+		ioServer.on(Topics.CONNECTION, (socket: Socket) =>
+			this.listenersFunction(socket, ioServer)
+		);
 		ioServer.on(Topics.ERROR, socketErrors);
 
 		return {
