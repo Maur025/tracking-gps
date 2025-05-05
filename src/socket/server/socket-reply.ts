@@ -1,6 +1,6 @@
 import { Topics } from '@models/enums/topics.enum';
 import { connectReply } from '@socket/client/socket-track-reply-client';
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
 import Track from '@models/entity/track';
@@ -26,7 +26,7 @@ const {
 	DEVICE_UNSUBSCRIBE_ALL,
 } = Topics;
 
-export const socketReply = (socket: Socket) => {
+export const socketReply = (socket: Socket, io: Server) => {
 	// CLIENT-REPLY EMIT IN SOCKET-SERVER TO FINAL CONSUMING
 	clientReply.on(MESSAGE, payload => socket.emit(MESSAGE, payload));
 
@@ -52,7 +52,7 @@ export const socketReply = (socket: Socket) => {
 		geofenceVerify({
 			deviceId: payload.id,
 			lastTrack: { ...payload.last },
-			socketServer: socket,
+			ioServer: io,
 		});
 
 		socket.emit(DEVICE_LAST, payload);
