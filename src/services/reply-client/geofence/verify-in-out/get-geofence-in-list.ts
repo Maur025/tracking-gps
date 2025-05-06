@@ -18,7 +18,7 @@ export const getGeofenceInList = ({
 	let geofenceInList: GeofenceIn[] = [];
 
 	for (const geofence of geofenceCache.getIterable()) {
-		const { data, name } = geofence;
+		const { data } = geofence;
 
 		if (!data) {
 			continue;
@@ -27,7 +27,7 @@ export const getGeofenceInList = ({
 		let sectionCount: number = 0;
 
 		for (const section of data) {
-			const { coords, type } = section;
+			const { type, name: sectionName } = section;
 			sectionCount++;
 
 			switch (type) {
@@ -40,7 +40,7 @@ export const getGeofenceInList = ({
 						lastTrack,
 						geofence,
 						//TODO: Remove when section contains name from backend data
-						section: { ...section, name: `${sectionCount}` },
+						section: { ...section, name: `${sectionName ?? sectionCount}` },
 					});
 
 					geofenceInList = [...geofenceInList, ...geofenceIn];

@@ -4,7 +4,7 @@ import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
 import Track from '@models/entity/track';
-import { geofenceVerify } from '@services/reply-client/geofence-verify';
+import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/geofence-verify';
 
 const clientReply: SocketClient = connectReply();
 

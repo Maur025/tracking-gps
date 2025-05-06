@@ -25,7 +25,7 @@ export const syncAndEnrichDevices = async (
 						syncDevice(device).pipe(
 							catchError(error => {
 								loggerError(`Error syncing device ${device.id}`, error);
-								return of();
+								return of([]);
 							})
 						),
 					20
@@ -40,17 +40,25 @@ export const syncAndEnrichDevices = async (
 const syncDevice = (device: Device): Observable<unknown> => {
 	const { states } = device;
 
-	if (states?.ON_ROUTE === '1') {
-		return processOnRouteEqualOne(device);
-	}
+	return of([]);
 
-	if (!states?.LAST_TRACK_ID) {
-		return of();
-	}
+	// REFACTORIZAR O QUITAR SI NO LLEGA A NECESITARSE
+	// CON LA ULTIMA ACTUALIZACION DE CAPTURE, PRODUCE ERRORES
+	// if (!states) {
+	// 	return of();
+	// }
 
-	if (states?.LAST_TRACK_ID === '0') {
-		return processByLasTrackIdEqualZero(device);
-	}
+	// if (states?.ON_ROUTE === '1') {
+	// 	return processOnRouteEqualOne(device);
+	// }
 
-	return processByLastTrackIdDefined(device);
+	// if (!states?.LAST_TRACK_ID) {
+	// 	return of();
+	// }
+
+	// if (states?.LAST_TRACK_ID === '0') {
+	// 	return processByLasTrackIdEqualZero(device);
+	// }
+
+	// return processByLastTrackIdDefined(device);
 };

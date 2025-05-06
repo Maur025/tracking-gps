@@ -7,4 +7,5 @@ export default interface GeofenceIn {
 	section?: GeofenceData;
 	sectionInternalId: string;
 	isInside?: boolean;
+	date?: string;
 }
