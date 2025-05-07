@@ -2,7 +2,8 @@ import GeofenceCache from '@cache/geofence-cache';
 import GeofenceIn from '@models/entity/geofence-in';
 import Track from '@models/entity/track';
 import { container } from 'tsyringe';
-import { caseSectionPolygon } from './process-case-polyon-section';
+import { processCasePolygonSection } from './process-case-polygon-section';
+import { processCasePointSection } from './process-case-point-section';
 
 interface Request {
 	deviceId: string;
@@ -30,23 +31,33 @@ export const getGeofenceInList = ({
 			const { type, name: sectionName } = section;
 			sectionCount++;
 
+			const sectionNameToUse: string = `${sectionName ?? sectionCount}`;
+			let geofenceInFoundList: GeofenceIn[] = [];
+
 			switch (type) {
 				case 'POINTS': {
-					break;
-				}
-				case 'POLYGONS': {
-					const geofenceIn = caseSectionPolygon({
+					geofenceInFoundList = processCasePointSection({
 						deviceId,
 						lastTrack,
 						geofence,
-						//TODO: Remove when section contains name from backend data
-						section: { ...section, name: `${sectionName ?? sectionCount}` },
+						section: { ...section, name: sectionNameToUse },
 					});
 
-					geofenceInList = [...geofenceInList, ...geofenceIn];
+					break;
+				}
+				case 'POLYGONS': {
+					geofenceInFoundList = processCasePolygonSection({
+						deviceId,
+						lastTrack,
+						geofence,
+						section: { ...section, name: sectionNameToUse },
+					});
+
 					break;
 				}
 			}
+
+			geofenceInList = [...geofenceInList, ...geofenceInFoundList];
 		}
 	}
 
