@@ -2,9 +2,8 @@ import Geofence from '@models/entity/geofence';
 import GeofenceData from '@models/entity/geofence-data';
 import GeofenceIn from '@models/entity/geofence-in';
 import Track from '@models/entity/track';
-import { fromLonLat } from 'ol/proj';
+import { getDistance } from 'ol/sphere';
 import { buildGeofenceIn } from './build-geofence-in';
-import { getPolygonByCoords } from './get-geofence-polygon-by-coords';
 
 interface Request {
 	deviceId: string;
@@ -13,27 +12,23 @@ interface Request {
 	section: GeofenceData;
 }
 
-export const caseSectionPolygon = ({
+export const processCasePointSection = ({
 	deviceId,
-	lastTrack: { lon = 0, lat = 0 },
+	lastTrack: { lat = 0, lon = 0 },
 	geofence,
 	section,
 }: Request): GeofenceIn[] => {
-	const { coords } = section;
+	const { coords, radius = 0 } = section;
 
 	if (!coords) {
 		return [];
 	}
 
-	const polygon = getPolygonByCoords({ coords });
+	const distanceBetweenPoints: number = getDistance(coords, [lon, lat]);
 
-	const isInside: boolean = polygon.intersectsCoordinate(
-		fromLonLat([lon, lat])
-	);
-
-	if (isInside) {
-		return [buildGeofenceIn({ deviceId, geofence, section })];
+	if (!distanceBetweenPoints || distanceBetweenPoints > radius) {
+		return [];
 	}
 
-	return [];
+	return [buildGeofenceIn({ deviceId, geofence, section })];
 };
