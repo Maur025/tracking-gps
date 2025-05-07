@@ -1,3 +1,7 @@
+import GeofenceIoResponse from './geofence-io-response';
+
 export default interface GeofenceOutIoResponse {
-	name?: string;
+	deviceId: string;
+	geofences: GeofenceIoResponse[];
+	isInside: boolean;
 }

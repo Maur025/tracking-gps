@@ -13,6 +13,8 @@ export const buildGeofenceIn = ({
 	geofence: { id: geofenceId = '', name: geofenceName = 'No name' },
 	section,
 }: Request): GeofenceIn => {
+	const date: string = new Date().toISOString();
+
 	return {
 		deviceId,
 		geofenceId,
@@ -20,5 +22,6 @@ export const buildGeofenceIn = ({
 		section,
 		sectionInternalId: section.internalId,
 		isInside: true,
+		date,
 	};
 };

@@ -4,5 +4,4 @@ export default interface GeofenceIoResponse {
 	geofenceId: string;
 	geofenceName: string;
 	sections: GeofenceDataIoResponse[];
-	isInside: boolean;
 }
