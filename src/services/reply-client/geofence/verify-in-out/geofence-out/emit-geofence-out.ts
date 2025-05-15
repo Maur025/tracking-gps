@@ -2,10 +2,10 @@ import GeofenceOutIoResponse from '@models/dto/response/socket/geofence-out-io-r
 import GeofenceIn from '@models/entity/geofence-in';
 import { Topics } from '@models/enums/topics.enum';
 import { emitSocketResponse } from '@utils/emit-socket-response';
-import { loggerWarn } from '@utils/logger';
 import { Server } from 'socket.io';
 import { getDataGeofenceOutIoResponse } from './get-data-geofence-out-io-response';
 import { getGeofenceOutMessage } from '../get-geofence-message';
+import { loggerWarn } from '@maur025/core-logger';
 
 interface Request {
 	deviceId: string;

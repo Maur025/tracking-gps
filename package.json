@@ -14,6 +14,7 @@
 		"test:integration": "vitest --config vitest.integration.config.ts",
 		"test:integration:watch": "vitest --config vitest.integration.config.ts --watch"
 	},
+	"type": "module",
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
@@ -21,10 +22,10 @@
 	"dependencies": {
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-common": "^1.0.1",
+		"@maur025/core-logger": "^1.0.0",
 		"@maur025/core-model-data": "^1.1.1",
 		"better-sqlite3": "^11.9.1",
 		"cacheable-lookup": "^7.0.0",
-		"chalk": "^5.4.1",
 		"compression": "^1.8.0",
 		"cors": "^2.8.5",
 		"dotenv": "^16.4.7",
@@ -37,7 +38,6 @@
 		"tsoa": "^6.6.0",
 		"tsyringe": "^4.9.1",
 		"uuid": "^11.1.0",
-		"winston": "^3.17.0",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {

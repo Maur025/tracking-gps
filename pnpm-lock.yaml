@@ -14,6 +14,9 @@ importers:
       '@maur025/core-common':
         specifier: ^1.0.1
         version: 1.0.1
+      '@maur025/core-logger':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@maur025/core-model-data':
         specifier: ^1.1.1
         version: 1.1.1
@@ -23,9 +26,6 @@ importers:
       cacheable-lookup:
         specifier: ^7.0.0
         version: 7.0.0
-      chalk:
-        specifier: ^5.4.1
-        version: 5.4.1
       compression:
         specifier: ^1.8.0
         version: 1.8.0
@@ -62,9 +62,6 @@ importers:
       uuid:
         specifier: ^11.1.0
         version: 11.1.0
-      winston:
-        specifier: ^3.17.0
-        version: 3.17.0
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -369,6 +366,10 @@ packages:
 
   '@maur025/core-common@1.0.1':
     resolution: {integrity: sha512-OQTCco364k48B1Pvm2sjdWW0sOqoR9aPG2Zckdus8Jlvwb3Q8v6S8lmRc3d3PXggyMeGUNeoWC2N7nhHjWKxsw==}
+    engines: {node: '>=18'}
+
+  '@maur025/core-logger@1.0.0':
+    resolution: {integrity: sha512-YaTpVnwyzW1ikOLFLZuZMftKc1+W6AJXdZ/+TbydlRSG7H882XYdMYcuHCSrrHB9JGEpRW5e5WSHKOo/UHj7YA==}
     engines: {node: '>=18'}
 
   '@maur025/core-model-data@1.1.1':
@@ -2210,6 +2211,11 @@ snapshots:
   '@maur025/core-commands@1.0.1': {}
 
   '@maur025/core-common@1.0.1': {}
+
+  '@maur025/core-logger@1.0.0':
+    dependencies:
+      chalk: 5.4.1
+      winston: 3.17.0
 
   '@maur025/core-model-data@1.1.1':
     dependencies:

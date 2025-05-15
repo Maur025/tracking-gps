@@ -1,4 +1,4 @@
-import { loggerWarn } from '@utils/logger';
+import { loggerWarn } from '@maur025/core-logger';
 
 /**
  * Abstract class representing a generic cache for managing entities of type `E`.

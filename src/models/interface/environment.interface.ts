@@ -5,6 +5,4 @@ export default interface Environment {
 
 	BACKEND_URL: string;
 	TRACK_URL: string;
-	LOG_LEVEL: string;
-	LOG_PATH: string;
 }

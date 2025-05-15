@@ -1,7 +1,6 @@
+import { loggerError } from '@maur025/core-logger';
 import Device from '@models/entity/device';
-import { processByLastTrackIdDefined } from './process-last-track-id-defined';
-import { processByLasTrackIdEqualZero } from './process-last-track-id-equal-zero';
-import { processOnRouteEqualOne } from './process-on-route-equal-one';
+
 import {
 	catchError,
 	from,
@@ -10,7 +9,6 @@ import {
 	Observable,
 	of,
 } from 'rxjs';
-import { loggerError } from '@utils/logger';
 
 export const syncAndEnrichDevices = async (
 	devices: Device[]

@@ -1,8 +1,8 @@
 import environment from '@config/env';
 import { Topics } from '@models/enums/topics.enum';
-import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
+import { loggerInfo } from '@maur025/core-logger';
 
 const CLIENT_NAME: string = 'track-reply-client';
 let socketReply: Socket | null = null;

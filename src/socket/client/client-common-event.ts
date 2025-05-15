@@ -1,5 +1,5 @@
+import { loggerDebug, loggerError, loggerInfo } from '@maur025/core-logger';
 import { Topics } from '@models/enums/topics.enum';
-import { loggerDebug, loggerError, loggerInfo } from '@utils/logger';
 import { Socket } from 'socket.io-client';
 
 const { RECONNECT_ATTEMPT, RECONNECT_FAILED, RECONNECT } = Topics;
