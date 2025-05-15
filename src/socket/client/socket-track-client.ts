@@ -2,11 +2,11 @@ import environment from '@config/env';
 import Device from '@models/entity/device';
 import { Topics } from '@models/enums/topics.enum';
 import { deviceListProcess } from '@services/device/device-list-process';
-import { loggerInfo } from '@utils/logger';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 import { deviceProcess } from '@services/device/device-process';
 import { deviceNewProcess } from '@services/device/device-new-process';
+import { loggerInfo } from '@maur025/core-logger';
 
 const CLIENT_NAME: string = 'track-client';
 const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_NEW, DEVICE_LAST } = Topics;

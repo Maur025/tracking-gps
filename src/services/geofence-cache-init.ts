@@ -1,8 +1,8 @@
 import GeofenceCache from '@cache/geofence-cache';
+import { loggerWarn } from '@maur025/core-logger';
 import GeofenceResponse from '@models/dto/response/geofence-response';
 import Geofence from '@models/entity/geofence';
 import GeofenceData from '@models/entity/geofence-data';
-import { loggerWarn } from '@utils/logger';
 import { container } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 

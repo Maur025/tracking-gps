@@ -1,7 +1,7 @@
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 import { Topics } from '@models/enums/topics.enum';
-import { loggerInfo } from '@utils/logger';
+import { loggerInfo } from '@maur025/core-logger';
 
 const CLIENT_NAME = 'socket-client-test';
 const TEST_CLIENT_HOST = 'http://localhost:7767';

@@ -1,7 +1,7 @@
 import { GeofenceCoord } from '@models/types/geofence-coord';
 import { Coordinate } from 'ol/coordinate';
-import { Polygon } from 'ol/geom';
-import { fromLonLat } from 'ol/proj';
+import { Polygon } from 'ol/geom.js';
+import { fromLonLat } from 'ol/proj.js';
 
 interface Request {
 	coords: GeofenceCoord;

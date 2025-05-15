@@ -1,4 +1,4 @@
-import { loggerWarn } from '@utils/logger';
+import { loggerWarn } from '@maur025/core-logger';
 import AbstractCache from './abstract-cache';
 
 interface ManySetRequest<R> {
