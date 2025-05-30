@@ -8,7 +8,7 @@ export default class GeofenceService extends AbstractApiService<GeofenceResponse
 	constructor() {
 		super({
 			baseUrl: `${environment.BACKEND_URL}/trackingdb`,
-			resource: 'geofence',
+			resource: 'geofences',
 		});
 	}
 }

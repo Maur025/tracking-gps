@@ -14,16 +14,16 @@ const routeService = container.resolve(RouteService);
 const geofenceService$ = container.resolve(GeofenceService);
 
 export const cacheInitializer = (): Observable<unknown> => {
-	const routes$ = routeService.getAll();
+	// const routes$ = routeService.getAll();
 	const geofence$ = geofenceService$.getAllPaginated({});
 
 	return of(null).pipe(
-		concatMap(() => routes$),
-		tap(response => {
-			const responseData = handleAsArray(response);
+		// concatMap(() => routes$),
+		// tap(response => {
+		// 	const responseData = handleAsArray(response);
 
-			routeCache.updateAll([...responseData]);
-		}),
+		// 	routeCache.updateAll([...responseData]);
+		// }),
 		concatMap(() => geofence$),
 		tap((response: ApiResponse<GeofenceResponse>) => {
 			geofenceCacheInit(handleAsArray(response));
