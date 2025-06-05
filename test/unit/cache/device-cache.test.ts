@@ -4,12 +4,12 @@ import DeviceCache from '../../../src/cache/device-cache';
 import Device from '../../../src/models/entity/device';
 
 describe('Device Cache Tests', () => {
-	const deviceList: Partial<Device>[] = [
+	const deviceList = [
 		{ id: '1', isReady: true },
 		{ id: '2', isReady: false },
 		{ id: '3', isReady: false },
 		{ id: '4', isReady: true },
-	];
+	] as Device[];
 
 	let cache: DeviceCache;
 

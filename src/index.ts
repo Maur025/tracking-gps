@@ -1,11 +1,11 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import '@config/ioc/dependency-injection';
-import app from 'app';
 import ioServer from '@socket/server/io-server';
 import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@services/cache-initializer';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
+import app from './app';
 
 const { getApp } = app;
 

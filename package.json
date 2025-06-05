@@ -24,7 +24,6 @@
 		"@maur025/core-common": "^1.0.1",
 		"@maur025/core-logger": "^1.0.0",
 		"@maur025/core-model-data": "^1.1.1",
-		"better-sqlite3": "^11.9.1",
 		"cacheable-lookup": "^7.0.0",
 		"compression": "^1.8.0",
 		"cors": "^2.8.5",
@@ -35,7 +34,6 @@
 		"rxjs": "^7.8.2",
 		"socket.io": "^4.8.1",
 		"socket.io-client": "^4.8.1",
-		"tsoa": "^6.6.0",
 		"tsyringe": "^4.9.1",
 		"uuid": "^11.1.0",
 		"zod": "^3.24.2"
