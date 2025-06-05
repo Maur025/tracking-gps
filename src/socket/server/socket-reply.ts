@@ -5,6 +5,13 @@ import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
 import Track from '@models/entity/track';
 import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/geofence-verify';
+import {
+	generateFakePrefix,
+	randomLetters,
+	randomNumberByRange,
+} from '@utils/random-number-by-range';
+import { container } from 'tsyringe';
+import DeviceCache from '@cache/device-cache';
 
 const clientReply: SocketClient = connectReply();
 
@@ -26,6 +33,8 @@ const {
 	DEVICE_UNSUBSCRIBE_ALL,
 } = Topics;
 
+const deviceCache = container.resolve(DeviceCache);
+
 export const socketReply = (socket: Socket, io: Server) => {
 	// CLIENT-REPLY EMIT IN SOCKET-SERVER TO FINAL CONSUMING
 	clientReply.on(MESSAGE, payload => socket.emit(MESSAGE, payload));
@@ -33,7 +42,7 @@ export const socketReply = (socket: Socket, io: Server) => {
 	clientReply.on(DEVICE, payload => socket.emit(DEVICE, payload));
 
 	clientReply.on(DEVICES, (payload: Device[]) => {
-		socket.emit(DEVICES, payload);
+		socket.emit(DEVICES, deviceCache.getAll());
 	});
 
 	clientReply.on(DEVICE_NEW, payload => socket.emit(DEVICE_NEW, payload));

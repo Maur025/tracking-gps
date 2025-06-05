@@ -32,7 +32,9 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 
 	socket.on(DEVICE, payload => clientReply.emit(DEVICE, payload));
 
-	socket.on(DEVICES, payload => clientReply.emit(DEVICES, payload));
+	socket.on(DEVICES, payload => {
+		clientReply.emit(DEVICES, payload);
+	});
 
 	socket.on(DEVICE_NEW, payload => clientReply.emit(DEVICE_NEW, payload));
 

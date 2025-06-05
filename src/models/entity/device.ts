@@ -18,4 +18,10 @@ export default interface Device extends BaseData {
 	tracksCoord?: [number, number][];
 	stops?: Stop[];
 	routeSelected?: Route;
+	// quitar cuando se arregle el vinculo de device con vehiculos
+	personal?: {
+		plaque?: string;
+		name?: string;
+		icon?: string;
+	};
 }

@@ -7,15 +7,19 @@ import GeofenceService from './geofence/geofence.service';
 import { ApiResponse } from '@maur025/core-model-data';
 import GeofenceResponse from '@models/dto/response/geofence-response';
 import { geofenceCacheInit } from './geofence-cache-init';
+import GroupService from './group/group.service';
 
-const routeCache = container.resolve(RouteCache);
+// const routeCache = container.resolve(RouteCache);
 
-const routeService = container.resolve(RouteService);
+// const routeService = container.resolve(RouteService);
 const geofenceService$ = container.resolve(GeofenceService);
+const groupService$ = container.resolve(GroupService);
 
 export const cacheInitializer = (): Observable<unknown> => {
 	// const routes$ = routeService.getAll();
+
 	const geofence$ = geofenceService$.getAllPaginated({});
+	const group$ = groupService$.getAllPaginated({ size: 500 });
 
 	return of(null).pipe(
 		// concatMap(() => routes$),
@@ -27,6 +31,10 @@ export const cacheInitializer = (): Observable<unknown> => {
 		concatMap(() => geofence$),
 		tap((response: ApiResponse<GeofenceResponse>) => {
 			geofenceCacheInit(handleAsArray(response));
+		}),
+		concatMap(() => group$),
+		tap(response => {
+			console.log(response);
 		})
 	);
 };
