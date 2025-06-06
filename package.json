@@ -12,7 +12,9 @@
 		"test": "vitest --config vitest.unit.config.ts",
 		"test:watch": "vitest --config vitest.unit.config.ts --watch",
 		"test:integration": "vitest --config vitest.integration.config.ts",
-		"test:integration:watch": "vitest --config vitest.integration.config.ts --watch"
+		"test:integration:watch": "vitest --config vitest.integration.config.ts --watch",
+		"test:coverage": "vitest --coverage",
+		"test:coverage:browser": "vitest --coverage --coverage.reporter=html"
 	},
 	"type": "module",
 	"keywords": [],
@@ -44,6 +46,7 @@
 		"@types/express": "^5.0.1",
 		"@types/node": "^22.14.0",
 		"@types/supertest": "^6.0.3",
+		"@vitest/coverage-v8": "3.1.1",
 		"http-status-codes": "^2.3.0",
 		"supertest": "^7.1.1",
 		"swagger-ui-express": "^5.0.1",
