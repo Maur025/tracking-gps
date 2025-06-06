@@ -3,7 +3,6 @@ import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
-import { Route, Tags } from 'tsoa';
 import { inject, injectable } from 'tsyringe';
 import {
 	ApiResponse,
@@ -13,8 +12,6 @@ import {
 import DeviceCache from '@cache/device-cache';
 import RouteCache from '@cache/route-cache';
 
-@Route('tests')
-@Tags('Tests')
 @injectable()
 export default class TestController {
 	constructor(

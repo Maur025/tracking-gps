@@ -5,11 +5,6 @@ import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
 import Track from '@models/entity/track';
 import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/geofence-verify';
-import {
-	generateFakePrefix,
-	randomLetters,
-	randomNumberByRange,
-} from '@utils/random-number-by-range';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 

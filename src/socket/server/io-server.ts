@@ -1,7 +1,7 @@
 import SocketServerBuilderResponse from '@models/interface/socket-server-builder-response.interface';
-import app from 'app';
 import { socketListeners } from './socket-listeners';
 import SocketServerBuilder from './socket-server-builder';
+import app from '@src/app';
 
 const { getApp } = app;
 

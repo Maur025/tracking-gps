@@ -94,7 +94,7 @@ describe('Geofence Cache tests', () => {
 		cache.addById('5', geofence);
 
 		const result: number = cache.size();
-		const dataInCache: Geofence = cache.getById('5');
+		const dataInCache: Geofence | undefined = cache.getById('5');
 
 		expect(result).toBeDefined();
 		expect(result).toBe(1);
@@ -109,13 +109,13 @@ describe('Geofence Cache tests', () => {
 		cache.addById('1', geofence);
 
 		const result: number = cache.size();
-		const dataInCache: Geofence = cache.getById('1');
+		const dataInCache: Geofence | undefined = cache.getById('1');
 
 		expect(result).toBeDefined();
 		expect(result).toBe(geofenceList.length);
 
 		expect(dataInCache).toBeDefined();
-		expect(dataInCache.name).not.toBe(geofence.name);
+		expect(dataInCache!.name).not.toBe(geofence.name);
 	});
 
 	test('test updateById should replace or add attributes to objects', () => {
