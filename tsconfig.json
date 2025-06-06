@@ -6,7 +6,7 @@
 		"emitDecoratorMetadata": true,
 		"module": "ES2022",
 		"rootDir": ".",
-		"moduleResolution": "bundler",
+		"moduleResolution": "node",
 		"baseUrl": ".",
 		"paths": {
 			"@cache/*": ["src/cache/*"],
