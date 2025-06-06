@@ -1,7 +1,8 @@
 import { GroupCache } from '@cache/group-cache';
 import { Group } from '@models/entity/group';
 import { container } from 'tsyringe';
-import { beforeEach, describe, expect, test } from 'vitest';
+import { beforeEach, describe } from 'vitest';
+import { cacheSingleCommonTest } from './cache-single-common-test';
 
 describe('Group cache test', () => {
 	const groupList = [
@@ -13,16 +14,11 @@ describe('Group cache test', () => {
 		{ id: '3', name: 'group 3' },
 	] as Group[];
 
-	let cache: GroupCache;
+	const cache: GroupCache = container.resolve(GroupCache);
 
 	beforeEach(() => {
-		cache = container.resolve(GroupCache);
 		cache.clear();
 	});
 
-	test('test getAll in new instance should return empty array', () => {
-		const result = cache.getAll();
-
-		expect(result).toBeDefined();
-	});
+	cacheSingleCommonTest<Group>(cache, groupList);
 });
