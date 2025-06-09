@@ -5,4 +5,7 @@ export default interface Environment {
 
 	BACKEND_URL: string;
 	TRACK_URL: string;
+
+	REDIS_HOST: string;
+	REDIS_PORT: number;
 }

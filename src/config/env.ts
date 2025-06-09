@@ -1,15 +1,23 @@
 import Environment from '@models/interface/environment.interface';
-import path from 'node:path';
 
-const { STATIC_PATH, HOST, PORT, BACKEND_URL, TRACK_URL } = process.env;
+const {
+	HOST,
+	PORT = '7767',
+	STATIC_PATH = 'public',
+	BACKEND_URL = 'http://172.20.50.60:9988',
+	TRACK_URL = 'http://172.20.50.60:7777',
+	REDIS_HOST = 'localhost',
+	REDIS_PORT = '6379',
+} = process.env;
 
 const environment: Environment = {
-	HOST: HOST,
-	PORT: Number(PORT ?? 7767),
-	STATIC_PATH: STATIC_PATH ?? 'public',
-
-	BACKEND_URL: BACKEND_URL ?? 'http://172.20.50.60:9988',
-	TRACK_URL: TRACK_URL ?? 'http://172.20.50.60:7777',
+	HOST,
+	PORT: Number(PORT),
+	STATIC_PATH,
+	BACKEND_URL,
+	TRACK_URL,
+	REDIS_HOST,
+	REDIS_PORT: Number(REDIS_PORT),
 };
 
 export default environment;

@@ -6,6 +6,7 @@ import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@services/cache-initializer';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 import app from './app';
+import { initRedisClient } from '@config/redis/create-redis-client';
 
 const { getApp } = app;
 
@@ -14,6 +15,8 @@ getApp().get('/', (req, res) => {
 });
 
 ioServer.startListening();
+
+await initRedisClient();
 
 cacheInitializer().subscribe({
 	error: error => {
