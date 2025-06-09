@@ -5,7 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"dev": "tsx watch src/index.ts",
-		"build": "tsc && tsc-alias",
+		"build": "tsc -p tsconfig-build.json && tsc-alias",
 		"start": "node dist/index.js",
 		"test:all": "vitest",
 		"test:all:watch": "vitest --watch",
@@ -20,7 +20,7 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"packageManager": "pnpm@10.9.0",
+	"packageManager": "pnpm@10.12.1",
 	"dependencies": {
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-common": "^1.0.1",
