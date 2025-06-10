@@ -13,7 +13,7 @@ export default class DeviceCache
 	private readonly deviceMap: Map<string, Device> = new Map<string, Device>();
 
 	private readonly BASE_KEY: string = 'device-gps:';
-	private readonly BATH_LIMIT: number = 50;
+	private readonly BATCH_LIMIT: number = 50;
 
 	private lastUpdate: Date | null = null;
 
@@ -53,7 +53,7 @@ export default class DeviceCache
 				for (const deviceKey of deviceKeySubList) {
 					deviceKeyBatch.push(deviceKey);
 
-					if (deviceKeyBatch.length === this.BATH_LIMIT) {
+					if (deviceKeyBatch.length === this.BATCH_LIMIT) {
 						await deleteDeviceCacheData(deviceKeyBatch);
 						deviceKeyBatch = [];
 					}
