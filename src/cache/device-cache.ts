@@ -4,6 +4,7 @@ import AbstractSingleCache from './abstract-single-cache';
 import { redisClient } from '@config/redis/create-redis-client';
 import { CacheUseRedis } from './cache-use-redis';
 import { loggerError } from '@maur025/core-logger';
+import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cache-data';
 @singleton()
 export default class DeviceCache
 	extends AbstractSingleCache<Device>
@@ -12,7 +13,7 @@ export default class DeviceCache
 	private readonly deviceMap: Map<string, Device> = new Map<string, Device>();
 
 	private readonly BASE_KEY: string = 'device-gps:';
-	private readonly BATH_LIMIT: number = 30;
+	private readonly BATH_LIMIT: number = 50;
 
 	private lastUpdate: Date | null = null;
 
@@ -32,23 +33,56 @@ export default class DeviceCache
 		return this.lastUpdate;
 	}
 
-	public async loadCacheData(): Promise<void> {
-		const batchKeys: string[] = [];
+	public loadCacheData = async (): Promise<void> =>
+		this.getKeysAndProcess(async (deviceKeyList): Promise<void> => {
+			this.clear();
 
-		this.clear();
+			for await (const subkeyList of deviceKeyList) {
+			}
+		}, 'load');
 
+	public clearCacheData = async (): Promise<void> =>
+		this.getKeysAndProcess(async (deviceKeyList): Promise<void> => {
+			let deviceKeyBatch: string[] = [];
+
+			for await (const deviceKeySubList of deviceKeyList) {
+				if (!deviceKeySubList.length) {
+					continue;
+				}
+
+				for (const deviceKey of deviceKeySubList) {
+					deviceKeyBatch.push(deviceKey);
+
+					if (deviceKeyBatch.length === this.BATH_LIMIT) {
+						await deleteDeviceCacheData(deviceKeyBatch);
+						deviceKeyBatch = [];
+					}
+				}
+			}
+
+			if (deviceKeyBatch.length) {
+				await deleteDeviceCacheData(deviceKeyBatch);
+				deviceKeyBatch = [];
+			}
+		}, 'delete');
+
+	public getKeysAndProcess = async (
+		process: (
+			keyList: AsyncGenerator<string[], void, unknown>
+		) => Promise<void>,
+		labelProcess: string = 'anything'
+	): Promise<void> => {
 		try {
-			const deviceKeyList = redisClient.scanIterator({
+			const deviceKeyList = await redisClient.scanIterator({
 				MATCH: `${this.BASE_KEY}*`,
 			});
 
-			for await (const deviceKey of deviceKeyList) {
-				if (deviceKey) {
-					console.log('device key', deviceKey);
-				}
-			}
-		} catch (error: unknown) {
-			loggerError(`error can't load data in cache: `, error as Error);
+			await process(deviceKeyList);
+		} catch (error) {
+			loggerError(
+				`can't process operation ${labelProcess} cache data in redis cause: `,
+				error as Error
+			);
 		}
-	}
+	};
 }
