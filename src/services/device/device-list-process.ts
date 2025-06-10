@@ -9,6 +9,7 @@ import {
 	randomLetters,
 	randomNumberByRange,
 } from '@utils/random-number-by-range';
+import { redisClient } from '@config/redis/create-redis-client';
 
 interface Request {
 	deviceList: Device[];
@@ -18,6 +19,7 @@ interface Request {
 const deviceCache = container.resolve(DeviceCache);
 
 const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
+const BATCH_LIMIT: number = 50;
 
 export const deviceListProcess = async ({
 	deviceList,
@@ -30,6 +32,7 @@ export const deviceListProcess = async ({
 	socketClient.emit(DEVICE_SUBSCRIBE, [...idList]);
 
 	const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
+	const deviceBatch: Device[] = [];
 
 	// quitar cuando se arregle el problema con devices y vehicles
 	for (const device of newDeviceList) {
@@ -51,5 +54,25 @@ export const deviceListProcess = async ({
 		};
 	}
 
-	deviceCache.addMany(newDeviceList);
+	for (const device of newDeviceList) {
+		console.log(device);
+		deviceBatch.push(device);
+
+		if (deviceBatch.length === BATCH_LIMIT) {
+			await Promise.all(
+				deviceBatch.map(deviceData =>
+					redisClient.hSet(`${deviceCache.getRedisKey()}${deviceData.id}`, {
+						id: deviceData.id ?? '',
+						config: JSON.stringify(deviceData.config),
+						type: deviceData.type ?? '',
+						elapsed: deviceData.elapsed?.toString() ?? '',
+						setup: JSON.stringify(deviceData.setup),
+					})
+				)
+			);
+			deviceBatch.length = 0;
+		}
+	}
+
+	await deviceCache.loadCacheData();
 };
