@@ -1,6 +1,6 @@
 import { redisClient } from '@config/redis/create-redis-client';
 
 export const deleteDeviceCacheData = (
-	deviceBatch: string[]
+	deviceKeyBatch: string[]
 ): Promise<number[]> =>
-	Promise.all(deviceBatch.map(deviceKey => redisClient.del(deviceKey)));
+	Promise.all(deviceKeyBatch.map(deviceKey => redisClient.del(deviceKey)));
