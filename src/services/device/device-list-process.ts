@@ -31,7 +31,6 @@ export const deviceListProcess = async ({
 	socketClient.emit(DEVICE_SUBSCRIBE, [...idList]);
 
 	const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
-	const deviceBatch: Device[] = [];
 
 	// quitar cuando se arregle el problema con devices y vehicles
 	for (const device of newDeviceList) {
@@ -53,7 +52,7 @@ export const deviceListProcess = async ({
 		};
 	}
 
-	console.log(newDeviceList);
+	await deviceCache.clearCacheData();
 
 	await addDeviceCacheData(newDeviceList);
 
