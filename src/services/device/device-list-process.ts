@@ -9,7 +9,7 @@ import {
 	randomLetters,
 	randomNumberByRange,
 } from '@utils/random-number-by-range';
-import { redisClient } from '@config/redis/create-redis-client';
+import { addDeviceCacheData } from '@services/cache/device/add-device-cache-data';
 
 interface Request {
 	deviceList: Device[];
@@ -19,7 +19,6 @@ interface Request {
 const deviceCache = container.resolve(DeviceCache);
 
 const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
-const BATCH_LIMIT: number = 50;
 
 export const deviceListProcess = async ({
 	deviceList,
@@ -54,25 +53,9 @@ export const deviceListProcess = async ({
 		};
 	}
 
-	for (const device of newDeviceList) {
-		console.log(device);
-		deviceBatch.push(device);
+	console.log(newDeviceList);
 
-		if (deviceBatch.length === BATCH_LIMIT) {
-			await Promise.all(
-				deviceBatch.map(deviceData =>
-					redisClient.hSet(`${deviceCache.getRedisKey()}${deviceData.id}`, {
-						id: deviceData.id ?? '',
-						config: JSON.stringify(deviceData.config),
-						type: deviceData.type ?? '',
-						elapsed: deviceData.elapsed?.toString() ?? '',
-						setup: JSON.stringify(deviceData.setup),
-					})
-				)
-			);
-			deviceBatch.length = 0;
-		}
-	}
+	await addDeviceCacheData(newDeviceList);
 
 	await deviceCache.loadCacheData();
 };
