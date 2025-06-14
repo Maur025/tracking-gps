@@ -5,6 +5,7 @@ import { redisClient } from '@config/redis/create-redis-client';
 import { CacheUseRedis } from './cache-use-redis';
 import { loggerError } from '@maur025/core-logger';
 import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cache-data';
+import { deleteRedisIdx } from '@services/redis/delete-redis-idx';
 @singleton()
 export default class DeviceCache
 	extends AbstractSingleCache<Device>
@@ -13,6 +14,7 @@ export default class DeviceCache
 	private readonly deviceMap: Map<string, Device> = new Map<string, Device>();
 
 	private readonly BASE_KEY: string = 'device-gps:';
+	private readonly IDX_DATA: string = 'idx_devices';
 	private readonly BATCH_LIMIT: number = 50;
 
 	private lastUpdate: Date | null = null;
@@ -27,6 +29,10 @@ export default class DeviceCache
 
 	public getRedisKey(): string {
 		return this.BASE_KEY;
+	}
+
+	public getIdxData(): string {
+		return this.IDX_DATA;
 	}
 
 	public getLastUpdate(): Date | null {
@@ -64,6 +70,8 @@ export default class DeviceCache
 				await deleteDeviceCacheData(deviceKeyBatch);
 				deviceKeyBatch = [];
 			}
+
+			await deleteRedisIdx(this.IDX_DATA);
 		}, 'delete');
 
 	public getKeysAndProcess = async (

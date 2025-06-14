@@ -2,10 +2,16 @@ import Device from '@models/entity/device';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 import { addDeviceBatchToRedis } from './add-device-batch-to-redis';
+import { SCHEMA_FIELD_TYPE } from 'redis';
+import { addRedisIdx } from '@services/redis/add-redis-idx';
 
 export const addDeviceCacheData = async (
 	deviceList: Device[]
 ): Promise<void> => {
+	if (!deviceList?.length) {
+		return;
+	}
+
 	const BATCH_LIMIT: number = 50;
 	let deviceBatch: Device[] = [];
 	const deviceCache = container.resolve(DeviceCache);
@@ -25,4 +31,12 @@ export const addDeviceCacheData = async (
 
 		deviceBatch = [];
 	}
+
+	await addRedisIdx(
+		deviceCache.getIdxData(),
+		{
+			id: SCHEMA_FIELD_TYPE.TAG,
+		},
+		deviceCache.getRedisKey()
+	);
 };
