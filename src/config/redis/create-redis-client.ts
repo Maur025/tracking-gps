@@ -1,6 +1,6 @@
 import environment from '@config/env';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { createClient, RedisClientType } from 'redis';
+import { createClient } from 'redis';
 
 const { REDIS_HOST, REDIS_PORT } = environment;
 

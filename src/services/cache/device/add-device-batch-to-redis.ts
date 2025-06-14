@@ -4,7 +4,7 @@ import Device from '@models/entity/device';
 export const addDeviceBatchToRedis = async (
 	deviceBatch: Device[],
 	basekey: string
-): Promise<number[]> =>
+): Promise<('OK' | null)[]> =>
 	Promise.all(
 		deviceBatch.map(
 			({
@@ -17,15 +17,15 @@ export const addDeviceBatchToRedis = async (
 				last = {},
 				personal = {},
 			}) =>
-				redisClient.hSet(`${basekey}${id}`, {
+				redisClient.json.set(`${basekey}${id}`, '$', {
 					id,
-					config: JSON.stringify(config),
+					config: { ...config },
 					type,
 					elapsed,
-					setup: JSON.stringify(setup),
-					states: JSON.stringify(states),
-					last: JSON.stringify(last),
-					personal: JSON.stringify(personal),
+					setup: { ...setup },
+					states: { ...states },
+					last: { ...last },
+					personal: { ...personal },
 				})
 		)
 	);

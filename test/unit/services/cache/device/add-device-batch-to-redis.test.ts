@@ -2,7 +2,9 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('@config/redis/create-redis-client', () => ({
 	redisClient: {
-		hSet: vi.fn(),
+		json: {
+			set: vi.fn(),
+		},
 	},
 }));
 
@@ -24,11 +26,12 @@ describe('add device batch to redis test', () => {
 
 		await addDeviceBatchToRedis(deviceBatch, TEST_KEY);
 
-		expect(redisClient.hSet).toHaveBeenCalledTimes(50);
+		expect(redisClient.json.set).toHaveBeenCalledTimes(50);
 
 		for (let index = 0; index < 50; index++) {
-			expect(redisClient.hSet).toHaveBeenCalledWith(
+			expect(redisClient.json.set).toHaveBeenCalledWith(
 				`${TEST_KEY}id${index}`,
+				'$',
 				expect.any(Object)
 			);
 		}
@@ -39,6 +42,6 @@ describe('add device batch to redis test', () => {
 
 		await addDeviceBatchToRedis(deviceBatch, TEST_KEY);
 
-		expect(redisClient.hSet).not.toHaveBeenCalled();
+		expect(redisClient.json.set).not.toHaveBeenCalled();
 	});
 });
