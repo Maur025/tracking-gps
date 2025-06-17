@@ -12,7 +12,7 @@ export const addDeviceCacheData = async (
 		return;
 	}
 
-	const BATCH_LIMIT: number = 50;
+	const BATCH_LIMIT: number = 500;
 	let deviceBatch: Device[] = [];
 	const deviceCache = container.resolve(DeviceCache);
 

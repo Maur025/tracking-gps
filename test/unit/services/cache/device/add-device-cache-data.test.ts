@@ -40,7 +40,7 @@ describe('add device cache data test', () => {
 		expect(deviceCacheMock.getRedisKey).not.toHaveBeenCalled();
 	});
 
-	test('should be execute once when device quantity is less to BATCH_LIMI 50', async () => {
+	test('should be execute once when device quantity is less to BATCH_LIMI 500', async () => {
 		const deviceList = [{ id: 'device1' }] as Device[];
 		await addDeviceCacheData(deviceList);
 
@@ -54,8 +54,8 @@ describe('add device cache data test', () => {
 		);
 	});
 
-	test('should be execute 2 times in 100 with devices', async () => {
-		const deviceList = Array.from({ length: 100 }, (_, i) => ({
+	test('should be execute 2 times with 1000 devices', async () => {
+		const deviceList = Array.from({ length: 1000 }, (_, i) => ({
 			id: `id${i}`,
 		})) as Device[];
 
@@ -64,12 +64,12 @@ describe('add device cache data test', () => {
 		expect(deviceCacheMock.getRedisKey).toHaveBeenCalledTimes(3);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
-			deviceList.slice(0, 50),
+			deviceList.slice(0, 500),
 			'key-test'
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
-			deviceList.slice(50, 100),
+			deviceList.slice(500, 1000),
 			'key-test'
 		);
 
@@ -81,8 +81,8 @@ describe('add device cache data test', () => {
 		);
 	});
 
-	test('should execute 1 time more, when device quantity not is multiple of 50', async () => {
-		const deviceList = Array.from({ length: 115 }, (_, i) => ({
+	test('should execute 1 time more, when device quantity not is multiple of 500', async () => {
+		const deviceList = Array.from({ length: 1150 }, (_, i) => ({
 			id: `id${i}`,
 		})) as Device[];
 
@@ -91,17 +91,17 @@ describe('add device cache data test', () => {
 		expect(deviceCacheMock.getRedisKey).toHaveBeenCalledTimes(4);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
-			deviceList.slice(0, 50),
+			deviceList.slice(0, 500),
 			'key-test'
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
-			deviceList.slice(50, 100),
+			deviceList.slice(500, 1000),
 			'key-test'
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
-			deviceList.slice(100, 115),
+			deviceList.slice(1000, 1150),
 			'key-test'
 		);
 
