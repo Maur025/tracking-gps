@@ -1,10 +1,8 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, Mock, test, vi } from 'vitest';
 
 vi.mock('@config/redis/create-redis-client', () => ({
 	redisClient: {
-		json: {
-			set: vi.fn(),
-		},
+		multi: vi.fn(),
 	},
 }));
 
@@ -15,26 +13,37 @@ import { addDeviceBatchToRedis } from '@services/cache/device/add-device-batch-t
 const TEST_KEY: string = 'test-key';
 
 describe('add device batch to redis test', () => {
+	const mockJsonSet = vi.fn();
+	const mockExec = vi.fn();
+
 	beforeEach(() => {
 		vi.clearAllMocks();
+
+		(redisClient.multi as Mock).mockReturnValue({
+			json: { set: mockJsonSet },
+			exec: mockExec,
+		});
 	});
 
 	test('hSet should be run based on the device batch size', async () => {
-		const deviceBatch = Array.from({ length: 50 }, (_, i) => ({
+		const deviceBatch = Array.from({ length: 500 }, (_, i) => ({
 			id: `id${i}`,
 		})) as Device[];
 
 		await addDeviceBatchToRedis(deviceBatch, TEST_KEY);
 
-		expect(redisClient.json.set).toHaveBeenCalledTimes(50);
+		expect(redisClient.multi).toHaveBeenCalledOnce();
+		expect(mockJsonSet).toHaveBeenCalledTimes(500);
 
-		for (let index = 0; index < 50; index++) {
-			expect(redisClient.json.set).toHaveBeenCalledWith(
+		for (let index = 0; index < 500; index++) {
+			expect(mockJsonSet).toHaveBeenCalledWith(
 				`${TEST_KEY}id${index}`,
 				'$',
 				expect.any(Object)
 			);
 		}
+
+		expect(mockExec).toHaveBeenCalledOnce();
 	});
 
 	test("shouldn't be run when device batch is empty", async () => {
@@ -42,6 +51,8 @@ describe('add device batch to redis test', () => {
 
 		await addDeviceBatchToRedis(deviceBatch, TEST_KEY);
 
-		expect(redisClient.json.set).not.toHaveBeenCalled();
+		expect(redisClient.multi).not.toHaveBeenCalled();
+		expect(mockJsonSet).not.toHaveBeenCalled();
+		expect(mockExec).not.toHaveBeenCalled();
 	});
 });
