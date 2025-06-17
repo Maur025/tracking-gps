@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { beforeEach, describe, expect, Mock, test, vi } from 'vitest';
 
 vi.mock('@config/redis/create-redis-client', () => ({
 	redisClient: {
-		del: vi.fn(),
+		multi: vi.fn(),
 	},
 }));
 
@@ -12,23 +12,34 @@ import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cach
 const KEY_TEST: string = 'key-test:';
 
 describe('delete device cache data test', () => {
+	const mockDel = vi.fn();
+	const mockExec = vi.fn();
+
 	beforeEach(() => {
 		vi.clearAllMocks();
+
+		(redisClient.multi as Mock).mockReturnValue({
+			del: mockDel,
+			exec: mockExec,
+		});
 	});
 
 	test('del should be run in base device batch size', async () => {
 		const deviceKeyBatch: string[] = Array.from(
-			{ length: 50 },
+			{ length: 500 },
 			(_, i) => `${KEY_TEST}${i}`
 		);
 
 		await deleteDeviceCacheData(deviceKeyBatch);
 
-		expect(redisClient.del).toHaveBeenCalledTimes(50);
+		expect(redisClient.multi).toHaveBeenCalledOnce();
+		expect(mockDel).toHaveBeenCalledTimes(500);
 
 		for (const deviceKey of deviceKeyBatch) {
-			expect(redisClient.del).toHaveBeenCalledWith(deviceKey);
+			expect(mockDel).toHaveBeenCalledWith(deviceKey);
 		}
+
+		expect(mockExec).toHaveBeenCalledOnce();
 	});
 
 	test('should not run when device batch is empty', async () => {
@@ -36,6 +47,8 @@ describe('delete device cache data test', () => {
 
 		await deleteDeviceCacheData(deviceKeyBatch);
 
-		expect(redisClient.del).not.toHaveBeenCalled();
+		expect(redisClient.multi).not.toHaveBeenCalled();
+		expect(mockDel).not.toHaveBeenCalled();
+		expect(mockExec).not.toHaveBeenCalled();
 	});
 });
