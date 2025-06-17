@@ -3,7 +3,7 @@ import { singleton } from 'tsyringe';
 import AbstractSingleCache from './abstract-single-cache';
 import { redisClient } from '@config/redis/create-redis-client';
 import { CacheUseRedis } from './cache-use-redis';
-import { loggerError } from '@maur025/core-logger';
+import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cache-data';
 import { deleteRedisIdx } from '@services/redis/delete-redis-idx';
 @singleton()
@@ -15,7 +15,7 @@ export default class DeviceCache
 
 	private readonly BASE_KEY: string = 'device-gps:';
 	private readonly IDX_DATA: string = 'idx_devices';
-	private readonly BATCH_LIMIT: number = 50;
+	private readonly BATCH_LIMIT: number = 500;
 
 	private lastUpdate: Date | null = null;
 
@@ -44,6 +44,8 @@ export default class DeviceCache
 			this.clear();
 
 			for await (const subkeyList of deviceKeyList) {
+				for (const key of subkeyList) {
+				}
 			}
 		}, 'load');
 

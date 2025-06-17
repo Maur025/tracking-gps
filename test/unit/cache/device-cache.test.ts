@@ -84,16 +84,16 @@ describe('Device Cache Tests', () => {
 		expect(loggerInfo).not.toHaveBeenCalled();
 	});
 
-	test('clearCacheData should delete run once when size is less to 50', async () => {
+	test('clearCacheData should delete run once when size is less to 500', async () => {
 		await cache.clearCacheData();
 
 		expect(deleteDeviceCacheData).toHaveBeenCalledTimes(1);
 	});
 
-	test('clearCacheData should delete run 2 times when size is 100', async () => {
+	test('clearCacheData should delete run 2 times when size is 1000', async () => {
 		const testFakeAsyncGenerator = async function* () {
-			yield Array.from({ length: 70 }, (_, i) => `key:${i}`);
-			yield Array.from({ length: 30 }, (_, i) => `key:${i + 70}`);
+			yield Array.from({ length: 700 }, (_, i) => `key:${i}`);
+			yield Array.from({ length: 300 }, (_, i) => `key:${i + 700}`);
 		};
 		(redisClient.scanIterator as Mock).mockReturnValue(
 			testFakeAsyncGenerator()
@@ -105,19 +105,19 @@ describe('Device Cache Tests', () => {
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(50)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(50)].map((_, i) => `key:${i + 50}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
 		);
 	});
 
-	test('clearCacheData should delete run 3 times when size is 115', async () => {
+	test('clearCacheData should delete run 3 times when size is 1150', async () => {
 		const testFakeAsyncGenerator = async function* () {
-			yield Array.from({ length: 80 }, (_, i) => `key:${i}`);
-			yield Array.from({ length: 35 }, (_, i) => `key:${i + 80}`);
+			yield Array.from({ length: 800 }, (_, i) => `key:${i}`);
+			yield Array.from({ length: 350 }, (_, i) => `key:${i + 800}`);
 		};
 		(redisClient.scanIterator as Mock).mockReturnValue(
 			testFakeAsyncGenerator()
@@ -129,17 +129,17 @@ describe('Device Cache Tests', () => {
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(50)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(50)].map((_, i) => `key:${i + 50}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			3,
-			expect.arrayContaining([...Array(15)].map((_, i) => `key:${i + 100}`))
+			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`))
 		);
 	});
 });

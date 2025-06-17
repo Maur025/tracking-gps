@@ -54,7 +54,7 @@ export const deviceListProcess = async ({
 
 	await deviceCache.clearCacheData();
 
-	await addDeviceCacheData(newDeviceList);
+	// await addDeviceCacheData(newDeviceList);
 
-	await deviceCache.loadCacheData();
+	// await deviceCache.loadCacheData();
 };
