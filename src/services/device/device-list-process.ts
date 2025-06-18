@@ -10,13 +10,12 @@ import {
 	randomNumberByRange,
 } from '@utils/random-number-by-range';
 import { addDeviceCacheData } from '@services/cache/device/add-device-cache-data';
+import { loggerWarn } from '@maur025/core-logger';
 
 interface Request {
 	deviceList: Device[];
 	socketClient: Socket;
 }
-
-const deviceCache = container.resolve(DeviceCache);
 
 const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
 
@@ -24,7 +23,18 @@ export const deviceListProcess = async ({
 	deviceList,
 	socketClient,
 }: Request): Promise<void> => {
-	deviceCache.clear();
+	const deviceCache = container.resolve(DeviceCache);
+
+	await deviceCache.clearCacheData();
+
+	if (!deviceList?.length) {
+		loggerWarn(
+			`device list must not be empty or undefined, skipping initialization ...`
+		);
+
+		return;
+	}
+
 	const idList: string[] = deviceList?.map(({ id }) => id ?? '');
 
 	socketClient.emit(DEVICE_UNSUBSCRIBE_ALL, '');
@@ -32,7 +42,7 @@ export const deviceListProcess = async ({
 
 	const newDeviceList: Device[] = await syncAndEnrichDevices(deviceList);
 
-	// quitar cuando se arregle el problema con devices y vehicles
+	// adding fake data: remove when fixed devices with vehicles problems
 	for (const device of newDeviceList) {
 		const plaque: string = `${randomNumberByRange(3, 4)}${randomLetters()}`;
 		const prefix: string = generateFakePrefix();
@@ -51,8 +61,6 @@ export const deviceListProcess = async ({
 			icon,
 		};
 	}
-
-	await deviceCache.clearCacheData();
 
 	await addDeviceCacheData(newDeviceList);
 
