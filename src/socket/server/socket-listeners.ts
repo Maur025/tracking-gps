@@ -85,24 +85,60 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 	);
 
 	socket.on(ROOM_LIST_REQUEST, (): void => {
-		const availableRoomList: string[] = [];
-
-		for (const [roomKey, roomValue] of Object.entries(availableRooms)) {
-			availableRoomList.push(roomValue);
-		}
-
 		emitSocketResponse<string[]>({
-			data: availableRoomList,
+			data: getRoomValueAsList(),
 			eventType: ROOM_LIST_RESPONSE,
 			socket,
 		});
 	});
 
-	socket.on(ROOM_JOIN_REQUEST, roomName => {
+	socket.on(ROOM_JOIN_REQUEST, (roomName: string) => {
+		const socketRooms = getRoomValueAsList();
+
+		if (!socketRooms.includes(roomName)) {
+			socket.emit(
+				ROOM_JOIN_RESPONSE,
+				`can't join to room ${roomName} it's invalid or non-existent`
+			);
+
+			return;
+		}
+
 		socket.join(roomName);
+		socket.emit(
+			ROOM_JOIN_RESPONSE,
+			`client ${socket.id} joined to room ${roomName} successfully`
+		);
 	});
 
-	socket.on(ROOM_LEAVE_REQUEST, () => {});
+	socket.on(ROOM_LEAVE_REQUEST, (roomName: string) => {
+		const socketRooms = getRoomValueAsList();
+
+		if (!socketRooms.includes(roomName)) {
+			socket.emit(
+				ROOM_LEAVE_RESPONSE,
+				`can't be left to room ${roomName} it's invalid or non-existent`
+			);
+
+			return;
+		}
+
+		socket.leave(roomName);
+		socket.emit(
+			ROOM_JOIN_RESPONSE,
+			`client ${socket.id} left the room ${roomName} successfully `
+		);
+	});
 
 	socketReply(socket, io);
+};
+
+const getRoomValueAsList = () => {
+	const availableRoomList: string[] = [];
+
+	for (const [roomKey, roomValue] of Object.entries(availableRooms)) {
+		availableRoomList.push(roomValue);
+	}
+
+	return [...availableRoomList];
 };
