@@ -3,9 +3,10 @@ import { singleton } from 'tsyringe';
 import AbstractSingleCache from './abstract-single-cache';
 import { redisClient } from '@config/redis/create-redis-client';
 import { CacheUseRedis } from './cache-use-redis';
-import { loggerDebug, loggerError } from '@maur025/core-logger';
+import { loggerError } from '@maur025/core-logger';
 import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cache-data';
 import { deleteRedisIdx } from '@services/redis/delete-redis-idx';
+import { getDeviceBatchFromRedis } from '@services/cache/device/get-device-batch-from-redis';
 @singleton()
 export default class DeviceCache
 	extends AbstractSingleCache<Device>
@@ -43,9 +44,32 @@ export default class DeviceCache
 		this.getKeysAndProcess(async (deviceKeyList): Promise<void> => {
 			this.clear();
 
+			let keyBatch: string[] = [];
+
 			for await (const subkeyList of deviceKeyList) {
-				for (const key of subkeyList) {
+				if (!subkeyList?.length) {
+					continue;
 				}
+
+				for (const key of subkeyList) {
+					keyBatch.push(key);
+
+					if (keyBatch.length === this.BATCH_LIMIT) {
+						const deviceList: Device[] = await getDeviceBatchFromRedis(
+							keyBatch
+						);
+
+						this.addMany(deviceList);
+
+						keyBatch = [];
+					}
+				}
+			}
+
+			if (keyBatch.length) {
+				const deviceList: Device[] = await getDeviceBatchFromRedis(keyBatch);
+
+				this.addMany(deviceList);
 			}
 		}, 'load');
 
