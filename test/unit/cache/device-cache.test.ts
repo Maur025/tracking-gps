@@ -16,6 +16,10 @@ vi.mock('@services/cache/device/delete-device-cache-data', () => ({
 	deleteDeviceCacheData: vi.fn().mockResolvedValue(undefined),
 }));
 
+vi.mock('@services/cache/device/get-device-batch-from-redis', () => ({
+	getDeviceBatchFromRedis: vi.fn().mockResolvedValue([]),
+}));
+
 import { container } from 'tsyringe';
 import DeviceCache from '../../../src/cache/device-cache';
 import Device from '../../../src/models/entity/device';
@@ -23,6 +27,7 @@ import { cacheSingleCommonTest } from './cache-single-common-test';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 import { redisClient } from '@config/redis/create-redis-client';
 import { deleteDeviceCacheData } from '@services/cache/device/delete-device-cache-data';
+import { getDeviceBatchFromRedis } from '@services/cache/device/get-device-batch-from-redis';
 
 describe('Device Cache Tests', () => {
 	const deviceList = [
@@ -91,6 +96,8 @@ describe('Device Cache Tests', () => {
 	});
 
 	test('clearCacheData should delete run 2 times when size is 1000', async () => {
+		vi.clearAllMocks();
+
 		const testFakeAsyncGenerator = async function* () {
 			yield Array.from({ length: 700 }, (_, i) => `key:${i}`);
 			yield Array.from({ length: 300 }, (_, i) => `key:${i + 700}`);
@@ -115,6 +122,8 @@ describe('Device Cache Tests', () => {
 	});
 
 	test('clearCacheData should delete run 3 times when size is 1150', async () => {
+		vi.clearAllMocks();
+
 		const testFakeAsyncGenerator = async function* () {
 			yield Array.from({ length: 800 }, (_, i) => `key:${i}`);
 			yield Array.from({ length: 350 }, (_, i) => `key:${i + 800}`);
@@ -138,6 +147,89 @@ describe('Device Cache Tests', () => {
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
+			3,
+			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`))
+		);
+	});
+
+	test('loadCacheData should clear previus data before adding the new data', async () => {
+		cache.addMany(deviceList);
+		const deviceInCache = cache.getAll();
+
+		await cache.loadCacheData();
+
+		const deviceInCacheAfterExecuting = cache.getAll();
+
+		expect(deviceInCache).toBeDefined();
+		expect(deviceInCache.length).toBeGreaterThan(0);
+
+		expect(deviceInCacheAfterExecuting).toBeDefined();
+		expect(deviceInCacheAfterExecuting.length).toBe(0);
+	});
+
+	test('loadCacheData should run once when size is less to 500', async () => {
+		await cache.loadCacheData();
+
+		expect(getDeviceBatchFromRedis).toHaveBeenCalledOnce();
+	});
+
+	test('loadCacheData should run 2 times when key size is 1000', async () => {
+		vi.clearAllMocks();
+
+		const testFakeAsyncGenerator = async function* () {
+			yield Array.from({ length: 550 }, (_, i) => `key:${i}`);
+			yield Array.from({ length: 325 }, (_, i) => `key:${i + 550}`);
+			yield Array.from({ length: 125 }, (_, i) => `key:${i + 875}`);
+		};
+
+		(redisClient.scanIterator as Mock).mockReturnValue(
+			testFakeAsyncGenerator()
+		);
+
+		await cache.loadCacheData();
+
+		expect(getDeviceBatchFromRedis).toHaveBeenCalledTimes(2);
+
+		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
+			1,
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+		);
+
+		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
+			2,
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+		);
+	});
+
+	test('loadCacheData should run 3 times when key batch size 1150', async () => {
+		vi.clearAllMocks();
+
+		const testFakeAsyncGenerator = async function* () {
+			yield [...Array(400)].map((_, i) => `key:${i}`);
+			yield [...Array(250)].map((_, i) => `key:${i + 400}`);
+			yield [...Array(150)].map((_, i) => `key:${i + 650}`);
+			yield [...Array(350)].map((_, i) => `key:${i + 800}`);
+		};
+
+		(redisClient.scanIterator as Mock).mockReturnValue(
+			testFakeAsyncGenerator()
+		);
+
+		await cache.loadCacheData();
+
+		expect(getDeviceBatchFromRedis).toHaveBeenCalledTimes(3);
+
+		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
+			1,
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+		);
+
+		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
+			2,
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+		);
+
+		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			3,
 			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`))
 		);
