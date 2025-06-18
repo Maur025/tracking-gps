@@ -1,6 +1,6 @@
 import GeofenceOutIoResponse from '@models/dto/response/socket/geofence-out-io-response';
 import GeofenceIn from '@models/entity/geofence-in';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { emitSocketResponse } from '@utils/emit-socket-response';
 import { Server } from 'socket.io';
 import { getDataGeofenceOutIoResponse } from './get-data-geofence-out-io-response';

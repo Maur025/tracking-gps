@@ -8,7 +8,7 @@ import environment from '@config/env';
 
 import type { Server as HttpServer } from 'node:http';
 import { socketErrors } from './socket-errors';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { loggerInfo } from '@maur025/core-logger';
 
 @injectable()

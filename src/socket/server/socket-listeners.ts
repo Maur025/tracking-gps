@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import { socketReply } from './socket-reply';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { connectReply } from '@socket/client/socket-track-reply-client';
 import { loggerInfo } from '@maur025/core-logger';
 

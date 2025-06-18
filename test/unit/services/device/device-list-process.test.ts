@@ -18,7 +18,7 @@ import { deviceListProcess } from '@services/device/device-list-process';
 import { Socket } from 'socket.io-client';
 import DeviceCache from '@cache/device-cache';
 import { container } from 'tsyringe';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import Device from '@models/entity/device';
 import { addDeviceCacheData } from '@services/cache/device/add-device-cache-data';
 import { syncAndEnrichDevices } from '@services/device/device-sync-enrich-data';
