@@ -7,5 +7,5 @@ export default mergeConfig(
 		test: {
 			include: ['test/integration/**/*.test.ts', '**/*.integration.test.ts'],
 		},
-	})
+	}),
 );
