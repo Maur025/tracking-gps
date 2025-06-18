@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const getPayloadSocketResponse = <T>(
 	eventType: string,
 	data: T | T[],
-	message?: string
+	message?: string,
 ): SingleIoResponse<T> | MultiIoResponse<T> => {
 	const id: string = uuidv4();
 	const timestamp: string = new Date().toISOString();

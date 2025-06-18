@@ -37,7 +37,7 @@ describe('delete redis idx test', () => {
 		expect(redisClient.ft.dropIndex).toHaveBeenCalledTimes(1);
 		expect(redisClient.ft.dropIndex).toHaveBeenCalledWith(
 			'test-idx',
-			expect.any(Object)
+			expect.any(Object),
 		);
 	});
 });
