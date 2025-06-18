@@ -7,6 +7,8 @@ import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/ge
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 import { externalSocketTopics } from '@src/external-socket-topics';
+import { availableRooms } from '@src/available-rooms';
+import { getPayloadSocketResponse } from '@utils/get-payload-socket-response';
 
 const clientReply: SocketClient = connectReply();
 
@@ -28,29 +30,61 @@ const {
 	DEVICE_UNSUBSCRIBE_ALL,
 } = externalSocketTopics;
 
+const { DEVICE_MONITORING_ROOM } = availableRooms;
+
 const deviceCache = container.resolve(DeviceCache);
 
 export const socketReply = (socket: Socket, io: Server) => {
 	// CLIENT-REPLY EMIT IN SOCKET-SERVER TO FINAL CONSUMING
-	clientReply.on(MESSAGE, payload => socket.emit(MESSAGE, payload));
-
-	clientReply.on(DEVICE, payload => socket.emit(DEVICE, payload));
-
-	clientReply.on(DEVICES, (payload: Device[]) => {
-		socket.emit(DEVICES, deviceCache.getAll());
+	clientReply.on(MESSAGE, payload => {
+		const responsePayload = getPayloadSocketResponse(MESSAGE, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(MESSAGE, responsePayload);
 	});
 
-	clientReply.on(DEVICE_NEW, payload => socket.emit(DEVICE_NEW, payload));
+	clientReply.on(DEVICE, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE, responsePayload);
+	});
 
-	clientReply.on(DEVICE_REMOVE, payload => socket.emit(DEVICE_REMOVE, payload));
+	clientReply.on(DEVICES, (payload: Device[]) => {
+		const responsePayload = getPayloadSocketResponse<Device[]>(
+			DEVICES,
+			deviceCache.getAll()
+		);
 
-	clientReply.on(DEVICE_TRACKS, payload => socket.emit(DEVICE_TRACKS, payload));
+		// socket.emit(DEVICES, responsePayload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
+	});
 
-	clientReply.on(DEVICE_SETUP, payload => socket.emit(DEVICE_SETUP, payload));
+	clientReply.on(DEVICE_NEW, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_NEW, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_NEW, responsePayload);
+	});
 
-	clientReply.on(DEVICE_STATE, payload => socket.emit(DEVICE_STATE, payload));
+	clientReply.on(DEVICE_REMOVE, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_REMOVE, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_REMOVE, responsePayload);
+	});
 
-	clientReply.on(DEVICE_CONFIG, payload => socket.emit(DEVICE_CONFIG, payload));
+	clientReply.on(DEVICE_TRACKS, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_TRACKS, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_TRACKS, responsePayload);
+	});
+
+	clientReply.on(DEVICE_SETUP, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_SETUP, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_SETUP, responsePayload);
+	});
+
+	clientReply.on(DEVICE_STATE, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_STATE, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_STATE, responsePayload);
+	});
+
+	clientReply.on(DEVICE_CONFIG, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_CONFIG, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_CONFIG, responsePayload);
+	});
 
 	clientReply.on(DEVICE_LAST, (payload: { id: string; last: Track }) => {
 		geofenceVerify({
@@ -59,26 +93,38 @@ export const socketReply = (socket: Socket, io: Server) => {
 			ioServer: io,
 		});
 
-		socket.emit(DEVICE_LAST, payload);
+		const responsePayload = getPayloadSocketResponse(DEVICE_LAST, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_LAST, responsePayload);
 	});
 
-	clientReply.on(DEVICE_CLEARED, payload =>
-		socket.emit(DEVICE_CLEARED, payload)
-	);
+	clientReply.on(DEVICE_CLEARED, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_CLEARED, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_CLEARED, responsePayload);
+	});
 
-	clientReply.on(DEVICE_TRACK_END, payload =>
-		socket.emit(DEVICE_TRACK_END, payload)
-	);
+	clientReply.on(DEVICE_TRACK_END, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_TRACK_END, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_TRACK_END, responsePayload);
+	});
 
-	clientReply.on(DEVICE_SUBSCRIBE, payload =>
-		socket.emit(DEVICE_SUBSCRIBE, payload)
-	);
+	clientReply.on(DEVICE_SUBSCRIBE, payload => {
+		const responsePayload = getPayloadSocketResponse(DEVICE_SUBSCRIBE, payload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_SUBSCRIBE, responsePayload);
+	});
 
-	clientReply.on(DEVICE_UNSUBSCRIBE, payload =>
-		socket.emit(DEVICE_UNSUBSCRIBE, payload)
-	);
+	clientReply.on(DEVICE_UNSUBSCRIBE, payload => {
+		const responsePayload = getPayloadSocketResponse(
+			DEVICE_UNSUBSCRIBE,
+			payload
+		);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_UNSUBSCRIBE, responsePayload);
+	});
 
-	clientReply.on(DEVICE_UNSUBSCRIBE_ALL, payload =>
-		socket.emit(DEVICE_UNSUBSCRIBE_ALL, payload)
-	);
+	clientReply.on(DEVICE_UNSUBSCRIBE_ALL, payload => {
+		const responsePayload = getPayloadSocketResponse(
+			DEVICE_UNSUBSCRIBE_ALL,
+			payload
+		);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_UNSUBSCRIBE_ALL, responsePayload);
+	});
 };
