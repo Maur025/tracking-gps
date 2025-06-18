@@ -1,7 +1,7 @@
 import DeviceCache from '@cache/device-cache';
 import { loggerWarn } from '@maur025/core-logger';
 import Device from '@models/entity/device';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { Socket } from 'socket.io-client';
 import { container } from 'tsyringe';
 

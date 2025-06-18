@@ -1,7 +1,7 @@
 import Device from '@models/entity/device';
 import { Socket } from 'socket.io-client';
 import { syncAndEnrichDevices } from './device-sync-enrich-data';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 import {

@@ -1,6 +1,6 @@
 import environment from '@config/env';
 import Device from '@models/entity/device';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { deviceListProcess } from '@services/device/device-list-process';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';

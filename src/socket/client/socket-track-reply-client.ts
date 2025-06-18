@@ -1,5 +1,5 @@
 import environment from '@config/env';
-import { Topics } from '@models/enums/topics.enum';
+import { Topics } from '@src/socket-topics';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 import { loggerInfo } from '@maur025/core-logger';
