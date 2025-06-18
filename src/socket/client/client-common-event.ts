@@ -1,8 +1,8 @@
 import { loggerDebug, loggerError, loggerInfo } from '@maur025/core-logger';
-import { Topics } from '@src/socket-topics';
+import { externalSocketTopics } from '@src/external-socket-topics';
 import { Socket } from 'socket.io-client';
 
-const { RECONNECT_ATTEMPT, RECONNECT_FAILED, RECONNECT } = Topics;
+const { RECONNECT_ATTEMPT, RECONNECT_FAILED, RECONNECT } = externalSocketTopics;
 
 export const clientCommonEvent = ({
 	socketClient,

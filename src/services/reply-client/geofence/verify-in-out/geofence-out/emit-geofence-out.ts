@@ -1,11 +1,11 @@
 import GeofenceOutIoResponse from '@models/dto/response/socket/geofence-out-io-response';
 import GeofenceIn from '@models/entity/geofence-in';
-import { Topics } from '@src/socket-topics';
 import { emitSocketResponse } from '@utils/emit-socket-response';
 import { Server } from 'socket.io';
 import { getDataGeofenceOutIoResponse } from './get-data-geofence-out-io-response';
 import { getGeofenceOutMessage } from '../get-geofence-message';
 import { loggerWarn } from '@maur025/core-logger';
+import { internalSocketTopics } from '@src/internal-socket-topics';
 
 interface Request {
 	deviceId: string;
@@ -14,7 +14,7 @@ interface Request {
 	geofenceInCurrentList?: GeofenceIn[];
 }
 
-const { GEOFENCE_OUT } = Topics;
+const { GEOFENCE_OUT_RESPONSE } = internalSocketTopics;
 
 export const emitGeofenceOut = ({
 	ioServer,
@@ -54,7 +54,7 @@ export const emitGeofenceOut = ({
 	emitSocketResponse<GeofenceOutIoResponse>({
 		data: geofenceOutIoResponse,
 		ioServer: ioServer,
-		eventType: GEOFENCE_OUT,
+		eventType: GEOFENCE_OUT_RESPONSE,
 		message,
 	});
 };

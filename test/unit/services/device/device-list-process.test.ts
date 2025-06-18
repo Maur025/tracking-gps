@@ -18,13 +18,13 @@ import { deviceListProcess } from '@services/device/device-list-process';
 import { Socket } from 'socket.io-client';
 import DeviceCache from '@cache/device-cache';
 import { container } from 'tsyringe';
-import { Topics } from '@src/socket-topics';
 import Device from '@models/entity/device';
 import { addDeviceCacheData } from '@services/cache/device/add-device-cache-data';
 import { syncAndEnrichDevices } from '@services/device/device-sync-enrich-data';
 import { loggerWarn } from '@maur025/core-logger';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
-const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
+const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = externalSocketTopics;
 
 describe('device list process test', () => {
 	let mockSocketTest: Socket;

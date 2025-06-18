@@ -1,8 +1,8 @@
 import environment from '@config/env';
-import { Topics } from '@src/socket-topics';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 import { loggerInfo } from '@maur025/core-logger';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
 const CLIENT_NAME: string = 'track-reply-client';
 let socketReply: Socket | null = null;
@@ -22,7 +22,7 @@ export const connectReply = (): Socket => {
 			serverUrl: environment.TRACK_URL,
 		});
 
-		socketReply.on(Topics.CONNECT, () => {
+		socketReply.on(externalSocketTopics.CONNECT, () => {
 			loggerInfo(
 				`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socketReply?.id}'`
 			);

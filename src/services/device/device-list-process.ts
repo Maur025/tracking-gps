@@ -1,7 +1,6 @@
 import Device from '@models/entity/device';
 import { Socket } from 'socket.io-client';
 import { syncAndEnrichDevices } from './device-sync-enrich-data';
-import { Topics } from '@src/socket-topics';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 import {
@@ -11,13 +10,14 @@ import {
 } from '@utils/random-number-by-range';
 import { addDeviceCacheData } from '@services/cache/device/add-device-cache-data';
 import { loggerWarn } from '@maur025/core-logger';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
 interface Request {
 	deviceList: Device[];
 	socketClient: Socket;
 }
 
-const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = Topics;
+const { DEVICE_UNSUBSCRIBE_ALL, DEVICE_SUBSCRIBE } = externalSocketTopics;
 
 export const deviceListProcess = async ({
 	deviceList,
