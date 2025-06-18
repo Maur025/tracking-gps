@@ -1,11 +1,11 @@
 import DeviceCache from '@cache/device-cache';
 import { loggerWarn } from '@maur025/core-logger';
 import Device from '@models/entity/device';
-import { Topics } from '@src/socket-topics';
+import { externalSocketTopics } from '@src/external-socket-topics';
 import { Socket } from 'socket.io-client';
 import { container } from 'tsyringe';
 
-const { DEVICE_SUBSCRIBE } = Topics;
+const { DEVICE_SUBSCRIBE } = externalSocketTopics;
 
 interface Request {
 	deviceData: Device;

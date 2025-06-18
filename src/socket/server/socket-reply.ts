@@ -1,4 +1,3 @@
-import { Topics } from '@src/socket-topics';
 import { connectReply } from '@socket/client/socket-track-reply-client';
 import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
@@ -7,6 +6,7 @@ import Track from '@models/entity/track';
 import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/geofence-verify';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
 const clientReply: SocketClient = connectReply();
 
@@ -26,7 +26,7 @@ const {
 	DEVICE_SUBSCRIBE,
 	DEVICE_UNSUBSCRIBE,
 	DEVICE_UNSUBSCRIBE_ALL,
-} = Topics;
+} = externalSocketTopics;
 
 const deviceCache = container.resolve(DeviceCache);
 

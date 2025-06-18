@@ -1,15 +1,16 @@
 import environment from '@config/env';
 import Device from '@models/entity/device';
-import { Topics } from '@src/socket-topics';
 import { deviceListProcess } from '@services/device/device-list-process';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
 import { deviceProcess } from '@services/device/device-process';
 import { deviceNewProcess } from '@services/device/device-new-process';
 import { loggerInfo } from '@maur025/core-logger';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
 const CLIENT_NAME: string = 'track-client';
-const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_NEW, DEVICE_LAST } = Topics;
+const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_NEW, DEVICE_LAST } =
+	externalSocketTopics;
 
 export const connect = (): void => {
 	const socket: Socket = io(environment.TRACK_URL, {

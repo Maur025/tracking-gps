@@ -1,12 +1,12 @@
-export const Topics = {
-	// DEFAULT TOPICS
+export const externalSocketTopics = {
+	// DEFAULT TOPICS OF SOCKET
 	ERROR: 'error',
 	CONNECTION: 'connection',
 	CONNECT: 'connect',
 	RECONNECT_ATTEMPT: 'reconnect_attempt',
 	RECONNECT_FAILED: 'reconnect_failed',
 	RECONNECT: 'reconnect',
-	// CUSTOM TOPICS
+	// CAPTURE SERVER TOPICS
 	MESSAGE: 'message',
 	DEVICE: 'device',
 	DEVICES: 'devices',
@@ -22,7 +22,4 @@ export const Topics = {
 	DEVICE_UNSUBSCRIBE: 'device.unsubscribe',
 	DEVICE_UNSUBSCRIBE_ALL: 'device.unsubscribe.all',
 	DEVICE_SUBSCRIBE: 'device.subscribe',
-	// GEOFENCE TOPICS
-	GEOFENCE_IN: 'geofence.in',
-	GEOFENCE_OUT: 'geofence.out',
 } as const;

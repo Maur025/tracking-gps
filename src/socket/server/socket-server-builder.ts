@@ -8,8 +8,8 @@ import environment from '@config/env';
 
 import type { Server as HttpServer } from 'node:http';
 import { socketErrors } from './socket-errors';
-import { Topics } from '@src/socket-topics';
 import { loggerInfo } from '@maur025/core-logger';
+import { externalSocketTopics } from '@src/external-socket-topics';
 
 @injectable()
 export default class SocketServerBuilder {
@@ -44,10 +44,10 @@ export default class SocketServerBuilder {
 		const httpServer = createServer(this.app);
 		const ioServer = this.createSocketServer(httpServer);
 
-		ioServer.on(Topics.CONNECTION, (socket: Socket) =>
+		ioServer.on(externalSocketTopics.CONNECTION, (socket: Socket) =>
 			this.listenersFunction(socket, ioServer)
 		);
-		ioServer.on(Topics.ERROR, socketErrors);
+		ioServer.on(externalSocketTopics.ERROR, socketErrors);
 
 		return {
 			getIoServer: () => ioServer,
