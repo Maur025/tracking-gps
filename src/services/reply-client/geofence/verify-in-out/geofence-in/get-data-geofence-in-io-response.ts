@@ -20,5 +20,5 @@ export const getDataGeofenceInIoResponse = ({
 			deviceId,
 			geofences: geofenceIoResponseList,
 			isInside: !geofenceIoResponseList.length,
-		})
+		}),
 	);

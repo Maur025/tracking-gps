@@ -3,7 +3,7 @@ import Device from '@models/entity/device';
 
 export const addDeviceBatchToRedis = async (
 	deviceBatch: Device[],
-	basekey: string
+	basekey: string,
 ): Promise<unknown[] | null> => {
 	if (!deviceBatch?.length) {
 		return null;
@@ -31,7 +31,7 @@ export const addDeviceBatchToRedis = async (
 				states: { ...states },
 				last: { ...last },
 				personal: { ...personal },
-			})
+			}),
 	);
 
 	return multi.exec();

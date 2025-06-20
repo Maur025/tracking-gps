@@ -36,12 +36,12 @@ export const emitGeofenceOut = ({
 			geofenceIn =>
 				!geofenceInCurrentList.some(
 					({ sectionInternalId }) =>
-						geofenceIn.sectionInternalId === sectionInternalId
-				)
+						geofenceIn.sectionInternalId === sectionInternalId,
+				),
 		);
 	}
 
-	let geofenceOutIoResponse: GeofenceOutIoResponse = {
+	const geofenceOutIoResponse: GeofenceOutIoResponse = {
 		deviceId,
 		geofences: getDataGeofenceOutIoResponse({
 			geofenceInOutTransition: geofenceOutList,

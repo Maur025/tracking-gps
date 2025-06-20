@@ -1,16 +1,21 @@
-# PACKAGE MANAGER
-This project currently uses __pnpm__ as its package manager.
+# TRACKING GPS
+
+## PACKAGE MANAGER
+
+This project currently uses **pnpm** as its package manager.
 
 Use the following command to install dependencies:
 
     pnpm install
 
-# RUNNING
+## RUNNING
+
 To run the project in developer mode, execute the following command:
 
     pnpm dev
 
-# RUN TESTS
+## RUN TESTS
+
 To run test, execute the following command:
-   
+
     pnpm test

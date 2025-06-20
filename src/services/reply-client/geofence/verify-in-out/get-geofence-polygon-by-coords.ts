@@ -21,6 +21,6 @@ export const getPolygonByCoords = ({ coords }: Request): Polygon => {
 			}
 
 			return [];
-		}) ?? []
+		}) ?? [],
 	);
 };

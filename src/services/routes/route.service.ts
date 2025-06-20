@@ -19,7 +19,7 @@ export default class RouteService extends AbstractApiService<RouteResponse> {
 
 	public readonly getAll = (): Observable<ApiResponse<RouteResponse>> =>
 		get<ApiResponse<RouteResponse>>(
-			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}`
+			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}`,
 		).pipe(
 			map((response: ApiResponse<RouteResponse>) => {
 				const routeResponseList: RouteResponse[] = handleAsArray(response);
@@ -39,8 +39,8 @@ export default class RouteService extends AbstractApiService<RouteResponse> {
 						typeof error?.cause === 'object'
 							? JSON.stringify(error.cause)
 							: error?.cause
-					}`
+					}`,
 				);
-			})
+			}),
 		);
 }

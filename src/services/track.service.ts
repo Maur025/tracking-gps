@@ -19,6 +19,6 @@ export default class TrackService extends AbstractApiService<TrackingResponse> {
 		ApiResponse<TrackingResponse>
 	> =>
 		get<ApiResponse<TrackingResponse>>(
-			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}?size=2&page=1`
+			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}?size=2&page=1`,
 		);
 }

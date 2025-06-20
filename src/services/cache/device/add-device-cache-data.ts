@@ -6,7 +6,7 @@ import { SCHEMA_FIELD_TYPE } from 'redis';
 import { addRedisIdx } from '@services/redis/add-redis-idx';
 
 export const addDeviceCacheData = async (
-	deviceList: Device[]
+	deviceList: Device[],
 ): Promise<void> => {
 	if (!deviceList?.length) {
 		return;
@@ -37,6 +37,6 @@ export const addDeviceCacheData = async (
 		{
 			id: SCHEMA_FIELD_TYPE.TAG,
 		},
-		deviceCache.getRedisKey()
+		deviceCache.getRedisKey(),
 	);
 };

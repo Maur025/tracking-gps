@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fromFetch } from 'rxjs/fetch';
 import { getAgentByUrl } from '../config/dns-cache';
 import {
@@ -19,7 +20,7 @@ const request = <T>(
 	url: string,
 	method: HttpMethod,
 	body?: unknown,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => {
 	const allOptions = {
 		...options,
@@ -41,25 +42,25 @@ const request = <T>(
 						? response.json()?.then((errorBody: any) => {
 								throw new ApiException(
 									response.status,
-									errorBody.message ?? 'Error desconocido'
+									errorBody.message ?? 'Error desconocido',
 								);
-						  })
+							})
 						: response.text().then((text: string) => {
 								throw new ApiException(
 									response.status,
-									`Error not JSON: ${text}`
+									`Error not JSON: ${text}`,
 								);
-						  })
+							}),
 				);
 			}
 
 			return isJson(response)
 				? from(response.json() as Promise<T>)
 				: Promise.reject(
-						new ApiException(response.status, 'Response not JSON')
-				  );
+						new ApiException(response.status, 'Response not JSON'),
+					);
 		}),
-		catchError(error => throwError(() => error))
+		catchError(error => throwError(() => error)),
 	);
 };
 
@@ -71,28 +72,28 @@ export const isJson = (response: Response): boolean => {
 
 export const get = <T>(
 	url: string,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => request<T>(url, 'GET', undefined, headers);
 
 export const post = <T>(
 	url: string,
 	body: any,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => request<T>(url, 'POST', body, headers);
 
 export const put = <T>(
 	url: string,
 	body: any,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => request<T>(url, 'PUT', body, headers);
 
 export const delet = <T>(
 	url: string,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => request<T>(url, 'DELETE', undefined, headers);
 
 export const patch = <T>(
 	url: string,
 	body: any,
-	headers: Record<string, string> = {}
+	headers: Record<string, string> = {},
 ): Observable<T> => request<T>(url, 'PATCH', body, headers);

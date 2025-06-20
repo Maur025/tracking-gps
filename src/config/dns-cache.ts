@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 import { TOKENS } from './ioc/token';
 
 const cacheableLookup = container.resolve<CacheableLookup>(
-	TOKENS.CacheableLookup
+	TOKENS.CacheableLookup,
 );
 
 let isInstalled = false;

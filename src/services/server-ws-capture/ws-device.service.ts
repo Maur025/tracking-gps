@@ -1,5 +1,4 @@
 import environment from '@config/env';
-import DeviceResponse from '@models/dto/response/device-response';
 import WsTrackResponse from '@models/dto/response/ws-track-response';
 import AbstractApiService from '@utils/abstract-api-service';
 import { get } from '@utils/api-client';
@@ -7,7 +6,7 @@ import { Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 
 @singleton()
-export default class WsDeviceService extends AbstractApiService<DeviceResponse> {
+export default class WsDeviceService extends AbstractApiService<WsTrackResponse> {
 	constructor() {
 		super({ baseUrl: `${environment.TRACK_URL}`, resource: 'device' });
 	}
@@ -18,7 +17,7 @@ export default class WsDeviceService extends AbstractApiService<DeviceResponse> 
 		deviceId: string;
 	}): Observable<WsTrackResponse> =>
 		get<WsTrackResponse>(
-			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracks`
+			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracks`,
 		);
 
 	public readonly getHistoryTracks = ({
@@ -27,6 +26,6 @@ export default class WsDeviceService extends AbstractApiService<DeviceResponse> 
 		deviceId: string;
 	}): Observable<WsTrackResponse> =>
 		get<WsTrackResponse>(
-			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracksHistory`
+			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracksHistory`,
 		);
 }

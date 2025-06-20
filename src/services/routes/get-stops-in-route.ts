@@ -2,7 +2,7 @@ import Stop from '@models/entity/stop';
 import Track from '@models/entity/track';
 
 export const getStopsInRoute = (trackList: Track[]): Stop[] => {
-	let stopList: Stop[] = [];
+	const stopList: Stop[] = [];
 	let isStop: boolean = false;
 
 	let stopSwap: Stop = {};

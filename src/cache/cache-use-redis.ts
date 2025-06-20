@@ -6,8 +6,8 @@ export interface CacheUseRedis {
 	clearCacheData: () => Promise<void>;
 	getKeysAndProcess: (
 		process: (
-			keyList: AsyncGenerator<string[], void, unknown>
+			keyList: AsyncGenerator<string[], void, unknown>,
 		) => Promise<void>,
-		labelProcess?: string
+		labelProcess?: string,
 	) => Promise<void>;
 }

@@ -22,6 +22,6 @@ export const cacheInitializer = (): Observable<unknown> => {
 		concatMap(() => group$),
 		tap(response => {
 			console.log(response);
-		})
+		}),
 	);
 };

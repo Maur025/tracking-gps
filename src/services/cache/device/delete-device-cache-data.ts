@@ -1,7 +1,7 @@
 import { redisClient } from '@config/redis/create-redis-client';
 
 export const deleteDeviceCacheData = async (
-	deviceKeyBatch: string[]
+	deviceKeyBatch: string[],
 ): Promise<unknown> => {
 	if (!deviceKeyBatch?.length) {
 		return;

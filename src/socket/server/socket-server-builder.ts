@@ -27,7 +27,7 @@ export default class SocketServerBuilder {
 	}
 
 	public setListenersFunction(
-		listenersFunction: (socket: Socket, io: Server) => void
+		listenersFunction: (socket: Socket, io: Server) => void,
 	): this {
 		this.listenersFunction = listenersFunction;
 
@@ -37,7 +37,7 @@ export default class SocketServerBuilder {
 	public build(): SocketServerBuilderResponse {
 		if (!this.app) {
 			throw commonException(
-				`App not set. Please set app before building server`
+				`App not set. Please set app before building server`,
 			);
 		}
 
@@ -45,7 +45,7 @@ export default class SocketServerBuilder {
 		const ioServer = this.createSocketServer(httpServer);
 
 		ioServer.on(externalSocketTopics.CONNECTION, (socket: Socket) =>
-			this.listenersFunction(socket, ioServer)
+			this.listenersFunction(socket, ioServer),
 		);
 		ioServer.on(externalSocketTopics.ERROR, socketErrors);
 
@@ -68,7 +68,7 @@ export default class SocketServerBuilder {
 			loggerInfo(
 				`server 'Express' and server 'IO' running on: ${
 					environment.HOST ?? 'http://localhost'
-				}:${environment.PORT}`
+				}:${environment.PORT}`,
 			);
 		});
 	};

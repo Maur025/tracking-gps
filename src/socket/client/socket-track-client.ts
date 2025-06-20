@@ -28,24 +28,28 @@ export const connect = (): void => {
 
 	socket.on(CONNECT, () => {
 		loggerInfo(
-			`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socket.id}'`
+			`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socket.id}'`,
 		);
 
 		socket.emit(MESSAGE, 'enviando');
 	});
 
 	socket.on(DEVICES, (payload: Device[]) =>
-		deviceListProcess({ deviceList: [...payload], socketClient: socket })
+		deviceListProcess({ deviceList: [...payload], socketClient: socket }),
 	);
 
 	socket.on(DEVICE, (payload: Device) =>
-		deviceProcess({ deviceData: { ...payload }, socketClient: socket })
+		deviceProcess({ deviceData: { ...payload }, socketClient: socket }),
 	);
 	socket.on(DEVICE_NEW, (payload: Device) =>
-		deviceNewProcess({ deviceData: { ...payload } })
+		deviceNewProcess({ deviceData: { ...payload } }),
 	);
 
-	socket.on(DEVICE_LAST, payload => {
-		// console.log(payload);
-	});
+	socket.on(
+		DEVICE_LAST,
+		//payload
+		() => {
+			// console.log(payload);
+		},
+	);
 };

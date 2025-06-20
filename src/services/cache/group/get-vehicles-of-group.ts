@@ -4,7 +4,7 @@ import { getVehicleMetadata } from './get-vehicle-metadata';
 import { loggerError } from '@maur025/core-logger';
 
 export const getVehiclesOfGroup = (
-	groupVehicles?: GroupVehicleResponse[]
+	groupVehicles?: GroupVehicleResponse[],
 ): Vehicle[] => {
 	if (!groupVehicles) {
 		loggerError(`Error can't process undefined data`);

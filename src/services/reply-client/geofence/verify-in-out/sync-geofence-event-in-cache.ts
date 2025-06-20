@@ -35,7 +35,7 @@ export const syncGeofenceEventInCache = ({
 
 	if (geofenceInCacheSet?.size && !geofenceInList.length) {
 		console.log(
-			'ANTES SE TENIA UN REGISTRO PERO AHORA NO EXISTE NADA EN LA LISTA ... SALIO DE UNA O TODAS LAS GEOCERCAS'
+			'ANTES SE TENIA UN REGISTRO PERO AHORA NO EXISTE NADA EN LA LISTA ... SALIO DE UNA O TODAS LAS GEOCERCAS',
 		);
 
 		geofenceInCache.deleteById(deviceId);
@@ -69,7 +69,7 @@ export const syncGeofenceEventInCache = ({
 
 	if (
 		!newGeofenceInList.length &&
-		geofenceInList.length < geofenceInCacheSet?.size!
+		geofenceInList.length < (geofenceInCacheSet?.size ?? 0)
 	) {
 		geofenceInCache.replaceById(deviceId, new Set(geofenceInList));
 		console.log('LA LISTA ES MENOR ... SE ABANDONO ALGUNA GEOCERCA');
@@ -89,7 +89,7 @@ export const syncGeofenceEventInCache = ({
 		geofenceInCache.updateById(deviceId, new Set(newGeofenceInList));
 
 		const fullGeofenceInList: GeofenceIn[] = Array.from(
-			geofenceInCache.getById(deviceId) ?? new Set()
+			geofenceInCache.getById(deviceId) ?? new Set(),
 		);
 
 		emitGeofenceIn({ deviceId, ioServer, geofenceInList: fullGeofenceInList });

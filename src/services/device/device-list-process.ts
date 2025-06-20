@@ -29,7 +29,7 @@ export const deviceListProcess = async ({
 
 	if (!deviceList?.length) {
 		loggerWarn(
-			`device list must not be empty or undefined, skipping initialization ...`
+			`device list must not be empty or undefined, skipping initialization ...`,
 		);
 
 		return;

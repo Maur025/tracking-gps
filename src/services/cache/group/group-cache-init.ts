@@ -23,7 +23,7 @@ export const groupCacheInit = (groupResponse?: GroupResponse[]): void => {
 				description,
 				vehicles: getVehiclesOfGroup(vehicles),
 			};
-		}
+		},
 	);
 
 	groupCache.addMany(groupList);

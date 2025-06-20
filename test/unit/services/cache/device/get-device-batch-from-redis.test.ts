@@ -25,7 +25,7 @@ describe('get device batch from redis test', () => {
 				Array.from({ length: 500 }, (_, i) => ({
 					id: `device-id-${i}`,
 					type: 'mei-t311',
-				}))
+				})),
 			),
 		});
 	});
@@ -33,7 +33,7 @@ describe('get device batch from redis test', () => {
 	test('should get devices data from redis', async () => {
 		const deviceKeyBatch: string[] = Array.from(
 			{ length: 500 },
-			(_, i) => `${TEST_KEY}${i}`
+			(_, i) => `${TEST_KEY}${i}`,
 		);
 
 		const deviceList: Device[] = await getDeviceBatchFromRedis(deviceKeyBatch);

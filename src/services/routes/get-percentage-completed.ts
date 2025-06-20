@@ -1,11 +1,11 @@
 import Track from '@models/entity/track';
 
 export const getPercentageCompleted = ({
-	routeSelected,
-	trackList,
+	// routeSelected,
+	// trackList,
 	maxPointDistance,
 }: GetPercentageRequest): number => {
-	return 0;
+	return maxPointDistance && 0;
 };
 
 interface GetPercentageRequest {

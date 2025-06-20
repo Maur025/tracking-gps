@@ -3,7 +3,7 @@ import AbstractCache from './abstract-cache';
 import { loggerWarn } from '@maur025/core-logger';
 
 export default abstract class AbstractSingleCache<
-	E extends BaseData
+	E extends BaseData,
 > extends AbstractCache<E> {
 	/**
 	 * Adds a new entity to the cache by its ID.
@@ -14,7 +14,7 @@ export default abstract class AbstractSingleCache<
 	public addById(id: string, data: E): void {
 		if (this.hasId(id)) {
 			loggerWarn(
-				`${this.getResource()} with id ${id} already exists in cache, skipping...`
+				`${this.getResource()} with id ${id} already exists in cache, skipping...`,
 			);
 			return;
 		}

@@ -79,9 +79,9 @@ describe('create redis client test', () => {
 		const dataInRedis: string | null = await redisClient.get(REDIS_TEST_KEY);
 
 		await redisClient.del(REDIS_TEST_KEY);
-		const dataAfterDeleteInRedis: string | null = await redisClient.get(
-			REDIS_TEST_KEY
-		);
+
+		const dataAfterDeleteInRedis: string | null =
+			await redisClient.get(REDIS_TEST_KEY);
 
 		expect(dataInRedis).toBeDefined();
 		expect(dataInRedis).not.toBeNull();

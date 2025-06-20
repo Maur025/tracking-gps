@@ -16,7 +16,7 @@ export const getVehicleMetadata = (metadata?: string): VehicleMetadata => {
 		return dataJson as VehicleMetadata;
 	} catch (error) {
 		loggerWarn(
-			`Error to convert metadata to Json, returning empty array. ${error}`
+			`Error to convert metadata to Json, returning empty array. ${error}`,
 		);
 
 		return {};

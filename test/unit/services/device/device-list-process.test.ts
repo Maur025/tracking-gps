@@ -6,7 +6,7 @@ vi.mock('@services/device/device-sync-enrich-data', () => ({
 	syncAndEnrichDevices: vi
 		.fn()
 		.mockResolvedValue(
-			[...Array(25)].map((_, i) => ({ id: `device-id-${i}` }))
+			[...Array(25)].map((_, i) => ({ id: `device-id-${i}` })),
 		),
 }));
 
@@ -71,12 +71,12 @@ describe('device list process test', () => {
 		expect(mockSocketEmit).toHaveBeenNthCalledWith(
 			1,
 			DEVICE_UNSUBSCRIBE_ALL,
-			''
+			'',
 		);
 		expect(mockSocketEmit).toHaveBeenNthCalledWith(
 			2,
 			DEVICE_SUBSCRIBE,
-			[...Array(25)].map((_, i) => `device-id-${i}`)
+			[...Array(25)].map((_, i) => `device-id-${i}`),
 		);
 
 		expect(syncAndEnrichDevices).toHaveBeenCalledWith(deviceList);
@@ -85,7 +85,7 @@ describe('device list process test', () => {
 			[...Array(25)].map((_, i) => ({
 				id: `device-id-${i}`,
 				personal: expect.any(Object),
-			}))
+			})),
 		);
 
 		expect(mockLoadCacheData).toHaveBeenCalledOnce();
@@ -96,7 +96,7 @@ describe('device list process test', () => {
 
 		expect(mockClearCacheData).toHaveBeenCalledOnce();
 		expect(loggerWarn).toHaveBeenCalledWith(
-			`device list must not be empty or undefined, skipping initialization ...`
+			`device list must not be empty or undefined, skipping initialization ...`,
 		);
 
 		expect(mockSocketEmit).not.toHaveBeenCalled();

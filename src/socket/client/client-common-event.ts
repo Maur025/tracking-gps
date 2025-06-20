@@ -11,7 +11,7 @@ export const clientCommonEvent = ({
 }: ClientCommonEvent): void => {
 	socketClient.io.on(RECONNECT_ATTEMPT, () => {
 		loggerDebug(
-			`[${clientName}] trying reconnect to socket-server ${serverUrl}`
+			`[${clientName}] trying reconnect to socket-server ${serverUrl}`,
 		);
 	});
 

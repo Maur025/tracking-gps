@@ -13,7 +13,7 @@ import { catchError, Observable, of, tap } from 'rxjs';
 const trackService = container.resolve(TrackService);
 
 export const processByLastTrackIdDefined = (
-	device: Device
+	device: Device,
 ): Observable<ApiResponse<TrackingResponse>> => {
 	const { states } = device;
 
@@ -47,6 +47,6 @@ export const processByLastTrackIdDefined = (
 		catchError((error: ErrorResponse) => {
 			console.log(error);
 			return of();
-		})
+		}),
 	);
 };

@@ -39,7 +39,7 @@ describe('add device batch to redis test', () => {
 			expect(mockJsonSet).toHaveBeenCalledWith(
 				`${TEST_KEY}id${index}`,
 				'$',
-				expect.any(Object)
+				expect.any(Object),
 			);
 		}
 

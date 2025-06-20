@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import AbstractSingleCache from '@cache/abstract-single-cache';
 import { BaseData } from '@maur025/core-model-data';
 import { expect, test } from 'vitest';
 
 export const cacheSingleCommonTest = <T extends BaseData>(
 	cache: AbstractSingleCache<T>,
-	dataToTestList: T[] = []
+	dataToTestList: T[] = [],
 ) => {
 	test('getAll in new instance return should be empty array', () => {
 		const cacheDataList = cache.getAll();

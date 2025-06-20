@@ -13,6 +13,6 @@ export const ServerBuilderSchema = z.object({
 	port: z.number().int().min(1).max(65535),
 	staticPath: z.string().nullable().optional(),
 	app: z.custom<Application>(
-		val => typeof val === 'function' || typeof val === 'object'
+		val => typeof val === 'function' || typeof val === 'object',
 	),
 });

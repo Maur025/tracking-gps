@@ -9,7 +9,7 @@ export const handleAsArray = <T extends BaseData>(response: ApiResponse<T>) => {
 };
 
 export const handleAsObject = <T extends BaseData>(
-	response: ApiResponse<T>
+	response: ApiResponse<T>,
 ) => {
 	const dataResponse: T | T[] = findData(response);
 
@@ -21,7 +21,7 @@ export const handleAsObject = <T extends BaseData>(
 };
 
 export const findData = <T extends BaseData>(
-	response: ApiResponse<T>
+	response: ApiResponse<T>,
 ): T | T[] => {
 	return response.content ?? response.data ?? [];
 };

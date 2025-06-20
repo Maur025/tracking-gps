@@ -43,7 +43,7 @@ export default class ServerBuilder implements IServerBuilder {
 			cors({
 				origin: '*',
 				optionsSuccessStatus: 200,
-			})
+			}),
 		);
 	};
 
@@ -53,7 +53,7 @@ export default class ServerBuilder implements IServerBuilder {
 				extended: true,
 				parameterLimit: DEFAULT_LIMITS.LIMIT_PARAMETER,
 				limit: DEFAULT_LIMITS.LIMIT_URLENCODED,
-			})
+			}),
 		);
 	};
 
@@ -94,7 +94,7 @@ export default class ServerBuilder implements IServerBuilder {
 		if (!result.success) {
 			errorValidate(
 				result.error,
-				'Any property no set. Please set before starting server'
+				'Any property no set. Please set before starting server',
 			);
 		}
 	};

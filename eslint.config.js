@@ -35,5 +35,8 @@ export default defineConfig([
 		plugins: { markdown },
 		language: 'markdown/gfm',
 		extends: ['markdown/recommended'],
+		rules: {
+			'prettier/prettier': 'off',
+		},
 	},
 ]);
