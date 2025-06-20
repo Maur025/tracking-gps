@@ -11,6 +11,9 @@ import {
 } from '@maur025/core-model-data';
 import DeviceCache from '@cache/device-cache';
 import RouteCache from '@cache/route-cache';
+import { RequestValidate } from '@models/interface/request-validate.interface';
+import type { TestSchema } from '@schemas/controller/test.schema';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 
 @injectable()
 export default class TestController {
@@ -18,6 +21,8 @@ export default class TestController {
 		@inject(TrackService) private readonly trackService: TrackService,
 		@inject(DeviceCache) private readonly deviceCache: DeviceCache,
 		@inject(RouteCache) private readonly routeCache: RouteCache,
+		@inject(ZodSwaggerGenerator)
+		private readonly zodSwaggerGenerator: ZodSwaggerGenerator,
 	) {}
 
 	public getTest = (req: Request, res: Response): void => {
@@ -57,5 +62,26 @@ export default class TestController {
 
 	public readonly currentRoutes = (req: Request, res: Response): void => {
 		res.status(StatusCodes.OK).json(this.routeCache.getAll());
+	};
+
+	public readonly zodTestValidationAndInheritance = (
+		req: RequestValidate<TestSchema>,
+		res: Response,
+	): void => {
+		const { size = 0, page = 0 } = req.queryValidate ?? {};
+
+		const result = size + page;
+
+		res.status(StatusCodes.OK).json({
+			test: 'Hola',
+			params: req.params,
+			body: req.body,
+			query: req.query,
+			result,
+		});
+	};
+
+	public readonly viewJsonConfigSwagger = (req: Request, res: Response) => {
+		res.json(this.zodSwaggerGenerator.getOpenApiDocument());
 	};
 }

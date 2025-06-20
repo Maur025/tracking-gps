@@ -10,7 +10,7 @@ import { TOKENS } from './ioc/token';
 import {
 	ServerBuilderRequest,
 	ServerBuilderSchema,
-} from '@models/schemas/server-builder-schema';
+} from '@schemas/server-builder/server-builder-schema';
 import { errorValidate } from '@utils/zod-exception';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {
