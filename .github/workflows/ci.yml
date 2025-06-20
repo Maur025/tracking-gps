@@ -30,6 +30,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Style and Syntax checking
+        run: pnpm lint
+        continue-on-error: false
+
       - name: Run tests
         run: pnpm test
 
