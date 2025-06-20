@@ -23,6 +23,7 @@
 	"license": "ISC",
 	"packageManager": "pnpm@10.12.1",
 	"dependencies": {
+		"@asteasolutions/zod-to-openapi": "8.0.0-beta.4",
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-common": "^1.0.1",
 		"@maur025/core-logger": "^1.0.0",
@@ -33,6 +34,7 @@
 		"dotenv": "^16.4.7",
 		"express": "^5.1.0",
 		"ol": "^10.5.0",
+		"pdfkit": "^0.17.1",
 		"redis": "^5.5.6",
 		"reflect-metadata": "^0.2.2",
 		"rxjs": "^7.8.2",
@@ -40,7 +42,7 @@
 		"socket.io-client": "^4.8.1",
 		"tsyringe": "^4.9.1",
 		"uuid": "^11.1.0",
-		"zod": "^3.24.2"
+		"zod": "^3.25.67"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.29.0",
