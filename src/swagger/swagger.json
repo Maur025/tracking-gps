@@ -34,9 +34,7 @@
 						}
 					}
 				},
-				"tags": [
-					"Tests"
-				],
+				"tags": ["Tests"],
 				"security": [],
 				"parameters": []
 			}

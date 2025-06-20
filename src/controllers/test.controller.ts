@@ -17,7 +17,7 @@ export default class TestController {
 	constructor(
 		@inject(TrackService) private readonly trackService: TrackService,
 		@inject(DeviceCache) private readonly deviceCache: DeviceCache,
-		@inject(RouteCache) private readonly routeCache: RouteCache
+		@inject(RouteCache) private readonly routeCache: RouteCache,
 	) {}
 
 	public getTest = (req: Request, res: Response): void => {

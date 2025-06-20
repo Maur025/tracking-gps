@@ -6,7 +6,7 @@ import { StatusCodes } from 'http-status-codes';
 @injectable()
 export default class GeofenceController {
 	constructor(
-		@inject(GeofenceCache) private readonly geofenceCache: GeofenceCache
+		@inject(GeofenceCache) private readonly geofenceCache: GeofenceCache,
 	) {}
 
 	public readonly getAllInCache = (req: Request, res: Response): void => {

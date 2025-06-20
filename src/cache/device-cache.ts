@@ -55,9 +55,8 @@ export default class DeviceCache
 					keyBatch.push(key);
 
 					if (keyBatch.length === this.BATCH_LIMIT) {
-						const deviceList: Device[] = await getDeviceBatchFromRedis(
-							keyBatch
-						);
+						const deviceList: Device[] =
+							await getDeviceBatchFromRedis(keyBatch);
 
 						this.addMany(deviceList);
 
@@ -102,9 +101,9 @@ export default class DeviceCache
 
 	public getKeysAndProcess = async (
 		process: (
-			keyList: AsyncGenerator<string[], void, unknown>
+			keyList: AsyncGenerator<string[], void, unknown>,
 		) => Promise<void>,
-		labelProcess: string = 'anything'
+		labelProcess: string = 'anything',
 	): Promise<void> => {
 		try {
 			const deviceKeyList = await redisClient.scanIterator({
@@ -115,7 +114,7 @@ export default class DeviceCache
 		} catch (error) {
 			loggerError(
 				`can't process operation ${labelProcess} cache data in redis cause: `,
-				error as Error
+				error as Error,
 			);
 		}
 	};

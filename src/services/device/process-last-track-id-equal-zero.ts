@@ -8,7 +8,7 @@ import { catchError, Observable, of, tap } from 'rxjs';
 const wsDeviceService = container.resolve(WsDeviceService);
 
 export const processByLasTrackIdEqualZero = (
-	device: Device
+	device: Device,
 ): Observable<WsTrackResponse> => {
 	const { id } = device;
 
@@ -26,8 +26,8 @@ export const processByLasTrackIdEqualZero = (
 			device.isReady = true;
 		}),
 		catchError((error: ErrorResponse) => {
-			console.error(`Error ocurred in getHistoryTracks`);
+			console.error(`Error ocurred in getHistoryTracks: ${error}`);
 			return of();
-		})
+		}),
 	);
 };

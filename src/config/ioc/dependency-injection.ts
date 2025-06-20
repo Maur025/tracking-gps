@@ -7,7 +7,7 @@ import CacheableLookup from 'cacheable-lookup';
 container.register<Application>(TOKENS.Application, { useValue: express() });
 container.registerSingleton<CacheableLookup>(
 	TOKENS.CacheableLookup,
-	CacheableLookup
+	CacheableLookup,
 );
 
 // Custom Class, Service And Utils

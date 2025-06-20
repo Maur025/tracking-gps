@@ -50,7 +50,7 @@ describe('add device cache data test', () => {
 		expect(addRedisIdx).toHaveBeenCalledWith(
 			'idx-test',
 			expect.any(Object),
-			'key-test'
+			'key-test',
 		);
 	});
 
@@ -65,19 +65,19 @@ describe('add device cache data test', () => {
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
 			deviceList.slice(0, 500),
-			'key-test'
+			'key-test',
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
 			deviceList.slice(500, 1000),
-			'key-test'
+			'key-test',
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledTimes(2);
 		expect(addRedisIdx).toHaveBeenCalledWith(
 			'idx-test',
 			expect.any(Object),
-			'key-test'
+			'key-test',
 		);
 	});
 
@@ -92,17 +92,17 @@ describe('add device cache data test', () => {
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
 			deviceList.slice(0, 500),
-			'key-test'
+			'key-test',
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
 			deviceList.slice(500, 1000),
-			'key-test'
+			'key-test',
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledWith(
 			deviceList.slice(1000, 1150),
-			'key-test'
+			'key-test',
 		);
 
 		expect(addDeviceBatchToRedis).toHaveBeenCalledTimes(3);
@@ -110,7 +110,7 @@ describe('add device cache data test', () => {
 		expect(addRedisIdx).toHaveBeenCalledWith(
 			'idx-test',
 			expect.any(Object),
-			'key-test'
+			'key-test',
 		);
 	});
 });

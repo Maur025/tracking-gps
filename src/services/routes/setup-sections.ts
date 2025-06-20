@@ -19,6 +19,6 @@ export const setupSections = (route: RouteResponse) => {
 				uuid: index.toString(),
 				coords: getCoordsByPointSection(pointSection, route),
 			};
-		}
+		},
 	);
 };

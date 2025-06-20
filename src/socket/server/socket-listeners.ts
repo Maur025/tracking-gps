@@ -37,8 +37,6 @@ const {
 	ROOM_LIST_RESPONSE,
 } = internalSocketTopics;
 
-const {} = availableRooms;
-
 export const socketListeners = (socket: Socket, io: Server): void => {
 	loggerInfo(`[socket-server] new client '${socket.id}' connected.`);
 
@@ -65,23 +63,23 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 	socket.on(DEVICE_LAST, payload => clientReply.emit(DEVICE_LAST, payload));
 
 	socket.on(DEVICE_CLEARED, payload =>
-		clientReply.emit(DEVICE_CLEARED, payload)
+		clientReply.emit(DEVICE_CLEARED, payload),
 	);
 
 	socket.on(DEVICE_TRACK_END, payload =>
-		clientReply.emit(DEVICE_TRACK_END, payload)
+		clientReply.emit(DEVICE_TRACK_END, payload),
 	);
 
 	socket.on(DEVICE_SUBSCRIBE, payload =>
-		clientReply.emit(DEVICE_SUBSCRIBE, payload)
+		clientReply.emit(DEVICE_SUBSCRIBE, payload),
 	);
 
 	socket.on(DEVICE_UNSUBSCRIBE, payload =>
-		clientReply.emit(DEVICE_UNSUBSCRIBE, payload)
+		clientReply.emit(DEVICE_UNSUBSCRIBE, payload),
 	);
 
 	socket.on(DEVICE_UNSUBSCRIBE_ALL, payload =>
-		clientReply.emit(DEVICE_UNSUBSCRIBE_ALL, payload)
+		clientReply.emit(DEVICE_UNSUBSCRIBE_ALL, payload),
 	);
 
 	socket.on(ROOM_LIST_REQUEST, (): void => {
@@ -98,7 +96,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 		if (!socketRooms.includes(roomName)) {
 			socket.emit(
 				ROOM_JOIN_RESPONSE,
-				`can't join to room ${roomName} it's invalid or non-existent`
+				`can't join to room ${roomName} it's invalid or non-existent`,
 			);
 
 			return;
@@ -107,7 +105,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 		socket.join(roomName);
 		socket.emit(
 			ROOM_JOIN_RESPONSE,
-			`client ${socket.id} joined to room ${roomName} successfully`
+			`client ${socket.id} joined to room ${roomName} successfully`,
 		);
 	});
 
@@ -117,7 +115,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 		if (!socketRooms.includes(roomName)) {
 			socket.emit(
 				ROOM_LEAVE_RESPONSE,
-				`can't be left to room ${roomName} it's invalid or non-existent`
+				`can't be left to room ${roomName} it's invalid or non-existent`,
 			);
 
 			return;
@@ -126,7 +124,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 		socket.leave(roomName);
 		socket.emit(
 			ROOM_JOIN_RESPONSE,
-			`client ${socket.id} left the room ${roomName} successfully `
+			`client ${socket.id} left the room ${roomName} successfully `,
 		);
 	});
 
@@ -136,7 +134,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 const getRoomValueAsList = () => {
 	const availableRoomList: string[] = [];
 
-	for (const [roomKey, roomValue] of Object.entries(availableRooms)) {
+	for (const [, roomValue] of Object.entries(availableRooms)) {
 		availableRoomList.push(roomValue);
 	}
 

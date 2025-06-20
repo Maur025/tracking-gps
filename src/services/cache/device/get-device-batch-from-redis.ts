@@ -2,7 +2,7 @@ import { redisClient } from '@config/redis/create-redis-client';
 import Device from '@models/entity/device';
 
 export const getDeviceBatchFromRedis = async (
-	deviceKeyBatch: string[]
+	deviceKeyBatch: string[],
 ): Promise<Device[]> => {
 	if (!deviceKeyBatch?.length) {
 		return [];

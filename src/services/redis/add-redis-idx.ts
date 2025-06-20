@@ -5,7 +5,7 @@ export const addRedisIdx = async (
 	idx: string,
 	objectToIndex: object,
 	prefix: string,
-	typeOn: 'JSON' | 'HASH' = 'JSON'
+	typeOn: 'JSON' | 'HASH' = 'JSON',
 ): Promise<void> => {
 	if (!idx || !prefix) {
 		loggerWarn(`idx or prefix must not be undefined, skiping ...`);
@@ -24,6 +24,6 @@ export const addRedisIdx = async (
 		{
 			ON: typeOn,
 			PREFIX: prefix,
-		}
+		},
 	);
 };

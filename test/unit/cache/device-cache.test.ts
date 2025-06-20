@@ -67,7 +67,7 @@ describe('Device Cache Tests', () => {
 
 		expect(redisClient.scanIterator).toHaveBeenCalledTimes(1);
 		expect(loggerInfo).toHaveBeenCalledWith(
-			'Hello World your keys: key1,key2,key3'
+			'Hello World your keys: key1,key2,key3',
 		);
 		expect(loggerError).not.toHaveBeenCalled();
 	});
@@ -83,7 +83,7 @@ describe('Device Cache Tests', () => {
 
 		expect(loggerError).toHaveBeenCalledWith(
 			`can't process operation testing cache data in redis cause: `,
-			expect.any(Error)
+			expect.any(Error),
 		);
 
 		expect(loggerInfo).not.toHaveBeenCalled();
@@ -103,7 +103,7 @@ describe('Device Cache Tests', () => {
 			yield Array.from({ length: 300 }, (_, i) => `key:${i + 700}`);
 		};
 		(redisClient.scanIterator as Mock).mockReturnValue(
-			testFakeAsyncGenerator()
+			testFakeAsyncGenerator(),
 		);
 
 		await cache.clearCacheData();
@@ -112,12 +112,12 @@ describe('Device Cache Tests', () => {
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`)),
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`)),
 		);
 	});
 
@@ -129,7 +129,7 @@ describe('Device Cache Tests', () => {
 			yield Array.from({ length: 350 }, (_, i) => `key:${i + 800}`);
 		};
 		(redisClient.scanIterator as Mock).mockReturnValue(
-			testFakeAsyncGenerator()
+			testFakeAsyncGenerator(),
 		);
 
 		await cache.clearCacheData();
@@ -138,17 +138,17 @@ describe('Device Cache Tests', () => {
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`)),
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`)),
 		);
 
 		expect(deleteDeviceCacheData).toHaveBeenNthCalledWith(
 			3,
-			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`))
+			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`)),
 		);
 	});
 
@@ -183,7 +183,7 @@ describe('Device Cache Tests', () => {
 		};
 
 		(redisClient.scanIterator as Mock).mockReturnValue(
-			testFakeAsyncGenerator()
+			testFakeAsyncGenerator(),
 		);
 
 		await cache.loadCacheData();
@@ -192,12 +192,12 @@ describe('Device Cache Tests', () => {
 
 		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`)),
 		);
 
 		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`)),
 		);
 	});
 
@@ -212,7 +212,7 @@ describe('Device Cache Tests', () => {
 		};
 
 		(redisClient.scanIterator as Mock).mockReturnValue(
-			testFakeAsyncGenerator()
+			testFakeAsyncGenerator(),
 		);
 
 		await cache.loadCacheData();
@@ -221,17 +221,17 @@ describe('Device Cache Tests', () => {
 
 		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			1,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i}`)),
 		);
 
 		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			2,
-			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`))
+			expect.arrayContaining([...Array(500)].map((_, i) => `key:${i + 500}`)),
 		);
 
 		expect(getDeviceBatchFromRedis).toHaveBeenNthCalledWith(
 			3,
-			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`))
+			expect.arrayContaining([...Array(150)].map((_, i) => `key:${i + 1000}`)),
 		);
 	});
 });

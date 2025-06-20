@@ -10,8 +10,8 @@ export const redisClient = createClient({
 	.on('error', error => loggerError(`Redis client error: `, error))
 	.on('ready', () =>
 		loggerInfo(
-			`[redis] redis client running in http://${REDIS_HOST}:${REDIS_PORT}`
-		)
+			`[redis] redis client running in http://${REDIS_HOST}:${REDIS_PORT}`,
+		),
 	);
 
 export const initRedisClient = async (): Promise<void> => {

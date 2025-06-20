@@ -29,7 +29,7 @@ export const processCasePolygonSection = ({
 	const polygon: Polygon = getPolygonByCoords({ coords });
 
 	const isInside: boolean = polygon.intersectsCoordinate(
-		fromLonLat([lon, lat])
+		fromLonLat([lon, lat]),
 	);
 
 	if (isInside) {

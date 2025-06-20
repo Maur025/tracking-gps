@@ -82,7 +82,7 @@ describe('Group cache init test', () => {
 		groupCacheInit([]);
 
 		expect(loggerError).toHaveBeenCalledWith(
-			'group response undefined or empty'
+			'group response undefined or empty',
 		);
 	});
 
@@ -114,7 +114,7 @@ describe('Group cache init test', () => {
 						}),
 					]),
 				}),
-			])
+			]),
 		);
 		expect(groupCacheMock.addMany).toHaveBeenCalledTimes(1);
 

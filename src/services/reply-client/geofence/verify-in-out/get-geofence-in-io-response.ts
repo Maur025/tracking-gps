@@ -3,10 +3,10 @@ import GeofenceIoResponse from '@models/dto/response/socket/geofence-io-response
 import GeofenceIn from '@models/entity/geofence-in';
 
 export const getGeofenceInIoResponse = (
-	geofenceInList: GeofenceIn[]
+	geofenceInList: GeofenceIn[],
 ): GeofenceIoResponse[] => {
 	const geofenceInIdList: string[] = geofenceInList.map(
-		({ geofenceId }) => geofenceId
+		({ geofenceId }) => geofenceId,
 	);
 
 	const geofenceInIdSet: Set<string> = new Set(geofenceInIdList);
@@ -14,11 +14,11 @@ export const getGeofenceInIoResponse = (
 
 	return geofenceInIdUniqueList.map(geofenceInId => {
 		const matchingGeofenceIn: GeofenceIn[] = geofenceInList.filter(
-			({ geofenceId }) => geofenceId === geofenceInId
+			({ geofenceId }) => geofenceId === geofenceInId,
 		);
 
 		const sections: GeofenceDataIoResponse[] = matchingGeofenceIn.map(
-			({ section, date }) => ({ ...section!, date })
+			({ section, date }) => ({ ...section!, date }),
 		);
 
 		const geofenceName: string = matchingGeofenceIn[0].geofenceName ?? '';

@@ -24,7 +24,7 @@ export const connectReply = (): Socket => {
 
 		socketReply.on(externalSocketTopics.CONNECT, () => {
 			loggerInfo(
-				`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socketReply?.id}'`
+				`[${CLIENT_NAME}] connected to socket-server ${environment.TRACK_URL} with id: '${socketReply?.id}'`,
 			);
 		});
 	}

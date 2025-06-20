@@ -1,5 +1,4 @@
 import { singleton } from 'tsyringe';
-import AbstractCache from './abstract-cache';
 import AbstractSingleCache from './abstract-single-cache';
 import { Group } from '@models/entity/group';
 

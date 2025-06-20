@@ -13,7 +13,7 @@ const wsDeviceService = container.resolve(WsDeviceService);
 const routeCache = container.resolve(RouteCache);
 
 export const processOnRouteEqualOne = (
-	device: Device
+	device: Device,
 ): Observable<WsTrackResponse> => {
 	const { id, states } = device;
 
@@ -42,7 +42,7 @@ export const processOnRouteEqualOne = (
 			device.tracksCoord = getTrackingCoordinates(device);
 
 			device.routeSelected = routeList.find(
-				({ id }) => id === states?.ID_ROUTE
+				({ id }) => id === states?.ID_ROUTE,
 			);
 
 			// Logic needs to be completed
@@ -53,6 +53,6 @@ export const processOnRouteEqualOne = (
 			console.error('Error ocurred in process on route equal one: ', error);
 
 			return of();
-		})
+		}),
 	);
 };

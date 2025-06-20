@@ -40,7 +40,7 @@ export default abstract class AbstractSetCache<E> extends AbstractCache<
 	public addById(id: string, dataSet: Set<E>): void {
 		if (this.hasId(id)) {
 			loggerWarn(
-				`${this.getResource()} with id ${id} already exists in cache, skipping...`
+				`${this.getResource()} with id ${id} already exists in cache, skipping...`,
 			);
 			return;
 		}
@@ -87,7 +87,7 @@ export default abstract class AbstractSetCache<E> extends AbstractCache<
 
 	private processMany(
 		operation: OperationEnum,
-		manyRequestList: ManySetRequest<E>[]
+		manyRequestList: ManySetRequest<E>[],
 	): void {
 		if (!manyRequestList.length) {
 			return;

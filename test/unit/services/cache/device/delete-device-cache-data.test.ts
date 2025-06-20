@@ -27,7 +27,7 @@ describe('delete device cache data test', () => {
 	test('del should be run in base device batch size', async () => {
 		const deviceKeyBatch: string[] = Array.from(
 			{ length: 500 },
-			(_, i) => `${KEY_TEST}${i}`
+			(_, i) => `${KEY_TEST}${i}`,
 		);
 
 		await deleteDeviceCacheData(deviceKeyBatch);

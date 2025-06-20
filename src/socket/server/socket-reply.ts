@@ -46,15 +46,18 @@ export const socketReply = (socket: Socket, io: Server) => {
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE, responsePayload);
 	});
 
-	clientReply.on(DEVICES, (payload: Device[]) => {
-		const responsePayload = getPayloadSocketResponse<Device[]>(
-			DEVICES,
-			deviceCache.getAll()
-		);
+	clientReply.on(DEVICES, () =>
+		// payload:Device[]
+		{
+			const responsePayload = getPayloadSocketResponse<Device[]>(
+				DEVICES,
+				deviceCache.getAll(),
+			);
 
-		// socket.emit(DEVICES, responsePayload);
-		io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
-	});
+			// socket.emit(DEVICES, responsePayload);
+			io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
+		},
+	);
 
 	clientReply.on(DEVICE_NEW, payload => {
 		const responsePayload = getPayloadSocketResponse(DEVICE_NEW, payload);
@@ -115,7 +118,7 @@ export const socketReply = (socket: Socket, io: Server) => {
 	clientReply.on(DEVICE_UNSUBSCRIBE, payload => {
 		const responsePayload = getPayloadSocketResponse(
 			DEVICE_UNSUBSCRIBE,
-			payload
+			payload,
 		);
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_UNSUBSCRIBE, responsePayload);
 	});
@@ -123,7 +126,7 @@ export const socketReply = (socket: Socket, io: Server) => {
 	clientReply.on(DEVICE_UNSUBSCRIBE_ALL, payload => {
 		const responsePayload = getPayloadSocketResponse(
 			DEVICE_UNSUBSCRIBE_ALL,
-			payload
+			payload,
 		);
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE_UNSUBSCRIBE_ALL, responsePayload);
 	});
