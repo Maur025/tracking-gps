@@ -12,6 +12,7 @@ import {
 	ServerBuilderSchema,
 } from '@schemas/server-builder/server-builder-schema';
 import { errorValidate } from '@utils/zod-exception';
+import { swaggerConfig } from './swagger-config';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {
 	private request?: ServerBuilderRequest;
@@ -58,6 +59,12 @@ export default class ServerBuilder implements IServerBuilder {
 	};
 
 	public applyRoutes(router: Router): this {
+		swaggerConfig(this.app);
+
+		this.app.get('/', (req, res) => {
+			res.redirect('docs');
+		});
+
 		this.app?.use('/api', router);
 		return this;
 	}

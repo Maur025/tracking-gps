@@ -1,0 +1,31 @@
+import { LoadSwaggerDocsSchema } from '@src/docs/load-swagger-docs.schema';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
+import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
+import { container } from 'tsyringe';
+import { testPaths } from './test-paths';
+import { object, string } from 'zod/v4';
+
+const { ZOD_VALIDATION } = testPaths;
+
+export const testSwagger = ({ path, tag }: LoadSwaggerDocsSchema): void => {
+	const zodSwaggerGenerator = container.resolve(ZodSwaggerGenerator);
+
+	SwaggerRegisterPath.builder()
+		.withRegister(zodSwaggerGenerator.getRegistry())
+		.withRequest({
+			method: 'get',
+			path: `${path}${ZOD_VALIDATION}`,
+			summary: 'GET test',
+			tags: [tag],
+			request: {},
+			responses: {
+				200: {
+					description: 'return',
+					content: {
+						'application/json': { schema: object({ message: string() }) },
+					},
+				},
+			},
+		})
+		.register();
+};
