@@ -5,8 +5,8 @@ import ioServer from '@socket/server/io-server';
 import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@services/cache-initializer';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import app from './app';
 import { initRedisClient } from '@config/redis/create-redis-client';
+import app from './app';
 
 const { getApp } = app;
 

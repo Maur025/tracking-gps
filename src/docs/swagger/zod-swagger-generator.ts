@@ -1,29 +1,40 @@
 import { singleton } from 'tsyringe';
 import {
-	OpenApiGeneratorV3,
+	OpenApiGeneratorV31,
 	OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
 import { OpenAPIObject } from '@asteasolutions/zod-to-openapi/dist/types';
+import environment from '@config/env';
 
 @singleton()
 export default class ZodSwaggerGenerator {
 	private readonly registry: OpenAPIRegistry = new OpenAPIRegistry();
+	private tags: object[] = [];
 
 	public getRegistry(): OpenAPIRegistry {
 		return this.registry;
 	}
 
+	public setTags(tags: object[]): void {
+		this.tags = tags;
+	}
+
 	public getOpenApiDocument(): OpenAPIObject | unknown {
-		const generator = new OpenApiGeneratorV3(this.registry.definitions);
+		const generator = new OpenApiGeneratorV31(this.registry.definitions);
 
 		return generator.generateDocument({
-			openapi: '3.0.0',
+			openapi: '3.1.0',
 			info: {
 				version: '1.0.0',
-				title: 'My API',
-				description: 'This is the API',
+				title: 'Tracking GPS',
+				description: 'API Docs with Swagger',
 			},
-			servers: [{ url: 'v1' }],
+			servers: [
+				{
+					url: `http://${environment.HOST ?? 'localhost'}:${environment.PORT}`,
+				},
+			],
+			tags: this.tags as [],
 		});
 	}
 }

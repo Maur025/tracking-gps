@@ -3,6 +3,9 @@ import { zodValidator } from '@middlewares/zod-validator';
 import { TestSchema } from '@schemas/controller/test.schema';
 import { Router } from 'express';
 import { container } from 'tsyringe';
+import { testPaths } from './test-paths';
+
+const { DEFAULT, ZOD_VALIDATION } = testPaths;
 
 const router = Router();
 const {
@@ -15,13 +18,13 @@ const {
 	viewJsonConfigSwagger,
 } = container.resolve(TestController);
 
-router.get('/', getTest);
+router.get(DEFAULT, getTest);
 router.get('/two', getTestTwo);
 router.get('/test-socket', testSocket);
 router.get('/current/devices', currentDevices);
 router.get('/current/routes', currentRoutes);
 router.get(
-	'/zod/validation',
+	ZOD_VALIDATION,
 	zodValidator<TestSchema>(TestSchema, 'query'),
 	zodTestValidationAndInheritance,
 );
