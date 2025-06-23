@@ -3,7 +3,7 @@ import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';
-import { object, string } from 'zod/v4';
+import { TestSchema } from '@schemas/controller/test.schema';
 
 const { ZOD_VALIDATION } = testPaths;
 
@@ -22,7 +22,7 @@ export const testSwagger = ({ path, tag }: LoadSwaggerDocsSchema): void => {
 				200: {
 					description: 'return',
 					content: {
-						'application/json': { schema: object({ message: string() }) },
+						'application/json': { schema: TestSchema },
 					},
 				},
 			},
