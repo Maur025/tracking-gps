@@ -14,6 +14,7 @@ import RouteCache from '@cache/route-cache';
 import { RequestValidate } from '@models/interface/request-validate.interface';
 import type { TestSchema } from '@schemas/controller/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
+import { testPdfKit } from '@report/test-pdfkit';
 
 @injectable()
 export default class TestController {
@@ -83,5 +84,9 @@ export default class TestController {
 
 	public readonly viewJsonConfigSwagger = (req: Request, res: Response) => {
 		res.json(this.zodSwaggerGenerator.getOpenApiDocument());
+	};
+
+	public readonly testingPdf = (req: Request, res: Response) => {
+		testPdfKit(res);
 	};
 }

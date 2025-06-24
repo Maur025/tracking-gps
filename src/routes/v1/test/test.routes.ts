@@ -16,6 +16,7 @@ const {
 	currentRoutes,
 	zodTestValidationAndInheritance,
 	viewJsonConfigSwagger,
+	testingPdf,
 } = container.resolve(TestController);
 
 router.get(DEFAULT, getTest);
@@ -29,5 +30,6 @@ router.get(
 	zodTestValidationAndInheritance,
 );
 router.get('/view/swagger/config', viewJsonConfigSwagger);
+router.get('/pdf/test', testingPdf);
 
 export default router;
