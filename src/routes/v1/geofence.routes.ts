@@ -7,5 +7,6 @@ const router = Router();
 const geofenceController = container.resolve(GeofenceController);
 
 router.get('/', geofenceController.getAllInCache);
+router.get('/report', geofenceController.getReport);
 
 export default router;
