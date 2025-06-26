@@ -7,6 +7,7 @@ import { cacheInitializer } from '@services/cache-initializer';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 import { initRedisClient } from '@config/redis/create-redis-client';
 import app from './app';
+import { configureConsumers } from '@config/kafka/configure-consumers';
 
 const { getApp } = app;
 
@@ -15,6 +16,8 @@ getApp().get('/', (req, res) => {
 });
 
 ioServer.startListening();
+
+await configureConsumers();
 
 await initRedisClient();
 
