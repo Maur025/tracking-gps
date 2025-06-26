@@ -8,5 +8,6 @@ const geofenceController = container.resolve(GeofenceController);
 
 router.get('/', geofenceController.getAllInCache);
 router.get('/report', geofenceController.getReport);
+router.get('/report/pdfmake', geofenceController.getReportPdfMake);
 
 export default router;
