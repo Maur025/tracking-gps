@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { geofenceReport } from '@report/geofence-report';
+import { geofencePdfMake } from '@report/pdf/geofence-pdf-make';
 
 @injectable()
 export default class GeofenceController {
@@ -16,5 +17,9 @@ export default class GeofenceController {
 
 	public readonly getReport = (req: Request, res: Response) => {
 		geofenceReport(res);
+	};
+
+	public readonly getReportPdfMake = (req: Request, res: Response) => {
+		geofencePdfMake(res);
 	};
 }
