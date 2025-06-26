@@ -142,3 +142,11 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# files
+**/*.jpg
+**/*.png
+**/*.jpeg
+**/*.pdf
+**/*.gif
+**/*.xls

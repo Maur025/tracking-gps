@@ -10,6 +10,11 @@ export const generatePdf = (
 		return numberCm * (72 / 2.54);
 	};
 
+	let fontRegularValue: string = 'Times-Roman';
+	let fontBoldValue: string = 'Times-Bold';
+	let fontItalicValue: string = 'Times-Italic';
+	let fontBoldItalicValue: string = 'Times-BoldItalic';
+
 	const doc = new PdfKit({
 		size: 'LETTER',
 		margins: {
@@ -26,8 +31,11 @@ export const generatePdf = (
 		`${disposition}; filename="${filename}"`,
 	);
 
+	doc.pipe(res);
+
 	const pdfContent = (setBody: () => void) => {
-		doc.pipe(res);
+		doc.font(fontRegularValue).fontSize(11);
+
 		setBody();
 	};
 
@@ -35,5 +43,49 @@ export const generatePdf = (
 		doc.end();
 	};
 
-	return { doc, pdfContent, pdfEnd };
+	const fontRegular = (): void => {
+		doc.font(fontRegularValue);
+	};
+
+	const fontBold = (): void => {
+		doc.font(fontBoldValue);
+	};
+
+	const fontItalic = (): void => {
+		doc.font(fontItalicValue);
+	};
+
+	const fontBoldItalic = (): void => {
+		doc.font(fontBoldItalicValue);
+	};
+
+	const setFont = ({
+		regular,
+		bold,
+		italic,
+		boldItalic,
+	}: {
+		regular: string;
+		bold: string;
+		italic: string;
+		boldItalic: string;
+	}) => {
+		fontRegularValue = regular;
+		fontBoldValue = bold;
+		fontItalicValue = italic;
+		fontBoldItalicValue = boldItalic;
+
+		doc.font(regular);
+	};
+
+	return {
+		doc,
+		pdfContent,
+		pdfEnd,
+		fontBold,
+		fontItalic,
+		fontRegular,
+		fontBoldItalic,
+		setFont,
+	};
 };
