@@ -8,4 +8,6 @@ export default interface Environment {
 
 	REDIS_HOST: string;
 	REDIS_PORT: number;
+
+	KAFKA_BROKER: string;
 }

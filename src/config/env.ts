@@ -8,6 +8,7 @@ const {
 	TRACK_URL = 'http://172.20.50.60:7777',
 	REDIS_HOST = 'localhost',
 	REDIS_PORT = '6379',
+	KAFKA_BROKER = 'localhost:9092',
 } = process.env;
 
 const environment: Environment = {
@@ -18,6 +19,7 @@ const environment: Environment = {
 	TRACK_URL,
 	REDIS_HOST,
 	REDIS_PORT: Number(REDIS_PORT),
+	KAFKA_BROKER,
 };
 
 export default environment;
