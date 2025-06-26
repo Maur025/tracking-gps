@@ -12,6 +12,9 @@
 			"@cache/*": ["src/cache/*"],
 			"@config/*": ["src/config/*"],
 			"@controllers/*": ["src/controllers/*"],
+			"@docs/*": ["src/docs/*"],
+			"@kafka/*": ["src/kafka/*"],
+			"@middlewares/*": ["src/middlewares/*"],
 			"@models/*": ["src/models/*"],
 			"@report/*": ["src/report/*"],
 			"@routes/*": ["src/routes/*"],
@@ -19,7 +22,6 @@
 			"@services/*": ["src/services/*"],
 			"@socket/*": ["src/socket/*"],
 			"@utils/*": ["src/utils/*"],
-			"@middlewares/*": ["src/middlewares/*"],
 			"@command/*": ["src/command/*"],
 			"@src/*": ["src/*"]
 		},

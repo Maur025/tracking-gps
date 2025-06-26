@@ -4,7 +4,7 @@ import { Kafka, logLevel } from 'kafkajs';
 
 const { KAFKA_BROKER } = environment;
 
-export const kafkaClient = () => {
+export const handleKafkaClient = (): { kafkaClient: Kafka } => {
 	const CLIENT_ID: string = 'tracking-gps';
 
 	const kafkaClient: Kafka = new Kafka({
