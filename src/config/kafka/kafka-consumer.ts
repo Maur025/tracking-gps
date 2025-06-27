@@ -1,8 +1,9 @@
-import { Consumer } from 'kafkajs';
+import { Consumer, EachMessagePayload } from 'kafkajs';
 import { handleKafkaClient } from './handle-kafka-client';
-import { AddConsumerRequest, AddConsumerSchema } from './kafka-consumer.schema';
+import { AddConsumerRequest, AddConsumerSchema } from './add-consumer.schema';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 import { prettifyError } from 'zod/v4';
+import { KafkaRecordSchema } from './kafka-record.schema';
 
 export const kafkaConsumer = () => {
 	const { kafkaClient } = handleKafkaClient();
@@ -36,8 +37,19 @@ export const kafkaConsumer = () => {
 			consumer.subscribe({ topic, fromBeginning: fromBeginning ?? false });
 		}
 
-		await consumer.run({ eachMessage: handler });
+		await consumer.run({
+			eachMessage: async (payload: EachMessagePayload) => {
+				const record: KafkaRecordSchema = getRecord(payload);
+
+				await handler(record);
+			},
+		});
+
 		loggerInfo(`[KAFKA] joined to [${groupId}]`);
+	};
+
+	const getRecord = ({ message }: EachMessagePayload): KafkaRecordSchema => {
+		return { ...message };
 	};
 
 	return { addConsumer };
