@@ -5,7 +5,7 @@ import { Router } from 'express';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';
 
-const { DEFAULT, ZOD_VALIDATION } = testPaths;
+const { DEFAULT, ZOD_VALIDATION, KAFKA } = testPaths;
 
 const router = Router();
 const {
@@ -32,6 +32,6 @@ router.get(
 );
 router.get('/view/swagger/config', viewJsonConfigSwagger);
 router.get('/pdf/test', testingPdf);
-router.get('/kafka', kafkaTestExample);
+router.post(KAFKA, kafkaTestExample);
 
 export default router;
