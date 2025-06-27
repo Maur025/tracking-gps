@@ -17,6 +17,7 @@ const {
 	zodTestValidationAndInheritance,
 	viewJsonConfigSwagger,
 	testingPdf,
+	kafkaTestExample,
 } = container.resolve(TestController);
 
 router.get(DEFAULT, getTest);
@@ -31,5 +32,6 @@ router.get(
 );
 router.get('/view/swagger/config', viewJsonConfigSwagger);
 router.get('/pdf/test', testingPdf);
+router.get('/kafka', kafkaTestExample);
 
 export default router;

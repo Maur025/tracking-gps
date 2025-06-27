@@ -53,8 +53,9 @@ export const kafkaConsumer = () => {
 		message,
 	}: EachMessagePayload): KafkaRecordSchema<V> => {
 		const value = getMessage<V>(message.value);
+		const messageString = message.key?.toString() ?? '';
 
-		return { ...message, value };
+		return { ...message, value, key: messageString };
 	};
 
 	const getMessage = <V>(message: Buffer<ArrayBufferLike> | null): V | null => {
@@ -71,7 +72,8 @@ export const kafkaConsumer = () => {
 
 			return getObjectOfString(value);
 		} catch (error) {
-			throw new Error(`Message value can't  handler as string`, {
+			loggerError(`Failed to parse kafka message: ${error}`);
+			throw new Error(`Message value can't  handled as string`, {
 				cause: error,
 			});
 		}

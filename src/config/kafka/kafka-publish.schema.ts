@@ -3,7 +3,7 @@ import z, { any, object, string } from 'zod/v4';
 export const KafkaPublishSchema = object({
 	topic: string().nonempty(),
 	value: any().nonoptional(),
-	key: any().nonoptional(),
+	key: any().optional(),
 });
 
 export type KafkaPublishSchema<V> = Omit<

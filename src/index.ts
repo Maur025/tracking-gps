@@ -8,10 +8,8 @@ import { loggerError, loggerInfo } from '@maur025/core-logger';
 import { initRedisClient } from '@config/redis/create-redis-client';
 import app from './app';
 import { configureConsumers } from '@config/kafka/configure-consumers';
-import { kakfaProducer } from '@config/kafka/kafka-producer';
 
 const { getApp } = app;
-const { initializeProducer } = kakfaProducer();
 
 getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
@@ -20,8 +18,6 @@ getApp().get('/', (req, res) => {
 ioServer.startListening();
 
 await configureConsumers();
-
-await initializeProducer();
 
 await initRedisClient();
 
