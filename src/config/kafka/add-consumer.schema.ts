@@ -1,5 +1,5 @@
 import z, { array, object, string, boolean, any } from 'zod/v4';
-import { EachMessagePayload } from 'kafkajs';
+import { KafkaRecordSchema } from './kafka-record.schema';
 
 export const AddConsumerSchema = object({
 	topics: array(string().nonempty()).nonempty(),
@@ -8,7 +8,7 @@ export const AddConsumerSchema = object({
 	fromBeginning: boolean().optional(),
 });
 
-type handlerFn = (payload: EachMessagePayload) => Promise<void>;
+type handlerFn = (payload: KafkaRecordSchema) => Promise<void>;
 
 export type AddConsumerRequest = Omit<
 	z.infer<typeof AddConsumerSchema>,
