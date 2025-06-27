@@ -15,7 +15,7 @@ export const kafkaConsumer = () => {
 		handler,
 		fromBeginning,
 	}: AddConsumerRequest<V>): Promise<void> => {
-		const validation = AddConsumerSchema.safeParse({
+		const validation = await AddConsumerSchema.safeParseAsync({
 			topics,
 			groupId,
 			handler,
