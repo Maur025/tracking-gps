@@ -8,9 +8,9 @@ export const AddConsumerSchema = object({
 	fromBeginning: boolean().optional(),
 });
 
-type handlerFn = (payload: KafkaRecordSchema) => Promise<void>;
+type handlerFn<V> = (payload: KafkaRecordSchema<V>) => Promise<void>;
 
-export type AddConsumerRequest = Omit<
+export type AddConsumerRequest<V> = Omit<
 	z.infer<typeof AddConsumerSchema>,
 	'handler'
-> & { handler: handlerFn };
+> & { handler: handlerFn<V> };
