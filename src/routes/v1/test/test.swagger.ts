@@ -4,8 +4,9 @@ import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';
 import { TestSchema } from '@schemas/controller/test.schema';
+import { object, string } from 'zod/v4';
 
-const { ZOD_VALIDATION } = testPaths;
+const { ZOD_VALIDATION, KAFKA } = testPaths;
 
 export const testSwagger = ({ path, tag }: LoadSwaggerDocsSchema): void => {
 	const zodSwaggerGenerator = container.resolve(ZodSwaggerGenerator);
@@ -23,6 +24,25 @@ export const testSwagger = ({ path, tag }: LoadSwaggerDocsSchema): void => {
 					description: 'return',
 					content: {
 						'application/json': { schema: TestSchema },
+					},
+				},
+			},
+		})
+		.register();
+
+	SwaggerRegisterPath.builder()
+		.withRegister(zodSwaggerGenerator.getRegistry())
+		.withRequest({
+			method: 'post',
+			path: `${path}${KAFKA}`,
+			summary: 'kafka publish example test',
+			tags: [tag],
+			request: {},
+			responses: {
+				200: {
+					description: 'response successfully',
+					content: {
+						'application/json': { schema: object({ message: string() }) },
 					},
 				},
 			},
