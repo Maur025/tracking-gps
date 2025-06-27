@@ -15,6 +15,7 @@ import { RequestValidate } from '@models/interface/request-validate.interface';
 import type { TestSchema } from '@schemas/controller/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@report/test-pdfkit';
+import { exampleTestPublisher } from '@kafka/publishers/example-test-publisher';
 
 @injectable()
 export default class TestController {
@@ -88,5 +89,18 @@ export default class TestController {
 
 	public readonly testingPdf = (req: Request, res: Response) => {
 		testPdfKit(res);
+	};
+
+	public readonly kafkaTestExample = async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		await exampleTestPublisher({
+			name: 'ESTE es un Nombre de Prueba + 1 numero',
+		});
+
+		res.status(StatusCodes.OK).json({
+			message: 'sent successfully',
+		});
 	};
 }

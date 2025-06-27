@@ -10,4 +10,5 @@ export default interface Environment {
 	REDIS_PORT: number;
 
 	KAFKA_BROKER: string;
+	KAFKA_CLIENT_ID: string;
 }

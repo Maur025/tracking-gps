@@ -1,30 +1,42 @@
-import { Partitioners } from 'kafkajs';
+import { Partitioners, Producer } from 'kafkajs';
 import { handleKafkaClient } from './handle-kafka-client';
 import { KafkaPublishSchema } from './kafka-publish.schema';
-import { loggerError, loggerInfo, loggerWarn } from '@maur025/core-logger';
+import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { prettifyError } from 'zod/v4';
 import { v4 as uuid4 } from 'uuid';
 
-export const kakfaProducer = () => {
+let producerInstance: Producer | null = null;
+let isProducerReady: boolean = false;
+
+export const kakfaProducer = (): {
+	publish: <V>(kafkaPublishSchema: KafkaPublishSchema<V>) => Promise<void>;
+	restart: () => void;
+} => {
 	const { kafkaClient } = handleKafkaClient();
-	let isProducerReady: boolean = false;
 
-	const producer = kafkaClient.producer({
-		createPartitioner: Partitioners.LegacyPartitioner,
-	});
-
-	const initializeProducer = async (): Promise<void> => {
-		if (isProducerReady) {
-			loggerWarn(`[KAFKA] currently producer is ready, skipping...`);
-			return;
+	const getProducer = async (): Promise<Producer> => {
+		if (producerInstance) {
+			return producerInstance;
 		}
 
-		await producer.connect();
+		producerInstance = kafkaClient.producer({
+			createPartitioner: Partitioners.LegacyPartitioner,
+		});
+
+		await producerInstance.connect();
 		isProducerReady = true;
-		loggerInfo(`[KAFKA] producer is Ready`);
+		loggerDebug(`[KAFKA] producer is Ready`);
+
+		return producerInstance;
 	};
 
-	const publish = async <V>({ topic, value, key }: KafkaPublishSchema<V>) => {
+	const publish = async <V>({
+		topic,
+		value,
+		key,
+	}: KafkaPublishSchema<V>): Promise<void> => {
+		const producer = await getProducer();
+
 		if (!isProducerReady) {
 			loggerError(`Sent failed, producer not initialized.`);
 
@@ -39,7 +51,7 @@ export const kakfaProducer = () => {
 
 		if (!validation.success) {
 			loggerError(
-				`publish data validation error: '\n${prettifyError(validation.error)}'`,
+				`kafka publish validation failed: '\n${prettifyError(validation.error)}'`,
 			);
 
 			return;
@@ -56,5 +68,10 @@ export const kakfaProducer = () => {
 		});
 	};
 
-	return { publish, initializeProducer };
+	const restart = (): void => {
+		producerInstance = null;
+		isProducerReady = false;
+	};
+
+	return { publish, restart };
 };

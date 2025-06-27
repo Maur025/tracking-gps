@@ -9,6 +9,7 @@ const {
 	REDIS_HOST = 'localhost',
 	REDIS_PORT = '6379',
 	KAFKA_BROKER = 'localhost:9092',
+	KAFKA_CLIENT_ID = 'tracking-gps',
 } = process.env;
 
 const environment: Environment = {
@@ -20,6 +21,7 @@ const environment: Environment = {
 	REDIS_HOST,
 	REDIS_PORT: Number(REDIS_PORT),
 	KAFKA_BROKER,
+	KAFKA_CLIENT_ID,
 };
 
 export default environment;
