@@ -10,4 +10,7 @@ export const KafkaRecordSchema = object({
 	headers: any().optional(),
 });
 
-export type KafkaRecordSchema = z.infer<typeof KafkaRecordSchema>;
+export type KafkaRecordSchema<V> = Omit<
+	z.infer<typeof KafkaRecordSchema>,
+	'value'
+> & { value: V | null };
