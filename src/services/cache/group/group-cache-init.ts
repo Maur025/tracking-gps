@@ -17,8 +17,14 @@ export const groupCacheInit = (groupResponse?: GroupResponse[]): void => {
 	groupCache.clear();
 
 	const groupList: Group[] = groupResponse?.map(
-		({ name = '', description = '', vehicles = [] }: GroupResponse) => {
+		({
+			id = '',
+			name = '',
+			description = '',
+			vehicles = [],
+		}: GroupResponse) => {
 			return {
+				id,
 				name,
 				description,
 				vehicles: getVehiclesOfGroup(vehicles),

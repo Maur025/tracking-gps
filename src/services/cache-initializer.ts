@@ -24,7 +24,6 @@ export const cacheInitializer = (): Observable<unknown> => {
 		concatMap(() => group$),
 		tap((response: ApiResponse<GroupResponse>) => {
 			groupCacheInit(handleAsArray<GroupResponse>(response));
-			console.log(response);
 		}),
 	);
 };
