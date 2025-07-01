@@ -1,4 +1,3 @@
-import TrackingResponse from '@models/dto/response/tracking-response';
 import TrackService from '@services/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
@@ -16,6 +15,7 @@ import type { TestSchema } from '@schemas/controller/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@report/test-pdfkit';
 import { exampleTestPublisher } from '@kafka/publishers/example-test-publisher';
+import { TrackingResponse } from '@schemas/dto/response/track/tracking-response';
 
 @injectable()
 export default class TestController {

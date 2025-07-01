@@ -21,8 +21,8 @@ importers:
         specifier: ^1.0.0
         version: 1.0.0
       '@maur025/core-model-data':
-        specifier: ^2.0.1
-        version: 2.0.1(zod@3.25.67)
+        specifier: ^2.0.2
+        version: 2.0.2(zod@3.25.67)
       '@turf/turf':
         specifier: ^7.2.0
         version: 7.2.0
@@ -485,8 +485,8 @@ packages:
     resolution: {integrity: sha512-YaTpVnwyzW1ikOLFLZuZMftKc1+W6AJXdZ/+TbydlRSG7H882XYdMYcuHCSrrHB9JGEpRW5e5WSHKOo/UHj7YA==}
     engines: {node: '>=18'}
 
-  '@maur025/core-model-data@2.0.1':
-    resolution: {integrity: sha512-68EhPpJ3ZrlxdG1UVGwe/9iuqxu1IFbeadHE5C76MBFmrkR+jmOzzoKbjb1S345jY7tvEFDeZWNZtf6QGnh8uQ==}
+  '@maur025/core-model-data@2.0.2':
+    resolution: {integrity: sha512-G1nIAGmdxsc+tA121yAsZ7l9kXT1Li6xo3Bt5NVKOgAZlG5K+RSRgi0hkewLQeQqq+syZ2Zy79TEtkQ6RlZgQA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.x
@@ -3239,7 +3239,7 @@ snapshots:
       chalk: 5.4.1
       winston: 3.17.0
 
-  '@maur025/core-model-data@2.0.1(zod@3.25.67)':
+  '@maur025/core-model-data@2.0.2(zod@3.25.67)':
     dependencies:
       zod: 3.25.67
 

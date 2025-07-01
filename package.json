@@ -27,7 +27,7 @@
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-common": "^1.0.1",
 		"@maur025/core-logger": "^1.0.0",
-		"@maur025/core-model-data": "^2.0.1",
+		"@maur025/core-model-data": "^2.0.2",
 		"@turf/turf": "^7.2.0",
 		"cacheable-lookup": "^7.0.0",
 		"compression": "^1.8.0",
