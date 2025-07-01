@@ -6,6 +6,8 @@ import { ApiResponse } from '@maur025/core-model-data';
 import GeofenceResponse from '@models/dto/response/geofence-response';
 import { geofenceCacheInit } from './geofence-cache-init';
 import GroupService from './group/group.service';
+import { groupCacheInit } from './cache/group/group-cache-init';
+import { GroupResponse } from '@models/dto/response/group-response';
 
 const geofenceService$ = container.resolve(GeofenceService);
 const groupService$ = container.resolve(GroupService);
@@ -20,7 +22,8 @@ export const cacheInitializer = (): Observable<unknown> => {
 			geofenceCacheInit(handleAsArray(response));
 		}),
 		concatMap(() => group$),
-		tap(response => {
+		tap((response: ApiResponse<GroupResponse>) => {
+			groupCacheInit(handleAsArray<GroupResponse>(response));
 			console.log(response);
 		}),
 	);
