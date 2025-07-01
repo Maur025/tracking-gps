@@ -2,6 +2,7 @@ import { testSwagger } from '@routes/v1/test/test.swagger';
 import { container } from 'tsyringe';
 import ZodSwaggerGenerator from './swagger/zod-swagger-generator';
 import { geofenceSwagger } from '@routes/v1/geofence/geofence.swagger';
+import { groupSwagger } from '@routes/v1/group/group.swagger';
 
 export const loadAllSwaggerDocs = (): void => {
 	const BASE_PATH: string = '/api/v1';
@@ -22,8 +23,13 @@ export const loadAllSwaggerDocs = (): void => {
 	});
 
 	geofenceSwagger({
-		path: `${BASE_PATH}/geofence`,
+		path: `${BASE_PATH}/geofences`,
 		tag: 'GEOFENCE',
+	});
+
+	groupSwagger({
+		path: `${BASE_PATH}/groups`,
+		tag: 'GROUP',
 	});
 
 	zodSwaggerGenerator.setTags(TAGS_CONFIG);
