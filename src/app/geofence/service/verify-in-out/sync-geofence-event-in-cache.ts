@@ -1,9 +1,9 @@
-import GeofenceInCache from '@cache/geofence-in-cache';
-import GeofenceIn from '@models/entity/geofence-in';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { Server } from 'socket.io';
 import { container } from 'tsyringe';
 import { emitGeofenceIn } from './geofence-in/emit-geofence-in';
 import { emitGeofenceOut } from './geofence-out/emit-geofence-out';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;
@@ -56,7 +56,7 @@ export const syncGeofenceEventInCache = ({
 		let isExist: boolean = false;
 
 		for (const geofenceCache of geofenceInCacheSet?.values() ?? []) {
-			if (geofenceCache.sectionInternalId === geofenceIn.sectionInternalId) {
+			if (geofenceCache.id === geofenceIn.id) {
 				isExist = true;
 				break;
 			}

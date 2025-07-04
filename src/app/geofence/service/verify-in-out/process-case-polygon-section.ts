@@ -1,11 +1,11 @@
-import Geofence from '@models/entity/geofence';
-import GeofenceData from '@models/entity/geofence-data';
-import GeofenceIn from '@models/entity/geofence-in';
 import Track from '@models/entity/track';
 import { buildGeofenceIn } from './build-geofence-in';
 import { getPolygonByCoords } from './get-geofence-polygon-by-coords';
 import { Polygon } from 'ol/geom.js';
 import { fromLonLat } from 'ol/proj.js';
+import { Geofence } from '@app/geofence/entity/geofence';
+import { GeofenceData } from '@app/geofence/entity/geofence-data';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;

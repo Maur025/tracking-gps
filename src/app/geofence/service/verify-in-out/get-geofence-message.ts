@@ -1,4 +1,4 @@
-import GeofenceIn from '@models/entity/geofence-in';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 const getGeofenceMessage =
 	(type: 'IN' | 'OUT') =>

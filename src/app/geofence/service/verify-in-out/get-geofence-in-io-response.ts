@@ -1,6 +1,6 @@
-import GeofenceDataIoResponse from '@models/dto/response/socket/geofence-data-io-response';
-import GeofenceIoResponse from '@models/dto/response/socket/geofence-io-response';
-import GeofenceIn from '@models/entity/geofence-in';
+import { GeofenceDataIoResponse } from '@app/geofence/dto/geofence-data-io-response';
+import { GeofenceIoResponse } from '@app/geofence/dto/geofence-io-response';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 export const getGeofenceInIoResponse = (
 	geofenceInList: GeofenceIn[],

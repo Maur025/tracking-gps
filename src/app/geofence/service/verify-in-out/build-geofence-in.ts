@@ -1,6 +1,6 @@
-import Geofence from '@models/entity/geofence';
-import GeofenceData from '@models/entity/geofence-data';
-import GeofenceIn from '@models/entity/geofence-in';
+import { Geofence } from '@app/geofence/entity/geofence';
+import { GeofenceData } from '@app/geofence/entity/geofence-data';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;
@@ -20,7 +20,7 @@ export const buildGeofenceIn = ({
 		geofenceId,
 		geofenceName,
 		section,
-		sectionInternalId: section.internalId,
+		id: section.id,
 		isInside: true,
 		date,
 	};

@@ -3,8 +3,8 @@ import Track from '@models/entity/track';
 import { Server } from 'socket.io';
 import { container } from 'tsyringe';
 import { getGeofenceInList } from './get-geofence-in-list';
-import GeofenceIn from '@models/entity/geofence-in';
 import { syncGeofenceEventInCache } from './sync-geofence-event-in-cache';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;

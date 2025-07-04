@@ -1,10 +1,10 @@
-import GeofenceInIoResponse from '@models/dto/response/socket/geofence-in-io-response';
-import GeofenceIn from '@models/entity/geofence-in';
+import GeofenceInIoResponse from '@models/to-delete/geofence-in-io-response';
 import { emitSocketResponse } from '@utils/emit-socket-response';
 import { Server } from 'socket.io';
 import { getGeofenceInMessage } from '../get-geofence-message';
 import { getDataGeofenceInIoResponse } from './get-data-geofence-in-io-response';
 import { internalSocketTopics } from '@src/internal-socket-topics';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;
