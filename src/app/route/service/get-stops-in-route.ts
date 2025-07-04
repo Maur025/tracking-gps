@@ -1,11 +1,11 @@
-import Stop from '@models/entity/stop';
-import Track from '@models/entity/track';
+import { Track } from '@app/track/entity/track';
+import { TrackStop } from '@app/track/entity/track-stop';
 
-export const getStopsInRoute = (trackList: Track[]): Stop[] => {
-	const stopList: Stop[] = [];
+export const getStopsInRoute = (trackList: Track[]): TrackStop[] => {
+	const stopList: TrackStop[] = [];
 	let isStop: boolean = false;
 
-	let stopSwap: Stop = {};
+	let stopSwap: TrackStop = {};
 
 	for (const track of trackList) {
 		if (track.stp === 0) {

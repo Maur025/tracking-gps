@@ -1,4 +1,4 @@
-import Track from '@models/entity/track';
+import { Track } from '@app/track/entity/track';
 
 export const getPercentageCompleted = ({
 	// routeSelected,

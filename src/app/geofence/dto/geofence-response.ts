@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { string } from 'zod/v4';
-import { LayerResponse } from '../../../schemas/dto/response/layer/layer-response';
+import { LayerResponse } from '../../layer/dto/layer-response';
 import { GeofenceType } from '../entity/geofence-type';
 
 export const GeofenceResponse = BaseData.extend({

@@ -1,5 +1,5 @@
-import RouteResponse from '@models/dto/response/route-response';
-import Point from '@models/entity/point';
+import { RouteResponse } from '../dto/route-response';
+import { Point } from '../entity/Point';
 
 export const getCoordsByPointSection = (
 	pointSection: [number, Point[]],
