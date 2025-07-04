@@ -1,8 +1,9 @@
 import environment from '@config/env';
+import { loggerWarn } from '@maur025/core-logger';
 import { kafkaLogger } from '@utils/kafka/kafka-logger';
 import { Kafka, logLevel } from 'kafkajs';
 
-const { KAFKA_BROKER, KAFKA_CLIENT_ID } = environment;
+const { KAFKA_BROKER, KAFKA_CLIENT_ID, KAFKA_LOG_LEVEL } = environment;
 let kafkaClientInstance: Kafka | null = null;
 
 export const handleKafkaClient = (): {
@@ -17,7 +18,7 @@ export const handleKafkaClient = (): {
 		kafkaClientInstance = new Kafka({
 			clientId: KAFKA_CLIENT_ID,
 			brokers: [KAFKA_BROKER],
-			logLevel: logLevel.INFO,
+			logLevel: getKafkaLogLevel(KAFKA_LOG_LEVEL),
 			logCreator: () => kafkaLogger,
 		});
 
@@ -29,4 +30,32 @@ export const handleKafkaClient = (): {
 	};
 
 	return { kafkaClient: getKafkaClient(), restart };
+};
+
+const getKafkaLogLevel = (level: string): number => {
+	if (!level) {
+		loggerWarn(
+			'[kafka] env variable KAFKA_LOG_LEVEL is empty, skipping custom logger init',
+		);
+
+		return logLevel.NOTHING;
+	}
+
+	switch (level) {
+		case 'WARN': {
+			return logLevel.WARN;
+		}
+		case 'INFO': {
+			return logLevel.INFO;
+		}
+		case 'DEBUG': {
+			return logLevel.DEBUG;
+		}
+		case 'ERROR': {
+			return logLevel.ERROR;
+		}
+		default: {
+			return logLevel.NOTHING;
+		}
+	}
 };

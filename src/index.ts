@@ -15,12 +15,19 @@ getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
 });
 
+console.time('EXPRESS and SOCKET servers initialized in');
 ioServer.startListening();
+console.timeEnd('EXPRESS and SOCKET servers initialized in');
 
+console.time('KAFKA ready in');
 await configureConsumers();
+console.timeEnd('KAFKA ready in');
 
+console.time('REDIS initialized in');
 await initRedisClient();
+console.timeEnd('REDIS initialized in');
 
+console.time('CACHE-INIT ready in');
 cacheInitializer().subscribe({
 	error: error => {
 		loggerError(`error occurred while initializing cache -> `, error);
@@ -30,3 +37,4 @@ cacheInitializer().subscribe({
 		socketTrackClient.connect();
 	},
 });
+console.timeEnd('CACHE-INIT ready in');
