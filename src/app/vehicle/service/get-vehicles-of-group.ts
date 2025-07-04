@@ -1,7 +1,7 @@
-import { GroupVehicleResponse } from '@models/dto/response/group-vehicle-response';
-import { Vehicle } from '@models/entity/vehicle';
+import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
 import { getVehicleMetadata } from './get-vehicle-metadata';
 import { loggerError } from '@maur025/core-logger';
+import { Vehicle } from '../entity/vehicle';
 
 export const getVehiclesOfGroup = (
 	groupVehicles?: GroupVehicleResponse[],

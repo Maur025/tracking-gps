@@ -1,7 +1,7 @@
-import { GroupCache } from '@cache/group-cache';
 import { inject, injectable } from 'tsyringe';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
+import { GroupCache } from './cache/group-cache';
 
 @injectable()
 export default class GroupController {

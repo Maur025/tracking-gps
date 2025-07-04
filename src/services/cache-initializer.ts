@@ -4,10 +4,10 @@ import { handleAsArray } from '@utils/handle-response';
 import GeofenceService from '../app/geofence/service/geofence.service';
 import { ApiResponse } from '@maur025/core-model-data';
 import { geofenceCacheInit } from '../app/geofence/service/geofence-cache-init';
-import GroupService from './group/group.service';
-import { groupCacheInit } from './cache/group/group-cache-init';
-import { GroupResponse } from '@models/dto/response/group-response';
+import GroupService from '../app/group/service/group.service';
+import { groupCacheInit } from '../app/group/service/group-cache-init';
 import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
+import { GroupResponse } from '@app/group/dto/group-response';
 
 const geofenceService$ = container.resolve(GeofenceService);
 const groupService$ = container.resolve(GroupService);
