@@ -2,6 +2,9 @@ import { BaseData } from '@maur025/core-model-data';
 import { GeofenceType } from '@models/types/geofence.type';
 import { LayerResponse } from './layer-response';
 
+/**
+ * @deprecated GeofenceResponse is deprecated, use schema version
+ */
 export default interface GeofenceResponse extends BaseData {
 	data?: string;
 	name?: string;

@@ -3,7 +3,7 @@ import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import Device from '../../models/entity/device';
 import Track from '@models/entity/track';
-import { geofenceVerify } from '@services/reply-client/geofence/verify-in-out/geofence-verify';
+import { geofenceVerify } from '@app/geofence/service/verify-in-out/geofence-verify';
 import { container } from 'tsyringe';
 import DeviceCache from '@cache/device-cache';
 import { externalSocketTopics } from '@src/external-socket-topics';

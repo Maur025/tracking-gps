@@ -9,6 +9,7 @@
 		"moduleResolution": "node",
 		"baseUrl": ".",
 		"paths": {
+			"@app/*": ["src/app/*"],
 			"@cache/*": ["src/cache/*"],
 			"@config/*": ["src/config/*"],
 			"@controllers/*": ["src/controllers/*"],

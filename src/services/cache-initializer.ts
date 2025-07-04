@@ -1,13 +1,13 @@
 import { concatMap, forkJoin, Observable, of, tap } from 'rxjs';
 import { container } from 'tsyringe';
 import { handleAsArray } from '@utils/handle-response';
-import GeofenceService from './geofence/geofence.service';
+import GeofenceService from '../app/geofence/service/geofence.service';
 import { ApiResponse } from '@maur025/core-model-data';
-import GeofenceResponse from '@models/dto/response/geofence-response';
-import { geofenceCacheInit } from './geofence-cache-init';
+import { geofenceCacheInit } from '../app/geofence/service/geofence-cache-init';
 import GroupService from './group/group.service';
 import { groupCacheInit } from './cache/group/group-cache-init';
 import { GroupResponse } from '@models/dto/response/group-response';
+import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
 
 const geofenceService$ = container.resolve(GeofenceService);
 const groupService$ = container.resolve(GroupService);
