@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('@routes/v1/test/test.swagger', () => ({
+vi.mock('@app/test-app/test.swagger', () => ({
 	testSwagger: vi.fn(),
 }));
 
@@ -12,7 +12,7 @@ vi.mock('@app/group/group.swagger', () => ({
 	groupSwagger: vi.fn(),
 }));
 
-import { testSwagger } from '@routes/v1/test/test.swagger';
+import { testSwagger } from '@app/test-app/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
