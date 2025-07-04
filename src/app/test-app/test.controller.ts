@@ -8,7 +8,7 @@ import {
 	ErrorResponse,
 	MultiResponseBuilder,
 } from '@maur025/core-model-data';
-import RouteCache from '@cache/route-cache';
+import RouteCache from '@app/route/cache/route-cache';
 import { RequestValidate } from '@models/interface/request-validate.interface';
 import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';

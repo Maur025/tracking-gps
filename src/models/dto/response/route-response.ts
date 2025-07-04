@@ -3,6 +3,9 @@ import DistrictResponse from './district-response';
 import PointResponse from './point-response';
 import SectionResponse from './section-response';
 
+/**
+ * @deprecated RouteResponse is deprecated, use schema version
+ */
 export default interface RouteResponse extends BaseDataAudit {
 	name?: string;
 	description?: string;

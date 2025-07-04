@@ -1,5 +1,5 @@
-import Route from '@models/entity/route';
 import { singleton } from 'tsyringe';
+import { Route } from '../entity/route';
 
 @singleton()
 export default class RouteCache {

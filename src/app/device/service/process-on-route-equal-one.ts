@@ -3,11 +3,11 @@ import WsDeviceService from '@app/device/service/ws-device.service';
 import { container } from 'tsyringe';
 import WsTrackResponse from '@models/dto/response/ws-track-response';
 import { catchError, Observable, of, tap } from 'rxjs';
-import { getStopsInRoute } from '@services/routes/get-stops-in-route';
 import { getTrackingCoordinates } from './device-sync-common';
-import RouteCache from '@cache/route-cache';
+import RouteCache from '@app/route/cache/route-cache';
 import { Device } from '../entity/device';
 import { Route } from '@app/route/entity/route';
+import { getStopsInRoute } from '@app/route/service/get-stops-in-route';
 
 const wsDeviceService = container.resolve(WsDeviceService);
 const routeCache = container.resolve(RouteCache);

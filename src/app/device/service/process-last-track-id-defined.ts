@@ -3,12 +3,12 @@ import TrackService from '@app/track/service/track.service';
 import { handleAsArray } from '@utils/handle-response';
 import { container } from 'tsyringe';
 import { getTrackingCoordinates } from './device-sync-common';
-import { getPercentageCompleted } from '@services/routes/get-percentage-completed';
-import { getStopsInRoute } from '@services/routes/get-stops-in-route';
 import { monitorConfig } from '@config/monitor-config';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Device } from '../entity/device';
 import { TrackingResponse } from '@app/track/dto/tracking-response';
+import { getPercentageCompleted } from '@app/route/service/get-percentage-completed';
+import { getStopsInRoute } from '@app/route/service/get-stops-in-route';
 
 const trackService = container.resolve(TrackService);
 

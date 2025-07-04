@@ -1,7 +1,7 @@
-import RouteResponse from '@models/dto/response/route-response';
 import Point from '@models/entity/point';
 import { groupBySection } from './group-by-section';
 import { getCoordsByPointSection } from './get-coords-by-point-section';
+import { RouteResponse } from '../dto/route-response';
 
 export const setupSections = (route: RouteResponse) => {
 	route.tracksIn = [];
