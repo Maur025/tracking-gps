@@ -1,4 +1,4 @@
-import TrackService from '@services/track.service';
+import TrackService from '@app/track/service/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { connect } from '@socket/client/socket-track-client';
@@ -8,14 +8,14 @@ import {
 	ErrorResponse,
 	MultiResponseBuilder,
 } from '@maur025/core-model-data';
-import DeviceCache from '@cache/device-cache';
 import RouteCache from '@cache/route-cache';
 import { RequestValidate } from '@models/interface/request-validate.interface';
 import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
-import { testPdfKit } from '@report/test-pdfkit';
+import { testPdfKit } from '@app/test-app/report/test-pdfkit';
 import { exampleTestPublisher } from '@kafka/publishers/example-test-publisher';
-import { TrackingResponse } from '@schemas/dto/response/track/tracking-response';
+import { TrackingResponse } from '@app/track/dto/tracking-response';
+import DeviceCache from '@app/device/cache/device-cache';
 
 @injectable()
 export default class TestController {

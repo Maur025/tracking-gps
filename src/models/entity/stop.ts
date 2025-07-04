@@ -1,3 +1,6 @@
+/**
+ * @deprecated Stop is deprecated, use schema version TrackStop
+ */
 export default interface Stop {
 	start_date?: number;
 	start_lat?: number;

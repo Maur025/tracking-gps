@@ -6,6 +6,9 @@ import Track from './track';
 import Stop from './stop';
 import Route from './route';
 
+/**
+ * @deprecated Device is deprecated, use schema version
+ */
 export default interface Device extends BaseData {
 	config?: Config;
 	type?: string;

@@ -1,3 +1,6 @@
+/**
+ * @deprecated Track is deprecated, use schema version
+ */
 export default interface Track {
 	t?: number;
 	lat?: number;

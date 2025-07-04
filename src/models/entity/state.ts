@@ -1,3 +1,6 @@
+/**
+ * @deprecated State is deprecated, use schema version DeviceState
+ */
 export default interface State {
 	USSD_NUMBER: string;
 	LOST_TRACKS: string;
