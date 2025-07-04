@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 
-vi.mock('@services/cache/group/get-vehicle-metadata', () => ({
+vi.mock('@app/vehicle/service/get-vehicle-metadata', () => ({
 	getVehicleMetadata: vi.fn(() => ({})),
 }));
 
@@ -8,10 +8,10 @@ vi.mock('@maur025/core-logger', () => ({
 	loggerError: vi.fn(),
 }));
 
-import { getVehicleMetadata } from '@services/cache/group/get-vehicle-metadata';
-import { getVehiclesOfGroup } from '@services/cache/group/get-vehicles-of-group';
-import { GroupVehicleResponse } from '@models/dto/response/group-vehicle-response';
+import { getVehicleMetadata } from '@app/vehicle/service/get-vehicle-metadata';
+import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
 import { loggerError } from '@maur025/core-logger';
+import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
 
 describe('get vehicles of group test', () => {
 	const groupVehicleResponse = [

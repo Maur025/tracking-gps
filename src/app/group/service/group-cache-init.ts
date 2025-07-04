@@ -1,9 +1,9 @@
 import { loggerError } from '@maur025/core-logger';
-import { GroupResponse } from '@models/dto/response/group-response';
-import { Group } from '@models/entity/group';
 import { container } from 'tsyringe';
-import { GroupCache } from '@cache/group-cache';
-import { getVehiclesOfGroup } from './get-vehicles-of-group';
+import { getVehiclesOfGroup } from '../../vehicle/service/get-vehicles-of-group';
+import { GroupCache } from '../cache/group-cache';
+import { Group } from '../entity/group';
+import { GroupResponse } from '../dto/group-response';
 
 export const groupCacheInit = (groupResponse?: GroupResponse[]): void => {
 	if (!groupResponse?.length) {

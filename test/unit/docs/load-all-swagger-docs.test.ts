@@ -8,7 +8,7 @@ vi.mock('@app/geofence/geofence.swagger', () => ({
 	geofenceSwagger: vi.fn(),
 }));
 
-vi.mock('@routes/v1/group/group.swagger', () => ({
+vi.mock('@app/group/group.swagger', () => ({
 	groupSwagger: vi.fn(),
 }));
 
@@ -16,7 +16,7 @@ import { testSwagger } from '@routes/v1/test/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
-import { groupSwagger } from '@routes/v1/group/group.swagger';
+import { groupSwagger } from '@app/group/group.swagger';
 import { geofenceSwagger } from '@app/geofence/geofence.swagger';
 
 describe('load all swagger docs test', () => {

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import testRouter from '@routes/v1/test/test.routes';
 import geofenceRouter from '@app/geofence/geofence.routes';
-import groupRouter from '@routes/v1/group/group.routes';
+import groupRouter from '@app/group/group.routes';
 
 const router = Router();
 

@@ -1,8 +1,8 @@
-import { GroupCache } from '@cache/group-cache';
-import { Group } from '@models/entity/group';
 import { container } from 'tsyringe';
 import { beforeEach, describe } from 'vitest';
-import { cacheSingleCommonTest } from './cache-single-common-test';
+import { cacheSingleCommonTest } from '../../../cache/cache-single-common-test';
+import { Group } from '@app/group/entity/group';
+import { GroupCache } from '@app/group/cache/group-cache';
 
 describe('Group cache test', () => {
 	const groupList = [

@@ -12,7 +12,7 @@ vi.mock('@maur025/core-logger', () => ({
 	loggerError: vi.fn(() => {}),
 }));
 
-vi.mock('@services/cache/group/get-vehicles-of-group', () => ({
+vi.mock('@app/vehicle/service/get-vehicles-of-group', () => ({
 	getVehiclesOfGroup: vi.fn(() => [
 		{
 			name: 'vehicle1',
@@ -32,11 +32,11 @@ vi.mock('@services/cache/group/get-vehicles-of-group', () => ({
 }));
 
 import { loggerError } from '@maur025/core-logger';
-import { GroupResponse } from '@models/dto/response/group-response';
-import { groupCacheInit } from '@services/cache/group/group-cache-init';
-import { GroupCache } from '@cache/group-cache';
+import { groupCacheInit } from '@app/group/service/group-cache-init';
 import { container } from 'tsyringe';
-import { getVehiclesOfGroup } from '@services/cache/group/get-vehicles-of-group';
+import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
+import { GroupResponse } from '@app/group/dto/group-response';
+import { GroupCache } from '@app/group/cache/group-cache';
 
 describe('Group cache init test', () => {
 	const groupResponse = [

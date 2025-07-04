@@ -1,7 +1,7 @@
 import { testSwagger } from '@routes/v1/test/test.swagger';
 import { container } from 'tsyringe';
 import ZodSwaggerGenerator from './swagger/zod-swagger-generator';
-import { groupSwagger } from '@routes/v1/group/group.swagger';
+import { groupSwagger } from '@app/group/group.swagger';
 import { geofenceSwagger } from '@app/geofence/geofence.swagger';
 
 export const loadAllSwaggerDocs = (): void => {

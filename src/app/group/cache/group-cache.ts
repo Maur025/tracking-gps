@@ -1,6 +1,6 @@
 import { singleton } from 'tsyringe';
-import AbstractSingleCache from './abstract-single-cache';
-import { Group } from '@models/entity/group';
+import AbstractSingleCache from '@cache/abstract-single-cache';
+import { Group } from '../entity/group';
 
 @singleton()
 export class GroupCache extends AbstractSingleCache<Group> {

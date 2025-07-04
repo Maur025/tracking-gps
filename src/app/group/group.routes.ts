@@ -1,4 +1,4 @@
-import GroupController from '@controllers/group.controller';
+import GroupController from '@app/group/group.controller';
 import { Router } from 'express';
 import { container } from 'tsyringe';
 import { groupPaths } from './group-paths';
