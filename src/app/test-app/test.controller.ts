@@ -11,7 +11,7 @@ import {
 import DeviceCache from '@cache/device-cache';
 import RouteCache from '@cache/route-cache';
 import { RequestValidate } from '@models/interface/request-validate.interface';
-import type { TestSchema } from '@schemas/controller/test.schema';
+import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@report/test-pdfkit';
 import { exampleTestPublisher } from '@kafka/publishers/example-test-publisher';

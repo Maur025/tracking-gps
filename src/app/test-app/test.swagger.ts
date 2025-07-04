@@ -3,7 +3,7 @@ import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';
-import { TestSchema } from '@schemas/controller/test.schema';
+import { TestSchema } from '@app/test-app/schema/test.schema';
 import { object, string } from 'zod/v4';
 
 const { ZOD_VALIDATION, KAFKA } = testPaths;

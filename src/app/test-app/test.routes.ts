@@ -1,6 +1,6 @@
-import TestController from '@controllers/test.controller';
+import TestController from '@app/test-app/test.controller';
 import { zodValidator } from '@middlewares/zod-validator';
-import { TestSchema } from '@schemas/controller/test.schema';
+import { TestSchema } from '@app/test-app/schema/test.schema';
 import { Router } from 'express';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';

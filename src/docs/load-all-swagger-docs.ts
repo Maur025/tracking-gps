@@ -1,4 +1,4 @@
-import { testSwagger } from '@routes/v1/test/test.swagger';
+import { testSwagger } from '@app/test-app/test.swagger';
 import { container } from 'tsyringe';
 import ZodSwaggerGenerator from './swagger/zod-swagger-generator';
 import { groupSwagger } from '@app/group/group.swagger';

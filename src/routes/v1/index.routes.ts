@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import testRouter from '@routes/v1/test/test.routes';
+import testRouter from '@app/test-app/test.routes';
 import geofenceRouter from '@app/geofence/geofence.routes';
 import groupRouter from '@app/group/group.routes';
 
