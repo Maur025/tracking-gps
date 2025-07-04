@@ -30,6 +30,9 @@ export const kafkaConsumer = () => {
 
 		const consumer: Consumer = kafkaClient.consumer({
 			groupId,
+			sessionTimeout: 6000,
+			rebalanceTimeout: 5000,
+			heartbeatInterval: 2000,
 		});
 
 		await consumer.connect();

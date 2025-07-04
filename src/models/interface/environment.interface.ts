@@ -11,4 +11,5 @@ export default interface Environment {
 
 	KAFKA_BROKER: string;
 	KAFKA_CLIENT_ID: string;
+	KAFKA_LOG_LEVEL: string;
 }
