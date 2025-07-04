@@ -1,6 +1,6 @@
-import Geofence from '@models/entity/geofence';
 import { singleton } from 'tsyringe';
-import AbstractSingleCache from './abstract-single-cache';
+import AbstractSingleCache from '../../../cache/abstract-single-cache';
+import { Geofence } from '@app/geofence/entity/geofence';
 
 @singleton()
 export default class GeofenceCache extends AbstractSingleCache<Geofence> {

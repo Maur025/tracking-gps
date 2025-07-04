@@ -4,7 +4,7 @@ vi.mock('@routes/v1/test/test.swagger', () => ({
 	testSwagger: vi.fn(),
 }));
 
-vi.mock('@routes/v1/geofence/geofence.swagger', () => ({
+vi.mock('@app/geofence/geofence.swagger', () => ({
 	geofenceSwagger: vi.fn(),
 }));
 
@@ -16,8 +16,8 @@ import { testSwagger } from '@routes/v1/test/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
-import { geofenceSwagger } from '@routes/v1/geofence/geofence.swagger';
 import { groupSwagger } from '@routes/v1/group/group.swagger';
+import { geofenceSwagger } from '@app/geofence/geofence.swagger';
 
 describe('load all swagger docs test', () => {
 	const BASE_PATH: string = '/api/v1';

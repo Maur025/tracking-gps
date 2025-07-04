@@ -1,8 +1,8 @@
 import { beforeEach, describe } from 'vitest';
-import Geofence from '../../../src/models/entity/geofence';
-import GeofenceCache from '../../../src/cache/geofence-cache';
 import { container } from 'tsyringe';
-import { cacheSingleCommonTest } from './cache-single-common-test';
+import { cacheSingleCommonTest } from '../../../cache/cache-single-common-test';
+import GeofenceCache from '@app/geofence/cache/geofence-cache';
+import { Geofence } from '@app/geofence/entity/geofence';
 
 describe('Geofence Cache tests', () => {
 	const geofenceList: Partial<Geofence>[] = [

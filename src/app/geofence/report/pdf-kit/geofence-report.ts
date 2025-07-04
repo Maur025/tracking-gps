@@ -1,7 +1,7 @@
 import { Response } from 'express';
-import { generatePdf } from './generate-pdf';
+import { generatePdf } from '../../../../report/generate-pdf';
 import path from 'node:path';
-import GeofenceService from '@services/geofence/geofence.service';
+import GeofenceService from '@app/geofence/service/geofence.service';
 import { container } from 'tsyringe';
 import GeofenceResponse from '@models/dto/response/geofence-response';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';

@@ -1,4 +1,4 @@
-import GeofenceCache from '@cache/geofence-cache';
+import GeofenceCache from '@app/geofence/cache/geofence-cache';
 import GeofenceIn from '@models/entity/geofence-in';
 import Track from '@models/entity/track';
 import { container } from 'tsyringe';

@@ -1,4 +1,4 @@
-import GeofenceController from '@controllers/geofence.controller';
+import GeofenceController from '@app/geofence/geofence.controller';
 import { Router } from 'express';
 import { container } from 'tsyringe';
 import { geofencePaths } from './geofence-paths';

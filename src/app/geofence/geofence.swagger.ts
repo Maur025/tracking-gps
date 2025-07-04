@@ -2,9 +2,9 @@ import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
 import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
 import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
-import { geofencePaths } from './geofence-paths';
-import { Geofence } from '@schemas/entity/geofence/geofence';
+import { Geofence } from '@app/geofence/entity/geofence';
 import { array } from 'zod/v4';
+import { geofencePaths } from './geofence-paths';
 
 const { DEFAULT } = geofencePaths;
 
