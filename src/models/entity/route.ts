@@ -3,6 +3,9 @@ import District from './district';
 import Point from './point';
 import Section from './section';
 
+/**
+ * @deprecated Route is deprecated, use schema version
+ */
 export default interface Route extends BaseDataAudit {
 	name?: string;
 	description?: string;

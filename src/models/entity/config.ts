@@ -1,3 +1,6 @@
+/**
+ * @deprecated Config is deprecated, use schema version DeviceConfig
+ */
 export default interface Config {
 	UPDATE_URL: string;
 	END_ROUTE_FORGOTTEN: string;

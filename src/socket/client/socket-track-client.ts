@@ -1,12 +1,12 @@
 import environment from '@config/env';
-import Device from '@models/entity/device';
-import { deviceListProcess } from '@services/device/device-list-process';
+import { deviceListProcess } from '@app/device/service/device-list-process';
 import { io, Socket } from 'socket.io-client';
 import { clientCommonEvent } from './client-common-event';
-import { deviceProcess } from '@services/device/device-process';
-import { deviceNewProcess } from '@services/device/device-new-process';
+import { deviceProcess } from '@app/device/service/device-process';
+import { deviceNewProcess } from '@app/device/service/device-new-process';
 import { loggerInfo } from '@maur025/core-logger';
 import { externalSocketTopics } from '@src/external-socket-topics';
+import { Device } from '@app/device/entity/device';
 
 const CLIENT_NAME: string = 'track-client';
 const { CONNECT, MESSAGE, DEVICES, DEVICE, DEVICE_NEW, DEVICE_LAST } =
