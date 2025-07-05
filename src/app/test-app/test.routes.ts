@@ -1,9 +1,9 @@
 import TestController from '@app/test-app/test.controller';
-import { zodValidator } from '@middlewares/zod-validator';
 import { TestSchema } from '@app/test-app/schema/test.schema';
 import { Router } from 'express';
 import { container } from 'tsyringe';
 import { testPaths } from './test-paths';
+import { zodValidator } from './middlewares/zod-validator';
 
 const { DEFAULT, ZOD_VALIDATION, KAFKA } = testPaths;
 

@@ -1,12 +1,12 @@
 import { singleton } from 'tsyringe';
-import { redisClient } from '@config/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client';
 import { loggerError } from '@maur025/core-logger';
 import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
-import { deleteRedisIdx } from '@services/redis/delete-redis-idx';
+import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
 import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
-import AbstractSingleCache from '@cache/abstract-single-cache';
-import { CacheUseRedis } from '@cache/cache-use-redis';
 import { Device } from '../entity/device';
+import { CacheUseRedis } from '@common/cache/cache-use-redis';
+import AbstractSingleCache from '@common/cache/abstract-single-cache';
 
 @singleton()
 export default class DeviceCache

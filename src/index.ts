@@ -3,11 +3,11 @@ import 'reflect-metadata';
 import '@config/ioc/dependency-injection';
 import ioServer from '@socket/server/io-server';
 import * as socketTrackClient from '@socket/client/socket-track-client';
-import { cacheInitializer } from '@services/cache-initializer';
+import { cacheInitializer } from '@common/cache/service/cache-initializer';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { initRedisClient } from '@config/redis/create-redis-client';
+import { initRedisClient } from '@common/redis/create-redis-client';
 import app from './app';
-import { configureConsumers } from '@config/kafka/configure-consumers';
+import { configureConsumers } from '@config/configure-consumers';
 
 const { getApp } = app;
 

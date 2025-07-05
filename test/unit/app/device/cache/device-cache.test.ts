@@ -1,6 +1,6 @@
 import { describe, beforeEach, test, expect, vi, Mock } from 'vitest';
 
-vi.mock('@config/redis/create-redis-client', () => ({
+vi.mock('@common/redis/create-redis-client', () => ({
 	redisClient: {
 		scanIterator: vi.fn(),
 	},
@@ -21,13 +21,13 @@ vi.mock('@app/device/cache/get-device-batch-from-redis', () => ({
 }));
 
 import { container } from 'tsyringe';
-import { cacheSingleCommonTest } from '../../../cache/cache-single-common-test';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { redisClient } from '@config/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client';
 import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
 import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
 import { Device } from '@app/device/entity/device';
 import DeviceCache from '@app/device/cache/device-cache';
+import { cacheSingleCommonTest } from 'test/unit/common/cache/cache-single-common-test';
 
 describe('Device Cache Tests', () => {
 	const deviceList = [

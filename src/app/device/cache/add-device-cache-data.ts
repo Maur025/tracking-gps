@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 import { addDeviceBatchToRedis } from './add-device-batch-to-redis';
 import { SCHEMA_FIELD_TYPE } from 'redis';
-import { addRedisIdx } from '@services/redis/add-redis-idx';
+import { addRedisIdx } from '@common/redis/service/add-redis-idx';
 import { Device } from '../entity/device';
 import DeviceCache from './device-cache';
 

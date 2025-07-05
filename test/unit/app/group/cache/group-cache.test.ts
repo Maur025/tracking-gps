@@ -1,8 +1,8 @@
 import { container } from 'tsyringe';
 import { beforeEach, describe } from 'vitest';
-import { cacheSingleCommonTest } from '../../../cache/cache-single-common-test';
 import { Group } from '@app/group/entity/group';
 import { GroupCache } from '@app/group/cache/group-cache';
+import { cacheSingleCommonTest } from 'test/unit/common/cache/cache-single-common-test';
 
 describe('Group cache test', () => {
 	const groupList = [

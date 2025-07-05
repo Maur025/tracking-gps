@@ -1,12 +1,12 @@
 import { Response } from 'express';
-import { generatePdf } from '../../../../report/generate-pdf';
 import path from 'node:path';
 import GeofenceService from '@app/geofence/service/geofence.service';
 import { container } from 'tsyringe';
-import GeofenceResponse from '@models/dto/response/geofence-response';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
 import { loggerError } from '@maur025/core-logger';
 import { handleAsArray } from '@utils/handle-response';
+import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
+import { generatePdf } from '@common/report/generate-pdf';
 
 export const geofenceReport = (res: Response): void => {
 	const geofenceService = container.resolve(GeofenceService);

@@ -4,14 +4,14 @@ vi.mock('@app/device/cache/add-device-batch-to-redis', () => ({
 	addDeviceBatchToRedis: vi.fn().mockResolvedValue([1, 2, 3]),
 }));
 
-vi.mock('@services/redis/add-redis-idx', () => ({
+vi.mock('@common/redis/service/add-redis-idx', () => ({
 	addRedisIdx: vi.fn(),
 }));
 
 import { addDeviceBatchToRedis } from '@app/device/cache/add-device-batch-to-redis';
 import { container } from 'tsyringe';
 import { addDeviceCacheData } from '@app/device/cache/add-device-cache-data';
-import { addRedisIdx } from '@services/redis/add-redis-idx';
+import { addRedisIdx } from '@common/redis/service/add-redis-idx';
 import DeviceCache from '@app/device/cache/device-cache';
 import { Device } from '@app/device/entity/device';
 

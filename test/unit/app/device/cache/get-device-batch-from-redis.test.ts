@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, Mock, test, vi } from 'vitest';
 
-vi.mock('@config/redis/create-redis-client', () => ({
+vi.mock('@common/redis/create-redis-client', () => ({
 	redisClient: {
 		multi: vi.fn(),
 	},
 }));
 
-import { redisClient } from '@config/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client';
 import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
 import { Device } from '@app/device/entity/device';
 

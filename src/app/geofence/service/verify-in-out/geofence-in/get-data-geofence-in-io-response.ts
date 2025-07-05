@@ -1,8 +1,8 @@
-import GeofenceInIoResponse from '@models/to-delete/geofence-in-io-response';
-import GeofenceIoResponse from '@models/to-delete/geofence-io-response';
 import { getGeofenceInIoResponse } from '../get-geofence-in-io-response';
 import { pipe } from '@maur025/core-common';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { GeofenceIoResponse } from '@app/geofence/dto/geofence-io-response';
+import { GeofenceInIoResponse } from '@app/geofence/dto/geofence-in-io-response';
 
 interface Request {
 	deviceId: string;

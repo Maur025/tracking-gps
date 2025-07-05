@@ -7,7 +7,7 @@ const { getApp } = app;
 
 describe('Test Routes', () => {
 	test('GET /two should return object with name', async () => {
-		const result = await request(getApp()).get('/api/v1/test/two');
+		const result = await request(getApp()).get('/api/v1/tests/two');
 
 		expect(result.status).toBe(200);
 
