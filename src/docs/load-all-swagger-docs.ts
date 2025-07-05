@@ -3,6 +3,7 @@ import { container } from 'tsyringe';
 import ZodSwaggerGenerator from './swagger/zod-swagger-generator';
 import { groupSwagger } from '@app/group/group.swagger';
 import { geofenceSwagger } from '@app/geofence/geofence.swagger';
+import { deviceSwagger } from '@app/device/device.swagger';
 
 export const loadAllSwaggerDocs = (): void => {
 	const BASE_PATH: string = '/api/v1';
@@ -15,10 +16,11 @@ export const loadAllSwaggerDocs = (): void => {
 		},
 		{ name: 'GEOFENCE', description: 'management of geofences' },
 		{ name: 'GROUP', description: 'management of group vehicles' },
+		{ name: 'DEVICE', description: 'management of devices' },
 	];
 
 	testSwagger({
-		path: `${BASE_PATH}/test`,
+		path: `${BASE_PATH}/tests`,
 		tag: 'TEST',
 	});
 
@@ -30,6 +32,11 @@ export const loadAllSwaggerDocs = (): void => {
 	groupSwagger({
 		path: `${BASE_PATH}/groups`,
 		tag: 'GROUP',
+	});
+
+	deviceSwagger({
+		path: `${BASE_PATH}/devices`,
+		tag: 'DEVICE',
 	});
 
 	zodSwaggerGenerator.setTags(TAGS_CONFIG);

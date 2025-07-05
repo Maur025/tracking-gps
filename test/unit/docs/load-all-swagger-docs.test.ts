@@ -12,12 +12,17 @@ vi.mock('@app/group/group.swagger', () => ({
 	groupSwagger: vi.fn(),
 }));
 
+vi.mock('@app/device/device.swagger', () => ({
+	deviceSwagger: vi.fn(),
+}));
+
 import { testSwagger } from '@app/test-app/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
 import { groupSwagger } from '@app/group/group.swagger';
 import { geofenceSwagger } from '@app/geofence/geofence.swagger';
+import { deviceSwagger } from '@app/device/device.swagger';
 
 describe('load all swagger docs test', () => {
 	const BASE_PATH: string = '/api/v1';
@@ -41,7 +46,7 @@ describe('load all swagger docs test', () => {
 		loadAllSwaggerDocs();
 
 		expect(testSwagger).toHaveBeenCalledWith(
-			expect.objectContaining({ path: `${BASE_PATH}/test`, tag: 'TEST' }),
+			expect.objectContaining({ path: `${BASE_PATH}/tests`, tag: 'TEST' }),
 		);
 
 		expect(geofenceSwagger).toHaveBeenCalledWith(
@@ -55,6 +60,10 @@ describe('load all swagger docs test', () => {
 			expect.objectContaining({ path: `${BASE_PATH}/groups`, tag: 'GROUP' }),
 		);
 
+		expect(deviceSwagger).toHaveBeenCalledWith(
+			expect.objectContaining({ path: `${BASE_PATH}/devices`, tag: 'DEVICE' }),
+		);
+
 		expect(mockTags).toHaveBeenCalledWith([
 			expect.objectContaining({
 				name: 'TEST',
@@ -66,6 +75,10 @@ describe('load all swagger docs test', () => {
 			}),
 			expect.objectContaining({
 				name: 'GROUP',
+				description: expect.any(String),
+			}),
+			expect.objectContaining({
+				name: 'DEVICE',
 				description: expect.any(String),
 			}),
 		]);
