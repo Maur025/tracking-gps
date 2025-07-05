@@ -1,8 +1,8 @@
 import environment from '@config/env';
 import { singleton } from 'tsyringe';
-import AbstractApiService from '../../../utils/abstract-api-service';
+import AbstractApiService from '../../../api-client/service/abstract-api-service';
 import { Observable } from 'rxjs';
-import { get } from '@utils/api-client';
+import { get } from '@src/api-client/api-client';
 import { ApiResponse } from '@maur025/core-model-data';
 import { TrackingResponse } from '../dto/tracking-response';
 

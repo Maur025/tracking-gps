@@ -3,7 +3,7 @@ import { Application } from 'express';
 import { createServer } from 'node:http';
 import { Server, Socket } from 'socket.io';
 import commonException from '@utils/common-exception';
-import SocketServerBuilderResponse from '@models/interface/socket-server-builder-response.interface';
+import SocketServerBuilderResponse from '@server/interface/socket-server-builder-response.interface';
 import environment from '@config/env';
 
 import type { Server as HttpServer } from 'node:http';

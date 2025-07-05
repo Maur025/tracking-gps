@@ -1,6 +1,6 @@
 import { concatMap, forkJoin, Observable, of, tap } from 'rxjs';
 import { container } from 'tsyringe';
-import { handleAsArray } from '@utils/handle-response';
+import { handleAsArray } from '@src/api-client/service/handle-response';
 import GeofenceService from '../../../app/geofence/service/geofence.service';
 import { ApiResponse } from '@maur025/core-model-data';
 import { geofenceCacheInit } from '../../../app/geofence/service/geofence-cache-init';

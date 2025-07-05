@@ -1,4 +1,4 @@
-import Environment from '@models/interface/environment.interface';
+import { EnvironmentSchema } from './schema/environment.schema';
 
 const {
 	HOST,
@@ -13,7 +13,7 @@ const {
 	KAFKA_LOG_LEVEL = 'WARN',
 } = process.env;
 
-const environment: Environment = {
+const environment: EnvironmentSchema = {
 	HOST,
 	PORT: Number(PORT),
 	STATIC_PATH,

@@ -1,4 +1,4 @@
-import SocketServerBuilderResponse from '@models/interface/socket-server-builder-response.interface';
+import SocketServerBuilderResponse from '@server/interface/socket-server-builder-response.interface';
 import { socketListeners } from './socket-listeners';
 import SocketServerBuilder from './socket-server-builder';
 import app from '@src/app';

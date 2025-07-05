@@ -1,8 +1,8 @@
 import environment from '@config/env';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
-import AbstractApiService from '@utils/abstract-api-service';
-import { get } from '@utils/api-client';
-import { handleAsArray } from '@utils/handle-response';
+import AbstractApiService from '@src/api-client/service/abstract-api-service';
+import { get } from '@src/api-client/api-client';
+import { handleAsArray } from '@src/api-client/service/handle-response';
 import { catchError, map, Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { setupSections } from './setup-sections';

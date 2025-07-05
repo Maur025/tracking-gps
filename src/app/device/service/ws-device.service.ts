@@ -1,7 +1,7 @@
 import { WsTrackResponse } from '@app/track/dto/ws-track-response';
 import environment from '@config/env';
-import AbstractApiService from '@utils/abstract-api-service';
-import { get } from '@utils/api-client';
+import AbstractApiService from '@src/api-client/service/abstract-api-service';
+import { get } from '@src/api-client/api-client';
 import { Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { Device } from '../entity/device';

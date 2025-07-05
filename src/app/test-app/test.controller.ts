@@ -9,7 +9,7 @@ import {
 	MultiResponseBuilder,
 } from '@maur025/core-model-data';
 import RouteCache from '@app/route/cache/route-cache';
-import { RequestValidate } from '@models/interface/request-validate.interface';
+import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface';
 import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@app/test-app/report/test-pdfkit';
