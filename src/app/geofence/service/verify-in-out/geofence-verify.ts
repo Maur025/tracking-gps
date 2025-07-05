@@ -1,10 +1,10 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import Track from '@models/entity/track';
 import { Server } from 'socket.io';
 import { container } from 'tsyringe';
 import { getGeofenceInList } from './get-geofence-in-list';
 import { syncGeofenceEventInCache } from './sync-geofence-event-in-cache';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { Track } from '@app/track/entity/track';
 
 interface Request {
 	deviceId: string;

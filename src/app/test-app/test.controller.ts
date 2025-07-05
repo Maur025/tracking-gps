@@ -13,9 +13,9 @@ import { RequestValidate } from '@models/interface/request-validate.interface';
 import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@app/test-app/report/test-pdfkit';
-import { exampleTestPublisher } from '@kafka/publishers/example-test-publisher';
 import { TrackingResponse } from '@app/track/dto/tracking-response';
 import DeviceCache from '@app/device/cache/device-cache';
+import { exampleTestPublisher } from './publishers/example-test-publisher';
 
 @injectable()
 export default class TestController {

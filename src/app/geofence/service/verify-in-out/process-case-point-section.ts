@@ -1,9 +1,9 @@
-import Track from '@models/entity/track';
 import { getDistance } from 'ol/sphere';
 import { buildGeofenceIn } from './build-geofence-in';
 import { Geofence } from '@app/geofence/entity/geofence';
 import { GeofenceData } from '@app/geofence/entity/geofence-data';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { Track } from '@app/track/entity/track';
 
 interface Request {
 	deviceId: string;

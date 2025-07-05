@@ -1,7 +1,7 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { boolean, number, string } from 'zod/v4';
 import { GeofenceType } from '../entity/geofence-type';
-import { PositionSchema } from '@schemas/position.schema';
+import { PositionSchema } from '@common/schema/position.schema';
 
 export const GeofenceDataIoResponse = BaseData.extend({
 	show: boolean().default(false).optional(),

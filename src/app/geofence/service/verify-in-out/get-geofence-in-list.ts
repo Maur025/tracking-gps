@@ -1,9 +1,9 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import Track from '@models/entity/track';
 import { container } from 'tsyringe';
 import { processCasePolygonSection } from './process-case-polygon-section';
 import { processCasePointSection } from './process-case-point-section';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { Track } from '@app/track/entity/track';
 
 interface Request {
 	deviceId: string;

@@ -1,4 +1,4 @@
-import { PositionL2 } from '@schemas/position.schema';
+import { PositionL2 } from '@common/schema/position.schema';
 import { Device } from '../entity/device';
 
 export const getTrackingCoordinates = ({ tracks }: Device): PositionL2 => {

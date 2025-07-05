@@ -1,7 +1,7 @@
 import {
 	initRedisClient,
 	redisClient,
-} from '@config/redis/create-redis-client';
+} from '@common/redis/create-redis-client';
 import {
 	afterAll,
 	beforeAll,

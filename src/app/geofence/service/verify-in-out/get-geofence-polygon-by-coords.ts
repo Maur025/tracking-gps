@@ -1,4 +1,4 @@
-import { PositionSchema } from '@schemas/position.schema';
+import { PositionSchema } from '@common/schema/position.schema';
 import { Coordinate } from 'ol/coordinate';
 import { Polygon } from 'ol/geom.js';
 import { fromLonLat } from 'ol/proj.js';

@@ -1,13 +1,13 @@
 import { ErrorResponse } from '@maur025/core-model-data';
 import WsDeviceService from '@app/device/service/ws-device.service';
 import { container } from 'tsyringe';
-import WsTrackResponse from '@models/dto/response/ws-track-response';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { getTrackingCoordinates } from './device-sync-common';
 import RouteCache from '@app/route/cache/route-cache';
 import { Device } from '../entity/device';
 import { Route } from '@app/route/entity/route';
 import { getStopsInRoute } from '@app/route/service/get-stops-in-route';
+import { WsTrackResponse } from '@app/track/dto/ws-track-response';
 
 const wsDeviceService = container.resolve(WsDeviceService);
 const routeCache = container.resolve(RouteCache);

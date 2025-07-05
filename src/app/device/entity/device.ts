@@ -4,7 +4,7 @@ import z, { array, boolean, number, object, string } from 'zod/v4';
 import { DeviceSetup } from './device-setup';
 import { DeviceState } from './device-state';
 import { Track } from '@app/track/entity/track';
-import { PositionL2 } from '@schemas/position.schema';
+import { PositionL2 } from '@common/schema/position.schema';
 import { TrackStop } from '@app/track/entity/track-stop';
 import { Route } from '@app/route/entity/route';
 

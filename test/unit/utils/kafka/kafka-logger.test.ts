@@ -15,7 +15,7 @@ import {
 	loggerSilly,
 	loggerWarn,
 } from '@maur025/core-logger';
-import { kafkaLogger } from '@utils/kafka/kafka-logger';
+import { kafkaLogger } from '@common/kafka/util/kafka-logger';
 import { LogEntry, logLevel } from 'kafkajs';
 
 describe('Kafka logger test', () => {

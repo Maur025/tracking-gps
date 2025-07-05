@@ -11,6 +11,7 @@
 		"paths": {
 			"@app/*": ["src/app/*"],
 			"@cache/*": ["src/cache/*"],
+			"@common/*": ["src/common/*"],
 			"@config/*": ["src/config/*"],
 			"@controllers/*": ["src/controllers/*"],
 			"@docs/*": ["src/docs/*"],

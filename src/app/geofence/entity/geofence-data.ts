@@ -1,5 +1,5 @@
 import { BaseData } from '@maur025/core-model-data';
-import { PositionSchema } from '@schemas/position.schema';
+import { PositionSchema } from '@common/schema/position.schema';
 import z, { boolean, number, string } from 'zod/v4';
 import { GeofenceType } from './geofence-type';
 
