@@ -1,7 +1,7 @@
 import { loggerError } from '@maur025/core-logger';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
 import GeofenceService from '@app/geofence/service/geofence.service';
-import { handleAsArray } from '@utils/handle-response';
+import { handleAsArray } from '@src/api-client/service/handle-response';
 import { Response } from 'express';
 import path from 'node:path';
 import pdfPrinter from 'pdfmake';

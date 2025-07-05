@@ -1,17 +1,15 @@
-import ApiServiceRequest from '@models/interface/api-service-request.interface';
-import {
-	CreateRequest,
-	DeleteRequest,
-	GetAllPaginatedRequest,
-	GetByIdRequest,
-	UpdateRequest,
-} from '@models/interface/service-request.interface';
-import { delet, get, post, put } from './api-client';
+import { delet, get, post, put } from '../api-client';
 import { Observable } from 'rxjs';
 import { ApiResponse, BaseData } from '@maur025/core-model-data';
+import { ApiServiceRequestSchema } from '../schema/api-service-request.schema';
+import { GetAllPaginatedRequest } from '../dto/get-all-paginated-request';
+import { GetByIdRequest } from '../dto/get-by-id-request';
+import { CreateRequest } from '../dto/create-request';
+import { UpdateRequest } from '../dto/update-request';
+import { DeleteRequest } from '../dto/delete-request';
 
 export default abstract class AbstractApiService<R extends BaseData> {
-	constructor(protected readonly apiRequest: ApiServiceRequest) {}
+	constructor(protected readonly apiRequest: ApiServiceRequestSchema) {}
 
 	public readonly getAllPaginated = ({
 		size = 100,

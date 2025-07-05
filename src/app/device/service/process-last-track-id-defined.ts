@@ -1,6 +1,6 @@
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
 import TrackService from '@app/track/service/track.service';
-import { handleAsArray } from '@utils/handle-response';
+import { handleAsArray } from '@src/api-client/service/handle-response';
 import { container } from 'tsyringe';
 import { getTrackingCoordinates } from './device-sync-common';
 import { monitorConfig } from '@config/monitor-config';

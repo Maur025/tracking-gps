@@ -9,8 +9,8 @@ import {
 	throwError,
 	timeout,
 } from 'rxjs';
-import { HttpMethod } from '@models/types/http-method.type';
 import { ApiException } from './api-exception';
+import { HttpMethodSchema } from './schema/http-method.schema';
 
 const options: RequestInit = {
 	headers: { 'content-type': 'application/json' },
@@ -18,7 +18,7 @@ const options: RequestInit = {
 
 const request = <T>(
 	url: string,
-	method: HttpMethod,
+	method: HttpMethodSchema,
 	body?: unknown,
 	headers: Record<string, string> = {},
 ): Observable<T> => {

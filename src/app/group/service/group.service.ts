@@ -1,5 +1,5 @@
 import environment from '@config/env';
-import AbstractApiService from '@utils/abstract-api-service';
+import AbstractApiService from '@src/api-client/service/abstract-api-service';
 import { singleton } from 'tsyringe';
 import { GroupResponse } from '../dto/group-response';
 

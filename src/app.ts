@@ -1,6 +1,6 @@
 import environment from '@config/env';
-import ServerBuilder from '@config/server-builder';
-import ServerBuilderResponse from '@models/interface/server-builder-response.interface';
+import ServerBuilder from '@server/server-builder';
+import ServerBuilderResponse from '@server/interface/server-builder-response.interface';
 import { installCache } from '@config/dns-cache';
 import routes from '@routes/index.routes';
 
