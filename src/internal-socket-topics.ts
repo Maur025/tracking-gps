@@ -11,4 +11,9 @@ export const internalSocketTopics = {
 	// GEOFENCE TOPICS
 	GEOFENCE_IN_RESPONSE: 'geofence:in:response',
 	GEOFENCE_OUT_RESPONSE: 'geofence:out:response',
+	// VEHICLE TOPICS
+	VEHICLE_SORTBY_GEOFENCE_RESPONSE: 'vehicle:sortby:geofence:response',
+	VEHICLE_SORTBY_GROUP_RESPONSE: 'vehicle:sortby:group:response',
+	VEHICLE_SORTBY_GEOFENCE_REQUEST: 'vehicle:sortby:geofence:request',
+	VEHICLE_SORTBY_GROUP_REQUEST: 'vehicle:sortby:group:request',
 };

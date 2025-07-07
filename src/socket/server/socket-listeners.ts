@@ -2,11 +2,11 @@ import { Server, Socket } from 'socket.io';
 import { Socket as SocketClient } from 'socket.io-client';
 import { socketReply } from './socket-reply';
 import { connectReply } from '@socket/client/socket-track-reply-client';
-import { loggerInfo } from '@maur025/core-logger';
-import { availableRooms } from '@src/available-rooms';
 import { emitSocketResponse } from '@utils/emit-socket-response';
 import { externalSocketTopics } from '@src/external-socket-topics';
 import { internalSocketTopics } from '@src/internal-socket-topics';
+import { getRoomValueAsList } from '@socket/util/get-room-value-as-list';
+import { loggerInfo } from '@maur025/core-logger';
 
 const clientReply: SocketClient = connectReply();
 
@@ -26,6 +26,7 @@ const {
 	DEVICE_SUBSCRIBE,
 	DEVICE_UNSUBSCRIBE,
 	DEVICE_UNSUBSCRIBE_ALL,
+	DISCONNECT,
 } = externalSocketTopics;
 
 const {
@@ -35,18 +36,28 @@ const {
 	ROOM_LEAVE_RESPONSE,
 	ROOM_LIST_REQUEST,
 	ROOM_LIST_RESPONSE,
+	VEHICLE_SORTBY_GEOFENCE_REQUEST,
+	VEHICLE_SORTBY_GROUP_REQUEST,
+	VEHICLE_SORTBY_GEOFENCE_RESPONSE,
+	VEHICLE_SORTBY_GROUP_RESPONSE,
 } = internalSocketTopics;
 
 export const socketListeners = (socket: Socket, io: Server): void => {
 	loggerInfo(`[socket-server] new client '${socket.id}' connected.`);
 
-	socket.on(MESSAGE, payload => clientReply.emit(MESSAGE, payload));
+	const socketInRooms: Map<string, Set<string>> = new Map<
+		string,
+		Set<string>
+	>();
+
+	socket.on(MESSAGE, payload => {
+		console.log('se esta recibiendo el evento message');
+		clientReply.emit(MESSAGE, payload);
+	});
 
 	socket.on(DEVICE, payload => clientReply.emit(DEVICE, payload));
 
-	socket.on(DEVICES, payload => {
-		clientReply.emit(DEVICES, payload);
-	});
+	socket.on(DEVICES, payload => clientReply.emit(DEVICES, payload));
 
 	socket.on(DEVICE_NEW, payload => clientReply.emit(DEVICE_NEW, payload));
 
@@ -102,6 +113,18 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 			return;
 		}
 
+		if (socketInRooms.has(socket.id)) {
+			const roomSet: Set<string> = socketInRooms.get(socket.id)!;
+
+			if (roomSet.has(roomName)) {
+				console.log('socket is already in the room');
+
+				return;
+			}
+		}
+
+		socketInRooms.set(socket.id, new Set([roomName]));
+
 		socket.join(roomName);
 		socket.emit(
 			ROOM_JOIN_RESPONSE,
@@ -121,6 +144,14 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 			return;
 		}
 
+		if (socketInRooms.has(socket.id)) {
+			const roomSet: Set<string> = socketInRooms.get(socket.id)!;
+
+			if (roomSet.has(roomName)) {
+				roomSet.delete(roomName);
+			}
+		}
+
 		socket.leave(roomName);
 		socket.emit(
 			ROOM_JOIN_RESPONSE,
@@ -128,15 +159,25 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 		);
 	});
 
+	socket.on(DISCONNECT, () => {
+		const socketRooms = getRoomValueAsList();
+
+		for (const room of socketRooms) {
+			socket.leave(room);
+		}
+
+		if (socketInRooms.has(socket.id)) {
+			socketInRooms.delete(socket.id);
+		}
+	});
+
+	socket.on(VEHICLE_SORTBY_GEOFENCE_REQUEST, payload => {
+		socket.emit(VEHICLE_SORTBY_GEOFENCE_RESPONSE, payload);
+	});
+
+	socket.on(VEHICLE_SORTBY_GROUP_REQUEST, payload => {
+		socket.emit(VEHICLE_SORTBY_GROUP_RESPONSE, payload);
+	});
+
 	socketReply(socket, io);
-};
-
-const getRoomValueAsList = () => {
-	const availableRoomList: string[] = [];
-
-	for (const [, roomValue] of Object.entries(availableRooms)) {
-		availableRoomList.push(roomValue);
-	}
-
-	return [...availableRoomList];
 };
