@@ -6,6 +6,7 @@ export const externalSocketTopics = {
 	RECONNECT_ATTEMPT: 'reconnect_attempt',
 	RECONNECT_FAILED: 'reconnect_failed',
 	RECONNECT: 'reconnect',
+	DISCONNECT: 'disconnect',
 	// CAPTURE SERVER TOPICS
 	MESSAGE: 'message',
 	DEVICE: 'device',

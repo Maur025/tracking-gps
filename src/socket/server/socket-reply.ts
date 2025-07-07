@@ -9,6 +9,7 @@ import { getPayloadSocketResponse } from '@utils/get-payload-socket-response';
 import DeviceCache from '@app/device/cache/device-cache';
 import { Device } from '@app/device/entity/device';
 import { Track } from '@app/track/entity/track';
+import { internalSocketTopics } from '@src/internal-socket-topics';
 
 const clientReply: SocketClient = connectReply();
 
@@ -30,34 +31,56 @@ const {
 	DEVICE_UNSUBSCRIBE_ALL,
 } = externalSocketTopics;
 
+const { VEHICLE_SORTBY_GEOFENCE_RESPONSE, VEHICLE_SORTBY_GROUP_RESPONSE } =
+	internalSocketTopics;
+
 const { DEVICE_MONITORING_ROOM } = availableRooms;
 
 const deviceCache = container.resolve(DeviceCache);
 
 export const socketReply = (socket: Socket, io: Server) => {
+	//remove listener
+	clientReply.off(MESSAGE);
+	clientReply.off(DEVICE);
+	clientReply.off(DEVICES);
+	clientReply.off(DEVICE_NEW);
+	clientReply.off(DEVICE_REMOVE);
+	clientReply.off(DEVICE_TRACKS);
+	clientReply.off(DEVICE_SETUP);
+	clientReply.off(DEVICE_STATE);
+	clientReply.off(DEVICE_CONFIG);
+	clientReply.off(DEVICE_LAST);
+	clientReply.off(DEVICE_CLEARED);
+	clientReply.off(DEVICE_TRACK_END);
+	clientReply.off(DEVICE_SUBSCRIBE);
+	clientReply.off(DEVICE_UNSUBSCRIBE);
+	clientReply.off(DEVICE_UNSUBSCRIBE_ALL);
+
 	// CLIENT-REPLY EMIT IN SOCKET-SERVER TO FINAL CONSUMING
-	clientReply.on(MESSAGE, payload => {
+	//add listener
+	clientReply.on(MESSAGE, (payload: unknown): void => {
 		const responsePayload = getPayloadSocketResponse(MESSAGE, payload);
 		io.to(DEVICE_MONITORING_ROOM).emit(MESSAGE, responsePayload);
 	});
 
-	clientReply.on(DEVICE, payload => {
+	clientReply.on(DEVICE, (payload: unknown): void => {
 		const responsePayload = getPayloadSocketResponse(DEVICE, payload);
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE, responsePayload);
 	});
 
-	clientReply.on(DEVICES, () =>
-		// payload:Device[]
-		{
-			const responsePayload = getPayloadSocketResponse<Device[]>(
-				DEVICES,
-				deviceCache.getAll(),
-			);
+	clientReply.on(DEVICES, (): void => {
+		console.log('SE ESTA MANDANDO LOS DATOS');
 
-			// socket.emit(DEVICES, responsePayload);
-			io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
-		},
-	);
+		const responsePayload = getPayloadSocketResponse<Device[]>(
+			DEVICES,
+			deviceCache.getAll(),
+		);
+
+		// socket.emit(DEVICES, responsePayload);
+		io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
+		socket.emit(VEHICLE_SORTBY_GEOFENCE_RESPONSE, responsePayload);
+		socket.emit(VEHICLE_SORTBY_GROUP_RESPONSE, responsePayload);
+	});
 
 	clientReply.on(DEVICE_NEW, payload => {
 		const responsePayload = getPayloadSocketResponse(DEVICE_NEW, payload);
