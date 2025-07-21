@@ -6,6 +6,7 @@ export const Vehicle = BaseData.extend({
 	name: string().nonempty(),
 	type: string().nonempty(),
 	metadata: VehicleMetadata,
+	deviceId: string().nonempty().optional(),
 });
 
 export type Vehicle = z.infer<typeof Vehicle>;

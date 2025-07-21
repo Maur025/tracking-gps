@@ -10,6 +10,7 @@ import DeviceCache from '@app/device/cache/device-cache';
 import { Device } from '@app/device/entity/device';
 import { Track } from '@app/track/entity/track';
 import { internalSocketTopics } from '@src/internal-socket-topics';
+import { groupVehiclePairing } from '@app/vehicle/service/group-vehicle-pairing';
 
 const clientReply: SocketClient = connectReply();
 
@@ -68,9 +69,7 @@ export const socketReply = (socket: Socket, io: Server) => {
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICE, responsePayload);
 	});
 
-	clientReply.on(DEVICES, (): void => {
-		console.log('SE ESTA MANDANDO LOS DATOS');
-
+	clientReply.on(DEVICES, (payload: Device[]): void => {
 		const responsePayload = getPayloadSocketResponse<Device[]>(
 			DEVICES,
 			deviceCache.getAll(),
@@ -78,8 +77,21 @@ export const socketReply = (socket: Socket, io: Server) => {
 
 		// socket.emit(DEVICES, responsePayload);
 		io.to(DEVICE_MONITORING_ROOM).emit(DEVICES, responsePayload);
-		socket.emit(VEHICLE_SORTBY_GEOFENCE_RESPONSE, responsePayload);
-		socket.emit(VEHICLE_SORTBY_GROUP_RESPONSE, responsePayload);
+
+		const groupVehicle = groupVehiclePairing(payload);
+		const groupVehicleResponse = getPayloadSocketResponse(
+			VEHICLE_SORTBY_GEOFENCE_RESPONSE,
+			groupVehicle,
+		);
+
+		socket.emit(VEHICLE_SORTBY_GROUP_RESPONSE, groupVehicleResponse);
+
+		const geofenceVehicleResponse = getPayloadSocketResponse(
+			VEHICLE_SORTBY_GEOFENCE_RESPONSE,
+			{},
+		);
+
+		socket.emit(VEHICLE_SORTBY_GEOFENCE_RESPONSE, geofenceVehicleResponse);
 	});
 
 	clientReply.on(DEVICE_NEW, payload => {
