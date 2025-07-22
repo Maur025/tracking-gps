@@ -3,7 +3,8 @@ import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
 import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
 import { container } from 'tsyringe';
 import { groupPaths } from './group-paths';
-import { any, array } from 'zod/v4';
+import { array } from 'zod/v4';
+import { Group } from './entity/group';
 
 const { DEFAULT } = groupPaths;
 
@@ -23,7 +24,7 @@ export const groupSwagger = ({ path, tag }: LoadSwaggerDocsSchema): void => {
 					description: '',
 					content: {
 						'application/json': {
-							schema: array(any()),
+							schema: array(Group),
 						},
 					},
 				},

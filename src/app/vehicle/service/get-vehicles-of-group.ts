@@ -2,18 +2,27 @@ import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
 import { getVehicleMetadata } from './get-vehicle-metadata';
 import { loggerError } from '@maur025/core-logger';
 import { Vehicle } from '../entity/vehicle';
+import { getVehicleDeviceMap } from './get-vehicle-device-map';
 
-export const getVehiclesOfGroup = (
+export const getVehiclesOfGroup = async (
 	groupVehicles?: GroupVehicleResponse[],
-): Vehicle[] => {
+): Promise<Vehicle[]> => {
 	if (!groupVehicles) {
 		loggerError(`Error can't process undefined data`);
 		return [];
 	}
 
-	return groupVehicles.map(({ vehicle: { type, name, metadata } }) => ({
-		name,
-		type,
-		metadata: getVehicleMetadata(metadata),
-	}));
+	const vehicleDeviceMap: Map<string, string> = await getVehicleDeviceMap({
+		groupVehicles,
+	});
+
+	return groupVehicles.map(
+		({ vehicle: { id = '', type, name, metadata } }) => ({
+			name,
+			type,
+			metadata: getVehicleMetadata(metadata),
+			id,
+			deviceId: id && vehicleDeviceMap.has(id) ? vehicleDeviceMap.get(id) : '',
+		}),
+	);
 };

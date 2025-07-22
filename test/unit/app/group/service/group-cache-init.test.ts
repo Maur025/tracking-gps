@@ -15,6 +15,7 @@ vi.mock('@maur025/core-logger', () => ({
 vi.mock('@app/vehicle/service/get-vehicles-of-group', () => ({
 	getVehiclesOfGroup: vi.fn(() => [
 		{
+			id: 'vehicle1',
 			name: 'vehicle1',
 			type: 'type1',
 			metadata: {
@@ -27,6 +28,7 @@ vi.mock('@app/vehicle/service/get-vehicles-of-group', () => ({
 				fuelKilometer: '0.06',
 				detail: 'test details',
 			},
+			device_id: '0000001',
 		},
 	]),
 }));
@@ -41,22 +43,37 @@ import { GroupCache } from '@app/group/cache/group-cache';
 describe('Group cache init test', () => {
 	const groupResponse = [
 		{
+			id: 'group1',
 			name: 'group1',
 			description: 'test description',
 			vehicles: [
 				{
-					group_id: '',
-					vehicle_id: '',
+					id: 'groupVehicle1',
+					group_id: 'group1',
+					vehicle_id: 'vehicle1',
 					vehicle: {
+						id: 'vehicle1',
 						name: 'vehicle name',
 						type: 'type test',
 						metadata:
 							'{"plaque":"6510UDP","brand":"Toyota","model":"Corolla","color":"Blanco","totalTour":"11050","totalFuel":"40","fuelKilometer":"0.06","detail":""}',
+						device: [
+							{
+								id: 'deviceVehicle1',
+								vehicle_id: 'vehicle1',
+								device_id: '0000001',
+							},
+						],
 					},
 				},
 			],
 		},
-		{ name: 'group2', description: 'test description', vehicles: [] },
+		{
+			id: 'groupVehicle2',
+			name: 'group2',
+			description: 'test description',
+			vehicles: [],
+		},
 	] as GroupResponse[];
 
 	let groupCacheMock: Partial<GroupCache>;
@@ -78,16 +95,16 @@ describe('Group cache init test', () => {
 		expectTypeOf(groupCacheInit).toBeFunction();
 	});
 
-	test('should be receipt once param of group response type', () => {
-		groupCacheInit([]);
+	test('should be receipt once param of group response type', async () => {
+		await groupCacheInit([]);
 
 		expect(loggerError).toHaveBeenCalledWith(
 			'group response undefined or empty',
 		);
 	});
 
-	test('should clear data and write new data', () => {
-		groupCacheInit(groupResponse);
+	test('should clear data and write new data', async () => {
+		await groupCacheInit(groupResponse);
 
 		expect(groupCacheMock.clear).toHaveBeenCalled();
 		expect(groupCacheMock.clear).toHaveBeenCalledTimes(1);
@@ -95,6 +112,7 @@ describe('Group cache init test', () => {
 		expect(groupCacheMock.addMany).toHaveBeenCalledWith(
 			expect.arrayContaining([
 				expect.objectContaining({
+					id: expect.any(String),
 					name: expect.any(String),
 					description: expect.any(String),
 					vehicles: expect.arrayContaining([

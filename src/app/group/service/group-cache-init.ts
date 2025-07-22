@@ -5,7 +5,9 @@ import { GroupCache } from '../cache/group-cache';
 import { Group } from '../entity/group';
 import { GroupResponse } from '../dto/group-response';
 
-export const groupCacheInit = (groupResponse?: GroupResponse[]): void => {
+export const groupCacheInit = async (
+	groupResponse?: GroupResponse[],
+): Promise<void> => {
 	if (!groupResponse?.length) {
 		loggerError('group response undefined or empty');
 
@@ -16,18 +18,20 @@ export const groupCacheInit = (groupResponse?: GroupResponse[]): void => {
 
 	groupCache.clear();
 
-	const groupList: Group[] = groupResponse?.map(
-		({
-			id = '',
-			name = '',
-			description = '',
-			vehicles = [],
-		}: GroupResponse) => ({
-			id,
-			name,
-			description,
-			vehicles: getVehiclesOfGroup(vehicles),
-		}),
+	const groupList: Group[] = await Promise.all(
+		groupResponse?.map(
+			async ({
+				id = '',
+				name = '',
+				description = '',
+				vehicles = [],
+			}: GroupResponse) => ({
+				id,
+				name,
+				description,
+				vehicles: await getVehiclesOfGroup(vehicles),
+			}),
+		),
 	);
 
 	groupCache.addMany(groupList);
