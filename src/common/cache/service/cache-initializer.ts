@@ -15,9 +15,9 @@ const groupService$ = container.resolve(GroupService);
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(
 		concatMap(() => getParallelObservables$()),
-		tap(({ geofence, group }) => {
+		tap(async ({ geofence, group }) => {
 			geofenceCacheInit(handleAsArray(geofence));
-			groupCacheInit(handleAsArray(group));
+			await groupCacheInit(handleAsArray(group));
 		}),
 		concatMap(() => getSecuentialObservables$()),
 	);
