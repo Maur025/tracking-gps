@@ -13,6 +13,7 @@ import {
 } from '@server/schema/server-builder-schema';
 import { errorValidate } from '@utils/zod-exception';
 import { swaggerConfig } from '../config/swagger-config';
+import { loggerInfo } from '@maur025/core-logger';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {
 	private request?: ServerBuilderRequest;
@@ -109,6 +110,8 @@ export default class ServerBuilder implements IServerBuilder {
 	private readonly getMessageSuccess = (): void => {
 		const { host, port } = this.request ?? {};
 
-		console.info(`Server running on ${host ?? 'localhost'}:${port}`);
+		loggerInfo(
+			`[EXPRESS] server running on http://${host ?? 'localhost'}:${port}`,
+		);
 	};
 }
