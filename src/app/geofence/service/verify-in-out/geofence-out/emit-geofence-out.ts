@@ -33,4 +33,6 @@ export const emitGeofenceOut = ({
 	}
 
 	const message: string = getGeofenceOutMessage(geofenceOutList);
+	console.log('deviceId, ', deviceId);
+	console.log('message, ', message);
 };

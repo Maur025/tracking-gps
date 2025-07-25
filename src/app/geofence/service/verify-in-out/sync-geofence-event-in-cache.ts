@@ -87,6 +87,8 @@ export const syncGeofenceEventInCache = ({
 			geofenceInCache.getById(deviceId) ?? new Set(),
 		);
 
+		console.log(fullGeofenceInList);
+
 		return;
 	}
 
