@@ -4,7 +4,6 @@ import { container } from 'tsyringe';
 import { Vehicle } from '../entity/vehicle';
 
 export const groupVehiclePairing = (payload: Device[]) => {
-	console.log(payload);
 	const groupCache = container.resolve(GroupCache);
 
 	const deviceSet = new Set<string>(payload.map(device => device.id ?? ''));

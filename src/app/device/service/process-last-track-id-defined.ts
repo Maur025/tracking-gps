@@ -9,6 +9,7 @@ import { Device } from '../entity/device';
 import { TrackingResponse } from '@app/track/dto/tracking-response';
 import { getPercentageCompleted } from '@app/route/service/get-percentage-completed';
 import { getStopsInRoute } from '@app/route/service/get-stops-in-route';
+import { loggerError } from '@maur025/core-logger';
 
 const trackService = container.resolve(TrackService);
 
@@ -45,7 +46,7 @@ export const processByLastTrackIdDefined = (
 			device.isReady = true;
 		}),
 		catchError((error: ErrorResponse) => {
-			console.log(error);
+			loggerError(`Error get by last trackId, ${error.message}`);
 			return of();
 		}),
 	);

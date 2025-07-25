@@ -6,7 +6,7 @@ import { emitSocketResponse } from '@utils/emit-socket-response';
 import { externalSocketTopics } from '@src/external-socket-topics';
 import { internalSocketTopics } from '@src/internal-socket-topics';
 import { getRoomValueAsList } from '@socket/util/get-room-value-as-list';
-import { loggerInfo } from '@maur025/core-logger';
+import { loggerDebug, loggerInfo } from '@maur025/core-logger';
 
 const clientReply: SocketClient = connectReply();
 
@@ -51,7 +51,6 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 	>();
 
 	socket.on(MESSAGE, payload => {
-		console.log('se esta recibiendo el evento message');
 		clientReply.emit(MESSAGE, payload);
 	});
 
@@ -117,7 +116,7 @@ export const socketListeners = (socket: Socket, io: Server): void => {
 			const roomSet: Set<string> = socketInRooms.get(socket.id)!;
 
 			if (roomSet.has(roomName)) {
-				console.log('socket is already in the room');
+				loggerDebug('socket is already in the room');
 
 				return;
 			}
