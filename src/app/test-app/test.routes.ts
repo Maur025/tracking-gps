@@ -11,7 +11,6 @@ const router = Router();
 const {
 	getTest,
 	getTestTwo,
-	testSocket,
 	currentDevices,
 	currentRoutes,
 	zodTestValidationAndInheritance,
@@ -22,7 +21,6 @@ const {
 
 router.get(DEFAULT, getTest);
 router.get('/two', getTestTwo);
-router.get('/test-socket', testSocket);
 router.get('/current/devices', currentDevices);
 router.get('/current/routes', currentRoutes);
 router.get(

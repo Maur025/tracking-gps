@@ -1,5 +1,4 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import { Server } from 'socket.io';
 import { container } from 'tsyringe';
 import { getGeofenceInList } from './get-geofence-in-list';
 import { syncGeofenceEventInCache } from './sync-geofence-event-in-cache';
@@ -9,16 +8,14 @@ import { Track } from '@app/track/entity/track';
 interface Request {
 	deviceId: string;
 	lastTrack: Track;
-	ioServer: Server;
 }
 
 const geofenceCache = container.resolve(GeofenceCache);
 
-export const geofenceVerify = ({
-	deviceId,
-	lastTrack,
-	ioServer,
-}: Request): void => {
+/**
+ * @deprecated it's marked, for possible useless
+ */
+export const geofenceVerify = ({ deviceId, lastTrack }: Request): void => {
 	if (!geofenceCache.size()) {
 		return;
 	}
@@ -28,5 +25,5 @@ export const geofenceVerify = ({
 		lastTrack,
 	});
 
-	syncGeofenceEventInCache({ deviceId, ioServer, geofenceInList });
+	syncGeofenceEventInCache({ deviceId, geofenceInList });
 };

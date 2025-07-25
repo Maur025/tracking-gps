@@ -1,40 +1,29 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import '@config/ioc/dependency-injection';
-import ioServer from '@socket/server/io-server';
-import * as socketTrackClient from '@socket/client/socket-track-client';
 import { cacheInitializer } from '@common/cache/service/cache-initializer';
-import { loggerError, loggerInfo } from '@maur025/core-logger';
+import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { initRedisClient } from '@common/redis/create-redis-client';
 import app from './app';
 import { configureConsumers } from '@config/configure-consumers';
+import { measurePerformance } from '@utils/measure-performance';
+import { defaultIfEmpty, lastValueFrom } from 'rxjs';
 
-const { getApp } = app;
+const { getApp, start } = app;
 
 getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
 });
 
-console.time('EXPRESS and SOCKET servers initialized in');
-ioServer.startListening();
-console.timeEnd('EXPRESS and SOCKET servers initialized in');
+await measurePerformance(start, '[EXPRESS] server initialized in:');
+await measurePerformance(configureConsumers, '[KAFKA] consumers ready in:');
+await measurePerformance(initRedisClient, '[REDIS] initialized in:');
 
-console.time('KAFKA ready in');
-await configureConsumers();
-console.timeEnd('KAFKA ready in');
-
-console.time('REDIS initialized in');
-await initRedisClient();
-console.timeEnd('REDIS initialized in');
-
-console.time('CACHE-INIT ready in');
-cacheInitializer().subscribe({
-	error: error => {
-		loggerError(`error occurred while initializing cache -> `, error);
-		loggerInfo(`client sockets will not be initialized.`);
-	},
-	complete: () => {
-		socketTrackClient.connect();
-	},
-});
-console.timeEnd('CACHE-INIT ready in');
+await measurePerformance(async () => {
+	try {
+		await lastValueFrom(cacheInitializer().pipe(defaultIfEmpty(null)));
+	} catch (error: unknown) {
+		loggerError(`error occurred while initializing cache -> `, error as Error);
+		loggerWarn(`client sockets will not be initialized.`);
+	}
+}, '[SYSTEM] cache initialized in:');

@@ -1,7 +1,6 @@
 import TrackService from '@app/track/service/track.service';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { connect } from '@socket/client/socket-track-client';
 import { inject, injectable } from 'tsyringe';
 import {
 	ApiResponse,
@@ -50,12 +49,6 @@ export default class TestController {
 
 	public readonly getTestTwo = (req: Request, res: Response): void => {
 		res.status(StatusCodes.OK).json([{ name: 'test name' }]);
-	};
-
-	public readonly testSocket = (req: Request, res: Response): void => {
-		connect();
-
-		res.status(StatusCodes.OK).json({ message: 'Successfull' });
 	};
 
 	public readonly currentDevices = (req: Request, res: Response): void => {

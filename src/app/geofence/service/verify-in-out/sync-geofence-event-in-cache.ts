@@ -1,21 +1,20 @@
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { Server } from 'socket.io';
 import { container } from 'tsyringe';
-import { emitGeofenceIn } from './geofence-in/emit-geofence-in';
 import { emitGeofenceOut } from './geofence-out/emit-geofence-out';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 interface Request {
 	deviceId: string;
-	ioServer: Server;
 	geofenceInList: GeofenceIn[];
 }
 
 const geofenceInCache = container.resolve(GeofenceInCache);
 
+/**
+ * @deprecated it's marked, for possible useless
+ */
 export const syncGeofenceEventInCache = ({
 	deviceId,
-	ioServer,
 	geofenceInList,
 }: Request): void => {
 	const geofenceInCacheSet: Set<GeofenceIn> | undefined =
@@ -28,8 +27,6 @@ export const syncGeofenceEventInCache = ({
 	if (!geofenceInCacheSet?.size && geofenceInList.length) {
 		geofenceInCache.addById(deviceId, new Set(geofenceInList));
 
-		emitGeofenceIn({ deviceId, ioServer, geofenceInList });
-
 		return;
 	}
 
@@ -41,7 +38,6 @@ export const syncGeofenceEventInCache = ({
 		geofenceInCache.deleteById(deviceId);
 
 		emitGeofenceOut({
-			ioServer,
 			deviceId,
 			geofenceInOldSet: geofenceInCacheSet,
 			geofenceInCurrentList: geofenceInList,
@@ -75,7 +71,6 @@ export const syncGeofenceEventInCache = ({
 		console.log('LA LISTA ES MENOR ... SE ABANDONO ALGUNA GEOCERCA');
 
 		emitGeofenceOut({
-			ioServer,
 			deviceId,
 			geofenceInOldSet: geofenceInCacheSet,
 			geofenceInCurrentList: geofenceInList,
@@ -92,7 +87,8 @@ export const syncGeofenceEventInCache = ({
 			geofenceInCache.getById(deviceId) ?? new Set(),
 		);
 
-		emitGeofenceIn({ deviceId, ioServer, geofenceInList: fullGeofenceInList });
+		console.log(fullGeofenceInList);
+
 		return;
 	}
 
