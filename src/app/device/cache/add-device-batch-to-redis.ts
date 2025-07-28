@@ -20,7 +20,6 @@ export const addDeviceBatchToRedis = async (
 			setup = {},
 			states = {},
 			last = {},
-			personal = {},
 		}) =>
 			multi.json.set(`${basekey}${id}`, '$', {
 				id,
@@ -30,7 +29,6 @@ export const addDeviceBatchToRedis = async (
 				setup: { ...setup },
 				states: { ...states },
 				last: { ...last },
-				personal: { ...personal },
 			}),
 	);
 
