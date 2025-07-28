@@ -37,10 +37,14 @@ describe('kafka consumer test', () => {
 	const mockRun: Mock = vi.fn(({ eachMessage }) => {
 		captureEachMessage = eachMessage;
 	});
+	const mockPause: Mock = vi.fn();
+	const mockResume: Mock = vi.fn();
 	const mockConsumer: Mock = vi.fn(() => ({
 		connect: mockConnect,
 		subscribe: mockSubscribe,
 		run: mockRun,
+		pause: mockPause,
+		resume: mockResume,
 	}));
 
 	const groupId: string = 'test.vitest.group';
@@ -109,6 +113,24 @@ describe('kafka consumer test', () => {
 			pause: () => () => {},
 			heartbeat: async () => {},
 		});
+
+		expect(mockPause).toHaveBeenCalledWith(
+			expect.arrayContaining([
+				expect.objectContaining({
+					topic: 'test1',
+					partitions: [0],
+				}),
+			]),
+		);
+
+		expect(mockResume).toHaveBeenCalledWith(
+			expect.arrayContaining([
+				expect.objectContaining({
+					topic: 'test1',
+					partitions: [0],
+				}),
+			]),
+		);
 	});
 
 	test('addConsumer should failure when topics is empty', async () => {
@@ -125,6 +147,8 @@ describe('kafka consumer test', () => {
 		expect(mockConnect).not.toHaveBeenCalled();
 		expect(mockSubscribe).not.toHaveBeenCalled();
 		expect(mockRun).not.toHaveBeenCalled();
+		expect(mockPause).not.toHaveBeenCalled();
+		expect(mockResume).not.toHaveBeenCalled();
 	});
 
 	test('addConsumer should failure when groupId is empty', async () => {
@@ -145,5 +169,7 @@ describe('kafka consumer test', () => {
 		expect(mockConnect).not.toHaveBeenCalled();
 		expect(mockSubscribe).not.toHaveBeenCalled();
 		expect(mockRun).not.toHaveBeenCalled();
+		expect(mockPause).not.toHaveBeenCalled();
+		expect(mockResume).not.toHaveBeenCalled();
 	});
 });
