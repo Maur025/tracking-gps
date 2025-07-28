@@ -48,7 +48,17 @@ export const kafkaConsumer = () => {
 			eachMessage: async (payload: EachMessagePayload) => {
 				const record: KafkaRecordSchema<V> = getRecord<V>(payload);
 
-				await handler(record);
+				const { topic, partition } = payload;
+
+				consumer.pause([{ topic, partitions: [partition] }]);
+
+				try {
+					await handler(record);
+				} catch (error: unknown) {
+					loggerError(`Exception catch in: [${topic}]`, error as Error);
+				} finally {
+					consumer.resume([{ topic, partitions: [partition] }]);
+				}
 			},
 		});
 
