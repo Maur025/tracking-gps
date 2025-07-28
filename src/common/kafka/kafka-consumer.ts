@@ -5,9 +5,9 @@ import {
 	AddConsumerSchema,
 } from './schema/add-consumer.schema';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { prettifyError } from 'zod/v4';
 import { KafkaRecordSchema } from './schema/kafka-record.schema';
 import { getObjectOfString } from '@utils/get-object-of-string';
+import { zodFailedValidationLog } from '@utils/zod-failed-validation-log';
 
 export const kafkaConsumer = () => {
 	const { kafkaClient } = handleKafkaClient();
@@ -26,7 +26,10 @@ export const kafkaConsumer = () => {
 		});
 
 		if (!validation.success) {
-			loggerError(`addConsumer error: '\n${prettifyError(validation.error)}'`);
+			zodFailedValidationLog({
+				error: validation.error,
+				message: 'addConsumer error:',
+			});
 
 			return;
 		}
