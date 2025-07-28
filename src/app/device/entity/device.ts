@@ -15,6 +15,7 @@ export const Device = BaseData.extend({
 	states: DeviceState,
 	tracks: number().nonnegative().optional(),
 	last: Track.optional(),
+	lastRedisUpdate: number().nonnegative().optional(),
 });
 
 export type Device = z.infer<typeof Device>;

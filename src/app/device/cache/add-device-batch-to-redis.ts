@@ -14,22 +14,29 @@ export const addDeviceBatchToRedis = async (
 	deviceBatch.forEach(
 		({
 			id = '',
+			spec = {},
 			config = {},
 			type = '',
 			elapsed = 0,
 			setup = {},
 			states = {},
 			last = {},
-		}) =>
-			multi.json.set(`${basekey}${id}`, '$', {
-				id,
-				config: { ...config },
-				type,
-				elapsed,
-				setup: { ...setup },
-				states: { ...states },
-				last: { ...last },
-			}),
+		}) => {
+			const key: string = `${basekey}${id}`;
+
+			return multi.json
+				.set(key, '$', {
+					id,
+					spec: { ...spec },
+					config: { ...config },
+					type,
+					elapsed,
+					setup: { ...setup },
+					states: { ...states },
+					last: { ...last },
+				})
+				.expire(key, 3600);
+		},
 	);
 
 	return multi.exec();
