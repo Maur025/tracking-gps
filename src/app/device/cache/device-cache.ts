@@ -1,12 +1,15 @@
 import { singleton } from 'tsyringe';
 import { redisClient } from '@common/redis/create-redis-client';
-import { loggerError } from '@maur025/core-logger';
+import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
 import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
 import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
 import { Device } from '../entity/device';
 import { CacheUseRedis } from '@common/cache/cache-use-redis';
 import AbstractSingleCache from '@common/cache/abstract-single-cache';
+import { addDeviceBatchToRedis } from './add-device-batch-to-redis';
+import { addRedisIdx } from '@common/redis/service/add-redis-idx';
+import { SCHEMA_FIELD_TYPE } from 'redis';
 
 @singleton()
 export default class DeviceCache
@@ -118,5 +121,28 @@ export default class DeviceCache
 				error as Error,
 			);
 		}
+	};
+
+	public syncDataInRedisCache = async (device: Device): Promise<void> => {
+		if (!device.id) {
+			loggerWarn(`device id is undefined or empty. Skipping...`);
+			return;
+		}
+
+		const timestampNow: number = Date.now();
+
+		await addDeviceBatchToRedis([device], this.BASE_KEY);
+
+		if (this.hasId(device.id)) {
+			this.updateById(device.id, { ...device, lastRedisUpdate: timestampNow });
+		} else {
+			this.addById(device.id, { ...device, lastRedisUpdate: timestampNow });
+		}
+
+		await addRedisIdx(
+			this.getIdxData(),
+			{ id: SCHEMA_FIELD_TYPE.TAG },
+			this.getRedisKey(),
+		);
 	};
 }

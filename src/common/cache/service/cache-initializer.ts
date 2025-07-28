@@ -1,4 +1,4 @@
-import { concatMap, forkJoin, Observable, of, tap } from 'rxjs';
+import { concatMap, forkJoin, from, Observable, of, tap } from 'rxjs';
 import { container } from 'tsyringe';
 import { handleAsArray } from '@src/api-client/service/handle-response';
 import GeofenceService from '../../../app/geofence/service/geofence.service';
@@ -8,9 +8,7 @@ import GroupService from '../../../app/group/service/group.service';
 import { groupCacheInit } from '../../../app/group/service/group-cache-init';
 import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
 import { GroupResponse } from '@app/group/dto/group-response';
-
-const geofenceService$ = container.resolve(GeofenceService);
-const groupService$ = container.resolve(GroupService);
+import DeviceCache from '@app/device/cache/device-cache';
 
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(
@@ -27,7 +25,10 @@ const getParallelObservables$ = (): Observable<{
 	geofence: ApiResponse<GeofenceResponse>;
 	group: ApiResponse<GroupResponse>;
 }> => {
+	const geofenceService$ = container.resolve(GeofenceService);
 	const geofence$ = geofenceService$.getAllPaginated({ size: 1000 });
+
+	const groupService$ = container.resolve(GroupService);
 	const group$ = groupService$.getAllPaginated({ size: 500 });
 
 	return forkJoin({
@@ -36,4 +37,13 @@ const getParallelObservables$ = (): Observable<{
 	});
 };
 
-const getSecuentialObservables$ = (): Observable<void> => of();
+const getSecuentialObservables$ = (): Observable<{
+	reloadDeviceCache: void;
+}> => {
+	const deviceCache = container.resolve(DeviceCache);
+	const reloadDeviceCache$ = from(deviceCache.loadCacheData());
+
+	return forkJoin({
+		reloadDeviceCache: reloadDeviceCache$,
+	});
+};

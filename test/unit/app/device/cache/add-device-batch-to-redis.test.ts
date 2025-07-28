@@ -13,7 +13,11 @@ import { Device } from '@app/device/entity/device';
 const TEST_KEY: string = 'test-key';
 
 describe('add device batch to redis test', () => {
-	const mockJsonSet = vi.fn();
+	const mockJsonSetExpire = vi.fn();
+	const mockJsonSet = vi.fn(() => ({
+		expire: mockJsonSetExpire,
+	}));
+
 	const mockExec = vi.fn();
 
 	beforeEach(() => {
@@ -41,6 +45,10 @@ describe('add device batch to redis test', () => {
 				'$',
 				expect.any(Object),
 			);
+			expect(mockJsonSetExpire).toHaveBeenCalledWith(
+				`${TEST_KEY}id${index}`,
+				3600,
+			);
 		}
 
 		expect(mockExec).toHaveBeenCalledOnce();
@@ -53,6 +61,7 @@ describe('add device batch to redis test', () => {
 
 		expect(redisClient.multi).not.toHaveBeenCalled();
 		expect(mockJsonSet).not.toHaveBeenCalled();
+		expect(mockJsonSetExpire).not.toHaveBeenCalled();
 		expect(mockExec).not.toHaveBeenCalled();
 	});
 });
