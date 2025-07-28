@@ -57,7 +57,6 @@ describe('device list process test', () => {
 		expect(addDeviceCacheData).toHaveBeenCalledWith(
 			[...Array(25)].map((_, i) => ({
 				id: `device-id-${i}`,
-				personal: expect.any(Object),
 			})),
 		);
 
