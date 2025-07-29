@@ -5,6 +5,9 @@ import { addRedisIdx } from '@common/redis/service/add-redis-idx';
 import { Device } from '../entity/device';
 import DeviceCache from './device-cache';
 
+/**
+ * @deprecated useless code ... remove with safe when finish refactor (new generic function replace all behavior )
+ */
 export const addDeviceCacheData = async (
 	deviceList: Device[],
 ): Promise<void> => {

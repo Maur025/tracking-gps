@@ -11,10 +11,11 @@ vi.mock('@common/redis/create-redis-client', () => ({
 
 vi.mock('@maur025/core-logger', () => ({
 	loggerWarn: vi.fn(),
+	loggerDebug: vi.fn(),
 }));
 
 import { redisClient } from '@common/redis/create-redis-client';
-import { loggerWarn } from '@maur025/core-logger';
+import { loggerWarn, loggerDebug } from '@maur025/core-logger';
 import { addRedisIdx } from '@common/redis/service/add-redis-idx';
 
 describe('add redis idx test', () => {
@@ -49,6 +50,9 @@ describe('add redis idx test', () => {
 		await addRedisIdx('test-idx', {}, 'test');
 
 		expect(loggerWarn).not.toHaveBeenCalled();
+		expect(loggerDebug).toHaveBeenCalledWith(
+			`idx ${'test-idx'} already exists, skipping ...`,
+		);
 		expect(redisClient.ft._list).toHaveBeenCalledTimes(1);
 		expect(redisClient.ft.create).not.toHaveBeenCalled();
 	});
