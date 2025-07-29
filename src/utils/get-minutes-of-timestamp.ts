@@ -5,9 +5,5 @@ export const getMinutesOfTimestamp = (timestamp: number = 0): number => {
 
 	const totalSeconds = Math.floor(timestamp / 1000);
 
-	const minutes = Math.floor((totalSeconds % 3600) / 60);
-
-	console.log(minutes);
-
-	return minutes;
+	return Math.floor((totalSeconds % 3600) / 60);
 };

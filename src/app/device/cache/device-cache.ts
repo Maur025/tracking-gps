@@ -40,10 +40,6 @@ export default class DeviceCache
 		return this.IDX_DATA;
 	}
 
-	public getLastUpdate(): Date | null {
-		return this.lastUpdate;
-	}
-
 	public loadCacheData = async (): Promise<void> =>
 		this.getKeysAndProcess(async (deviceKeyList): Promise<void> => {
 			this.clear();
