@@ -31,4 +31,6 @@ const getDeviceVehicleData = (
 	}
 
 	// get data with redis search
+
+	return {} as Vehicle;
 };
