@@ -3,6 +3,7 @@ import { Device } from '../entity/device';
 import { container } from 'tsyringe';
 import DeviceCache from '../cache/device-cache';
 import { Vehicle } from '@app/vehicle/entity/vehicle';
+import { getDeviceVehicleData } from './get-device-vehicle-data';
 
 export const processDeviceData = async (
 	device: Device,
@@ -17,20 +18,10 @@ export const processDeviceData = async (
 	const deviceCache = container.resolve(DeviceCache);
 	const deviceInMapCache: Device | undefined = deviceCache.getById(device.id);
 
-	const vehicleData = getDeviceVehicleData(device, deviceInMapCache);
+	const vehicleData: Vehicle | undefined = await getDeviceVehicleData(
+		device,
+		deviceInMapCache,
+	);
 
 	return { ...device, vehicleData };
-};
-
-const getDeviceVehicleData = (
-	device: Device,
-	deviceInMapCache: Device | undefined,
-): Vehicle => {
-	if (deviceInMapCache?.vehicleData) {
-		return deviceInMapCache.vehicleData;
-	}
-
-	// get data with redis search
-
-	return {} as Vehicle;
 };
