@@ -5,6 +5,7 @@ import { DeviceSetup } from './device-setup';
 import { DeviceState } from './device-state';
 import { Track } from '@app/track/entity/track';
 import { DeviceSpec } from './device-spec';
+import { Vehicle } from '@app/vehicle/entity/vehicle';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -16,6 +17,7 @@ export const Device = BaseData.extend({
 	tracks: number().nonnegative().optional(),
 	last: Track.optional(),
 	lastRedisUpdate: number().nonnegative().optional(),
+	vehicleData: Vehicle.optional(),
 });
 
 export type Device = z.infer<typeof Device>;
