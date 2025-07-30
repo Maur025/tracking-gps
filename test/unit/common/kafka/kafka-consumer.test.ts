@@ -97,7 +97,9 @@ describe('kafka consumer test', () => {
 			}),
 		);
 
-		expect(loggerInfo).toHaveBeenCalledWith(`[KAFKA] joined to [${groupId}]`);
+		expect(loggerInfo).toHaveBeenCalledWith(
+			`[KAFKA] (addConsumer) joined to [${groupId}]`,
+		);
 
 		await captureEachMessage({
 			topic: 'test1',
@@ -140,7 +142,7 @@ describe('kafka consumer test', () => {
 
 		expect(loggerError).toHaveBeenCalledOnce();
 		expect(loggerError).toHaveBeenCalledWith(
-			`addConsumer error: '\n✖ Too small: expected array to have >=1 items\n  → at topics'`,
+			`[KAFKA] (addConsumer) validation failed: '\n✖ Too small: expected array to have >=1 items\n  → at topics'`,
 		);
 
 		expect(mockConsumer).not.toHaveBeenCalled();
@@ -162,7 +164,7 @@ describe('kafka consumer test', () => {
 
 		expect(loggerError).toHaveBeenCalledOnce();
 		expect(loggerError).toHaveBeenCalledWith(
-			`addConsumer error: '\n✖ Too small: expected string to have >=1 characters\n  → at groupId'`,
+			`[KAFKA] (addConsumer) validation failed: '\n✖ Too small: expected string to have >=1 characters\n  → at groupId'`,
 		);
 
 		expect(mockConsumer).not.toHaveBeenCalled();

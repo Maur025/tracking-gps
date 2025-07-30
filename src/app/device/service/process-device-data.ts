@@ -10,7 +10,7 @@ export const processDeviceData = async (
 ): Promise<Device | null> => {
 	if (!device.id) {
 		loggerWarn(
-			`(processDeviceData) device id is undefined or empty. Skipping... `,
+			`[DEVICE] (processDeviceData) device id is undefined or empty. Skipping... `,
 		);
 		return null;
 	}

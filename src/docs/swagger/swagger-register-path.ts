@@ -19,7 +19,9 @@ export default class SwaggerRegisterPath {
 		const result = SwaggerRegisterPathSchema.safeParse(request);
 
 		if (!result.success) {
-			loggerError(`Error found in 'withRequest', invalid schema`);
+			loggerError(
+				`[DOCS] (withRequest) Error found in 'withRequest', invalid schema`,
+			);
 			throw new Error('Error in withRequest', result.error);
 		}
 
@@ -30,7 +32,9 @@ export default class SwaggerRegisterPath {
 
 	public register(): void {
 		if (!this.swaggerRegister || !this.schemaData) {
-			loggerError(`swagger register or schema data must not be null`);
+			loggerError(
+				`[DOCS] (register) swagger register or schema data must not be null`,
+			);
 			throw new Error(`An error occurred in register`);
 		}
 

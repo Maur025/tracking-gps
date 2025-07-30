@@ -12,7 +12,9 @@ export const vehicleCacheInit = async (
 	vehicleResponse: VehicleResponse[],
 ): Promise<void> => {
 	if (!vehicleResponse?.length) {
-		loggerError('vehicle response undefined or empty');
+		loggerError(
+			'[VEHICLE] (vehicleCacheInit) vehicle response undefined or empty',
+		);
 
 		return;
 	}

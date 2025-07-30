@@ -28,7 +28,7 @@ export const kafkaConsumer = () => {
 		if (!validation.success) {
 			zodFailedValidationLog({
 				error: validation.error,
-				message: 'addConsumer error:',
+				message: '[KAFKA] (addConsumer) validation failed:',
 			});
 
 			return;
@@ -58,14 +58,18 @@ export const kafkaConsumer = () => {
 				try {
 					await handler(record);
 				} catch (error: unknown) {
-					loggerError(`Exception catch in: [${topic}]`, error as Error);
+					loggerError(
+						`[KAFKA] (addConsumer) Exception catch in: [${topic}]`,
+						error as Error,
+					);
+					console.log(error);
 				} finally {
 					consumer.resume([{ topic, partitions: [partition] }]);
 				}
 			},
 		});
 
-		loggerInfo(`[KAFKA] joined to [${groupId}]`);
+		loggerInfo(`[KAFKA] (addConsumer) joined to [${groupId}]`);
 	};
 
 	const getRecord = <V>({
@@ -80,7 +84,7 @@ export const kafkaConsumer = () => {
 	const getMessage = <V>(message: Buffer<ArrayBufferLike> | null): V | null => {
 		if (!message) {
 			loggerError(
-				`Message kafka is null or undefined ... nothing to transform`,
+				`[KAFKA](getMessage) Message kafka is null or undefined ... nothing to transform`,
 			);
 
 			return null;
@@ -91,7 +95,9 @@ export const kafkaConsumer = () => {
 
 			return getObjectOfString(value);
 		} catch (error) {
-			loggerError(`Failed to parse kafka message: ${error}`);
+			loggerError(
+				`[KAFKA](getMessage) Failed to parse kafka message: ${error}`,
+			);
 			throw new Error(`Message value can't  handled as string`, {
 				cause: error,
 			});

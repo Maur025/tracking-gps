@@ -81,7 +81,9 @@ describe('kafka producer test', () => {
 			}),
 		);
 		expect(mockConnect).toHaveBeenCalledOnce();
-		expect(loggerDebug).toHaveBeenCalledWith(`[KAFKA] producer is Ready`);
+		expect(loggerDebug).toHaveBeenCalledWith(
+			`[KAFKA] (getProducer) producer is Ready`,
+		);
 		expect(loggerError).not.toHaveBeenCalled();
 		expect(mockSend).toHaveBeenCalledWith(
 			expect.objectContaining({
@@ -111,7 +113,9 @@ describe('kafka producer test', () => {
 			}),
 		);
 		expect(mockConnect).toHaveBeenCalledOnce();
-		expect(loggerDebug).toHaveBeenCalledWith(`[KAFKA] producer is Ready`);
+		expect(loggerDebug).toHaveBeenCalledWith(
+			`[KAFKA] (getProducer) producer is Ready`,
+		);
 		expect(loggerError).not.toHaveBeenCalled();
 		expect(uuidv4).toHaveBeenCalledOnce();
 		expect(mockSend).toHaveBeenCalledWith(
@@ -139,9 +143,11 @@ describe('kafka producer test', () => {
 			}),
 		);
 		expect(mockConnect).toHaveBeenCalledOnce();
-		expect(loggerDebug).toHaveBeenCalledWith(`[KAFKA] producer is Ready`);
+		expect(loggerDebug).toHaveBeenCalledWith(
+			`[KAFKA] (getProducer) producer is Ready`,
+		);
 		expect(loggerError).toHaveBeenCalledWith(
-			`kafka publish validation failed: '\n✖ Too small: expected string to have >=1 characters\n  → at topic'`,
+			`[KAFKA] (publish) kafka publish validation failed: '\n✖ Too small: expected string to have >=1 characters\n  → at topic'`,
 		);
 
 		expect(mockSend).not.toHaveBeenCalled();

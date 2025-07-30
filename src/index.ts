@@ -15,15 +15,26 @@ getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
 });
 
-await measurePerformance(start, '[EXPRESS] server initialized in:');
-await measurePerformance(configureConsumers, '[KAFKA] consumers ready in:');
-await measurePerformance(initRedisClient, '[REDIS] initialized in:');
+await measurePerformance(start, '[EXPRESS] (start) server initialized in:');
+await measurePerformance(
+	configureConsumers,
+	'[KAFKA] (configureConsumers) consumers ready in:',
+);
+await measurePerformance(
+	initRedisClient,
+	'[REDIS] (initRedisClient) initialized in:',
+);
 
 await measurePerformance(async () => {
 	try {
 		await lastValueFrom(cacheInitializer().pipe(defaultIfEmpty(null)));
 	} catch (error: unknown) {
-		loggerError(`error occurred while initializing cache -> `, error as Error);
-		loggerWarn(`client sockets will not be initialized.`);
+		loggerError(
+			`[SYSTEM] (cacheInitializer) error occurred while initializing cache -> `,
+			error as Error,
+		);
+		loggerWarn(
+			`[SYSTEM] (cacheInitializer) client sockets will not be initialized.`,
+		);
 	}
-}, '[SYSTEM] cache initialized in:');
+}, '[SYSTEM] (cacheInitializer) cache initialized in:');

@@ -35,7 +35,7 @@ export const handleKafkaClient = (): {
 const getKafkaLogLevel = (level: string): number => {
 	if (!level) {
 		loggerWarn(
-			'[kafka] env variable KAFKA_LOG_LEVEL is empty, skipping custom logger init',
+			'[kafka] (getKafkaLogLevel) env variable KAFKA_LOG_LEVEL is empty, skipping custom logger init',
 		);
 
 		return logLevel.NOTHING;
