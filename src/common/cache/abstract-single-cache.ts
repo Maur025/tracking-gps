@@ -14,7 +14,7 @@ export default abstract class AbstractSingleCache<
 	public addById(id: string, data: E): void {
 		if (this.hasId(id)) {
 			loggerWarn(
-				`${this.getResource()} with id ${id} already exists in cache, skipping...`,
+				`[SYSTEM] (addById) ${this.getResource()} with id ${id} already exists in cache, skipping...`,
 			);
 			return;
 		}
@@ -51,7 +51,9 @@ export default abstract class AbstractSingleCache<
 		const currentData: E | undefined = this.getById(id);
 
 		if (!currentData) {
-			loggerWarn(`can't be update data that does not exist`);
+			loggerWarn(
+				`[SYSTEM] (updateById) can't be update data that does not exist`,
+			);
 			return;
 		}
 

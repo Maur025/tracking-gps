@@ -52,7 +52,7 @@ describe('swagger register path test', () => {
 		expect(testError).toThrow();
 
 		expect(loggerError).toHaveBeenCalledWith(
-			`Error found in 'withRequest', invalid schema`,
+			`[DOCS] (withRequest) Error found in 'withRequest', invalid schema`,
 		);
 		expect(mockRegisterPath).not.toHaveBeenCalled();
 	});
@@ -70,7 +70,7 @@ describe('swagger register path test', () => {
 		expect(testError).toThrow();
 
 		expect(loggerError).toHaveBeenCalledWith(
-			`swagger register or schema data must not be null`,
+			`[DOCS] (register) swagger register or schema data must not be null`,
 		);
 
 		expect(mockRegisterPath).not.toHaveBeenCalled();

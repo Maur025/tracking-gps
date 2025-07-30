@@ -13,6 +13,12 @@ export const getDeviceVehicleData = async (
 		return deviceInMapCache.vehicleData;
 	}
 
+	if (!/^[a-zA-Z0-9_-]+$/.test(device.id ?? '')) {
+		loggerError('[DEVICE] (getDeviceVehicleData) device id is invalid.');
+
+		return undefined;
+	}
+
 	const vehicleCache = container.resolve(VehicleCache);
 
 	const result = await redisClient.ft.search(
@@ -25,7 +31,7 @@ export const getDeviceVehicleData = async (
 
 	if (typeof result !== 'object') {
 		loggerError(
-			`Search result expected should be an object, but received a ${typeof result}.`,
+			`[DEVICE] (getDeviceVehicleData) Search result expected should be an object, but received a ${typeof result}.`,
 		);
 
 		return undefined;
@@ -38,7 +44,7 @@ export const getDeviceVehicleData = async (
 
 	if (!resultAsObject.total) {
 		loggerError(
-			`vehicle not asignment to device ${device.id}, data not found in search.`,
+			`[DEVICE] (getDeviceVehicleData) vehicle not asignment to device ${device.id}, data not found in search.`,
 		);
 
 		return undefined;

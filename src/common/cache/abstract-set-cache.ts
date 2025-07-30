@@ -112,7 +112,7 @@ export default abstract class AbstractSetCache<E> extends AbstractCache<
 					break;
 				}
 				default: {
-					loggerWarn(`Operation unknown`);
+					loggerWarn(`[SYSTEM] (processMany) Operation unknown`);
 				}
 			}
 		}

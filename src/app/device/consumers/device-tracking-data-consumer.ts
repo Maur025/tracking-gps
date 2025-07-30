@@ -16,7 +16,7 @@ export const deviceTrackingDataConsumer = async (
 	if (!validate.success) {
 		zodFailedValidationLog({
 			error: validate.error,
-			message: 'deviceTrackingDataConsumer validation failed:',
+			message: '[DEVICE] (deviceTrackingDataConsumer) validation failed:',
 		});
 
 		return;
@@ -24,7 +24,7 @@ export const deviceTrackingDataConsumer = async (
 
 	if (!validate.data?.id) {
 		loggerWarn(
-			`(deviceTrackingDataConsumer) device id is undefined or empty. Skipping`,
+			`[DEVICE] (deviceTrackingDataConsumer) device id is undefined or empty. Skipping`,
 		);
 		return;
 	}

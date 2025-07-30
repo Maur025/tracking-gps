@@ -28,7 +28,7 @@ describe('add redis idx test', () => {
 		await addRedisIdx('', {}, 'test');
 
 		expect(loggerWarn).toHaveBeenCalledWith(
-			`idx or prefix must not be undefined, skiping ...`,
+			`[REDIS] (addRedisIdx) idx or prefix must not be undefined, skiping ...`,
 		);
 		expect(redisClient.ft._list).not.toHaveBeenCalled();
 		expect(redisClient.ft.create).not.toHaveBeenCalled();
@@ -38,7 +38,7 @@ describe('add redis idx test', () => {
 		await addRedisIdx('test-idx', {}, '');
 
 		expect(loggerWarn).toHaveBeenCalledWith(
-			`idx or prefix must not be undefined, skiping ...`,
+			`[REDIS] (addRedisIdx) idx or prefix must not be undefined, skiping ...`,
 		);
 		expect(redisClient.ft._list).not.toHaveBeenCalled();
 		expect(redisClient.ft.create).not.toHaveBeenCalled();
@@ -51,7 +51,7 @@ describe('add redis idx test', () => {
 
 		expect(loggerWarn).not.toHaveBeenCalled();
 		expect(loggerDebug).toHaveBeenCalledWith(
-			`idx ${'test-idx'} already exists, skipping ...`,
+			`[REDIS] (addRedisIdx) idx ${'test-idx'} already exists, skipping ...`,
 		);
 		expect(redisClient.ft._list).toHaveBeenCalledTimes(1);
 		expect(redisClient.ft.create).not.toHaveBeenCalled();

@@ -9,14 +9,18 @@ export const addRedisIdx = async (
 	typeOn: 'JSON' | 'HASH' = 'JSON',
 ): Promise<void> => {
 	if (!idx || !prefix) {
-		loggerWarn(`idx or prefix must not be undefined, skiping ...`);
+		loggerWarn(
+			`[REDIS] (addRedisIdx) idx or prefix must not be undefined, skiping ...`,
+		);
 		return;
 	}
 
 	const existingIndexes = await redisClient.ft._list();
 
 	if (existingIndexes.includes(idx)) {
-		loggerDebug(`idx ${idx} already exists, skipping ...`);
+		loggerDebug(
+			`[REDIS] (addRedisIdx) idx ${idx} already exists, skipping ...`,
+		);
 		return;
 	}
 

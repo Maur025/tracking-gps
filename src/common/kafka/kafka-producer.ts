@@ -25,7 +25,7 @@ export const kakfaProducer = (): {
 
 		await producerInstance.connect();
 		isProducerReady = true;
-		loggerDebug(`[KAFKA] producer is Ready`);
+		loggerDebug(`[KAFKA] (getProducer) producer is Ready`);
 
 		return producerInstance;
 	};
@@ -38,7 +38,7 @@ export const kakfaProducer = (): {
 		const producer = await getProducer();
 
 		if (!isProducerReady) {
-			loggerError(`Sent failed, producer not initialized.`);
+			loggerError(`[KAFKA] (publish) Sent failed, producer not initialized.`);
 
 			return;
 		}
@@ -51,7 +51,7 @@ export const kakfaProducer = (): {
 
 		if (!validation.success) {
 			loggerError(
-				`kafka publish validation failed: '\n${prettifyError(validation.error)}'`,
+				`[KAFKA] (publish) kafka publish validation failed: '\n${prettifyError(validation.error)}'`,
 			);
 
 			return;
