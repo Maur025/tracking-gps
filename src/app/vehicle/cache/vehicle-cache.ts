@@ -48,7 +48,7 @@ export default class VehicleCache
 			await process(vehicleKeyList);
 		} catch (error) {
 			loggerError(
-				`can't process operation ${labelProcess} cache data in redis cause:`,
+				`[VEHICLE] (getKeysAndProcess) can't process operation ${labelProcess} cache data in redis cause:`,
 				{ cause: error } as Error,
 			);
 		}

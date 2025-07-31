@@ -1,12 +1,17 @@
 import { BaseData } from '@maur025/core-model-data';
-import z, { array, string } from 'zod/v4';
+import z, { string } from 'zod/v4';
 import { GeofenceData } from './geofence-data';
-import { GeofenceType } from './geofence-type';
+import { Layer } from '@app/layer/entity/layer';
 
 export const Geofence = BaseData.extend({
-	data: array(GeofenceData).optional(),
+	layerId: string().nonempty().optional(),
 	name: string().nonempty().optional(),
-	type: GeofenceType.optional(),
+	description: string().optional(),
+	color: string().nullable().optional(),
+	icon: string().nullable().optional(),
+	coords: string().nullable().optional(),
+	data: GeofenceData.optional(),
+	layer: Layer,
 });
 
 export type Geofence = z.infer<typeof Geofence>;

@@ -1,7 +1,5 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
 import { container } from 'tsyringe';
-import { processCasePolygonSection } from './process-case-polygon-section';
-import { processCasePointSection } from './process-case-point-section';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { Track } from '@app/track/entity/track';
 
@@ -13,10 +11,12 @@ interface Request {
 const geofenceCache = container.resolve(GeofenceCache);
 
 export const getGeofenceInList = ({
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	deviceId,
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	lastTrack,
 }: Request): GeofenceIn[] => {
-	let geofenceInList: GeofenceIn[] = [];
+	const geofenceInList: GeofenceIn[] = [];
 
 	for (const geofence of geofenceCache.getIterable()) {
 		const { data } = geofence;
@@ -25,40 +25,41 @@ export const getGeofenceInList = ({
 			continue;
 		}
 
-		let sectionCount: number = 0;
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const sectionCount: number = 0;
 
-		for (const section of data) {
-			const { type, name: sectionName } = section;
-			sectionCount++;
+		// for (const section of data) {
+		// 	const { type, name: sectionName } = section;
+		// 	sectionCount++;
 
-			const sectionNameToUse: string = `${sectionName ?? sectionCount}`;
-			let geofenceInFoundList: GeofenceIn[] = [];
+		// 	const sectionNameToUse: string = `${sectionName ?? sectionCount}`;
+		// 	let geofenceInFoundList: GeofenceIn[] = [];
 
-			switch (type) {
-				case 'POINTS': {
-					geofenceInFoundList = processCasePointSection({
-						deviceId,
-						lastTrack,
-						geofence,
-						section: { ...section, name: sectionNameToUse },
-					});
+		// 	switch (type) {
+		// 		case 'POINTS': {
+		// 			geofenceInFoundList = processCasePointSection({
+		// 				deviceId,
+		// 				lastTrack,
+		// 				geofence,
+		// 				section: { ...section, name: sectionNameToUse },
+		// 			});
 
-					break;
-				}
-				case 'POLYGONS': {
-					geofenceInFoundList = processCasePolygonSection({
-						deviceId,
-						lastTrack,
-						geofence,
-						section: { ...section, name: sectionNameToUse },
-					});
+		// 			break;
+		// 		}
+		// 		case 'POLYGONS': {
+		// 			geofenceInFoundList = processCasePolygonSection({
+		// 				deviceId,
+		// 				lastTrack,
+		// 				geofence,
+		// 				section: { ...section, name: sectionNameToUse },
+		// 			});
 
-					break;
-				}
-			}
+		// 			break;
+		// 		}
+		// 	}
 
-			geofenceInList = [...geofenceInList, ...geofenceInFoundList];
-		}
+		// 	geofenceInList = [...geofenceInList, ...geofenceInFoundList];
+		// }
 	}
 
 	return geofenceInList;
