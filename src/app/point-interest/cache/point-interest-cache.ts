@@ -1,12 +1,12 @@
-import { singleton } from 'tsyringe';
 import { Geofence } from '@app/geofence/entity/geofence';
 import AbstractSingleCache from '@common/cache/abstract-single-cache';
 import { CacheUseRedis } from '@common/cache/cache-use-redis';
 import { redisClient } from '@common/redis/create-redis-client';
 import { loggerError } from '@maur025/core-logger';
+import { singleton } from 'tsyringe';
 
 @singleton()
-export default class GeofenceCache
+export default class PointInterestCache
 	extends AbstractSingleCache<Geofence>
 	implements CacheUseRedis
 {
@@ -24,11 +24,11 @@ export default class GeofenceCache
 	}
 
 	public getRedisKey(): string {
-		return 'geofence-gps:';
+		return 'point-interest-gps:';
 	}
 
 	public getIdxData(): string {
-		return 'idx_geofences';
+		return 'idx_points_interest';
 	}
 
 	public async loadCacheData(): Promise<void> {}
@@ -41,14 +41,14 @@ export default class GeofenceCache
 		labelProcess: string = 'anything',
 	): Promise<void> {
 		try {
-			const geofenceKeyList = await redisClient.scanIterator({
+			const pointInterestKeyList = await redisClient.scanIterator({
 				MATCH: `${this.getRedisKey()}*`,
 			});
 
-			await process(geofenceKeyList);
-		} catch (error: unknown) {
+			await process(pointInterestKeyList);
+		} catch (error) {
 			loggerError(
-				`[GEOFENCE] (getKeysAndProcess) can't process operation ${labelProcess} cache data in redis cause:`,
+				`[POINT-INTEREST] (getKeysAndProcess) can't process operation ${labelProcess} cache data in redis cause:`,
 				{ cause: error } as Error,
 			);
 		}
