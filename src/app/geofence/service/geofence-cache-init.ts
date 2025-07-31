@@ -7,18 +7,20 @@ import { container } from 'tsyringe';
 import { v4 as uuidv4 } from 'uuid';
 
 const geofenceCache = container.resolve(GeofenceCache);
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const geofenceCacheInit = (responseList: GeofenceResponse[]): void => {
 	geofenceCache.clear();
 
-	const geofenceList: Geofence[] = responseList?.map(geofence => ({
-		...geofence,
-		data: getDataAsJson(geofence.data),
-	}));
+	const geofenceList: Geofence[] = [];
+	// responseList?.map(geofence => ({
+	// 	...geofence,
+	// 	data: getDataAsJson(geofence.data),
+	// }));
 
 	geofenceCache.addMany(geofenceList);
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getDataAsJson = (data?: string): GeofenceData[] => {
 	if (!data) {
 		return [];

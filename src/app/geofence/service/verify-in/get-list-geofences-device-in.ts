@@ -1,1 +1,1 @@
-export const getListGeofencesDeviceIn = async (): Promise<> => {};
+export const getListGeofencesDeviceIn = async (): Promise<void> => {};
