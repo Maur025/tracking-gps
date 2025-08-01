@@ -5,6 +5,7 @@ import { groupSwagger } from '@app/group/group.swagger';
 import { geofenceSwagger } from '@app/geofence/geofence.swagger';
 import { deviceSwagger } from '@app/device/device.swagger';
 import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
+import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
 
 export const loadAllSwaggerDocs = (): void => {
 	const BASE_PATH: string = '/api/v1';
@@ -19,6 +20,7 @@ export const loadAllSwaggerDocs = (): void => {
 		{ name: 'GROUP', description: 'management of group vehicles' },
 		{ name: 'DEVICE', description: 'management of devices' },
 		{ name: 'VEHICLE', description: 'management of vehicles' },
+		{ name: 'POINT INTEREST', description: 'management of point interests' },
 	];
 
 	testSwagger({
@@ -44,6 +46,11 @@ export const loadAllSwaggerDocs = (): void => {
 	vehicleSwagger({
 		path: `${BASE_PATH}/vehicles`,
 		tag: 'VEHICLE',
+	});
+
+	pointInterestSwagger({
+		path: `${BASE_PATH}/point-interests`,
+		tag: 'POINT INTEREST',
 	});
 
 	zodSwaggerGenerator.setTags(TAGS_CONFIG);
