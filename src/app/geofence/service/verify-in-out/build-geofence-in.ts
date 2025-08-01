@@ -19,9 +19,9 @@ export const buildGeofenceIn = ({
 		deviceId,
 		geofenceId,
 		geofenceName,
-		section,
+		//section,
 		id: section.id,
-		isInside: true,
+		//isInside: true,
 		date,
-	};
+	} as GeofenceIn;
 };
