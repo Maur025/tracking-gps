@@ -9,8 +9,11 @@ const getGeofenceMessage =
 
 		const messageIn: string = geofenceInOutList
 			.map(
-				({ geofenceName, section }) =>
-					`${geofenceName}/seccion ${section?.name ?? 'Sin nombre'}`,
+				({ geofenceName }) =>
+					`${geofenceName}/seccion ${
+						//section?.name ??
+						'Sin nombre'
+					}`,
 			)
 			.join(', ');
 
