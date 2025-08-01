@@ -7,6 +7,9 @@ import { container } from 'tsyringe';
 import { LayerType } from '@app/layer/entity/layer-type';
 import { GeofenceType } from '../entity/geofence-type';
 import PointInterestCache from '../../point-interest/cache/point-interest-cache';
+import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
+import { addGeofenceBatchToRedis } from '../cache/add-geofence-batch-to-redis';
 
 export const geofenceCacheInit = async (
 	responseList: GeofenceResponse[],
@@ -24,6 +27,9 @@ export const geofenceCacheInit = async (
 
 	geofenceCache.clear();
 	pointInterestCache.clear();
+
+	await deleteRedisIdx(geofenceCache.getIdxData());
+	await deleteRedisIdx(pointInterestCache.getIdxData());
 
 	const geofenceResponseList: GeofenceResponse[] = [];
 	const pointInterestResponseList: GeofenceResponse[] = [];
@@ -53,6 +59,22 @@ export const geofenceCacheInit = async (
 
 	geofenceCache.addMany(geofenceList);
 	pointInterestCache.addMany(pointInterestList);
+
+	await addDataInBatch<Geofence>({
+		dataList: geofenceList,
+		dataIndex: geofenceCache.getIdxData(),
+		dataBaseKey: geofenceCache.getRedisKey(),
+		registerInRedisFn: addGeofenceBatchToRedis,
+		fieldsToIndex: {},
+	});
+
+	await addDataInBatch<Geofence>({
+		dataList: pointInterestList,
+		dataIndex: pointInterestCache.getIdxData(),
+		dataBaseKey: pointInterestCache.getRedisKey(),
+		registerInRedisFn: addGeofenceBatchToRedis,
+		fieldsToIndex: {},
+	});
 };
 
 const getGeofenceOfGeofenceResponse = (

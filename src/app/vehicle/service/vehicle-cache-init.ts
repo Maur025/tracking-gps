@@ -37,7 +37,7 @@ export const vehicleCacheInit = async (
 
 	vehicleCache.addMany(vehicleList);
 
-	await addDataInBatch({
+	await addDataInBatch<Vehicle>({
 		dataList: vehicleList,
 		dataIndex: vehicleCache.getIdxData(),
 		dataBaseKey: vehicleCache.getRedisKey(),

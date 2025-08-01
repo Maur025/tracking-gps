@@ -18,7 +18,7 @@ export const cacheInitializer = (): Observable<unknown> => {
 		concatMap(() => getParallelObservables$()),
 		tap(async ({ vehicle, geofence, group }) => {
 			await vehicleCacheInit(handleAsArray(vehicle));
-			geofenceCacheInit(handleAsArray(geofence));
+			await geofenceCacheInit(handleAsArray(geofence));
 			await groupCacheInit(handleAsArray(group));
 		}),
 		concatMap(() => getSecuentialObservables$()),
