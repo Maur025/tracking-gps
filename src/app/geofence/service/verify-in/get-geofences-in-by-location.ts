@@ -41,6 +41,7 @@ export const getGeofencesInByLocation = (
 		}
 
 		const deviceInGeofence: GeofenceIn = {
+			id: `${deviceId}-${geofenceId}`,
 			deviceId,
 			geofenceId,
 			geofenceName,

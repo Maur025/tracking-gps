@@ -58,11 +58,12 @@ export const kafkaConsumer = () => {
 				try {
 					await handler(record);
 				} catch (error: unknown) {
+					console.log(error);
+
 					loggerError(
-						`[KAFKA] (addConsumer) Exception catch in: [${topic}]`,
+						`[KAFKA] (addConsumer) kafka exception catch in topic: [${topic}]`,
 						error as Error,
 					);
-					console.log(error);
 				} finally {
 					consumer.resume([{ topic, partitions: [partition] }]);
 				}
