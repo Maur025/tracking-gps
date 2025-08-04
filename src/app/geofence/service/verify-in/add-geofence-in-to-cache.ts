@@ -35,4 +35,26 @@ export const addGeofenceInToCache = async (
 		registerInRedisFn: addGeofenceInBatchToRedis,
 		fieldsToIndex: {},
 	});
+
+	for (const geofenceIn of geofenceInList) {
+		if (!geofenceInCache.getCache().has(geofenceIn.deviceId)) {
+			geofenceInCache
+				.getCache()
+				.set(geofenceIn.deviceId, new Map<string, GeofenceIn>());
+		}
+
+		const geofenceInData: Map<string, GeofenceIn> | undefined = geofenceInCache
+			.getCache()
+			.get(geofenceIn.deviceId)!;
+
+		if (!geofenceInData) {
+			loggerDebug(
+				`[GEOFENCE] (addGeofenceInToCache) couldn't create data in cache `,
+			);
+
+			return;
+		}
+
+		geofenceInData.set(geofenceIn.geofenceId, geofenceIn);
+	}
 };

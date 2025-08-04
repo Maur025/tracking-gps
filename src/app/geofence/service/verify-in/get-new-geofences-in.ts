@@ -17,8 +17,9 @@ export const getNewGeofencesIn = async (
 		GetNewGeofencesInSchema.parse(request);
 
 	const geofenceInCache = container.resolve(GeofenceInCache);
+	console.log(geofenceInCache.getCache().get(deviceId));
 
-	if (geofenceInCache.getCache().has(deviceId)) {
+	if (!geofenceInCache.getCache().has(deviceId)) {
 		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
 
 		return changeIsNewToTrue(geofenceInFullList);
