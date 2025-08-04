@@ -6,6 +6,7 @@ export const DeviceGeofenceIn = object({
 	geofenceInTotal: number().nonnegative().default(0),
 	quantityNewIn: number().nonnegative().default(0),
 	geofenceInNames: array(string()).default([]),
+	newGeofenceInList: array(GeofenceIn).default([]),
 });
 
 export type DeviceGeofenceIn = z.infer<typeof DeviceGeofenceIn>;
