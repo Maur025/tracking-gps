@@ -24,7 +24,7 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"packageManager": "pnpm@10.12.3",
+	"packageManager": "pnpm@10.14.0",
 	"dependencies": {
 		"@asteasolutions/zod-to-openapi": "8.0.0-beta.4",
 		"@maur025/core-commands": "^1.0.1",
@@ -38,7 +38,6 @@
 		"dotenv": "^16.4.7",
 		"express": "^5.1.0",
 		"kafkajs": "^2.2.4",
-		"ol": "^10.5.0",
 		"pdfkit": "^0.17.1",
 		"pdfmake": "^0.2.20",
 		"redis": "^5.5.6",

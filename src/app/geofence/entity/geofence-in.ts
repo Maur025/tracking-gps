@@ -11,10 +11,10 @@ export const GeofenceIn = BaseData.extend({
 	layerName: string().nonempty(),
 	timestamp: number().nonnegative(),
 	date: string().nonempty(),
-	coords: PositionSchema.default([0, 0]).optional(),
+	positionCoords: PositionSchema.default([0, 0]),
 	area: number().nonnegative().optional(),
 	radius: number().nonnegative().optional(),
-	type: GeofenceType.optional(),
+	type: GeofenceType,
 	isNew: boolean().default(false),
 });
 
