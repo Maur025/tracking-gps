@@ -11,6 +11,11 @@ const {
 	KAFKA_BROKER = 'localhost:9092',
 	KAFKA_CLIENT_ID = 'tracking-gps',
 	KAFKA_LOG_LEVEL = 'WARN',
+	CLICKHOUSE_HOST = 'http://localhost',
+	CLICKHOUSE_PORT = '8123',
+	CLICKHOUSE_DB = 'default',
+	CLICKHOUSE_USER = 'user',
+	CLICKHOUSE_PASSWORD = 'password',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -24,6 +29,11 @@ const environment: EnvironmentSchema = {
 	KAFKA_BROKER,
 	KAFKA_CLIENT_ID,
 	KAFKA_LOG_LEVEL,
+	CLICKHOUSE_HOST,
+	CLICKHOUSE_PORT: Number(CLICKHOUSE_PORT),
+	CLICKHOUSE_DB,
+	CLICKHOUSE_USER,
+	CLICKHOUSE_PASSWORD,
 };
 
 export default environment;
