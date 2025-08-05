@@ -8,6 +8,8 @@ import app from './app';
 import { configureConsumers } from '@config/configure-consumers';
 import { measurePerformance } from '@utils/measure-performance';
 import { defaultIfEmpty, lastValueFrom } from 'rxjs';
+import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse';
+import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities';
 
 const { getApp, start } = app;
 
@@ -17,12 +19,17 @@ getApp().get('/', (req, res) => {
 
 await measurePerformance(start, '[EXPRESS] (start) server initialized in:');
 await measurePerformance(
-	configureConsumers,
-	'[KAFKA] (configureConsumers) consumers ready in:',
-);
-await measurePerformance(
 	initRedisClient,
 	'[REDIS] (initRedisClient) initialized in:',
+);
+await measurePerformance(
+	connectToClickhouse,
+	`[CLICKHOUSE] (connectToClickhouse) client initialized in:`,
+);
+
+await measurePerformance(
+	initCLickhouseEntities,
+	'[CLICKHOUSE] (initCLickhouseEntities) entities initialized in:',
 );
 
 await measurePerformance(async () => {
@@ -38,3 +45,8 @@ await measurePerformance(async () => {
 		);
 	}
 }, '[SYSTEM] (cacheInitializer) cache initialized in:');
+
+await measurePerformance(
+	configureConsumers,
+	'[KAFKA] (configureConsumers) consumers ready in:',
+);

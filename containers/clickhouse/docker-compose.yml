@@ -1,0 +1,24 @@
+services:
+  clickhouse:
+    image: clickhouse:lts
+    container_name: clickhouse-server
+    ports:
+      - "8123:8123" # Http port
+      - "9000:9000" # TCP port
+    environment:
+      - CLICKHOUSE_DB=event_logger_db
+      - CLICKHOUSE_USER=clickhouse-user
+      - CLICKHOUSE_PASSWORD=3OLx53uYi4
+      - CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT=1
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    networks:
+      - compose-net
+    restart: unless-stopped
+  
+volumes:
+  clickhouse_data:
+
+networks:
+  compose-net:
+    driver: bridge

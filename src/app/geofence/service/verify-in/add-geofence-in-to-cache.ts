@@ -43,17 +43,9 @@ export const addGeofenceInToCache = async (
 				.set(geofenceIn.deviceId, new Map<string, GeofenceIn>());
 		}
 
-		const geofenceInData: Map<string, GeofenceIn> | undefined = geofenceInCache
+		const geofenceInData: Map<string, GeofenceIn> = geofenceInCache
 			.getCache()
 			.get(geofenceIn.deviceId)!;
-
-		if (!geofenceInData) {
-			loggerDebug(
-				`[GEOFENCE] (addGeofenceInToCache) couldn't create data in cache `,
-			);
-
-			return;
-		}
 
 		geofenceInData.set(geofenceIn.geofenceId, geofenceIn);
 	}

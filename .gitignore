@@ -150,6 +150,3 @@ dist
 **/*.pdf
 **/*.gif
 **/*.xls
-
-# clickhouse log database
-clickhouse/
