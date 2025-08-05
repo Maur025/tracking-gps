@@ -5,9 +5,12 @@ import GeofenceInCache from './geofence-in-cache';
 export const addGeofenceInToMap = (geofenceInList: GeofenceIn[]): void => {
 	const geofenceInCache = container.resolve(GeofenceInCache);
 
-	for (const geofenceIn of geofenceInList) {
-		const cache = geofenceInCache.getCache();
+	const cache: Map<
+		string,
+		Map<string, GeofenceIn>
+	> = geofenceInCache.getCache();
 
+	for (const geofenceIn of geofenceInList) {
 		if (!cache.has(geofenceIn.deviceId)) {
 			cache.set(geofenceIn.deviceId, new Map<string, GeofenceIn>());
 		}

@@ -4,10 +4,20 @@ import { loggerDebug } from '@maur025/core-logger';
 import { getGeofencesInByLocation } from './get-geofences-in-by-location';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { getNewGeofencesIn } from './get-new-geofences-in';
+import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
+import z, { object } from 'zod/v4';
+
+const GetGeofencesDeviceInSchema = object({
+	device: Device,
+});
+
+type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
 
 export const getGeofencesDeviceIn = async (
-	device: Device,
+	request: GetGeofencesDeviceInSchema,
 ): Promise<DeviceGeofenceIn> => {
+	const { device } = GetGeofencesDeviceInSchema.parse(request);
+
 	if (!device?.id || !device?.last?.lon || !device?.last?.lat) {
 		loggerDebug(
 			`[DEVICE] (getGeofencesDeviceIn) device id invalid or position not found, skipping...`,
@@ -32,7 +42,7 @@ export const getGeofencesDeviceIn = async (
 		geofenceInFullList: currentGeofencesIn,
 	});
 
-	console.log(currentGeofencesIn);
+	matchIsNewGeofenceIn(currentGeofencesIn, newGeofencesIn);
 
 	return {
 		geofenceList: currentGeofencesIn,
