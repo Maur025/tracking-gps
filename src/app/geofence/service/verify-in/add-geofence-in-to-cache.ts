@@ -1,5 +1,7 @@
 import { addGeofenceInBatchToRedis } from '@app/geofence/cache/add-geofence-in-batch-to-redis';
+import { addGeofenceInToMap } from '@app/geofence/cache/add-geofence-in-to-map';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
+import { addGeofenceEventLoggerByBatchs } from '@app/geofence/clickhouse/add-geofence-event-logger-by-batchs';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { loggerDebug } from '@maur025/core-logger';
@@ -36,17 +38,7 @@ export const addGeofenceInToCache = async (
 		fieldsToIndex: {},
 	});
 
-	for (const geofenceIn of geofenceInList) {
-		if (!geofenceInCache.getCache().has(geofenceIn.deviceId)) {
-			geofenceInCache
-				.getCache()
-				.set(geofenceIn.deviceId, new Map<string, GeofenceIn>());
-		}
+	addGeofenceInToMap(geofenceInList);
 
-		const geofenceInData: Map<string, GeofenceIn> = geofenceInCache
-			.getCache()
-			.get(geofenceIn.deviceId)!;
-
-		geofenceInData.set(geofenceIn.geofenceId, geofenceIn);
-	}
+	await addGeofenceEventLoggerByBatchs(geofenceInList, 'IN');
 };

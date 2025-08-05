@@ -1,4 +1,4 @@
-import { PositionSchema } from '@common/schema/position.schema';
+import { PositionL1 } from '@common/schema/position.schema';
 import { BaseData } from '@maur025/core-model-data';
 import z, { boolean, number, string } from 'zod/v4';
 import { GeofenceType } from './geofence-type';
@@ -11,7 +11,7 @@ export const GeofenceIn = BaseData.extend({
 	layerName: string().nonempty(),
 	timestamp: number().nonnegative(),
 	date: string().nonempty(),
-	positionCoords: PositionSchema.default([0, 0]),
+	positionCoords: PositionL1.default([0, 0]),
 	area: number().nonnegative().optional(),
 	radius: number().nonnegative().optional(),
 	type: GeofenceType,
