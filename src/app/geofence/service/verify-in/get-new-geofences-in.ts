@@ -17,16 +17,20 @@ export const getNewGeofencesIn = async (
 		GetNewGeofencesInSchema.parse(request);
 
 	const geofenceInCache = container.resolve(GeofenceInCache);
-	console.log(geofenceInCache.getCache().get(deviceId));
 
-	if (!geofenceInCache.getCache().has(deviceId)) {
+	const cache: Map<
+		string,
+		Map<string, GeofenceIn>
+	> = geofenceInCache.getCache();
+
+	if (!cache.has(deviceId)) {
 		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
 
 		return changeIsNewToTrue(geofenceInFullList);
 	}
 
 	const lastGeofenceInCache: Map<string, GeofenceIn> | undefined =
-		geofenceInCache.getCache().get(deviceId);
+		cache.get(deviceId);
 
 	if (!lastGeofenceInCache) {
 		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });

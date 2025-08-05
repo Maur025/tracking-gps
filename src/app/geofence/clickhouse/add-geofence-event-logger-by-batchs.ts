@@ -25,6 +25,8 @@ export const addGeofenceEventLoggerByBatchs = async (
 
 	if (geofenceInBatch.length > 0) {
 		await saveGeofenceEventLogger(geofenceInBatch);
+
+		geofenceInBatch = [];
 	}
 };
 

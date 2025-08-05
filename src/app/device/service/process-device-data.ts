@@ -8,6 +8,8 @@ import { getGeofencesDeviceIn } from '@app/geofence/service/verify-in/get-geofen
 import { DeviceGeofenceOut } from '../entity/device-geofence-out';
 import { getGeofencesDeviceOut } from '@app/geofence/service/verify-out/get-geofences-device-out';
 import { DeviceGeofenceIn } from '../entity/device-geofence-in';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 
 export const processDeviceData = async (
 	device: Device,
@@ -27,10 +29,17 @@ export const processDeviceData = async (
 		deviceInMapCache,
 	);
 
-	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn(device);
+	const backupGeofenceInCacheMap = getBackupGeofenceInCacheMap(device.id);
 
-	const geofenceOutData: DeviceGeofenceOut =
-		await getGeofencesDeviceOut(device);
+	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
+		device,
+	});
+
+	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({
+		device,
+		geofenceInFullList: geofenceInData.geofenceList,
+		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
+	});
 
 	return {
 		...device,
@@ -38,4 +47,14 @@ export const processDeviceData = async (
 		geofencesIn: geofenceInData,
 		geofencesOut: geofenceOutData,
 	};
+};
+
+const getBackupGeofenceInCacheMap = (
+	deviceId: string,
+): Map<string, GeofenceIn> => {
+	const geofenceInCache = container.resolve(GeofenceInCache);
+	const geofenceInCacheDataPrev: Map<string, GeofenceIn> | undefined =
+		geofenceInCache.getCache().get(deviceId);
+
+	return geofenceInCacheDataPrev ? new Map(geofenceInCacheDataPrev) : new Map();
 };
