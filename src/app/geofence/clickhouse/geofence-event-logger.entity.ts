@@ -9,7 +9,7 @@ export const geofenceEventLoggerEntity = async (): Promise<void> => {
 			layer_id LowCardinality(String),
 			device_lat Float64,
 			device_lon Float64,
-      timestamp String,
+      timestamp DateTime64(3),
 			event_type Enum8('IN' = 1, 'OUT' = 2)
     )
 		ENGINE = MergeTree
