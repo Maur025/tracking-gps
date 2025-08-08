@@ -11,14 +11,22 @@ describe('handle kafka client test', () => {
 	});
 
 	test('should return an instance of kafka', () => {
-		const { kafkaClient } = handleKafkaClient();
+		const { kafkaClient } = handleKafkaClient({
+			kafkaBrokers: ['localhost:9092'],
+			kafkaClientId: 'test',
+			kafkaLogLevel: 'INFO',
+		});
 
 		expect(kafkaClient).toBeDefined();
 		expect(kafkaClient).toBeInstanceOf(Kafka);
 	});
 
 	test('should return same instance', () => {
-		const { kafkaClient: kafkaClientBefore } = handleKafkaClient();
+		const { kafkaClient: kafkaClientBefore } = handleKafkaClient({
+			kafkaBrokers: ['localhost:9092'],
+			kafkaClientId: 'test',
+			kafkaLogLevel: 'INFO',
+		});
 
 		const { kafkaClient: kafkaClientAfter } = handleKafkaClient();
 
@@ -27,11 +35,19 @@ describe('handle kafka client test', () => {
 	});
 
 	test('restart should delete kafka instance and replace to new instance of kafka', () => {
-		const { kafkaClient: kafkaClienteBefore, restart } = handleKafkaClient();
+		const { kafkaClient: kafkaClienteBefore, restart } = handleKafkaClient({
+			kafkaBrokers: ['localhost:9092'],
+			kafkaClientId: 'test',
+			kafkaLogLevel: 'INFO',
+		});
 
 		restart();
 
-		const { kafkaClient: kafkaClienteAfter } = handleKafkaClient();
+		const { kafkaClient: kafkaClienteAfter } = handleKafkaClient({
+			kafkaBrokers: ['localhost:9092'],
+			kafkaClientId: 'test',
+			kafkaLogLevel: 'INFO',
+		});
 
 		expect(kafkaClienteBefore).not.toBe(kafkaClienteAfter);
 		expect(kafkaClienteBefore).toEqual(kafkaClienteAfter);
