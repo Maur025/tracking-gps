@@ -6,6 +6,7 @@ export default mergeConfig(
 	defineConfig({
 		test: {
 			include: ['test/unit/**/*.test.ts', '**/*.unit.test.ts'],
+			setupFiles: ['./test/unit/vitest.setup.ts'],
 		},
 	}),
 );
