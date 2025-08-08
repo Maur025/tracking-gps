@@ -14,13 +14,28 @@ const InitServicesSchema = object({
 	kafkaBrokers: array(string().nonempty()).nonempty(),
 	kafkaClientId: string().nonempty(),
 	kafkaLogLevel: string().nonempty(),
+	clickhouseDb: string().nonempty(),
+	clickhouseHost: string().nonempty(),
+	clickhousePassword: string(),
+	clickhousePort: number().nonnegative(),
+	clickhouseUser: string().nonempty(),
 });
 
 type InitServicesSchema = z.infer<typeof InitServicesSchema>;
 
 export const initServices = async (request: InitServicesSchema) => {
-	const { redisHost, redisPort, kafkaBrokers, kafkaClientId, kafkaLogLevel } =
-		InitServicesSchema.parse(request);
+	const {
+		redisHost,
+		redisPort,
+		kafkaBrokers,
+		kafkaClientId,
+		kafkaLogLevel,
+		clickhouseDb,
+		clickhouseHost,
+		clickhousePassword,
+		clickhousePort,
+		clickhouseUser,
+	} = InitServicesSchema.parse(request);
 
 	await measurePerformance(
 		() => initRedisClient({ redisHost, redisPort }),
@@ -28,7 +43,14 @@ export const initServices = async (request: InitServicesSchema) => {
 	);
 
 	await measurePerformance(
-		() => connectToClickhouse(),
+		() =>
+			connectToClickhouse({
+				clickhouseDb,
+				clickhouseHost,
+				clickhousePassword,
+				clickhousePort,
+				clickhouseUser,
+			}),
 		`[CLICKHOUSE] (connectToClickhouse) client initialized in:`,
 	);
 

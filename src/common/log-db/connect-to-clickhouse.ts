@@ -1,34 +1,46 @@
 import { createClient, PingResult } from '@clickhouse/client';
-import environment from '@config/env';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-
-const {
-	CLICKHOUSE_DB,
-	CLICKHOUSE_HOST,
-	CLICKHOUSE_PASSWORD,
-	CLICKHOUSE_PORT,
-	CLICKHOUSE_USER,
-} = environment;
+import z, { number, object, string } from 'zod/v4';
 
 let clickhouseClient: ReturnType<typeof createClient>;
 const loggerAux: string = `[CLICKHOUSE] (connectToClickhouse)`;
 
-const connectToClickhouse = async (): Promise<void> => {
+const ConnectToClickhouseSchema = object({
+	clickhouseDb: string().nonempty(),
+	clickhouseHost: string().nonempty(),
+	clickhousePassword: string(),
+	clickhousePort: number().nonnegative(),
+	clickhouseUser: string().nonempty(),
+});
+
+type ConnectToClickhouseSchema = z.infer<typeof ConnectToClickhouseSchema>;
+
+const connectToClickhouse = async (
+	request: ConnectToClickhouseSchema,
+): Promise<void> => {
+	const {
+		clickhouseDb,
+		clickhouseHost,
+		clickhousePassword,
+		clickhousePort,
+		clickhouseUser,
+	} = ConnectToClickhouseSchema.parse(request);
+
 	try {
 		clickhouseClient = createClient({
-			url: `${CLICKHOUSE_HOST}:${CLICKHOUSE_PORT}`,
+			url: `${clickhouseHost}:${clickhousePort}`,
 			request_timeout: 25000,
-			username: CLICKHOUSE_USER,
-			password: CLICKHOUSE_PASSWORD,
+			username: clickhouseUser,
+			password: clickhousePassword,
 			application: 'tracking-gps',
-			database: CLICKHOUSE_DB,
+			database: clickhouseDb,
 		});
 
 		const isAlive: PingResult = await clickhouseClient.ping();
 
 		if (isAlive.success) {
 			loggerInfo(
-				`${loggerAux} connection successful to ${CLICKHOUSE_HOST}:${CLICKHOUSE_PORT}`,
+				`${loggerAux} connection successful to ${clickhouseHost}:${clickhousePort}`,
 			);
 		} else {
 			loggerError(`${loggerAux} Ping failed. Server might be unreachable.`);

@@ -6,7 +6,8 @@ export default mergeConfig(
 	defineConfig({
 		test: {
 			include: ['test/integration/**/*.test.ts', '**/*.integration.test.ts'],
-			setupFiles: ['./test/integration/integration-test-setup.ts'],
+			// setupFiles: ['./test/integration/integration-test-setup.ts'],
+			globalSetup: './test/integration/integration-test-setup.ts',
 		},
 	}),
 );
