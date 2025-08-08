@@ -1,27 +1,9 @@
-import {
-	initRedisClient,
-	redisClient,
-} from '@common/redis/create-redis-client';
-import {
-	afterAll,
-	beforeAll,
-	beforeEach,
-	describe,
-	expect,
-	test,
-} from 'vitest';
+import { redisClient } from '@common/redis/create-redis-client';
+import { beforeEach, describe, expect, test } from 'vitest';
 
 const REDIS_TEST_KEY: string = 'redis:test';
 
 describe('create redis client test', () => {
-	beforeAll(async () => {
-		await initRedisClient();
-	});
-
-	afterAll(async () => {
-		await redisClient.quit();
-	});
-
 	beforeEach(async () => {
 		if (redisClient.isOpen) {
 			await redisClient.del(REDIS_TEST_KEY);

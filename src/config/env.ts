@@ -16,6 +16,15 @@ const {
 	CLICKHOUSE_DB = 'default',
 	CLICKHOUSE_USER = 'user',
 	CLICKHOUSE_PASSWORD = 'password',
+	TEST_REDIS_HOST = 'localhost',
+	TEST_REDIS_PORT = '6380',
+	TEST_KAFKA_BROKER = 'localhost:9092',
+	TEST_KAFKA_CLIENT_ID = 'tracking-gps-test',
+	TEST_CLICKHOUSE_HOST = 'http://localhost',
+	TEST_CLICKHOUSE_PORT = '8124',
+	TEST_CLICKHOUSE_DB = 'event_logger_test_db',
+	TEST_CLICKHOUSE_USER = 'clickhouse-user-test',
+	TEST_CLICKHOUSE_PASSWORD = '501Oa6TQX037',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -34,6 +43,15 @@ const environment: EnvironmentSchema = {
 	CLICKHOUSE_DB,
 	CLICKHOUSE_USER,
 	CLICKHOUSE_PASSWORD,
+	TEST_REDIS_HOST,
+	TEST_REDIS_PORT: Number(TEST_REDIS_PORT),
+	TEST_KAFKA_BROKER,
+	TEST_KAFKA_CLIENT_ID,
+	TEST_CLICKHOUSE_HOST,
+	TEST_CLICKHOUSE_PORT: Number(TEST_CLICKHOUSE_PORT),
+	TEST_CLICKHOUSE_DB,
+	TEST_CLICKHOUSE_USER,
+	TEST_CLICKHOUSE_PASSWORD,
 };
 
 export default environment;
