@@ -1,12 +1,21 @@
-import environment from '@config/env';
 import { loggerWarn } from '@maur025/core-logger';
 import { kafkaLogger } from '@common/kafka/util/kafka-logger';
 import { Kafka, logLevel } from 'kafkajs';
+import z, { array, object, string } from 'zod/v4';
 
-const { KAFKA_BROKER, KAFKA_CLIENT_ID, KAFKA_LOG_LEVEL } = environment;
 let kafkaClientInstance: Kafka | null = null;
 
-export const handleKafkaClient = (): {
+export const HandleKafkaClientSchema = object({
+	kafkaBrokers: array(string().nonempty()).nonempty(),
+	kafkaClientId: string().nonempty(),
+	kafkaLogLevel: string().nonempty(),
+});
+
+export type HandleKafkaClientSchema = z.infer<typeof HandleKafkaClientSchema>;
+
+export const handleKafkaClient = (
+	request?: HandleKafkaClientSchema,
+): {
 	kafkaClient: Kafka;
 	restart: () => void;
 } => {
@@ -15,10 +24,13 @@ export const handleKafkaClient = (): {
 			return kafkaClientInstance;
 		}
 
+		const { kafkaBrokers, kafkaClientId, kafkaLogLevel } =
+			HandleKafkaClientSchema.parse(request);
+
 		kafkaClientInstance = new Kafka({
-			clientId: KAFKA_CLIENT_ID,
-			brokers: [KAFKA_BROKER],
-			logLevel: getKafkaLogLevel(KAFKA_LOG_LEVEL),
+			clientId: kafkaClientId,
+			brokers: [...kafkaBrokers],
+			logLevel: getKafkaLogLevel(kafkaLogLevel),
 			logCreator: () => kafkaLogger,
 		});
 

@@ -1,5 +1,8 @@
 import { Consumer, EachMessagePayload } from 'kafkajs';
-import { handleKafkaClient } from './handle-kafka-client';
+import {
+	handleKafkaClient,
+	HandleKafkaClientSchema,
+} from './handle-kafka-client';
 import {
 	AddConsumerRequest,
 	AddConsumerSchema,
@@ -9,8 +12,15 @@ import { KafkaRecordSchema } from './schema/kafka-record.schema';
 import { getObjectOfString } from '@utils/get-object-of-string';
 import { zodFailedValidationLog } from '@utils/zod-failed-validation-log';
 
-export const kafkaConsumer = () => {
-	const { kafkaClient } = handleKafkaClient();
+const currentConsumers: Consumer[] = [];
+
+export const kafkaConsumer = (
+	request?: HandleKafkaClientSchema,
+): {
+	addConsumer: <V>(request: AddConsumerRequest<V>) => Promise<void>;
+	disconnectAll: () => Promise<void>;
+} => {
+	const { kafkaClient } = handleKafkaClient(request);
 
 	const addConsumer = async <V>({
 		topics,
@@ -71,6 +81,7 @@ export const kafkaConsumer = () => {
 		});
 
 		loggerInfo(`[KAFKA] (addConsumer) joined to [${groupId}]`);
+		currentConsumers.push(consumer);
 	};
 
 	const getRecord = <V>({
@@ -105,5 +116,9 @@ export const kafkaConsumer = () => {
 		}
 	};
 
-	return { addConsumer };
+	const disconnectAll = async (): Promise<void> => {
+		await Promise.all(currentConsumers.map(consumer => consumer.disconnect()));
+	};
+
+	return { addConsumer, disconnectAll };
 };
