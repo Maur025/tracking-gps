@@ -1,52 +1,21 @@
 import 'dotenv/config';
 import 'reflect-metadata';
 import '@config/ioc/dependency-injection';
-import { cacheInitializer } from '@common/cache/service/cache-initializer';
-import { loggerError, loggerWarn } from '@maur025/core-logger';
-import { initRedisClient } from '@common/redis/create-redis-client';
 import app from './app';
-import { configureConsumers } from '@config/configure-consumers';
 import { measurePerformance } from '@utils/measure-performance';
-import { defaultIfEmpty, lastValueFrom } from 'rxjs';
-import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse';
-import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities';
+import { initServices } from './init-services';
+import environment from '@config/env';
 
 const { getApp, start } = app;
+const { REDIS_HOST, REDIS_PORT } = environment;
 
 getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
 });
 
 await measurePerformance(start, '[EXPRESS] (start) server initialized in:');
-await measurePerformance(
-	initRedisClient,
-	'[REDIS] (initRedisClient) initialized in:',
-);
-await measurePerformance(
-	connectToClickhouse,
-	`[CLICKHOUSE] (connectToClickhouse) client initialized in:`,
-);
 
-await measurePerformance(
-	initCLickhouseEntities,
-	'[CLICKHOUSE] (initCLickhouseEntities) entities initialized in:',
-);
-
-await measurePerformance(async () => {
-	try {
-		await lastValueFrom(cacheInitializer().pipe(defaultIfEmpty(null)));
-	} catch (error: unknown) {
-		loggerError(
-			`[SYSTEM] (cacheInitializer) error occurred while initializing cache -> `,
-			error as Error,
-		);
-		loggerWarn(
-			`[SYSTEM] (cacheInitializer) client sockets will not be initialized.`,
-		);
-	}
-}, '[SYSTEM] (cacheInitializer) cache initialized in:');
-
-await measurePerformance(
-	configureConsumers,
-	'[KAFKA] (configureConsumers) consumers ready in:',
-);
+await initServices({
+	redisHost: REDIS_HOST,
+	redisPort: REDIS_PORT,
+});
