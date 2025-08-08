@@ -6,17 +6,21 @@ import { configureConsumers } from '@config/configure-consumers';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { measurePerformance } from '@utils/measure-performance';
 import { defaultIfEmpty, lastValueFrom } from 'rxjs';
-import z, { number, object, string } from 'zod/v4';
+import z, { number, object, string, array } from 'zod/v4';
 
 const InitServicesSchema = object({
 	redisHost: string().nonempty(),
 	redisPort: number().nonnegative(),
+	kafkaBrokers: array(string().nonempty()).nonempty(),
+	kafkaClientId: string().nonempty(),
+	kafkaLogLevel: string().nonempty(),
 });
 
 type InitServicesSchema = z.infer<typeof InitServicesSchema>;
 
 export const initServices = async (request: InitServicesSchema) => {
-	const { redisHost, redisPort } = InitServicesSchema.parse(request);
+	const { redisHost, redisPort, kafkaBrokers, kafkaClientId, kafkaLogLevel } =
+		InitServicesSchema.parse(request);
 
 	await measurePerformance(
 		() => initRedisClient({ redisHost, redisPort }),
@@ -48,7 +52,7 @@ export const initServices = async (request: InitServicesSchema) => {
 	}, '[SYSTEM] (cacheInitializer) cache initialized in:');
 
 	await measurePerformance(
-		() => configureConsumers(),
+		() => configureConsumers({ kafkaBrokers, kafkaClientId, kafkaLogLevel }),
 		'[KAFKA] (configureConsumers) consumers ready in:',
 	);
 };

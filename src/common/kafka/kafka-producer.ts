@@ -1,5 +1,8 @@
 import { Partitioners, Producer } from 'kafkajs';
-import { handleKafkaClient } from './handle-kafka-client';
+import {
+	handleKafkaClient,
+	HandleKafkaClientSchema,
+} from './handle-kafka-client';
 import { KafkaPublishSchema } from './schema/kafka-publish.schema';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { prettifyError } from 'zod/v4';
@@ -8,11 +11,14 @@ import { v4 as uuid4 } from 'uuid';
 let producerInstance: Producer | null = null;
 let isProducerReady: boolean = false;
 
-export const kakfaProducer = (): {
+export const kakfaProducer = (
+	request?: HandleKafkaClientSchema,
+): {
 	publish: <V>(kafkaPublishSchema: KafkaPublishSchema<V>) => Promise<void>;
 	restart: () => void;
+	disconnect: () => Promise<void>;
 } => {
-	const { kafkaClient } = handleKafkaClient();
+	const { kafkaClient } = handleKafkaClient(request);
 
 	const getProducer = async (): Promise<Producer> => {
 		if (producerInstance) {
@@ -73,5 +79,16 @@ export const kakfaProducer = (): {
 		isProducerReady = false;
 	};
 
-	return { publish, restart };
+	const disconnect = async (): Promise<void> => {
+		if (!producerInstance) {
+			return;
+		}
+
+		await producerInstance.disconnect();
+
+		restart();
+		loggerDebug(`[KAFKA] (disconnect) producer disconnected`);
+	};
+
+	return { publish, restart, disconnect };
 };

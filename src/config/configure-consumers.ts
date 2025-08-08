@@ -6,11 +6,14 @@ import {
 } from '@app/test-app/consumers/example-test-consumer';
 import { deviceTrackingDataConsumer } from '@app/device/consumers/device-tracking-data-consumer';
 import { Device } from '@app/device/entity/device';
+import { HandleKafkaClientSchema } from '@common/kafka/handle-kafka-client';
 
 const { EXAMPLE, TRACKING_GPS_DEVICE } = kafkaTopics;
 
-export const configureConsumers = async (): Promise<void> => {
-	const { addConsumer } = kafkaConsumer();
+export const configureConsumers = async (
+	request: HandleKafkaClientSchema,
+): Promise<void> => {
+	const { addConsumer } = kafkaConsumer(request);
 
 	await addConsumer<TestKafkaInterface>({
 		topics: [EXAMPLE],

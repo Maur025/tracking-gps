@@ -7,7 +7,13 @@ import { initServices } from './init-services';
 import environment from '@config/env';
 
 const { getApp, start } = app;
-const { REDIS_HOST, REDIS_PORT } = environment;
+const {
+	REDIS_HOST,
+	REDIS_PORT,
+	KAFKA_BROKER,
+	KAFKA_CLIENT_ID,
+	KAFKA_LOG_LEVEL,
+} = environment;
 
 getApp().get('/', (req, res) => {
 	res.send('Running project tracking gps!');
@@ -18,4 +24,7 @@ await measurePerformance(start, '[EXPRESS] (start) server initialized in:');
 await initServices({
 	redisHost: REDIS_HOST,
 	redisPort: REDIS_PORT,
+	kafkaBrokers: [KAFKA_BROKER],
+	kafkaClientId: KAFKA_CLIENT_ID,
+	kafkaLogLevel: KAFKA_LOG_LEVEL,
 });
