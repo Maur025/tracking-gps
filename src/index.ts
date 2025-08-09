@@ -13,6 +13,11 @@ const {
 	KAFKA_BROKER,
 	KAFKA_CLIENT_ID,
 	KAFKA_LOG_LEVEL,
+	CLICKHOUSE_DB,
+	CLICKHOUSE_HOST,
+	CLICKHOUSE_PORT,
+	CLICKHOUSE_USER,
+	CLICKHOUSE_PASSWORD,
 } = environment;
 
 getApp().get('/', (req, res) => {
@@ -27,4 +32,10 @@ await initServices({
 	kafkaBrokers: [KAFKA_BROKER],
 	kafkaClientId: KAFKA_CLIENT_ID,
 	kafkaLogLevel: KAFKA_LOG_LEVEL,
+	clickhouseDb: CLICKHOUSE_DB,
+	clickhouseHost: CLICKHOUSE_HOST,
+	clickhousePassword: CLICKHOUSE_PASSWORD,
+	clickhousePort: CLICKHOUSE_PORT,
+	clickhouseUser: CLICKHOUSE_USER,
+	isNeedCache: true,
 });
