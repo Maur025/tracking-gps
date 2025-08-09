@@ -1,26 +1,29 @@
 import { kakfaProducer } from '@common/kafka/kafka-producer';
 import { KafkaPublishSchema } from '@common/kafka/schema/kafka-publish.schema';
-import environment from '@config/env';
-import { beforeAll, describe, test } from 'vitest';
-
-const { TEST_KAFKA_BROKER, TEST_KAFKA_CLIENT_ID } = environment;
+import {
+	startTestServices,
+	stopTestServices,
+} from 'test/integration/test-services.setup';
+import { afterAll, beforeAll, describe, test } from 'vitest';
 
 describe('device tracking data consumer intergration test', () => {
 	let publishKafka: <V>(
 		kafkaPublishSchema: KafkaPublishSchema<V>,
 	) => Promise<void>;
 
-	beforeAll(() => {
-		const { publish } = kakfaProducer({
-			kafkaBrokers: [TEST_KAFKA_BROKER],
-			kafkaClientId: TEST_KAFKA_CLIENT_ID,
-			kafkaLogLevel: 'ERROR',
-		});
+	beforeAll(async () => {
+		await startTestServices({ withKafka: true });
+
+		const { publish } = kakfaProducer();
 
 		publishKafka = publish;
 	});
 
+	afterAll(async () => {
+		await stopTestServices();
+	});
+
 	test('test process device data and return enrich with geofences,rules,alerts, notificarios, vehicle', async () => {
-		publishKafka({ topic: 'tracking-gps', value: { saludo: 'hola' } });
+		await publishKafka({ topic: 'tracking-gps', value: { saludo: 'hola' } });
 	});
 });

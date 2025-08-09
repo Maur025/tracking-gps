@@ -37,4 +37,5 @@ await initServices({
 	clickhousePassword: CLICKHOUSE_PASSWORD,
 	clickhousePort: CLICKHOUSE_PORT,
 	clickhouseUser: CLICKHOUSE_USER,
+	isNeedCache: true,
 });
