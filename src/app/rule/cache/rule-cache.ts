@@ -1,39 +1,37 @@
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
 import { singleton } from 'tsyringe';
-import { Vehicle } from '../entity/vehicle';
+import { Rule } from '../entity/rule';
+import AbstractSingleCache from '@common/cache/abstract-single-cache';
 import { CacheUseRedis } from '@common/cache/cache-use-redis';
 import { redisClient } from '@common/redis/create-redis-client';
 import { loggerError } from '@maur025/core-logger';
 
 @singleton()
-export default class VehicleCache
-	extends AbstractSingleCache<Vehicle>
+export default class RuleCache
+	extends AbstractSingleCache<Rule>
 	implements CacheUseRedis
 {
-	private readonly vehicleMap: Map<string, Vehicle> = new Map<
-		string,
-		Vehicle
-	>();
+	private readonly ruleMap: Map<string, Rule> = new Map<string, Rule>();
 
 	protected getResource(): string {
-		return 'Vehicle';
+		return 'Rule';
 	}
 
-	protected getMap(): Map<string, Vehicle> {
-		return this.vehicleMap;
+	protected getMap(): Map<string, Rule> {
+		return this.ruleMap;
 	}
 
 	public getRedisKey(): string {
-		return 'vehicle-gps:';
+		return 'rule-gps:';
 	}
 
 	public getIdxData(): string {
-		return 'idx_vehicles';
+		return 'idx_rules';
 	}
 
 	public async loadCacheData(): Promise<void> {
 		console.log('without implementation');
 	}
+
 	public async clearCacheData(): Promise<void> {
 		console.log('without implementation');
 	}
@@ -45,14 +43,14 @@ export default class VehicleCache
 		labelProcess: string = 'anything',
 	): Promise<void> {
 		try {
-			const vehicleKeyList = redisClient.scanIterator({
+			const ruleKeyList = redisClient.scanIterator({
 				MATCH: `${this.getRedisKey()}*`,
 			});
 
-			await process(vehicleKeyList);
+			await process(ruleKeyList);
 		} catch (error) {
 			loggerError(
-				`[VEHICLE] (getKeysAndProcess) can't process operation ${labelProcess} cache data in redis cause:`,
+				`[RULE] (getKeysAndProcess) can't process operation ${labelProcess} cache data in redis cause:`,
 				{ cause: error } as Error,
 			);
 		}
