@@ -6,8 +6,7 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { loggerDebug } from '@maur025/core-logger';
 import { container } from 'tsyringe';
-import z, { object } from 'zod/v4';
-import { array } from 'zod/v4';
+import z, { object, array } from 'zod/v4';
 
 const AddGeofenceInToCacheSchema = object({
 	geofenceInList: array(GeofenceIn).default([]),

@@ -24,6 +24,10 @@ vi.mock('@app/point-interest/point-interest.swagger', () => ({
 	pointInterestSwagger: vi.fn(),
 }));
 
+vi.mock('@app/rule/rule.swagger', () => ({
+	ruleSwagger: vi.fn(),
+}));
+
 import { testSwagger } from '@app/test-app/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
@@ -33,6 +37,7 @@ import { geofenceSwagger } from '@app/geofence/geofence.swagger';
 import { deviceSwagger } from '@app/device/device.swagger';
 import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
 import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
+import { ruleSwagger } from '@app/rule/rule.swagger';
 
 describe('load all swagger docs test', () => {
 	const BASE_PATH: string = '/api/v1';
@@ -88,6 +93,13 @@ describe('load all swagger docs test', () => {
 			}),
 		);
 
+		expect(ruleSwagger).toHaveBeenCalledWith(
+			expect.objectContaining({
+				path: `${BASE_PATH}/rules`,
+				tag: 'RULE',
+			}),
+		);
+
 		expect(mockTags).toHaveBeenCalledWith([
 			expect.objectContaining({
 				name: 'TEST',
@@ -111,6 +123,10 @@ describe('load all swagger docs test', () => {
 			}),
 			expect.objectContaining({
 				name: 'POINT INTEREST',
+				description: expect.any(String),
+			}),
+			expect.objectContaining({
+				name: 'RULE',
 				description: expect.any(String),
 			}),
 		]);

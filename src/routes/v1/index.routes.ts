@@ -5,6 +5,7 @@ import groupRouter from '@app/group/group.routes';
 import deviceRouter from '@app/device/device.routes';
 import { vehicleRouter } from '@app/vehicle/vehicle.routes';
 import { pointInterestRouter } from '@app/point-interest/point-interest.routes';
+import { ruleRouter } from '@app/rule/rule.routes';
 
 const router = Router();
 
@@ -14,5 +15,6 @@ router.use('/devices', deviceRouter);
 router.use('/tests', testRouter);
 router.use('/vehicles', vehicleRouter);
 router.use('/point-interests', pointInterestRouter);
+router.use('/rules', ruleRouter);
 
 export default router;
