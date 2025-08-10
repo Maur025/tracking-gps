@@ -32,10 +32,8 @@ export const addGeofenceInToCache = async (
 
 	await addDataInBatch<GeofenceIn>({
 		dataList: geofenceInList,
-		dataIndex: geofenceInCache.getIdxData(),
 		dataBaseKey: geofenceInCache.getRedisKey(),
 		registerInRedisFn: addGeofenceInBatchToRedis,
-		fieldsToIndex: {},
 	});
 
 	addGeofenceInToMap(geofenceInList);

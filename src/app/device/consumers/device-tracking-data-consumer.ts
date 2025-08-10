@@ -5,6 +5,7 @@ import { zodFailedValidationLog } from '@utils/zod-failed-validation-log';
 import { loggerWarn } from '@maur025/core-logger';
 import { processDeviceData } from '../service/process-device-data';
 import { syncDeviceInRedis } from '../cache/sync-device-in-redis';
+import { kakfaProducer } from '@common/kafka/kafka-producer';
 
 export const deviceTrackingDataConsumer = async (
 	record: KafkaRecordSchema<Device>,
@@ -29,9 +30,16 @@ export const deviceTrackingDataConsumer = async (
 		return;
 	}
 
+	const { publish } = kakfaProducer();
+
 	const deviceData: Device | null = await processDeviceData(validate.data);
 
 	console.log(deviceData);
 
 	await syncDeviceInRedis(deviceData);
+
+	await publish<Device | null>({
+		topic: 'tracking-vehicle',
+		value: deviceData,
+	});
 };

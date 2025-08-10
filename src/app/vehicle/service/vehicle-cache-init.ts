@@ -39,9 +39,7 @@ export const vehicleCacheInit = async (
 
 	await addDataInBatch<Vehicle>({
 		dataList: vehicleList,
-		dataIndex: vehicleCache.getIdxData(),
 		dataBaseKey: vehicleCache.getRedisKey(),
 		registerInRedisFn: addVehicleBatchToRedis,
-		fieldsToIndex: { '$.deviceId': { type: 'TAG', AS: 'deviceId' } },
 	});
 };

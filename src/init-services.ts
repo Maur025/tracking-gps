@@ -2,6 +2,7 @@ import { cacheInitializer } from '@common/cache/service/cache-initializer';
 import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse';
 import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities';
 import { initRedisClient } from '@common/redis/create-redis-client';
+import { initRecordIdxs } from '@common/redis/init-record-idxs';
 import { configureConsumers } from '@config/configure-consumers';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { measurePerformance } from '@utils/measure-performance';
@@ -43,6 +44,11 @@ export const initServices = async (request: InitServicesSchema) => {
 		await measurePerformance(
 			() => initRedisClient({ redisHost, redisPort }),
 			'[REDIS] (initRedisClient) initialized in:',
+		);
+
+		await measurePerformance(
+			initRecordIdxs,
+			`[REDIS] (initRecordIdxs) initialized redis indexes in:`,
 		);
 	}
 

@@ -3,14 +3,31 @@ export const waitForAssert = async (
 	intervalMs: number = 1000,
 	triedNumber: number = 10,
 ): Promise<void> => {
-	let isSuccessFull: boolean = false;
+	const isSuccessFull: boolean = false;
 	let lastError: unknown;
 
 	while (!isSuccessFull && triedNumber > 0) {
 		try {
 			await assertFn();
-			isSuccessFull = true;
+
+			return;
 		} catch (error) {
+			if (!(error instanceof Error)) {
+				throw error;
+			}
+
+			if (error.name !== 'AssertionError') {
+				throw error;
+			}
+
+			console.log(error.message);
+
+			if (!error.message.includes('expected')) {
+				console.log("ENTRO AQUI POR QUE MESSSAGE NO INCLUYE 'to be called'");
+
+				throw error;
+			}
+
 			lastError = error;
 			console.log(`Still waiting for assert, trying again...`);
 
