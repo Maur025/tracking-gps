@@ -8,8 +8,6 @@ import { Device } from '../entity/device';
 import { CacheUseRedis } from '@common/cache/cache-use-redis';
 import AbstractSingleCache from '@common/cache/abstract-single-cache';
 import { addDeviceBatchToRedis } from './add-device-batch-to-redis';
-import { addRedisIdx } from '@common/redis/service/add-redis-idx';
-import { SCHEMA_FIELD_TYPE } from 'redis';
 
 @singleton()
 export default class DeviceCache
@@ -21,8 +19,6 @@ export default class DeviceCache
 	private readonly BASE_KEY: string = 'device-gps:';
 	private readonly IDX_DATA: string = 'idx_devices';
 	private readonly BATCH_LIMIT: number = 500;
-
-	private lastUpdate: Date | null = null;
 
 	public getMap(): Map<string, Device> {
 		return this.deviceMap;
@@ -93,7 +89,6 @@ export default class DeviceCache
 
 			if (deviceKeyBatch.length) {
 				await deleteDeviceCacheData(deviceKeyBatch);
-				deviceKeyBatch = [];
 			}
 
 			await deleteRedisIdx(this.IDX_DATA);
@@ -106,7 +101,7 @@ export default class DeviceCache
 		labelProcess: string = 'anything',
 	): Promise<void> => {
 		try {
-			const deviceKeyList = await redisClient.scanIterator({
+			const deviceKeyList = redisClient.scanIterator({
 				MATCH: `${this.BASE_KEY}*`,
 			});
 
@@ -134,11 +129,5 @@ export default class DeviceCache
 		} else {
 			this.addById(device.id, { ...device, lastRedisUpdate: timestampNow });
 		}
-
-		await addRedisIdx(
-			this.getIdxData(),
-			{ id: SCHEMA_FIELD_TYPE.TAG },
-			this.getRedisKey(),
-		);
 	};
 }

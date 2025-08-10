@@ -62,18 +62,14 @@ export const geofenceCacheInit = async (
 
 	await addDataInBatch<Geofence>({
 		dataList: geofenceList,
-		dataIndex: geofenceCache.getIdxData(),
 		dataBaseKey: geofenceCache.getRedisKey(),
 		registerInRedisFn: addGeofenceBatchToRedis,
-		fieldsToIndex: {},
 	});
 
 	await addDataInBatch<Geofence>({
 		dataList: pointInterestList,
-		dataIndex: pointInterestCache.getIdxData(),
 		dataBaseKey: pointInterestCache.getRedisKey(),
 		registerInRedisFn: addGeofenceBatchToRedis,
-		fieldsToIndex: {},
 	});
 };
 

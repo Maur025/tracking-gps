@@ -1,28 +1,13 @@
 import { AddDataInBatchSchema } from '../schema/add-data-in-batch.schema';
-import { addRedisIdx } from './add-redis-idx';
 
 export const addDataInBatch = async <E>(
 	request: AddDataInBatchSchema<E>,
 ): Promise<void> => {
-	const {
-		dataList,
-		dataIndex,
-		dataBaseKey,
-		registerInRedisFn,
-		fieldsToIndex = {},
-	} = AddDataInBatchSchema.parse(request);
+	const { dataList, dataBaseKey, registerInRedisFn } =
+		AddDataInBatchSchema.parse(request);
 
 	const BATCH_LIMIT: number = 500;
 	let dataBatch: E[] = [];
-
-	await addRedisIdx(
-		dataIndex,
-		{
-			'$.id': { type: 'TAG', AS: 'id' },
-			...fieldsToIndex,
-		},
-		dataBaseKey,
-	);
 
 	for (const data of dataList) {
 		dataBatch.push(data);
@@ -36,7 +21,5 @@ export const addDataInBatch = async <E>(
 
 	if (dataBatch.length) {
 		await registerInRedisFn(dataBatch, dataBaseKey);
-
-		dataBatch = [];
 	}
 };
