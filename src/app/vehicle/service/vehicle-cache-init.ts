@@ -6,7 +6,6 @@ import { Vehicle } from '../entity/vehicle';
 import { getVehicleMetadata } from './get-vehicle-metadata';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { addVehicleBatchToRedis } from '../cache/add-vehicle-batch-to-redis';
-import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
 
 export const vehicleCacheInit = async (
 	vehicleResponse: VehicleResponse[],
@@ -22,7 +21,6 @@ export const vehicleCacheInit = async (
 	const vehicleCache = container.resolve(VehicleCache);
 
 	vehicleCache.clear();
-	await deleteRedisIdx(vehicleCache.getIdxData());
 
 	const vehicleList: Vehicle[] = vehicleResponse.map(
 		({ id, device, type, name, metadata }) => ({

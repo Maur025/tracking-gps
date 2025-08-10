@@ -12,14 +12,18 @@ import DeviceCache from '@app/device/cache/device-cache';
 import VehicleService from '@app/vehicle/service/vehicle.service';
 import { vehicleCacheInit } from '@app/vehicle/service/vehicle-cache-init';
 import { VehicleResponse } from '@app/vehicle/dto/vehicle-response';
+import RuleService from '@app/rule/service/rule.service';
+import { RuleResponse } from '@app/rule/dto/rule-response';
+import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
 
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(
 		concatMap(() => getParallelObservables$()),
-		tap(async ({ vehicle, geofence, group }) => {
+		tap(async ({ vehicle, geofence, group, rule }) => {
 			await vehicleCacheInit(handleAsArray(vehicle));
 			await geofenceCacheInit(handleAsArray(geofence));
 			await groupCacheInit(handleAsArray(group));
+			await ruleCacheInit(handleAsArray(rule));
 		}),
 		concatMap(() => getSecuentialObservables$()),
 	);
@@ -29,6 +33,7 @@ const getParallelObservables$ = (): Observable<{
 	vehicle: ApiResponse<VehicleResponse>;
 	geofence: ApiResponse<GeofenceResponse>;
 	group: ApiResponse<GroupResponse>;
+	rule: ApiResponse<RuleResponse>;
 }> => {
 	const vehicleService$ = container.resolve(VehicleService);
 	const vehicle$ = vehicleService$.getAllPaginated({ size: 5000 });
@@ -37,12 +42,16 @@ const getParallelObservables$ = (): Observable<{
 	const geofence$ = geofenceService$.getAllPaginated({ size: 1000 });
 
 	const groupService$ = container.resolve(GroupService);
-	const group$ = groupService$.getAllPaginated({ size: 500 });
+	const group$ = groupService$.getAllPaginated({ size: 5000 });
+
+	const ruleService$ = container.resolve(RuleService);
+	const rule$ = ruleService$.getAllPaginated({ size: 5000 });
 
 	return forkJoin({
 		vehicle: vehicle$,
 		geofence: geofence$,
 		group: group$,
+		rule: rule$,
 	});
 };
 
