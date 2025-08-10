@@ -13,7 +13,6 @@ export const Rule = BaseData.extend({
 	type: string().nullable().optional(),
 	inout: string().nonempty(),
 	enabled: number().nonnegative(),
-	deleted: number(),
 	alerts: array(Alert).default([]),
 	frecuency: array(RuleFrequency).default([]),
 	events: array(RuleEvent).default([]),
