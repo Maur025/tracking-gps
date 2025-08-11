@@ -63,14 +63,15 @@ export const stopTestServices = async (): Promise<void> => {
 	}
 
 	try {
-		const { kafkaClient } = handleKafkaClient();
+		const { kafkaClient, restart } = handleKafkaClient();
 
 		if (kafkaClient) {
-			const { disconnect } = kakfaProducer();
 			const { disconnectAll } = kafkaConsumer();
+			const { disconnect } = kakfaProducer();
 
-			await disconnect();
 			await disconnectAll();
+			await disconnect();
+			restart();
 		}
 	} catch (error: unknown) {
 		console.log(`Kafka not initialized ${error}`);

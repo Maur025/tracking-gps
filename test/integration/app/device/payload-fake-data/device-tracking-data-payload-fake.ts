@@ -19,9 +19,9 @@ export const deviceTrackingDataPayloadFake = {
 	},
 	tracks: 1908,
 	last: {
-		t: 175469251400,
-		lat: -16.505851,
-		lon: -68.156003,
+		t: 0,
+		lat: 0,
+		lon: 0,
 		bat: 0,
 		acc: 0,
 		stp: 0,
