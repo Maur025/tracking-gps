@@ -4,12 +4,14 @@ import { getVehiclesOfGroup } from '../../vehicle/service/get-vehicles-of-group'
 import { GroupCache } from '../cache/group-cache';
 import { Group } from '../entity/group';
 import { GroupResponse } from '../dto/group-response';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
+import { addGroupBatchToRedis } from '../cache/add-group-batch-to-redis';
 
 export const groupCacheInit = async (
-	groupResponse?: GroupResponse[],
+	groupResponseList?: GroupResponse[],
 ): Promise<void> => {
-	if (!groupResponse?.length) {
-		loggerError('group response undefined or empty');
+	if (!groupResponseList?.length) {
+		loggerError('[GROUP] (groupCacheInit) group response undefined or empty');
 
 		return;
 	}
@@ -19,7 +21,7 @@ export const groupCacheInit = async (
 	groupCache.clear();
 
 	const groupList: Group[] = await Promise.all(
-		groupResponse?.map(
+		groupResponseList?.map(
 			async ({
 				id = '',
 				name = '',
@@ -35,4 +37,10 @@ export const groupCacheInit = async (
 	);
 
 	groupCache.addMany(groupList);
+
+	await addDataInBatch<Group>({
+		dataList: groupList,
+		dataBaseKey: groupCache.getRedisKey(),
+		registerInRedisFn: addGroupBatchToRedis,
+	});
 };

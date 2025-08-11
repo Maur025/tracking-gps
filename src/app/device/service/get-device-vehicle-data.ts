@@ -2,8 +2,9 @@ import { Vehicle } from '@app/vehicle/entity/vehicle';
 import { Device } from '../entity/device';
 import { container } from 'tsyringe';
 import VehicleCache from '@app/vehicle/cache/vehicle-cache';
-import { redisClient } from '@common/redis/create-redis-client';
 import { loggerError } from '@maur025/core-logger';
+import { isInvalidId } from '@utils/is-invalid-id';
+import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
 
 export const getDeviceVehicleData = async (
 	device: Device,
@@ -13,7 +14,7 @@ export const getDeviceVehicleData = async (
 		return deviceInMapCache.vehicleData;
 	}
 
-	if (!/^[a-zA-Z0-9_-]+$/.test(device.id ?? '')) {
+	if (isInvalidId(device.id)) {
 		loggerError('[DEVICE] (getDeviceVehicleData) device id is invalid.');
 
 		return undefined;
@@ -21,28 +22,15 @@ export const getDeviceVehicleData = async (
 
 	const vehicleCache = container.resolve(VehicleCache);
 
-	const result = await redisClient.ft.search(
-		vehicleCache.getIdxData(),
-		`@deviceId:{${device.id}}`,
-		{
+	const result = await searchByIndexInRedis<Vehicle>({
+		index: vehicleCache.getIdxData(),
+		query: `@deviceId:"${device.id}"`,
+		options: {
 			LIMIT: { from: 0, size: 1 },
 		},
-	);
+	});
 
-	if (typeof result !== 'object') {
-		loggerError(
-			`[DEVICE] (getDeviceVehicleData) Search result expected should be an object, but received a ${typeof result}.`,
-		);
-
-		return undefined;
-	}
-
-	const resultAsObject = result as {
-		total: number;
-		documents: { id: string; value: Vehicle }[];
-	};
-
-	if (!resultAsObject.total) {
+	if (!result?.total) {
 		loggerError(
 			`[DEVICE] (getDeviceVehicleData) vehicle not asignment to device ${device.id}, data not found in search.`,
 		);
@@ -51,7 +39,7 @@ export const getDeviceVehicleData = async (
 	}
 
 	const vehicleData: Vehicle = {
-		...resultAsObject.documents[0].value,
+		...result.documents[0].value,
 	};
 
 	return vehicleData;

@@ -33,6 +33,9 @@ import { Position } from 'geojson';
 import * as deviceEnrichPublisherModule from '@app/device/publisher/device-data-enrich-to-monitor-publisher';
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
+import { kafkaTopics } from '@src/kafka-topics';
+
+const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
 describe('device tracking data consumer intergration test', () => {
 	let publishKafka: <V>(
@@ -82,7 +85,10 @@ describe('device tracking data consumer intergration test', () => {
 	});
 
 	test('should do early return when payload is invalid', async () => {
-		await publishKafka({ topic: 'tracking-gps', value: { saludo: 'hola' } });
+		await publishKafka({
+			topic: TRACKING_GPS_DEVICE,
+			value: { saludo: 'hola' },
+		});
 
 		await waitForAssert(() => {
 			expect(deviceTrackingDataConsumerSpy).toHaveBeenCalled();
@@ -191,7 +197,7 @@ describe('device tracking data consumer intergration test', () => {
 		coords: Position;
 	}): Promise<void> => {
 		await publishKafka({
-			topic: 'tracking-gps',
+			topic: TRACKING_GPS_DEVICE,
 			value: {
 				...deviceTrackingDataPayloadFake,
 				last: {
