@@ -12,6 +12,7 @@ import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { DeviceGroup } from '../entity/device-group';
 import { getDeviceGroups } from './get-device-groups';
+import { getDeviceRules } from './get-device-rules';
 
 export const processDeviceData = async (
 	device: Device,
@@ -45,7 +46,10 @@ export const processDeviceData = async (
 		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
 	});
 
-	const rulesAppliedList: string[] = [];
+	const rulesAppliedList: string[] = await getDeviceRules({
+		vehicleData,
+		groups,
+	});
 
 	return {
 		...device,

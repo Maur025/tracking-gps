@@ -5,6 +5,7 @@ import { isInvalidId } from '@utils/is-invalid-id';
 import { container } from 'tsyringe';
 import { GroupCache } from '@app/group/cache/group-cache';
 import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
+import { Group } from '@app/group/entity/group';
 
 export const getDeviceGroups = async (
 	vehicleData?: Vehicle,
@@ -25,12 +26,30 @@ export const getDeviceGroups = async (
 	console.log(vehicleData.id);
 
 	const groupCache = container.resolve(GroupCache);
-	const result = await searchByIndexInRedis({
+	const result = await searchByIndexInRedis<Group>({
 		index: groupCache.getIdxData(),
 		query: `@groupVehicleId:"${vehicleData.id}"`,
 	});
 
-	console.log(result);
+	if (!result?.total) {
+		loggerDebug(
+			`[DEVICE] (getDeviceGroups) groups not founded for vehicle ${vehicleData.id}`,
+		);
 
-	return [];
+		return [];
+	}
+
+	const deviceGroupList: DeviceGroup[] = [];
+
+	for (const resultData of result.documents) {
+		const { value } = resultData;
+
+		deviceGroupList.push({
+			id: value.id,
+			name: value.name,
+			description: value.description,
+		});
+	}
+
+	return deviceGroupList;
 };
