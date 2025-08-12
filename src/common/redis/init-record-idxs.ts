@@ -57,7 +57,7 @@ export const initRecordIdxs = async (): Promise<void> => {
 			'$.vehicles[*].vehicleId': { type: 'TEXT', AS: 'ruleVehicleId' },
 			'$.groups[*].groupId': { type: 'TEXT', AS: 'ruleGroupId' },
 		},
-		vehicleCache.getRedisKey(),
+		ruleCache.getRedisKey(),
 	);
 
 	await addRedisIdx(
