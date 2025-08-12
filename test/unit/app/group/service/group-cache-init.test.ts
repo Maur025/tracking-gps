@@ -33,12 +33,17 @@ vi.mock('@app/vehicle/service/get-vehicles-of-group', () => ({
 	]),
 }));
 
+vi.mock('@common/redis/service/add-data-in-batch', () => ({
+	addDataInBatch: vi.fn().mockResolvedValue(undefined),
+}));
+
 import { loggerError } from '@maur025/core-logger';
 import { groupCacheInit } from '@app/group/service/group-cache-init';
 import { container } from 'tsyringe';
 import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
 import { GroupResponse } from '@app/group/dto/group-response';
 import { GroupCache } from '@app/group/cache/group-cache';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 
 describe('Group cache init test', () => {
 	const groupResponse = [
@@ -82,6 +87,7 @@ describe('Group cache init test', () => {
 		const GroupCacheMock = vi.fn();
 		GroupCacheMock.prototype.clear = vi.fn();
 		GroupCacheMock.prototype.addMany = vi.fn();
+		GroupCacheMock.prototype.getRedisKey = vi.fn(() => 'test-key');
 		groupCacheMock = new GroupCacheMock();
 	});
 
@@ -99,7 +105,7 @@ describe('Group cache init test', () => {
 		await groupCacheInit([]);
 
 		expect(loggerError).toHaveBeenCalledWith(
-			'group response undefined or empty',
+			'[GROUP] (groupCacheInit) group response undefined or empty',
 		);
 	});
 
@@ -134,8 +140,17 @@ describe('Group cache init test', () => {
 				}),
 			]),
 		);
-		expect(groupCacheMock.addMany).toHaveBeenCalledTimes(1);
 
 		expect(getVehiclesOfGroup).toHaveBeenCalledTimes(2);
+		expect(groupCacheMock.addMany).toHaveBeenCalledTimes(1);
+		expect(addDataInBatch).toHaveBeenCalledWith(
+			expect.objectContaining({
+				dataList: expect.arrayContaining([
+					expect.objectContaining({ id: expect.any(String) }),
+				]),
+				dataBaseKey: 'test-key',
+				registerInRedisFn: expect.any(Function),
+			}),
+		);
 	});
 });

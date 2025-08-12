@@ -1,5 +1,8 @@
 import { kakfaProducer } from '@common/kafka/kafka-producer';
 import { Device } from '../entity/device';
+import { kafkaTopics } from '@src/kafka-topics';
+
+const { TRACKING_VEHICLE_DEVICE } = kafkaTopics;
 
 export const deviceDataEnrichToMonitorPublisher = async (
 	payload: Device,
@@ -7,7 +10,7 @@ export const deviceDataEnrichToMonitorPublisher = async (
 	const { publish } = kakfaProducer();
 
 	await publish<Device>({
-		topic: 'tracking-vehicle',
+		topic: TRACKING_VEHICLE_DEVICE,
 		value: payload,
 	});
 };

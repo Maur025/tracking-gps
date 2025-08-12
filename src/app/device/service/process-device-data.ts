@@ -10,6 +10,8 @@ import { getGeofencesDeviceOut } from '@app/geofence/service/verify-out/get-geof
 import { DeviceGeofenceIn } from '../entity/device-geofence-in';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { DeviceGroup } from '../entity/device-group';
+import { getDeviceGroups } from './get-device-groups';
 
 export const processDeviceData = async (
 	device: Device,
@@ -29,6 +31,8 @@ export const processDeviceData = async (
 		deviceInMapCache,
 	);
 
+	const groups: DeviceGroup[] = await getDeviceGroups(vehicleData);
+
 	const backupGeofenceInCacheMap = getBackupGeofenceInCacheMap(device.id);
 
 	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
@@ -41,11 +45,15 @@ export const processDeviceData = async (
 		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
 	});
 
+	const rulesAppliedList: string[] = [];
+
 	return {
 		...device,
 		vehicleData,
+		groups,
 		geofencesIn: geofenceInData,
 		geofencesOut: geofenceOutData,
+		rulesApplied: rulesAppliedList,
 	};
 };
 

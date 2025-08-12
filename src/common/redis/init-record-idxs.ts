@@ -6,6 +6,8 @@ import { container } from 'tsyringe';
 import { addRedisIdx } from './service/add-redis-idx';
 import { RediSearchSchema } from 'redis';
 import PointInterestCache from '@app/point-interest/cache/point-interest-cache';
+import RuleCache from '@app/rule/cache/rule-cache';
+import { GroupCache } from '@app/group/cache/group-cache';
 
 export const initRecordIdxs = async (): Promise<void> => {
 	const deviceCache = container.resolve(DeviceCache);
@@ -13,8 +15,10 @@ export const initRecordIdxs = async (): Promise<void> => {
 	const pointInterestCache = container.resolve(PointInterestCache);
 	const geofenceInCache = container.resolve(GeofenceInCache);
 	const vehicleCache = container.resolve(VehicleCache);
+	const ruleCache = container.resolve(RuleCache);
+	const groupCache = container.resolve(GroupCache);
 
-	const commonIdx: RediSearchSchema = { '$.id': { type: 'TAG', AS: 'id' } };
+	const commonIdx: RediSearchSchema = { '$.id': { type: 'TEXT', AS: 'id' } };
 
 	await addRedisIdx(
 		deviceCache.getIdxData(),
@@ -42,7 +46,26 @@ export const initRecordIdxs = async (): Promise<void> => {
 
 	await addRedisIdx(
 		vehicleCache.getIdxData(),
-		{ ...commonIdx, '$.deviceId': { type: 'TAG', AS: 'deviceId' } },
+		{ ...commonIdx, '$.deviceId': { type: 'TEXT', AS: 'deviceId' } },
 		vehicleCache.getRedisKey(),
+	);
+
+	await addRedisIdx(
+		ruleCache.getIdxData(),
+		{
+			...commonIdx,
+			'$.vehicles[*].vehicleId': { type: 'TEXT', AS: 'ruleVehicleId' },
+			'$.groups[*].groupId': { type: 'TEXT', AS: 'ruleGroupId' },
+		},
+		vehicleCache.getRedisKey(),
+	);
+
+	await addRedisIdx(
+		groupCache.getIdxData(),
+		{
+			...commonIdx,
+			'$.vehicles[*].id': { type: 'TEXT', AS: 'groupVehicleId' },
+		},
+		groupCache.getRedisKey(),
 	);
 };

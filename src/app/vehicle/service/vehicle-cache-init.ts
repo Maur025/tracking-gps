@@ -8,9 +8,9 @@ import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { addVehicleBatchToRedis } from '../cache/add-vehicle-batch-to-redis';
 
 export const vehicleCacheInit = async (
-	vehicleResponse: VehicleResponse[],
+	vehicleResponseList: VehicleResponse[],
 ): Promise<void> => {
-	if (!vehicleResponse?.length) {
+	if (!vehicleResponseList?.length) {
 		loggerError(
 			'[VEHICLE] (vehicleCacheInit) vehicle response undefined or empty',
 		);
@@ -22,7 +22,7 @@ export const vehicleCacheInit = async (
 
 	vehicleCache.clear();
 
-	const vehicleList: Vehicle[] = vehicleResponse.map(
+	const vehicleList: Vehicle[] = vehicleResponseList.map(
 		({ id, device, type, name, metadata }) => ({
 			id,
 			devices: device.map(({ device_id }) => device_id ?? ''),
