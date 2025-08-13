@@ -2,7 +2,10 @@ import { Vehicle } from '@app/vehicle/entity/vehicle';
 import z, { array, object } from 'zod/v4';
 import { DeviceGroup } from '../entity/device-group';
 import { loggerDebug } from '@maur025/core-logger';
-import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
+import {
+	searchByIndexInRedis,
+	searchManyByIndexInRedis,
+} from '@common/redis/service/search-by-index-in-redis';
 import { container } from 'tsyringe';
 import RuleCache from '@app/rule/cache/rule-cache';
 import { Rule } from '@app/rule/entity/rule';
@@ -28,7 +31,7 @@ export const getDeviceRules = async (
 	}
 
 	const ruleCache = container.resolve(RuleCache);
-	const ruleList: string[] = [];
+	const ruleSet: Set<string> = new Set();
 
 	if (vehicleData) {
 		const result = await searchByIndexInRedis<Rule>({
@@ -41,15 +44,41 @@ export const getDeviceRules = async (
 				`[DEVICE] (getDeviceRules) rules not founded for vehicle ${vehicleData.id}`,
 			);
 		} else {
-			for (const rule of result.documents) {
-				if (!rule?.value?.id) {
-					continue;
-				}
-
-				ruleList.push(rule.value.id);
-			}
+			addRulesOfDocuments(ruleSet, result.documents);
 		}
 	}
 
-	return ruleList;
+	if (groups.length) {
+		const groupValueSearchList: string[] = groups.map(({ id = '' }) => id);
+
+		const searchResults = await searchManyByIndexInRedis<Rule>({
+			index: ruleCache.getIdxData(),
+			indexField: 'ruleGroupId',
+			valueList: groupValueSearchList,
+		});
+
+		for (const result of searchResults) {
+			if (!result?.total) {
+				loggerDebug(`[DEVICE] (getDeviceRules) rules not founded for group`);
+				continue;
+			}
+
+			addRulesOfDocuments(ruleSet, result.documents);
+		}
+	}
+
+	return [...ruleSet.values()];
+};
+
+const addRulesOfDocuments = (
+	ruleSet: Set<string>,
+	rules: { value: Rule }[],
+): void => {
+	for (const rule of rules) {
+		if (!rule?.value?.id) {
+			continue;
+		}
+
+		ruleSet.add(rule.value.id);
+	}
 };
