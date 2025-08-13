@@ -23,8 +23,6 @@ export const getDeviceGroups = async (
 		return [];
 	}
 
-	console.log(vehicleData.id);
-
 	const groupCache = container.resolve(GroupCache);
 	const result = await searchByIndexInRedis<Group>({
 		index: groupCache.getIdxData(),
