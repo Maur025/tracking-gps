@@ -13,6 +13,7 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { DeviceGroup } from '../entity/device-group';
 import { getDeviceGroups } from './get-device-groups';
 import { getDeviceRules } from './get-device-rules';
+import { processRulesByDevice } from '@app/rule/service/process-rules-by-device';
 
 export const processDeviceData = async (
 	device: Device,
@@ -21,6 +22,7 @@ export const processDeviceData = async (
 		loggerWarn(
 			`[DEVICE] (processDeviceData) device id is undefined or empty. Skipping... `,
 		);
+
 		return null;
 	}
 
@@ -50,6 +52,8 @@ export const processDeviceData = async (
 		vehicleData,
 		groups,
 	});
+
+	await processRulesByDevice({ device, rulesToApply: rulesAppliedList });
 
 	return {
 		...device,
