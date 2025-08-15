@@ -10,11 +10,11 @@ export const handleAsArray = <T extends BaseData>(response: ApiResponse<T>) => {
 
 export const handleAsObject = <T extends BaseData>(
 	response: ApiResponse<T>,
-) => {
+): T | undefined => {
 	const dataResponse: T | T[] = findData(response);
 
 	if (Array.isArray(dataResponse)) {
-		return dataResponse.length > 0 ? { ...dataResponse[0] } : {};
+		return dataResponse.length > 0 ? { ...dataResponse[0] } : undefined;
 	}
 
 	return { ...dataResponse };

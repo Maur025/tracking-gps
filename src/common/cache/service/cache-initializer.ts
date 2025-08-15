@@ -15,15 +15,19 @@ import { VehicleResponse } from '@app/vehicle/dto/vehicle-response';
 import RuleService from '@app/rule/service/rule.service';
 import { RuleResponse } from '@app/rule/dto/rule-response';
 import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
+import DeventService from '@app/devent/service/devent.service';
+import { DeventResponse } from '@app/devent/dto/devent-response';
+import { deventCacheInit } from '@app/devent/service/devent-cache-init';
 
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(
 		concatMap(() => getParallelObservables$()),
-		tap(async ({ vehicle, geofence, group, rule }) => {
+		tap(async ({ vehicle, geofence, group, rule, devent }) => {
 			await vehicleCacheInit(handleAsArray(vehicle));
 			await geofenceCacheInit(handleAsArray(geofence));
 			await groupCacheInit(handleAsArray(group));
 			await ruleCacheInit(handleAsArray(rule));
+			await deventCacheInit({ deventResponseList: handleAsArray(devent) });
 		}),
 		concatMap(() => getSecuentialObservables$()),
 	);
@@ -34,6 +38,7 @@ const getParallelObservables$ = (): Observable<{
 	geofence: ApiResponse<GeofenceResponse>;
 	group: ApiResponse<GroupResponse>;
 	rule: ApiResponse<RuleResponse>;
+	devent: ApiResponse<DeventResponse>;
 }> => {
 	const vehicleService$ = container.resolve(VehicleService);
 	const vehicle$ = vehicleService$.getAllPaginated({ size: 5000 });
@@ -47,11 +52,15 @@ const getParallelObservables$ = (): Observable<{
 	const ruleService$ = container.resolve(RuleService);
 	const rule$ = ruleService$.getAllPaginated({ size: 5000 });
 
+	const deventService = container.resolve(DeventService);
+	const devent$ = deventService.getAllPaginated({ size: 5000 });
+
 	return forkJoin({
 		vehicle: vehicle$,
 		geofence: geofence$,
 		group: group$,
 		rule: rule$,
+		devent: devent$,
 	});
 };
 
