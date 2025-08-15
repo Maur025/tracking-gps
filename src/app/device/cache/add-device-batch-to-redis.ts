@@ -21,6 +21,11 @@ export const addDeviceBatchToRedis = async (
 			setup = {},
 			states = {},
 			last = {},
+			vehicleData = {},
+			groups = [],
+			geofencesIn = {},
+			geofencesOut = {},
+			rulesApplied = [],
 		}) => {
 			const key: string = `${basekey}${id}`;
 
@@ -34,6 +39,11 @@ export const addDeviceBatchToRedis = async (
 					setup: { ...setup },
 					states: { ...states },
 					last: { ...last },
+					vehicleData: { ...vehicleData },
+					groups: [...groups],
+					geofencesIn: { ...geofencesIn },
+					geofencesOut: { ...geofencesOut },
+					rulesApplied: [...rulesApplied],
 				})
 				.expire(key, 3600);
 		},
