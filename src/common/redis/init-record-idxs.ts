@@ -8,6 +8,7 @@ import { RediSearchSchema } from 'redis';
 import PointInterestCache from '@app/point-interest/cache/point-interest-cache';
 import RuleCache from '@app/rule/cache/rule-cache';
 import { GroupCache } from '@app/group/cache/group-cache';
+import DeventCache from '@app/devent/cache/devent-cache';
 
 export const initRecordIdxs = async (): Promise<void> => {
 	const deviceCache = container.resolve(DeviceCache);
@@ -17,6 +18,7 @@ export const initRecordIdxs = async (): Promise<void> => {
 	const vehicleCache = container.resolve(VehicleCache);
 	const ruleCache = container.resolve(RuleCache);
 	const groupCache = container.resolve(GroupCache);
+	const deventCache = container.resolve(DeventCache);
 
 	const commonIdx: RediSearchSchema = { '$.id': { type: 'TEXT', AS: 'id' } };
 
@@ -67,5 +69,11 @@ export const initRecordIdxs = async (): Promise<void> => {
 			'$.vehicles[*].id': { type: 'TEXT', AS: 'groupVehicleId' },
 		},
 		groupCache.getRedisKey(),
+	);
+
+	await addRedisIdx(
+		deventCache.getIdxData(),
+		{ ...commonIdx },
+		deventCache.getRedisKey(),
 	);
 };

@@ -7,6 +7,8 @@ import { Devent } from '../entity/devent';
 import { DeventType } from '../entity/devent-type';
 import { DeventCondition } from '../entity/devent-condition';
 import { getDeventSensorList } from './get-devent-sensor-list';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
+import { addDeventBatchToRedis } from '../cache/add-devent-batch-to-redis';
 
 const DeventCacheInitRequest = object({
 	deventResponseList: array(DeventResponse).default([]),
@@ -42,4 +44,10 @@ export const deventCacheInit = async (
 	);
 
 	deventCache.addMany(deventList);
+
+	await addDataInBatch<Devent>({
+		dataList: deventList,
+		dataBaseKey: deventCache.getRedisKey(),
+		registerInRedisFn: addDeventBatchToRedis,
+	});
 };
