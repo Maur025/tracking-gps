@@ -29,9 +29,9 @@ await measurePerformance(start, '[EXPRESS] (start) server initialized in:');
 await initServices({
 	redisHost: REDIS_HOST,
 	redisPort: REDIS_PORT,
-	kafkaBrokers: [KAFKA_BROKER],
-	kafkaClientId: KAFKA_CLIENT_ID,
-	kafkaLogLevel: KAFKA_LOG_LEVEL,
+	// kafkaBrokers: [KAFKA_BROKER],
+	// kafkaClientId: KAFKA_CLIENT_ID,
+	// kafkaLogLevel: KAFKA_LOG_LEVEL,
 	clickhouseDb: CLICKHOUSE_DB,
 	clickhouseHost: CLICKHOUSE_HOST,
 	clickhousePassword: CLICKHOUSE_PASSWORD,

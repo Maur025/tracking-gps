@@ -1,14 +1,14 @@
 import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import { rulePaths } from './rule-paths';
+import { deventPaths } from './devent-paths';
 import { container } from 'tsyringe';
 import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
 import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
 import { array } from 'zod/v4';
-import { Rule } from './entity/rule';
+import { Devent } from './entity/devent';
 
-const { DEFAULT } = rulePaths;
+const { DEFAULT } = deventPaths;
 
-export const ruleSwagger = (request: LoadSwaggerDocsSchema): void => {
+export const deventSwagger = (request: LoadSwaggerDocsSchema): void => {
 	const { path, tag } = LoadSwaggerDocsSchema.parse(request);
 
 	const zodSwaggerGenerator = container.resolve(ZodSwaggerGenerator);
@@ -18,17 +18,13 @@ export const ruleSwagger = (request: LoadSwaggerDocsSchema): void => {
 		.withRequest({
 			method: 'get',
 			path: `${path}${DEFAULT}`,
-			summary: 'get all rules in cache',
+			summary: 'get all devents in cache',
 			tags: [tag],
 			request: {},
 			responses: {
 				200: {
 					description: '',
-					content: {
-						'application/json': {
-							schema: array(Rule),
-						},
-					},
+					content: { 'application/json': { schema: array(Devent) } },
 				},
 			},
 		})
