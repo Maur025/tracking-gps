@@ -11,13 +11,15 @@ export const addDeventBatchToRedis = async (
 
 	const multi = redisClient.multi();
 
-	deventBatch.forEach(({ id = '', name = '', condition = '', sensors = [] }) =>
-		multi.json.set(`${baseKey}${id}`, '$', {
-			id,
-			name,
-			condition,
-			sensors,
-		}),
+	deventBatch.forEach(
+		({ id = '', name = '', deventType = '', condition = '', sensors = [] }) =>
+			multi.json.set(`${baseKey}${id}`, '$', {
+				id,
+				name,
+				deventType,
+				condition,
+				sensors,
+			}),
 	);
 	return multi.exec();
 };

@@ -1,7 +1,7 @@
 import { Device } from '@app/device/entity/device';
 import z, { object } from 'zod/v4';
 import { Rule } from '../entity/rule';
-import { loggerDebug } from '@maur025/core-logger';
+import { loggerDebug, loggerWarn } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 import DeventCache from '@app/devent/cache/devent-cache';
 import { Devent } from '@app/devent/entity/devent';
@@ -28,15 +28,27 @@ export const processRule = async (
 
 	const deventCache = container.resolve(DeventCache);
 
-	const resultOfComparation: boolean = false;
-
 	if (rule.events?.length === 1) {
 		// allways assess event of rule
+		const devent: Devent | undefined = deventCache.getById(
+			rule.events[0].deventId,
+		);
+
+		if (!devent) {
+			return;
+		}
+
+		const resultOfComparation: boolean = processEvent(devent);
+
+		if (resultOfComparation) {
+			await pushNotifications();
+		}
+
 		return;
 	}
 
-	const andEvents: Devent[] = [];
-	const orEvents: Devent[] = [];
+	const resultAndEvents: boolean[] = [];
+	const resultOrEvents: boolean[] = [];
 
 	for (const event of rule.events) {
 		const devent: Devent | undefined = deventCache.getById(event.deventId);
@@ -46,17 +58,39 @@ export const processRule = async (
 		}
 
 		if (devent.condition === 'AND') {
-			andEvents.push(devent);
+			resultAndEvents.push(processEvent(devent));
 
 			continue;
 		}
 
-		orEvents.push(devent);
+		resultOrEvents.push(processEvent(devent));
 	}
 
-	// resultOfComparation should be equal result other function, that processes the 2 arrays and returns booleans to finally make a comparison type and || or more or less
+	const resultOfComparation: boolean =
+		resultAndEvents.every(value => value) &&
+		resultOrEvents.some(value => value);
 
 	if (resultOfComparation) {
-		// logic to notification
+		pushNotifications();
 	}
 };
+
+const processEvent = (devent: Devent): boolean => {
+	switch (devent.deventType) {
+		case 'GEOFENCES': {
+			return false;
+		}
+		case 'INTEREST_POINTS': {
+			return false;
+		}
+		case 'SENSORS': {
+			return true;
+		}
+		default: {
+			loggerWarn(`[RULE] (processEvent) devent type unknowned, skipping...`);
+			return false;
+		}
+	}
+};
+
+const pushNotifications = async (): Promise<void> => {};
