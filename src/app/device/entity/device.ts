@@ -9,6 +9,7 @@ import { Vehicle } from '@app/vehicle/entity/vehicle';
 import { DeviceGeofenceIn } from './device-geofence-in';
 import { DeviceGeofenceOut } from './device-geofence-out';
 import { DeviceGroup } from './device-group';
+import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -25,6 +26,7 @@ export const Device = BaseData.extend({
 	geofencesIn: DeviceGeofenceIn.optional(),
 	geofencesOut: DeviceGeofenceOut.optional(),
 	rulesApplied: array(string()).default([]),
+	alertsToLaunch: array(DeviceRuleAlertToLaunch).default([]),
 });
 
 export type Device = z.infer<typeof Device>;

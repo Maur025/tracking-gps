@@ -4,4 +4,6 @@ export const CreateRequest = object({
 	data: record(string(), any()),
 });
 
-export type CreateRequest = z.infer<typeof CreateRequest>;
+export type CreateRequest<T> = Omit<z.infer<typeof CreateRequest>, 'data'> & {
+	data: T;
+};
