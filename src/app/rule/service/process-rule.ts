@@ -5,6 +5,11 @@ import { loggerDebug, loggerWarn } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 import DeventCache from '@app/devent/cache/devent-cache';
 import { Devent } from '@app/devent/entity/devent';
+import { processGeofenceEvent } from './process-geofence-event';
+import { processInterestPointEvent } from './process-interest-point-event';
+import { processSensorEvent } from './process-sensor-event';
+import { RuleResultEventComparation } from '../dto/rule-result-event-comparation';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
 
 const ProcessRuleRequest = object({
 	device: Device,
@@ -17,13 +22,13 @@ const loggerAuxMessage: string = `[RULE] (processRule)`;
 
 export const processRule = async (
 	request: ProcessRuleRequest,
-): Promise<void> => {
-	const { rule } = ProcessRuleRequest.parse(request);
+): Promise<DeviceRuleAlertToLaunch[]> => {
+	const { rule, device } = ProcessRuleRequest.parse(request);
 
 	if (!rule.events?.length) {
 		loggerDebug(`${loggerAuxMessage} rule has no events.`);
 
-		return;
+		return [];
 	}
 
 	const deventCache = container.resolve(DeventCache);
@@ -35,20 +40,27 @@ export const processRule = async (
 		);
 
 		if (!devent) {
-			return;
+			return [];
 		}
 
-		const resultOfComparation: boolean = processEvent(devent);
+		const resultOfComparation: RuleResultEventComparation = await processEvent({
+			rule,
+			devent,
+			device,
+		});
 
-		if (resultOfComparation) {
-			await pushNotifications();
+		if (!resultOfComparation.wasTriggered) {
+			loggerDebug(`${loggerAuxMessage} rule not triggered.`);
+
+			return [];
 		}
 
-		return;
+		await pushNotifications();
+		return resultOfComparation.alertToLaunchList;
 	}
 
-	const resultAndEvents: boolean[] = [];
-	const resultOrEvents: boolean[] = [];
+	const resultAndEvents: RuleResultEventComparation[] = [];
+	const resultOrEvents: RuleResultEventComparation[] = [];
 
 	for (const event of rule.events) {
 		const devent: Devent | undefined = deventCache.getById(event.deventId);
@@ -58,37 +70,62 @@ export const processRule = async (
 		}
 
 		if (devent.condition === 'AND') {
-			resultAndEvents.push(processEvent(devent));
+			resultAndEvents.push(await processEvent({ rule, devent, device }));
 
 			continue;
 		}
 
-		resultOrEvents.push(processEvent(devent));
+		resultOrEvents.push(await processEvent({ rule, devent, device }));
 	}
 
 	const resultOfComparation: boolean =
-		resultAndEvents.every(value => value) &&
-		resultOrEvents.some(value => value);
+		resultAndEvents.every(value => value.wasTriggered) &&
+		resultOrEvents.some(value => value.wasTriggered);
 
-	if (resultOfComparation) {
-		pushNotifications();
+	if (!resultOfComparation) {
+		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
+		return [];
 	}
+
+	const andAlertLaunchList: DeviceRuleAlertToLaunch[] = resultAndEvents.flatMap(
+		andEvent => andEvent.alertToLaunchList,
+	);
+
+	const orAlertLaunchList: DeviceRuleAlertToLaunch[] = resultOrEvents.flatMap(
+		orEvent => orEvent.alertToLaunchList,
+	);
+
+	pushNotifications();
+	return [...andAlertLaunchList, ...orAlertLaunchList];
 };
 
-const processEvent = (devent: Devent): boolean => {
+const ProcessEventRequest = object({
+	device: Device,
+	devent: Devent,
+	rule: Rule,
+});
+
+type ProcessEventRequest = z.infer<typeof ProcessEventRequest>;
+
+const processEvent = async (
+	request: ProcessEventRequest,
+): Promise<RuleResultEventComparation> => {
+	const { devent, device, rule } = ProcessEventRequest.parse(request);
+
 	switch (devent.deventType) {
 		case 'GEOFENCES': {
-			return false;
+			return processGeofenceEvent({ device, rule });
 		}
 		case 'INTEREST_POINTS': {
-			return false;
+			return processInterestPointEvent();
 		}
 		case 'SENSORS': {
-			return true;
+			return processSensorEvent();
 		}
 		default: {
 			loggerWarn(`[RULE] (processEvent) devent type unknowned, skipping...`);
-			return false;
+
+			return { alertToLaunchList: [], wasTriggered: false };
 		}
 	}
 };

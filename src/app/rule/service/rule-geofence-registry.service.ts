@@ -1,14 +1,14 @@
 import AbstractApiService from '@api-client/service/abstract-api-service';
 import environment from '@config/env';
 import { singleton } from 'tsyringe';
-import { RuleResponse } from '../dto/response/rule-response';
+import { RuleGeofenceRegistryResponse } from '../dto/response/rule-geofence-registry-response';
 
 @singleton()
-export default class RuleService extends AbstractApiService<RuleResponse> {
+export default class RuleGeofenceRegistryService extends AbstractApiService<RuleGeofenceRegistryResponse> {
 	constructor() {
 		super({
 			baseUrl: `${environment.BACKEND_URL}/trackingdb`,
-			resource: 'rules',
+			resource: 'rule_geofence_registry',
 		});
 	}
 }

@@ -32,9 +32,9 @@ export default abstract class AbstractApiService<R extends BaseData> {
 	}: GetByIdRequest): Observable<ApiResponse<R>> =>
 		get<ApiResponse<R>>(`${this.getUrl()}/${id}`);
 
-	public readonly create = ({
+	public readonly create = <DA>({
 		data,
-	}: CreateRequest): Observable<ApiResponse<R>> =>
+	}: CreateRequest<DA>): Observable<ApiResponse<R>> =>
 		post<ApiResponse<R>>(this.getUrl(), data);
 
 	public readonly update = ({

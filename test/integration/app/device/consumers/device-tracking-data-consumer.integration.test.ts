@@ -107,7 +107,12 @@ describe('device tracking data consumer intergration test', () => {
 
 		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
 		await shouldEnterSomeGeofences();
-	});
+
+		await simulateDelay();
+
+		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
+		await shouldKeepInSameGeofence();
+	}, 30000);
 
 	const shouldNotInteractWithAnyGeofences = async (): Promise<void> => {
 		await expectCommon(1);
@@ -150,6 +155,10 @@ describe('device tracking data consumer intergration test', () => {
 		expect(deviceGeofenceInMap!.size).toBe(2);
 
 		shouldHaveVehicle();
+	};
+
+	const shouldKeepInSameGeofence = async (): Promise<void> => {
+		await expectCommon(3);
 	};
 
 	const shouldHaveVehicle = (): void => {

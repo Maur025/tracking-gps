@@ -14,6 +14,7 @@ import { DeviceGroup } from '../entity/device-group';
 import { getDeviceGroups } from './get-device-groups';
 import { getDeviceRules } from './get-device-rules';
 import { processRulesByDevice } from '@app/rule/service/process-rules-by-device';
+import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch';
 
 export const processDeviceData = async (
 	device: Device,
@@ -53,9 +54,7 @@ export const processDeviceData = async (
 		groups,
 	});
 
-	await processRulesByDevice({ device, rulesToApply: rulesAppliedList });
-
-	return {
+	const deviceUpdated: Device = {
 		...device,
 		vehicleData,
 		groups,
@@ -63,6 +62,14 @@ export const processDeviceData = async (
 		geofencesOut: geofenceOutData,
 		rulesApplied: rulesAppliedList,
 	};
+
+	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =
+		await processRulesByDevice({
+			device: deviceUpdated,
+			rulesToApply: rulesAppliedList,
+		});
+
+	return { ...deviceUpdated, alertsToLaunch: deviceRuleAlertToLaunchList };
 };
 
 const getBackupGeofenceInCacheMap = (

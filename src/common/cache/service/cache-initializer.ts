@@ -13,7 +13,7 @@ import VehicleService from '@app/vehicle/service/vehicle.service';
 import { vehicleCacheInit } from '@app/vehicle/service/vehicle-cache-init';
 import { VehicleResponse } from '@app/vehicle/dto/vehicle-response';
 import RuleService from '@app/rule/service/rule.service';
-import { RuleResponse } from '@app/rule/dto/rule-response';
+import { RuleResponse } from '@app/rule/dto/response/rule-response';
 import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
 import DeventService from '@app/devent/service/devent.service';
 import { DeventResponse } from '@app/devent/dto/devent-response';

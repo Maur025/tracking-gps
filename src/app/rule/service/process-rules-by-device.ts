@@ -8,6 +8,7 @@ import { getWeeklyDay } from '@utils/get-weekly-day';
 import { getRuleFrequencyInDay } from './get-rule-frequency-in-day';
 import { isRuleFrequencyBetweenAvailableHours } from './is-rule-frequency-between-available-hours';
 import { processRule } from './process-rule';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
 
 const ProcessRulesByDeviceRequest = object({
 	device: Device,
@@ -20,16 +21,17 @@ const loggerAuxMessage: string = `[RULE] (processRulesByDevice)`;
 
 export const processRulesByDevice = async (
 	request: ProcessRulesByDeviceRequest,
-): Promise<void> => {
+): Promise<DeviceRuleAlertToLaunch[]> => {
 	const { device, rulesToApply } = ProcessRulesByDeviceRequest.parse(request);
 
 	if (!rulesToApply.length) {
 		loggerDebug(`${loggerAuxMessage} no rules to apply.`);
 
-		return;
+		return [];
 	}
 
 	const ruleCache = container.resolve(RuleCache);
+	let deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] = [];
 
 	for (const ruleId of rulesToApply) {
 		const rule: Rule | undefined = ruleCache.getById(ruleId);
@@ -62,10 +64,17 @@ export const processRulesByDevice = async (
 		}
 
 		if (isRuleToProcess) {
-			processRule({
+			const alertToLaunchList: DeviceRuleAlertToLaunch[] = await processRule({
 				device,
 				rule: { ...rule, deleted: !!rule?.deleted },
 			});
+
+			deviceRuleAlertToLaunchList = [
+				...deviceRuleAlertToLaunchList,
+				...alertToLaunchList,
+			];
 		}
 	}
+
+	return deviceRuleAlertToLaunchList;
 };
