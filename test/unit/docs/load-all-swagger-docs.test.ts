@@ -32,6 +32,10 @@ vi.mock('@app/devent/devent.swagger', () => ({
 	deventSwagger: vi.fn(),
 }));
 
+vi.mock('@app/channel/channel.swagger', () => ({
+	channelSwagger: vi.fn(),
+}));
+
 import { testSwagger } from '@app/test-app/test.swagger';
 import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
@@ -43,6 +47,7 @@ import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
 import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
 import { ruleSwagger } from '@app/rule/rule.swagger';
 import { deventSwagger } from '@app/devent/devent.swagger';
+import { channelSwagger } from '@app/channel/channel.swagger';
 
 describe('load all swagger docs test', () => {
 	const BASE_PATH: string = '/api/v1';
@@ -112,6 +117,13 @@ describe('load all swagger docs test', () => {
 			}),
 		);
 
+		expect(channelSwagger).toHaveBeenCalledWith(
+			expect.objectContaining({
+				path: `${BASE_PATH}/channels`,
+				tag: 'CHANNEL',
+			}),
+		);
+
 		expect(mockTags).toHaveBeenCalledWith([
 			expect.objectContaining({
 				name: 'TEST',
@@ -143,6 +155,10 @@ describe('load all swagger docs test', () => {
 			}),
 			expect.objectContaining({
 				name: 'DEVENT',
+				description: expect.any(String),
+			}),
+			expect.objectContaining({
+				name: 'CHANNEL',
 				description: expect.any(String),
 			}),
 		]);

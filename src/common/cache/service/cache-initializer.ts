@@ -18,16 +18,20 @@ import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
 import DeventService from '@app/devent/service/devent.service';
 import { DeventResponse } from '@app/devent/dto/response/devent-response';
 import { deventCacheInit } from '@app/devent/service/devent-cache-init';
+import ChannelService from '@app/channel/service/channel.service';
+import { ChannelResponse } from '@app/channel/dto/response/channel-response';
+import { channelCacheInit } from '@app/channel/service/channel-cache-init';
 
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(
 		concatMap(() => getParallelObservables$()),
-		tap(async ({ vehicle, geofence, group, rule, devent }) => {
+		tap(async ({ vehicle, geofence, group, rule, devent, channel }) => {
 			await vehicleCacheInit(handleAsArray(vehicle));
 			await geofenceCacheInit(handleAsArray(geofence));
 			await groupCacheInit(handleAsArray(group));
 			await ruleCacheInit(handleAsArray(rule));
 			await deventCacheInit({ deventResponseList: handleAsArray(devent) });
+			await channelCacheInit({ channelResponseList: handleAsArray(channel) });
 		}),
 		concatMap(() => getSecuentialObservables$()),
 	);
@@ -39,6 +43,7 @@ const getParallelObservables$ = (): Observable<{
 	group: ApiResponse<GroupResponse>;
 	rule: ApiResponse<RuleResponse>;
 	devent: ApiResponse<DeventResponse>;
+	channel: ApiResponse<ChannelResponse>;
 }> => {
 	const vehicleService$ = container.resolve(VehicleService);
 	const vehicle$ = vehicleService$.getAllPaginated({ size: 5000 });
@@ -55,12 +60,16 @@ const getParallelObservables$ = (): Observable<{
 	const deventService = container.resolve(DeventService);
 	const devent$ = deventService.getAllPaginated({ size: 5000 });
 
+	const channelService = container.resolve(ChannelService);
+	const channel$ = channelService.getAllPaginated({ size: 5000 });
+
 	return forkJoin({
 		vehicle: vehicle$,
 		geofence: geofence$,
 		group: group$,
 		rule: rule$,
 		devent: devent$,
+		channel: channel$,
 	});
 };
 
