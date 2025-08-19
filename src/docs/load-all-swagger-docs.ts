@@ -8,6 +8,7 @@ import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
 import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
 import { ruleSwagger } from '@app/rule/rule.swagger';
 import { deventSwagger } from '@app/devent/devent.swagger';
+import { channelSwagger } from '@app/channel/channel.swagger';
 
 const TAGS = {
 	TEST: 'TEST',
@@ -18,6 +19,7 @@ const TAGS = {
 	POINT_INTEREST: 'POINT INTEREST',
 	RULE: 'RULE',
 	DEVENT: 'DEVENT',
+	CHANNEL: 'CHANNEL',
 };
 
 export const loadAllSwaggerDocs = (): void => {
@@ -69,6 +71,11 @@ export const loadAllSwaggerDocs = (): void => {
 	deventSwagger({
 		path: `${BASE_PATH}/devents`,
 		tag: TAGS.DEVENT,
+	});
+
+	channelSwagger({
+		path: `${BASE_PATH}/channels`,
+		tag: TAGS.CHANNEL,
 	});
 
 	zodSwaggerGenerator.setTags(TAGS_CONFIG);
