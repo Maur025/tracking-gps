@@ -1,4 +1,4 @@
-import { WsTrackResponse } from '@app/track/dto/ws-track-response';
+import { WsTrackResponse } from '@app/track/dto/response/ws-track-response';
 import environment from '@config/env';
 import AbstractApiService from '@src/api-client/service/abstract-api-service';
 import { get } from '@src/api-client/api-client';

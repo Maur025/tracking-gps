@@ -1,5 +1,5 @@
 import z, { array, object } from 'zod/v4';
-import { DeventResponse } from '../dto/devent-response';
+import { DeventResponse } from '../dto/response/devent-response';
 import { loggerError } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 import DeventCache from '../cache/devent-cache';

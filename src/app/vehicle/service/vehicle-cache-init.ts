@@ -1,5 +1,5 @@
 import { loggerError } from '@maur025/core-logger';
-import { VehicleResponse } from '../dto/vehicle-response';
+import { VehicleResponse } from '../dto/response/vehicle-response';
 import { container } from 'tsyringe';
 import VehicleCache from '../cache/vehicle-cache';
 import { Vehicle } from '../entity/vehicle';

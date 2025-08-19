@@ -1,4 +1,4 @@
-import { RouteResponse } from '../dto/route-response';
+import { RouteResponse } from '../dto/response/route-response';
 import { Point } from '../entity/Point';
 
 export const getCoordsByPointSection = (

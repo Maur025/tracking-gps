@@ -1,4 +1,4 @@
-import { AlertResponse } from '@app/alert/dto/alert-response';
+import { AlertResponse } from '@app/alert/dto/response/alert-response';
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, number, string } from 'zod/v4';
 import { RuleEventResponse } from './rule-event-response';

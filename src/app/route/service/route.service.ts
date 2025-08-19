@@ -6,7 +6,7 @@ import { handleAsArray } from '@src/api-client/service/handle-response';
 import { catchError, map, Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { setupSections } from './setup-sections';
-import { RouteResponse } from '../dto/route-response';
+import { RouteResponse } from '../dto/response/route-response';
 
 @singleton()
 export default class RouteService extends AbstractApiService<RouteResponse> {

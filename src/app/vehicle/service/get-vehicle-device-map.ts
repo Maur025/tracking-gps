@@ -1,4 +1,4 @@
-import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
 import { container } from 'tsyringe';
 import z, { array, object } from 'zod/v4';
 import VehicleService from './vehicle.service';
@@ -11,7 +11,7 @@ import {
 	Observable,
 	toArray,
 } from 'rxjs';
-import { VehicleResponse } from '../dto/vehicle-response';
+import { VehicleResponse } from '../dto/response/vehicle-response';
 import { ApiResponse } from '@maur025/core-model-data';
 import { handleAsArray } from '@api-client/service/handle-response';
 

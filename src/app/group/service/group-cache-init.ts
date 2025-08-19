@@ -3,7 +3,7 @@ import { container } from 'tsyringe';
 import { getVehiclesOfGroup } from '../../vehicle/service/get-vehicles-of-group';
 import { GroupCache } from '../cache/group-cache';
 import { Group } from '../entity/group';
-import { GroupResponse } from '../dto/group-response';
+import { GroupResponse } from '../dto/response/group-response';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { addGroupBatchToRedis } from '../cache/add-group-batch-to-redis';
 

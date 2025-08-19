@@ -41,7 +41,7 @@ import { loggerError } from '@maur025/core-logger';
 import { groupCacheInit } from '@app/group/service/group-cache-init';
 import { container } from 'tsyringe';
 import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
-import { GroupResponse } from '@app/group/dto/group-response';
+import { GroupResponse } from '@app/group/dto/response/group-response';
 import { GroupCache } from '@app/group/cache/group-cache';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 

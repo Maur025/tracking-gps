@@ -5,7 +5,7 @@ import { container } from 'tsyringe';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
 import { loggerError } from '@maur025/core-logger';
 import { handleAsArray } from '@src/api-client/service/handle-response';
-import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
 import { generatePdf } from '@common/report/generate-pdf';
 
 export const geofenceReport = (res: Response): void => {

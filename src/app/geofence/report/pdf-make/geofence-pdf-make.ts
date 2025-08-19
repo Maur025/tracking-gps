@@ -7,7 +7,7 @@ import path from 'node:path';
 import pdfPrinter from 'pdfmake';
 import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
 import { container } from 'tsyringe';
-import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
 
 export const geofencePdfMake = (res: Response): void => {
 	const geofenceService = container.resolve(GeofenceService);

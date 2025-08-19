@@ -1,6 +1,6 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
 import { loggerWarn } from '@maur025/core-logger';
-import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
 import { Geofence } from '@app/geofence/entity/geofence';
 import { GeofenceData } from '@app/geofence/entity/geofence-data';
 import { container } from 'tsyringe';
