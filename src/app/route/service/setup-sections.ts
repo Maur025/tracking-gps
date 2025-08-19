@@ -1,6 +1,6 @@
 import { groupBySection } from './group-by-section';
 import { getCoordsByPointSection } from './get-coords-by-point-section';
-import { RouteResponse } from '../dto/route-response';
+import { RouteResponse } from '../dto/response/route-response';
 import { Point } from '../entity/Point';
 
 export const setupSections = (route: RouteResponse) => {

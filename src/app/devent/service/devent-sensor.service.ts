@@ -1,6 +1,6 @@
 import AbstractApiService from '@api-client/service/abstract-api-service';
 import { singleton } from 'tsyringe';
-import { DeventSensorResponse } from '../dto/devent-sensor-response';
+import { DeventSensorResponse } from '../dto/response/devent-sensor-response';
 import environment from '@config/env';
 
 @singleton()

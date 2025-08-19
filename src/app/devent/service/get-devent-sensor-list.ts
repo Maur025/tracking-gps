@@ -1,5 +1,5 @@
 import { forkJoin, lastValueFrom, Observable } from 'rxjs';
-import { DeventSensorResponse } from '../dto/devent-sensor-response';
+import { DeventSensorResponse } from '../dto/response/devent-sensor-response';
 import { DeventSensor } from '../entity/devent-sensor';
 import { ApiResponse } from '@maur025/core-model-data';
 import { container } from 'tsyringe';
@@ -7,10 +7,10 @@ import DeventSensorService from './devent-sensor.service';
 import { loggerError } from '@maur025/core-logger';
 import { handleAsObject } from '@api-client/service/handle-response';
 import { DeventSensorOperator } from '../entity/devent-sensor-operator';
-import { SensorResponse } from '../dto/sensor-response';
+import { SensorResponse } from '../dto/response/sensor-response';
 import { Sensor } from '../entity/sensor';
 import { SensorName } from '../entity/sensor-name';
-import { CalcTypeResponse } from '../dto/calc-type-response';
+import { CalcTypeResponse } from '../dto/response/calc-type-response';
 import { CalcType } from '../entity/calc-type';
 
 export const getDeventSensorList = async (

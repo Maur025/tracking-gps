@@ -17,7 +17,7 @@ import { RuleGroupResponse } from '../dto/response/rule-group-response';
 import { RuleFrequencyResponse } from '../dto/response/rule-frequency-response';
 import { RuleFrequency } from '../entity/rule-frequency';
 import { Alert } from '@app/alert/entity/alert';
-import { AlertResponse } from '@app/alert/dto/alert-response';
+import { AlertResponse } from '@app/alert/dto/response/alert-response';
 import { RuleInoutSchema } from '../entity/rule-inout-schema';
 import { RuleEventResponse } from '../dto/response/rule-event-response';
 

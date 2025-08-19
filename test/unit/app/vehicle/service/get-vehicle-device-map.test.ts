@@ -1,6 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
 import { getVehicleDeviceMap } from '@app/vehicle/service/get-vehicle-device-map';
 import VehicleService from '@app/vehicle/service/vehicle.service';
 import { container } from 'tsyringe';

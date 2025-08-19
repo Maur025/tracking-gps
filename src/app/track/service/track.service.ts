@@ -4,7 +4,7 @@ import AbstractApiService from '../../../api-client/service/abstract-api-service
 import { Observable } from 'rxjs';
 import { get } from '@src/api-client/api-client';
 import { ApiResponse } from '@maur025/core-model-data';
-import { TrackingResponse } from '../dto/tracking-response';
+import { TrackingResponse } from '../dto/response/tracking-response';
 
 @singleton()
 export default class TrackService extends AbstractApiService<TrackingResponse> {

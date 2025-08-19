@@ -1,4 +1,4 @@
-import { GroupVehicleResponse } from '@app/group/dto/group-vehicle-response';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
 import { getVehicleMetadata } from './get-vehicle-metadata';
 import { loggerError } from '@maur025/core-logger';
 import { Vehicle } from '../entity/vehicle';

@@ -1,6 +1,6 @@
 import AbstractApiService from '@api-client/service/abstract-api-service';
 import { singleton } from 'tsyringe';
-import { VehicleResponse } from '../dto/vehicle-response';
+import { VehicleResponse } from '../dto/response/vehicle-response';
 import environment from '@config/env';
 
 @singleton()

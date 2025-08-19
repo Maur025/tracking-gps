@@ -12,7 +12,7 @@ import { RequestValidate } from '@app/test-app/middlewares/request-validate.inte
 import type { TestSchema } from '@app/test-app/schema/test.schema';
 import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
 import { testPdfKit } from '@app/test-app/report/test-pdfkit';
-import { TrackingResponse } from '@app/track/dto/tracking-response';
+import { TrackingResponse } from '@app/track/dto/response/tracking-response';
 import DeviceCache from '@app/device/cache/device-cache';
 import { exampleTestPublisher } from './publishers/example-test-publisher';
 

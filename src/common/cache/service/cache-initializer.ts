@@ -6,17 +6,17 @@ import { ApiResponse } from '@maur025/core-model-data';
 import { geofenceCacheInit } from '../../../app/geofence/service/geofence-cache-init';
 import GroupService from '../../../app/group/service/group.service';
 import { groupCacheInit } from '../../../app/group/service/group-cache-init';
-import { GeofenceResponse } from '@app/geofence/dto/geofence-response';
-import { GroupResponse } from '@app/group/dto/group-response';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
+import { GroupResponse } from '@app/group/dto/response/group-response';
 import DeviceCache from '@app/device/cache/device-cache';
 import VehicleService from '@app/vehicle/service/vehicle.service';
 import { vehicleCacheInit } from '@app/vehicle/service/vehicle-cache-init';
-import { VehicleResponse } from '@app/vehicle/dto/vehicle-response';
+import { VehicleResponse } from '@app/vehicle/dto/response/vehicle-response';
 import RuleService from '@app/rule/service/rule.service';
 import { RuleResponse } from '@app/rule/dto/response/rule-response';
 import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
 import DeventService from '@app/devent/service/devent.service';
-import { DeventResponse } from '@app/devent/dto/devent-response';
+import { DeventResponse } from '@app/devent/dto/response/devent-response';
 import { deventCacheInit } from '@app/devent/service/devent-cache-init';
 
 export const cacheInitializer = (): Observable<unknown> => {
