@@ -18,4 +18,5 @@ export const handleRuleNotification = async (
 		HandleRuleNotificationRequest.parse(request);
 
 	console.log(notifications);
+	console.log(notificationToLaunch);
 };
