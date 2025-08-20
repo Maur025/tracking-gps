@@ -64,6 +64,17 @@ export const handleMultiEvent = async (
 		orEvent => orEvent.alertToLaunchList,
 	);
 
-	await handleRuleNotification();
-	return [...andAlertLaunchList, ...orAlertLaunchList];
+	const allAlertLaunchList: DeviceRuleAlertToLaunch[] = [
+		...andAlertLaunchList,
+		...orAlertLaunchList,
+	];
+
+	if (rule?.notifications?.length) {
+		await handleRuleNotification({
+			notifications: rule.notifications,
+			notificationToLaunch: allAlertLaunchList,
+		});
+	}
+
+	return rule?.alerts?.length ? allAlertLaunchList : [];
 };
