@@ -47,6 +47,13 @@ export const handleSingleEvent = async (
 		return [];
 	}
 
-	await handleRuleNotification();
-	return resultOfComparation.alertToLaunchList;
+	//if (rule?.notifications?.length) {
+	// enable to test, remove comments in prod
+	await handleRuleNotification({
+		notifications: rule.notifications,
+		notificationToLaunch: resultOfComparation.alertToLaunchList,
+	});
+	// }
+
+	return rule?.alerts?.length ? resultOfComparation.alertToLaunchList : [];
 };

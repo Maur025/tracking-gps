@@ -34,6 +34,8 @@ import * as deviceEnrichPublisherModule from '@app/device/publisher/device-data-
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { kafkaTopics } from '@src/kafka-topics';
+import { SetupServerApi } from 'msw/node';
+import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
@@ -48,7 +50,12 @@ describe('device tracking data consumer intergration test', () => {
 	const geofenceInCache = container.resolve(GeofenceInCache);
 	const DEVICE_ID: string = '3165cdc688df6';
 
+	let mswServer: SetupServerApi;
+
 	beforeAll(async () => {
+		mswServer = cacheFromDbMock();
+		mswServer.listen({ onUnhandledRequest: 'bypass' });
+
 		const { start } = app;
 		start();
 
@@ -77,6 +84,7 @@ describe('device tracking data consumer intergration test', () => {
 
 	afterAll(async () => {
 		await stopTestServices();
+		mswServer.close();
 	});
 
 	beforeEach(() => {
