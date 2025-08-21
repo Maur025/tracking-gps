@@ -1,6 +1,7 @@
 import z, { boolean, number, object, string } from 'zod/v4';
 import { createTransport, Transporter } from 'nodemailer';
 import SMTPTransport from 'nodemailer/lib/smtp-transport';
+import { loggerError, loggerInfo } from '@maur025/core-logger';
 
 let transporterMail: Transporter<SMTPTransport.SentMessageInfo> | null = null;
 
@@ -36,7 +37,20 @@ export const emailService = (): {
 			port: port,
 			secure: withSsl,
 			auth: { user: auth?.user, pass: auth?.pass },
+			tls: {
+				rejectUnauthorized: false,
+				// remove in production
+			},
 		});
+
+		transporterMail
+			.verify()
+			.then(() => {
+				loggerInfo(`[MAIL] (getTransporter) SMTP connection established`);
+			})
+			.catch(error => {
+				loggerError(`[MAIL] (getTransporter) SMTP connection error:`, error);
+			});
 
 		return transporterMail;
 	};

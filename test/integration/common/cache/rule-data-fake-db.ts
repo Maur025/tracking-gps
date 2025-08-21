@@ -535,15 +535,26 @@ export const ruleDataFakeDb = {
 					id: '4b0ad3a8-c72b-4b48-a8ac-72aab2a1b1a4',
 					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
 					channel_id: '1',
-					channel_data:
-						'{"tomail":"mmoyapalli@gmail.com","title":"RULE TEST 1 Dispositivo idDevice","message":"<strong>TEST OF RULE WITH GOEFENCE IN-OUT</strong><br> Dispositivo: deviceID <br> Ubicacion: lat -algo ,lon -algo <br> link:<a href="https://maps.app.goo.gl/2Yk64tfZmsepXJh59">ubicacion</a> "}',
+					channel_data: `{"tomail":"mmoyapalli@gmail.com","title":"RULE TEST 1 Dispositivo: 3165cdc688df6","message":"<strong>TEST OF RULE WITH GOEFENCE IN-OUT</strong><br> Dispositivo: 3165cdc688df6 <br> Ubicacion: lat. -16.529648 ,lon. -68.070368 <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
 				},
 				{
 					id: 'b8febe46-7486-45e4-8383-3955a74bb2f4',
 					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
 					channel_id: '1',
+					channel_data: `{"tomail":"mauro.moya@kernotec.com","title":"RULE TEST 1 Dispositivo 3165cdc688df6","message":"<strong>TEST OF RULE WITH GOEFENCE IN-OUT</strong><br> Dispositivo: 3165cdc688df6 <br> Ubicacion: lat. -16.529648,lon. -68.070368 <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
+				},
+				{
+					id: 'f431d24c-1abc-42cc-9d78-7e9bf032e9ca',
+					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
+					channel_id: '1',
+					channel_data: `{"tomail":"arnaldo.munoz@kernotec.com","title":"RULE TEST 1 Dispositivo: 3165cdc688df6","message":"<strong>TEST OF RULE WITH GOEFENCE IN-OUT</strong><br> Dispositivo: 3165cdc688df6 <br> Ubicacion: lat. -16.529648 ,lon. -68.070368 <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
+				},
+				{
+					id: '47e74f3d-3c01-4d0b-a330-75f80e77e868',
+					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
+					channel_id: '3',
 					channel_data:
-						'{"tomail":"mauro.moya@kernotec.com","title":"RULE TEST 1 Dispositivo idDevice","message":"<strong>TEST OF RULE WITH GOEFENCE IN-OUT</strong><br> Dispositivo: deviceID <br> Ubicacion: lat -algo ,lon -algo <br> link:<a href="https://maps.app.goo.gl/2Yk64tfZmsepXJh59">ubicacion</a> "}',
+						'{"number":"69775083","message":"TEST OF RULE WITH GOEFENCE IN-OUT\\nDispositivo: 3165cdc688df6\\nlat: -16.529648\\nlon: -68.070368\\nubicacion:https://maps.app.goo.gl/2Yk64tfZmsepXJh59"}',
 				},
 			],
 			geofences: [
