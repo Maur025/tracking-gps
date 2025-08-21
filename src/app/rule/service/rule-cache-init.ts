@@ -20,6 +20,8 @@ import { Alert } from '@app/alert/entity/alert';
 import { AlertResponse } from '@app/alert/dto/response/alert-response';
 import { RuleInoutSchema } from '../entity/rule-inout-schema';
 import { RuleEventResponse } from '../dto/response/rule-event-response';
+import { RuleNotificationChannelData } from '../entity/rule-notification-channel-data';
+import { getObjectOfString } from '@utils/get-object-of-string';
 
 export const ruleCacheInit = async (
 	ruleResponseList: RuleResponse[],
@@ -127,8 +129,22 @@ const getRuleNotifications = (
 		id,
 		ruleId: rule_id,
 		channelId: channel_id,
-		channelData: channel_data,
+		channelData: getNotificationChannelData(channel_data),
 	}));
+
+const getNotificationChannelData = (
+	channelDataResponse: string,
+): RuleNotificationChannelData | undefined => {
+	if (channelDataResponse === '[object Object]') {
+		return undefined;
+	}
+
+	if (!/^\s*\{[\s\S]*\}\s*$/.test(channelDataResponse)) {
+		return undefined;
+	}
+
+	return getObjectOfString<RuleNotificationChannelData>(channelDataResponse);
+};
 
 const getRuleGeofences = (geofences: RuleGeofenceResponse[]): RuleGeofence[] =>
 	geofences.map(({ id, rule_id, geofence_id }) => ({
