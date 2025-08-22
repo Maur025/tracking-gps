@@ -150,3 +150,6 @@ dist
 **/*.pdf
 **/*.gif
 **/*.xls
+
+# temporally data of playwright
+tmp/
