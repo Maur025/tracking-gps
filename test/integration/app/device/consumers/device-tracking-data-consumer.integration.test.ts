@@ -36,8 +36,6 @@ import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { kafkaTopics } from '@src/kafka-topics';
 import { SetupServerApi } from 'msw/node';
 import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock';
-import { notificationChannelInit } from '@app/notification/notification-channel-init';
-import EmailService from '@app/notification/service/channel/email-service';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
@@ -72,9 +70,8 @@ describe('device tracking data consumer intergration test', () => {
 			withRedis: true,
 			withClickhouse: true,
 			withCache: true,
+			withNotificationChannel: true,
 		});
-
-		await notificationChannelInit();
 
 		const { publish } = kakfaProducer();
 
@@ -90,9 +87,6 @@ describe('device tracking data consumer intergration test', () => {
 		await stopTestServices();
 		geofenceInCache.getCache().clear();
 		mswServer.close();
-
-		const emailService = container.resolve(EmailService);
-		emailService.closeService();
 	});
 
 	beforeEach(() => {
