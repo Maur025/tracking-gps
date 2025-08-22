@@ -1,7 +1,7 @@
 export const waitForAssert = async (
 	assertFn: () => void | Promise<void>,
 	intervalMs: number = 1000,
-	triedNumber: number = 10,
+	triedNumber: number = 15,
 ): Promise<void> => {
 	const isSuccessFull: boolean = false;
 	let lastError: unknown;

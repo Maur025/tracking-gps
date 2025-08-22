@@ -2,7 +2,6 @@ import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to
 import { RuleNotification } from '@app/rule/entity/rule-notification';
 import z, { array, object } from 'zod/v4';
 import { sendNotificationToMail } from './email/send-notification-to-mail';
-import { sendNotificationToWhatsapp } from './whatsapp/send-notification-to-whatsapp';
 import { sendNotificationToTelegram } from './telegram/send-notification-to-telegram';
 
 const HandleRuleNotificationRequest = object({
@@ -73,10 +72,10 @@ export const handleRuleNotification = async (
 	if (notificationToWhatsapp.length) {
 		console.log(notificationToWhatsapp);
 
-		sendNotificationToWhatsapp();
+		// sendNotificationToWhatsapp();
 	}
 
 	if (notificationToTelegram.length) {
-		sendNotificationToTelegram();
+		await sendNotificationToTelegram();
 	}
 };

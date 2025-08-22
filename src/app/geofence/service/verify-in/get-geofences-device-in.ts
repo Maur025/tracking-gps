@@ -37,6 +37,8 @@ export const getGeofencesDeviceIn = async (
 		device.id,
 	);
 
+	console.log(currentGeofencesIn);
+
 	const newGeofencesIn: GeofenceIn[] = await getNewGeofencesIn({
 		deviceId: device.id ?? '',
 		geofenceInFullList: currentGeofencesIn,

@@ -41,19 +41,20 @@ export const handleSingleEvent = async (
 			device,
 		});
 
+	console.log(resultOfComparation);
+
 	if (!resultOfComparation.wasTriggered) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
 
 		return [];
 	}
 
-	//if (rule?.notifications?.length) {
-	// enable to test, remove comments in prod
-	await handleRuleNotification({
-		notifications: rule.notifications,
-		notificationToLaunch: resultOfComparation.alertToLaunchList,
-	});
-	// }
+	if (rule?.notifications?.length) {
+		await handleRuleNotification({
+			notifications: rule.notifications,
+			notificationToLaunch: resultOfComparation.alertToLaunchList,
+		});
+	}
 
 	return rule?.alerts?.length ? resultOfComparation.alertToLaunchList : [];
 };
