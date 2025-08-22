@@ -27,8 +27,8 @@ export const processRule = async (
 	}
 
 	if (rule.events?.length === 1) {
-		return handleSingleEvent({ rule, device });
+		return await handleSingleEvent({ rule, device });
 	}
 
-	return handleMultiEvent({ device, rule });
+	return await handleMultiEvent({ device, rule });
 };

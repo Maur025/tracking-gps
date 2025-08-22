@@ -36,6 +36,8 @@ import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { kafkaTopics } from '@src/kafka-topics';
 import { SetupServerApi } from 'msw/node';
 import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock';
+import { notificationChannelInit } from '@app/notification/notification-channel-init';
+import EmailService from '@app/notification/service/channel/email-service';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
@@ -72,6 +74,8 @@ describe('device tracking data consumer intergration test', () => {
 			withCache: true,
 		});
 
+		await notificationChannelInit();
+
 		const { publish } = kakfaProducer();
 
 		publishKafka = publish;
@@ -84,7 +88,11 @@ describe('device tracking data consumer intergration test', () => {
 
 	afterAll(async () => {
 		await stopTestServices();
+		geofenceInCache.getCache().clear();
 		mswServer.close();
+
+		const emailService = container.resolve(EmailService);
+		emailService.closeService();
 	});
 
 	beforeEach(() => {
@@ -108,22 +116,29 @@ describe('device tracking data consumer intergration test', () => {
 	});
 
 	test('should process device data and return enrich with geofences,rules,alerts, notificarios, vehicle', async () => {
+		let callNumber: number = 0;
+
 		await sendPayloadTest({ coords: [-68.156003, -16.505851] });
-		await shouldNotInteractWithAnyGeofences();
+		callNumber++;
+		await shouldNotInteractWithAnyGeofences(callNumber);
 
-		await simulateDelay();
-
-		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
-		await shouldEnterSomeGeofences();
-
-		await simulateDelay();
+		await simulateDelay(2);
 
 		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
-		await shouldKeepInSameGeofence();
+		callNumber++;
+		await shouldEnterSomeGeofences(callNumber);
+
+		await simulateDelay(2);
+
+		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
+		callNumber++;
+		await shouldKeepInSameGeofence(callNumber);
 	}, 30000);
 
-	const shouldNotInteractWithAnyGeofences = async (): Promise<void> => {
-		await expectCommon(1);
+	const shouldNotInteractWithAnyGeofences = async (
+		call: number,
+	): Promise<void> => {
+		await expectCommon(call);
 
 		const geofenceInCacheMap = geofenceInCache.getCache();
 		const deviceGeofenceInMap = geofenceInCacheMap.get(DEVICE_ID);
@@ -153,8 +168,8 @@ describe('device tracking data consumer intergration test', () => {
 		);
 	};
 
-	const shouldEnterSomeGeofences = async (): Promise<void> => {
-		await expectCommon(2);
+	const shouldEnterSomeGeofences = async (call: number): Promise<void> => {
+		await expectCommon(call);
 
 		const geofenceInCacheMap = geofenceInCache.getCache();
 		const deviceGeofenceInMap = geofenceInCacheMap.get(DEVICE_ID);
@@ -165,8 +180,8 @@ describe('device tracking data consumer intergration test', () => {
 		shouldHaveVehicle();
 	};
 
-	const shouldKeepInSameGeofence = async (): Promise<void> => {
-		await expectCommon(3);
+	const shouldKeepInSameGeofence = async (call: number): Promise<void> => {
+		await expectCommon(call);
 	};
 
 	const shouldHaveVehicle = (): void => {
@@ -227,6 +242,6 @@ describe('device tracking data consumer intergration test', () => {
 		});
 	};
 
-	const simulateDelay = async (): Promise<void> =>
-		new Promise(resolve => setTimeout(resolve, 1000));
+	const simulateDelay = async (seconds: number = 1): Promise<void> =>
+		new Promise(resolve => setTimeout(resolve, seconds * 1000));
 });
