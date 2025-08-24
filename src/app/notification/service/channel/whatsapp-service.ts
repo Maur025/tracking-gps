@@ -44,10 +44,10 @@ export default class WhatsappService {
 			return;
 		}
 
+		this.browser = browserVerify;
 		loggerInfo(
 			`[WHATSAPP] (launchBrowserToSendMessage) whatsapp service started`,
 		);
-		this.browser = browserVerify;
 	}
 
 	private async verifyWhatsappLoged(): Promise<BrowserContext | undefined> {
@@ -140,7 +140,7 @@ export default class WhatsappService {
 		while (attempts > 0) {
 			try {
 				const continueButton = await whatsappPage.waitForSelector(
-					'button:has-text("Continuar")',
+					'button:has-text("Continuar"), button:has-text("continue")',
 				);
 
 				await continueButton.click();

@@ -81,7 +81,7 @@ describe('device tracking data consumer intergration test', () => {
 			deviceEnrichPublisherModule,
 			'deviceDataEnrichToMonitorPublisher',
 		);
-	});
+	}, 20000);
 
 	afterAll(async () => {
 		await stopTestServices();
