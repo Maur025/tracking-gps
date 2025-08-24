@@ -19,6 +19,8 @@ export const handleRuleNotification = async (
 	const { notifications, notificationToLaunch } =
 		HandleRuleNotificationRequest.parse(request);
 
+	console.log(notificationToLaunch);
+
 	const notificationToMail: RuleNotification[] = [];
 	const notificationToWhatsapp: RuleNotification[] = [];
 	const notificationToTelegram: RuleNotification[] = [];
@@ -71,8 +73,6 @@ export const handleRuleNotification = async (
 
 	if (notificationToWhatsapp.length) {
 		console.log(notificationToWhatsapp);
-
-		// sendNotificationToWhatsapp();
 	}
 
 	if (notificationToTelegram.length) {

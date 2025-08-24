@@ -26,6 +26,4 @@ export const notificationChannelInit = async (): Promise<void> => {
 
 	const whatsappService = container.resolve(WhatsappService);
 	await whatsappService.initialize();
-
-	// await sendNotificationToWhatsapp();
 };
