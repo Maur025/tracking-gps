@@ -63,7 +63,7 @@ export const notificationBuildByAlertList = (
 		ruleName: rule.name ?? 'N/A',
 		vehicleName: vehicleData?.name ?? 'N/A',
 		vehiclePlaca: vehicleData?.metadata?.plaque ?? 'N/A',
-		groupNames: device?.groups?.map(group => group.name).join(' | ') ?? 'N/A',
+		groupNames: device?.groups?.map(group => group.name).join(' | ') || 'N/A',
 		withSpeed: states?.SPEED ?? 'N/A',
 		withFuel: states?.FUEL_LEVEL ? states?.FUEL_LEVEL?.toString() : 'N/A',
 		withGeofenceIn: geofenceInNames.join(' | ') || 'N/A',

@@ -2,6 +2,10 @@ import { RuleNotification } from '@app/rule/entity/rule-notification';
 import z, { array, object } from 'zod/v4';
 import { sendNotificationToTelegram } from './telegram/send-notification-to-telegram';
 import { DeviceNotificationSchema } from '../schema/device-notification.schema';
+import { container } from 'tsyringe';
+import NotificationManager from '../notification-manager';
+import { getDeviceEmailSubject } from '@app/device/service/notification/get-device-email-subject';
+import { getDeviceEmailHtmlMessage } from '@app/device/service/notification/get-device-email-html-message';
 
 const HandleRuleNotificationRequest = object({
 	notifications: array(RuleNotification).default([]),
@@ -22,6 +26,8 @@ export const handleRuleNotification = async (
 	const notificationToWhatsapp: RuleNotification[] = [];
 	const notificationToTelegram: RuleNotification[] = [];
 	const notificationToSms: RuleNotification[] = [];
+
+	const notificationManager = container.resolve(NotificationManager);
 
 	for (const notification of notifications) {
 		switch (notification.channelId) {
@@ -48,14 +54,8 @@ export const handleRuleNotification = async (
 		}
 	}
 
-	console.log(notificationData);
-
 	if (notificationToMail.length) {
-		// const senderList: string[] = notificationToMail
-		// 	.map(({ channelData }) => channelData?.tomail)
-		// 	.filter(value => value !== undefined);
-		// const { title = '', message = '' } =
-		// 	notificationToMail[0].channelData ?? {};
+		handleEmailSend(notificationToMail, notificationData, notificationManager);
 	}
 
 	if (notificationToSms.length) {
@@ -69,4 +69,35 @@ export const handleRuleNotification = async (
 	if (notificationToTelegram.length) {
 		await sendNotificationToTelegram();
 	}
+};
+
+const handleEmailSend = (
+	notificationToMail: RuleNotification[],
+	notificationData: DeviceNotificationSchema,
+	notificationManager: NotificationManager,
+) => {
+	const senderList: string[] = notificationToMail
+		.map(({ channelData }) => channelData?.tomail)
+		.filter(value => value !== undefined);
+
+	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
+
+	const subject: string = getDeviceEmailSubject({
+		notificationData,
+		template: title,
+	});
+
+	const htmlMessage: string = getDeviceEmailHtmlMessage({
+		notificationData,
+		template: message,
+	});
+
+	console.log(subject);
+	console.log(htmlMessage);
+
+	notificationManager.notifyToEmail({
+		senderList,
+		subject,
+		htmlMessage,
+	});
 };
