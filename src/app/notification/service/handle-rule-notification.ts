@@ -51,12 +51,11 @@ export const handleRuleNotification = async (
 	console.log(notificationData);
 
 	if (notificationToMail.length) {
-		const senderList: string[] = notificationToMail
-			.map(({ channelData }) => channelData?.tomail)
-			.filter(value => value !== undefined);
-
-		const { title = '', message = '' } =
-			notificationToMail[0].channelData ?? {};
+		// const senderList: string[] = notificationToMail
+		// 	.map(({ channelData }) => channelData?.tomail)
+		// 	.filter(value => value !== undefined);
+		// const { title = '', message = '' } =
+		// 	notificationToMail[0].channelData ?? {};
 	}
 
 	if (notificationToSms.length) {
