@@ -51,6 +51,7 @@ export const ruleGeofenceRegistryCreate = async (
 
 		dataSaveList.push({
 			rule_geofence_id: ruleGeofence.id,
+			geofence_id: ruleGeofence.geofenceId,
 			device_id: device.id,
 			inout: isIn ? 1 : 0,
 			timestamp: t,
@@ -58,6 +59,10 @@ export const ruleGeofenceRegistryCreate = async (
 			lon,
 		});
 	}
+
+	const dataSaveMap = new Map<string, RuleGeofenceRegistryCreateRequest>(
+		dataSaveList.map(dataSave => [dataSave.rule_geofence_id, dataSave]),
+	);
 
 	const responseList: ApiResponse<RuleGeofenceRegistryResponse>[] =
 		await lastValueFrom(
@@ -82,12 +87,21 @@ export const ruleGeofenceRegistryCreate = async (
 				return undefined;
 			}
 
+			const dataSave = dataSaveMap.get(
+				ruleGeofenceRegistryResponse.rule_geofence_id,
+			);
+
 			return {
-				alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
 				ruleGeofenceRegistryId: ruleGeofenceRegistryResponse.id,
 				alertId: alert?.id ?? null,
-				isGeofenceIn: !!ruleGeofenceRegistryResponse.inout,
 				ruleId: alert?.ruleId ?? '',
+				deviceId: dataSave?.device_id,
+				geofenceId: dataSave?.geofence_id,
+				alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
+				isGeofenceIn: !!ruleGeofenceRegistryResponse.inout,
+				timestamp: dataSave?.timestamp,
+				lat: dataSave?.lat,
+				lon: dataSave?.lon,
 			};
 		})
 		.filter(value => value !== undefined);

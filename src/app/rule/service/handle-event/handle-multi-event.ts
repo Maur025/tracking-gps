@@ -9,6 +9,8 @@ import z, { object } from 'zod/v4';
 import { processEventSelector } from './process-event-selector';
 import { loggerDebug } from '@maur025/core-logger';
 import { handleRuleNotification } from '@app/notification/service/handle-rule-notification';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema';
+import { notificationBuildByAlertList } from './notification-build-by-alert-list';
 
 const loggerAuxMessage: string = `[RULE] (handleMultiEvent)`;
 
@@ -70,9 +72,16 @@ export const handleMultiEvent = async (
 	];
 
 	if (rule?.notifications?.length) {
+		const notificationData: DeviceNotificationSchema =
+			notificationBuildByAlertList({
+				deviceAlertToLaunchList: allAlertLaunchList,
+				device,
+				rule,
+			});
+
 		await handleRuleNotification({
 			notifications: rule.notifications,
-			notificationToLaunch: allAlertLaunchList,
+			notificationData,
 		});
 	}
 

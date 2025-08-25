@@ -9,6 +9,8 @@ import z, { object } from 'zod/v4';
 import { Rule } from '@app/rule/entity/rule';
 import { Device } from '@app/device/entity/device';
 import { handleRuleNotification } from '@app/notification/service/handle-rule-notification';
+import { notificationBuildByAlertList } from './notification-build-by-alert-list';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema';
 
 const loggerAuxMessage: string = `[RULE] (handleSingleEvent)`;
 
@@ -41,8 +43,6 @@ export const handleSingleEvent = async (
 			device,
 		});
 
-	console.log(resultOfComparation);
-
 	if (!resultOfComparation.wasTriggered) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
 
@@ -50,9 +50,16 @@ export const handleSingleEvent = async (
 	}
 
 	if (rule?.notifications?.length) {
+		const notificationData: DeviceNotificationSchema =
+			notificationBuildByAlertList({
+				deviceAlertToLaunchList: resultOfComparation.alertToLaunchList,
+				device,
+				rule,
+			});
+
 		await handleRuleNotification({
 			notifications: rule.notifications,
-			notificationToLaunch: resultOfComparation.alertToLaunchList,
+			notificationData,
 		});
 	}
 
