@@ -105,7 +105,7 @@ const getRuleEvents = (events: RuleEventResponse[]): RuleEvent[] =>
 		ruleId: rule_id,
 		deventId: devent_id,
 		operator,
-		value,
+		value: value.toString(),
 	}));
 
 const getRuleGroups = (groups: RuleGroupResponse[]): RuleGroup[] =>

@@ -17,7 +17,7 @@ export const Device = BaseData.extend({
 	type: string().nonempty().optional(),
 	elapsed: number().nonnegative().optional(),
 	setup: DeviceSetup.optional(),
-	states: DeviceState,
+	states: DeviceState.optional(),
 	tracks: number().nonnegative().optional(),
 	last: Track.optional(),
 	lastRedisUpdate: number().nonnegative().optional(),

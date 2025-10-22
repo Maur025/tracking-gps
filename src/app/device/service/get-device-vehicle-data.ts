@@ -38,8 +38,14 @@ export const getDeviceVehicleData = async (
 		return undefined;
 	}
 
+	let vehicleValue = result.documents[0]?.value;
+
+	if (result.total == 2) {
+		vehicleValue = JSON.parse(result.documents[1].id[1]);
+	}
+
 	const vehicleData: Vehicle = {
-		...result.documents[0].value,
+		...vehicleValue,
 	};
 
 	return vehicleData;

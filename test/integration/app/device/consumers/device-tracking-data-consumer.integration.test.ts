@@ -70,7 +70,6 @@ describe('device tracking data consumer intergration test', () => {
 			withRedis: true,
 			withClickhouse: true,
 			withCache: true,
-			withNotificationChannel: true,
 		});
 
 		const { publish } = kakfaProducer();
@@ -105,7 +104,7 @@ describe('device tracking data consumer intergration test', () => {
 		});
 
 		expect(loggerError).toHaveBeenCalledWith(
-			`[DEVICE] (deviceTrackingDataConsumer) validation failed: '\n✖ Invalid input: expected object, received undefined\n  → at spec\n✖ Invalid input: expected object, received undefined\n  → at states'`,
+			`[DEVICE] (deviceTrackingDataConsumer) validation failed: '\n✖ Invalid input: expected object, received undefined\n  → at spec'`,
 		);
 	});
 

@@ -24,7 +24,8 @@ const {
 	TEST_CLICKHOUSE_PORT = '8124',
 	TEST_CLICKHOUSE_DB = 'event_logger_test_db',
 	TEST_CLICKHOUSE_USER = 'clickhouse-user-test',
-	TEST_CLICKHOUSE_PASSWORD = '501Oa6TQX037',
+	TEST_CLICKHOUSE_PASSWORD = 'password',
+	NOTIFICATION_URL = 'http://localhost:7768',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -52,6 +53,7 @@ const environment: EnvironmentSchema = {
 	TEST_CLICKHOUSE_DB,
 	TEST_CLICKHOUSE_USER,
 	TEST_CLICKHOUSE_PASSWORD,
+	NOTIFICATION_URL,
 };
 
 export default environment;

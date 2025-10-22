@@ -32,6 +32,8 @@ export const EnvironmentSchema = object({
 	TEST_CLICKHOUSE_DB: string().nonempty(),
 	TEST_CLICKHOUSE_USER: string().nonempty(),
 	TEST_CLICKHOUSE_PASSWORD: string(),
+
+	NOTIFICATION_URL: string().nonempty(),
 });
 
 export type EnvironmentSchema = z.infer<typeof EnvironmentSchema>;

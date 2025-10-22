@@ -38,5 +38,4 @@ await initServices({
 	clickhousePort: CLICKHOUSE_PORT,
 	clickhouseUser: CLICKHOUSE_USER,
 	isNeedCache: true,
-	withNotificationChannel: true,
 });

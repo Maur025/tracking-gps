@@ -18,6 +18,8 @@ const loggerAuxMessage: string = `[RULE] (processRule)`;
 export const processRule = async (
 	request: ProcessRuleRequest,
 ): Promise<DeviceRuleAlertToLaunch[]> => {
+	console.log(request);
+
 	const { rule, device } = ProcessRuleRequest.parse(request);
 
 	if (!rule.events?.length) {

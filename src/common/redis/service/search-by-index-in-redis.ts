@@ -39,6 +39,7 @@ export const searchByIndexInRedis = async <E>(
 	const { index, query, options } = SearchByIndexInRedisRequest.parse(request);
 
 	const result = await redisClient.ft.search(index, query, {
+		RETURN: ['$'],
 		...(options as object),
 	});
 
