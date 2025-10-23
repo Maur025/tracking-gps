@@ -41,6 +41,7 @@ export const processDeviceData = async (
 
 	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
 		device,
+		previousDeviceTrack: deviceInMapCache?.last,
 	});
 
 	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({

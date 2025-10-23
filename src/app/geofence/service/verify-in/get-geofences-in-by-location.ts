@@ -5,11 +5,24 @@ import GeofenceCache from '@app/geofence/cache/geofence-cache';
 import { Geofence } from '@app/geofence/entity/geofence';
 import { loggerDebug } from '@maur025/core-logger';
 import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position';
+import z, { object, string } from 'zod/v4';
+
+const GetGeofencesInByLocationRequest = object({
+	deviceLastTrack: Track,
+	deviceId: string(),
+	previousDeviceTrack: Track.optional(),
+});
+
+type GetGeofencesInByLocationRequest = z.infer<
+	typeof GetGeofencesInByLocationRequest
+>;
 
 export const getGeofencesInByLocation = (
-	deviceLastTrack: Track,
-	deviceId: string,
+	request: GetGeofencesInByLocationRequest,
 ): GeofenceIn[] => {
+	const { deviceLastTrack, deviceId, previousDeviceTrack } =
+		GetGeofencesInByLocationRequest.parse(request);
+
 	const { t: trackTimestamp = 0, lat = 0, lon = 0 } = deviceLastTrack;
 
 	const geofenceCache = container.resolve(GeofenceCache);
@@ -61,6 +74,10 @@ export const getGeofencesInByLocation = (
 			radius,
 			positionCoords: [lon, lat],
 			geofenceCoords: coords,
+			previousPositionCoords:
+				previousDeviceTrack?.lat && previousDeviceTrack?.lon
+					? [previousDeviceTrack.lon, previousDeviceTrack.lat]
+					: undefined,
 		});
 
 		if (isGeofenceInside) {
