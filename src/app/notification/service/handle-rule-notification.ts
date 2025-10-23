@@ -2,6 +2,10 @@ import { RuleNotification } from '@app/rule/entity/rule-notification';
 import z, { array, object } from 'zod/v4';
 import { DeviceNotificationSchema } from '../schema/device-notification.schema';
 import { loggerDebug } from '@maur025/core-logger';
+import { getDeviceNotificationTitle } from '@app/device/service/notification/get-device-notification-title';
+import { getDeviceNotificationMessage } from '@app/device/service/notification/get-device-notification-message';
+import { addEmailToQueue } from './email/add-email-to-queue';
+import { addWhatsappToQueue } from './whatsapp/add-whatsapp-to-queue';
 
 const HandleRuleNotificationRequest = object({
 	notifications: array(RuleNotification).default([]),
@@ -15,10 +19,8 @@ type HandleRuleNotificationRequest = z.infer<
 export const handleRuleNotification = async (
 	request: HandleRuleNotificationRequest,
 ): Promise<void> => {
-	const {
-		notifications,
-		//	notificationData
-	} = HandleRuleNotificationRequest.parse(request);
+	const { notifications, notificationData } =
+		HandleRuleNotificationRequest.parse(request);
 
 	const notificationToMail: RuleNotification[] = [];
 	const notificationToWhatsapp: RuleNotification[] = [];
@@ -51,7 +53,7 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToMail.length) {
-		loggerDebug(`Method not implemented: Email notifications`);
+		await handleEmailSend(notificationToMail, notificationData);
 	}
 
 	if (notificationToSms.length) {
@@ -59,7 +61,7 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToWhatsapp.length) {
-		loggerDebug(`Method not implemented: Whatsapp notifications`);
+		await handleWhatsappSend(notificationToWhatsapp, notificationData);
 	}
 
 	if (notificationToTelegram.length) {
@@ -67,32 +69,56 @@ export const handleRuleNotification = async (
 	}
 };
 
-// const handleEmailSend = (
-// 	notificationToMail: RuleNotification[],
-// 	notificationData: DeviceNotificationSchema,
-// ) => {
-// 	const senderList: string[] = notificationToMail
-// 		.map(({ channelData }) => channelData?.tomail)
-// 		.filter(value => value !== undefined);
+const handleEmailSend = async (
+	notificationToMail: RuleNotification[],
+	notificationData: DeviceNotificationSchema,
+) => {
+	const senderList: string[] = notificationToMail
+		.map(({ channelData }) => channelData?.tomail)
+		.filter(value => value !== undefined);
 
-// 	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
+	const { title = 'rule.name', message = '$rule.description' } =
+		notificationToMail[0].channelData ?? {};
 
-// 	const subject: string = getDeviceEmailSubject({
-// 		notificationData,
-// 		template: title,
-// 	});
+	const subject: string = getDeviceNotificationTitle({
+		notificationData,
+		template: title,
+	});
 
-// 	const htmlMessage: string = getDeviceEmailHtmlMessage({
-// 		notificationData,
-// 		template: message,
-// 	});
+	const htmlMessage: string = getDeviceNotificationMessage({
+		notificationData,
+		template: message,
+	});
 
-// 	console.log(subject);
-// 	console.log(htmlMessage);
+	await addEmailToQueue({ senderList, subject, htmlMessage });
+};
 
-// 	// notificationManager.notifyToEmail({
-// 	// 	senderList,
-// 	// 	subject,
-// 	// 	htmlMessage,
-// 	// });
-// };
+const handleWhatsappSend = async (
+	notificationToWhatsapp: RuleNotification[],
+	notificationData: DeviceNotificationSchema,
+) => {
+	const batchSize = 15;
+	let notificationsPromiseList: Promise<void>[] = [];
+
+	for (const wpNotification of notificationToWhatsapp) {
+		const { title = '$rule.name', message = '$rule.description' } =
+			wpNotification?.channelData ?? {};
+
+		notificationsPromiseList.push(
+			addWhatsappToQueue({
+				numberPhone: wpNotification.channelData?.number ?? '',
+				message: `${getDeviceNotificationTitle({ notificationData, template: title })}\n${getDeviceNotificationMessage({ notificationData, template: message })}`,
+			}),
+		);
+
+		if (batchSize == notificationsPromiseList.length) {
+			await Promise.all(notificationsPromiseList);
+
+			notificationsPromiseList = [];
+		}
+	}
+
+	if (notificationsPromiseList.length) {
+		await Promise.all(notificationsPromiseList);
+	}
+};

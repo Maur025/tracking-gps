@@ -2,26 +2,24 @@ import { DeviceNotificationSchema } from '@app/notification/schema/device-notifi
 import { replaceDataInTemplate } from '@utils/replace-data-in-template';
 import z, { object, string } from 'zod/v4';
 
-const GetDeviceEmailHtmlMessageRequest = object({
+const GetDeviceNotificationTitleRequest = object({
 	notificationData: DeviceNotificationSchema,
 	template: string(),
 });
 
-type GetDeviceEmailHtmlMessageRequest = z.infer<
-	typeof GetDeviceEmailHtmlMessageRequest
+type GetDeviceNotificationTitleRequest = z.infer<
+	typeof GetDeviceNotificationTitleRequest
 >;
 
-export const getDeviceEmailHtmlMessage = (
-	request: GetDeviceEmailHtmlMessageRequest,
+export const getDeviceNotificationTitle = (
+	request: GetDeviceNotificationTitleRequest,
 ): string => {
 	const { notificationData, template } =
-		GetDeviceEmailHtmlMessageRequest.parse(request);
+		GetDeviceNotificationTitleRequest.parse(request);
 
 	const dataObject: Record<string, string> = {
-		'rule.description': notificationData.ruleDescription || 'N/A',
+		'rule.name': notificationData.ruleName || 'N/A',
 		'device.id': notificationData.deviceId || 'N/A',
-		'device.lat': notificationData.withLat,
-		'device.lon': notificationData.withLon,
 	};
 
 	return replaceDataInTemplate(template, dataObject);

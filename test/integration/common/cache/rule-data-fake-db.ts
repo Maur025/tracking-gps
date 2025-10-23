@@ -541,20 +541,27 @@ export const ruleDataFakeDb = {
 					id: 'b8febe46-7486-45e4-8383-3955a74bb2f4',
 					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
 					channel_id: '1',
-					channel_data: `{"tomail":"mauro.moya@kernotec.com","title":"regla: $rule.name - dispositivo: $device.id","message":"<strong>$rule.description</strong><br>Dispositivo: $device.id<br> Ubicacion: lat. $device.lat,lon. $device.lon <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
+					channel_data: `{"tomail":"mauro.moya@kernotec.com","title":"$rule.name Dispositivo $device.id","message":"<strong>$rule.description</strong><br>Dispositivo: $device.id<br> Ubicacion: lat. $device.lat,lon. $device.lon <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
 				},
 				{
 					id: 'f431d24c-1abc-42cc-9d78-7e9bf032e9ca',
 					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
 					channel_id: '1',
-					channel_data: `{"tomail":"arnaldo.munoz@kernotec.com","title":"regla: $rule.name - dispositivo: $device.id","message":"<strong>$rule.description</strong><br>Dispositivo: $device.id<br> Ubicacion: lat. $device.lat,lon. $device.lon <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
+					channel_data: `{"tomail":"arnaldo.munoz@kernotec.com","title":"$rule.name Dispositivo $device.id","message":"<strong>$rule.description</strong><br>Dispositivo: $device.id<br> Ubicacion: lat. $device.lat,lon. $device.lon <br> link:<a href='https://maps.app.goo.gl/2Yk64tfZmsepXJh59'>ubicacion</a> "}`,
 				},
 				{
 					id: '47e74f3d-3c01-4d0b-a330-75f80e77e868',
 					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
 					channel_id: '3',
 					channel_data:
-						'{"number":"69775083","message":"$rule.name\\nDispositivo: $device.id\\nlat: $device.lat\\nlon: $device.lon\\nubicacion:https://maps.app.goo.gl/2Yk64tfZmsepXJh59"}',
+						'{"number":"69775083","title":"$rule.name Dispositivo $device.id","message":"*$rule.description*\\nDispositivo:$device.id\\nUbicación:\\nlat:$device.lat\\nlon:$device.lon\\nlink:https://maps.app.goo.gl/2Yk64tfZmsepXJh59"}',
+				},
+				{
+					id: '47e74f3d-3c01-4d0b-a330-75f80e77e868',
+					rule_id: 'ed5dc829-a628-4e5c-bc45-bc73e71e64f0',
+					channel_id: '3',
+					channel_data:
+						'{"number":"60174745","title":"$rule.name Dispositivo $device.id","message":"*$rule.description*\\nDispositivo:$device.id\\nUbicación:\\nlat:$device.lat\\nlon:$device.lon\\nlink:https://maps.app.goo.gl/2Yk64tfZmsepXJh59"}',
 				},
 			],
 			geofences: [

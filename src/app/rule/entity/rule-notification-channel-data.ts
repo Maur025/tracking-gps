@@ -3,6 +3,7 @@ import z, { object, string } from 'zod/v4';
 export const RuleNotificationChannelData = object({
 	tomail: string().nonempty().optional(),
 	title: string().nonempty().optional(),
+	number: string().nonempty().optional(),
 	message: string().nonempty(),
 });
 
