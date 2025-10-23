@@ -10,6 +10,7 @@ import { loggerDebug } from '@maur025/core-logger';
 const VerifyGeofenceInByPositionSchema = object({
 	geofenceType: GeofenceType,
 	positionCoords: array(number()).min(2),
+	previousPositionCoords: array(number()).min(2).optional(),
 	geofenceCoords: PositionSchema,
 	radius: number().nonnegative(),
 });
@@ -21,15 +22,31 @@ type VerifyGeofenceInByPositionSchema = z.infer<
 export const verifyGeofenceInByPosition = (
 	request: VerifyGeofenceInByPositionSchema,
 ): boolean => {
-	const { geofenceType, positionCoords, geofenceCoords, radius } =
-		VerifyGeofenceInByPositionSchema.parse(request);
+	const {
+		geofenceType,
+		positionCoords,
+		geofenceCoords,
+		radius,
+		previousPositionCoords,
+	} = VerifyGeofenceInByPositionSchema.parse(request);
 
 	const currentPosition: Feature<Point, GeoJsonProperties> =
 		turfPoint(positionCoords);
 
+	const previousPosition: Feature<Point, GeoJsonProperties> | undefined =
+		previousPositionCoords &&
+		previousPositionCoords[1] != positionCoords[1] &&
+		previousPositionCoords[0] != positionCoords[0]
+			? turfPoint(previousPositionCoords)
+			: undefined;
+
 	switch (geofenceType) {
 		case 'POLYGONS': {
-			return verifyByPolygonGeofence(currentPosition, geofenceCoords);
+			return verifyByPolygonGeofence({
+				currentPosition,
+				geofenceCoords,
+				previousPosition,
+			});
 		}
 		case 'POINTS': {
 			return verifyByRadialGeofence(currentPosition, geofenceCoords, radius);

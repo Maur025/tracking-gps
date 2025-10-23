@@ -6,9 +6,11 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { getNewGeofencesIn } from './get-new-geofences-in';
 import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
 import z, { object } from 'zod/v4';
+import { Track } from '@app/track/entity/track';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
+	previousDeviceTrack: Track.optional(),
 });
 
 type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
@@ -16,7 +18,8 @@ type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
 export const getGeofencesDeviceIn = async (
 	request: GetGeofencesDeviceInSchema,
 ): Promise<DeviceGeofenceIn> => {
-	const { device } = GetGeofencesDeviceInSchema.parse(request);
+	const { device, previousDeviceTrack } =
+		GetGeofencesDeviceInSchema.parse(request);
 
 	if (!device?.id || !device?.last?.lon || !device?.last?.lat) {
 		loggerDebug(
@@ -32,10 +35,17 @@ export const getGeofencesDeviceIn = async (
 		};
 	}
 
-	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation(
-		device.last,
-		device.id,
-	);
+	loggerDebug(`device current las track:`);
+	console.log(device.last);
+
+	loggerDebug(`device previous las track:`);
+	console.log(previousDeviceTrack);
+
+	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation({
+		deviceLastTrack: device.last,
+		deviceId: device.id,
+		previousDeviceTrack,
+	});
 
 	const newGeofencesIn: GeofenceIn[] = await getNewGeofencesIn({
 		deviceId: device.id ?? '',
