@@ -1,7 +1,5 @@
 import { RuleNotification } from '@app/rule/entity/rule-notification';
 import z, { array, object } from 'zod/v4';
-import { getDeviceEmailSubject } from '@app/device/service/notification/get-device-email-subject';
-import { getDeviceEmailHtmlMessage } from '@app/device/service/notification/get-device-email-html-message';
 import { DeviceNotificationSchema } from '../schema/device-notification.schema';
 import { loggerDebug } from '@maur025/core-logger';
 
@@ -17,8 +15,10 @@ type HandleRuleNotificationRequest = z.infer<
 export const handleRuleNotification = async (
 	request: HandleRuleNotificationRequest,
 ): Promise<void> => {
-	const { notifications, notificationData } =
-		HandleRuleNotificationRequest.parse(request);
+	const {
+		notifications,
+		//	notificationData
+	} = HandleRuleNotificationRequest.parse(request);
 
 	const notificationToMail: RuleNotification[] = [];
 	const notificationToWhatsapp: RuleNotification[] = [];
@@ -67,32 +67,32 @@ export const handleRuleNotification = async (
 	}
 };
 
-const handleEmailSend = (
-	notificationToMail: RuleNotification[],
-	notificationData: DeviceNotificationSchema,
-) => {
-	const senderList: string[] = notificationToMail
-		.map(({ channelData }) => channelData?.tomail)
-		.filter(value => value !== undefined);
+// const handleEmailSend = (
+// 	notificationToMail: RuleNotification[],
+// 	notificationData: DeviceNotificationSchema,
+// ) => {
+// 	const senderList: string[] = notificationToMail
+// 		.map(({ channelData }) => channelData?.tomail)
+// 		.filter(value => value !== undefined);
 
-	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
+// 	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
 
-	const subject: string = getDeviceEmailSubject({
-		notificationData,
-		template: title,
-	});
+// 	const subject: string = getDeviceEmailSubject({
+// 		notificationData,
+// 		template: title,
+// 	});
 
-	const htmlMessage: string = getDeviceEmailHtmlMessage({
-		notificationData,
-		template: message,
-	});
+// 	const htmlMessage: string = getDeviceEmailHtmlMessage({
+// 		notificationData,
+// 		template: message,
+// 	});
 
-	console.log(subject);
-	console.log(htmlMessage);
+// 	console.log(subject);
+// 	console.log(htmlMessage);
 
-	// notificationManager.notifyToEmail({
-	// 	senderList,
-	// 	subject,
-	// 	htmlMessage,
-	// });
-};
+// 	// notificationManager.notifyToEmail({
+// 	// 	senderList,
+// 	// 	subject,
+// 	// 	htmlMessage,
+// 	// });
+// };
