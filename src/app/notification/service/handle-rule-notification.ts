@@ -1,11 +1,7 @@
 import { RuleNotification } from '@app/rule/entity/rule-notification';
 import z, { array, object } from 'zod/v4';
-import { sendNotificationToTelegram } from './telegram/send-notification-to-telegram';
 import { DeviceNotificationSchema } from '../schema/device-notification.schema';
-import { container } from 'tsyringe';
-import NotificationManager from '../notification-manager';
-import { getDeviceEmailSubject } from '@app/device/service/notification/get-device-email-subject';
-import { getDeviceEmailHtmlMessage } from '@app/device/service/notification/get-device-email-html-message';
+import { loggerDebug } from '@maur025/core-logger';
 
 const HandleRuleNotificationRequest = object({
 	notifications: array(RuleNotification).default([]),
@@ -19,15 +15,15 @@ type HandleRuleNotificationRequest = z.infer<
 export const handleRuleNotification = async (
 	request: HandleRuleNotificationRequest,
 ): Promise<void> => {
-	const { notifications, notificationData } =
-		HandleRuleNotificationRequest.parse(request);
+	const {
+		notifications,
+		//	notificationData
+	} = HandleRuleNotificationRequest.parse(request);
 
 	const notificationToMail: RuleNotification[] = [];
 	const notificationToWhatsapp: RuleNotification[] = [];
 	const notificationToTelegram: RuleNotification[] = [];
 	const notificationToSms: RuleNotification[] = [];
-
-	const notificationManager = container.resolve(NotificationManager);
 
 	for (const notification of notifications) {
 		switch (notification.channelId) {
@@ -55,49 +51,48 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToMail.length) {
-		handleEmailSend(notificationToMail, notificationData, notificationManager);
+		loggerDebug(`Method not implemented: Email notifications`);
 	}
 
 	if (notificationToSms.length) {
-		console.log(notificationToSms);
+		loggerDebug(`Method not implemented: SMS notifications`);
 	}
 
 	if (notificationToWhatsapp.length) {
-		console.log(notificationToWhatsapp);
+		loggerDebug(`Method not implemented: Whatsapp notifications`);
 	}
 
 	if (notificationToTelegram.length) {
-		await sendNotificationToTelegram();
+		loggerDebug(`Method not implemented: Telegram notifications`);
 	}
 };
 
-const handleEmailSend = (
-	notificationToMail: RuleNotification[],
-	notificationData: DeviceNotificationSchema,
-	notificationManager: NotificationManager,
-) => {
-	const senderList: string[] = notificationToMail
-		.map(({ channelData }) => channelData?.tomail)
-		.filter(value => value !== undefined);
+// const handleEmailSend = (
+// 	notificationToMail: RuleNotification[],
+// 	notificationData: DeviceNotificationSchema,
+// ) => {
+// 	const senderList: string[] = notificationToMail
+// 		.map(({ channelData }) => channelData?.tomail)
+// 		.filter(value => value !== undefined);
 
-	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
+// 	const { title = '', message = '' } = notificationToMail[0].channelData ?? {};
 
-	const subject: string = getDeviceEmailSubject({
-		notificationData,
-		template: title,
-	});
+// 	const subject: string = getDeviceEmailSubject({
+// 		notificationData,
+// 		template: title,
+// 	});
 
-	const htmlMessage: string = getDeviceEmailHtmlMessage({
-		notificationData,
-		template: message,
-	});
+// 	const htmlMessage: string = getDeviceEmailHtmlMessage({
+// 		notificationData,
+// 		template: message,
+// 	});
 
-	console.log(subject);
-	console.log(htmlMessage);
+// 	console.log(subject);
+// 	console.log(htmlMessage);
 
-	notificationManager.notifyToEmail({
-		senderList,
-		subject,
-		htmlMessage,
-	});
-};
+// 	// notificationManager.notifyToEmail({
+// 	// 	senderList,
+// 	// 	subject,
+// 	// 	htmlMessage,
+// 	// });
+// };

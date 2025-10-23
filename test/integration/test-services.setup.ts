@@ -1,4 +1,3 @@
-import EmailService from '@app/notification/service/channel/email-service';
 import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
 import { kafkaConsumer } from '@common/kafka/kafka-consumer';
 import { kakfaProducer } from '@common/kafka/kafka-producer';
@@ -6,7 +5,6 @@ import { clickhouseClient } from '@common/log-db/connect-to-clickhouse';
 import { redisClient } from '@common/redis/create-redis-client';
 import environment from '@config/env';
 import { initServices } from '@src/init-services';
-import { container } from 'tsyringe';
 import z, { boolean, object } from 'zod/v4';
 
 const {
@@ -26,7 +24,6 @@ const StartTestServicesSchema = object({
 	withKafka: boolean().default(false).optional(),
 	withClickhouse: boolean().default(false).optional(),
 	withRedis: boolean().default(false).optional(),
-	withNotificationChannel: boolean().default(false).optional(),
 });
 
 type StartTestServicesSchema = z.infer<typeof StartTestServicesSchema>;
@@ -39,7 +36,6 @@ export const startTestServices = async (
 		withKafka = false,
 		withClickhouse = false,
 		withRedis = false,
-		withNotificationChannel = false,
 	} = StartTestServicesSchema.parse(request);
 
 	await initServices({
@@ -54,7 +50,6 @@ export const startTestServices = async (
 		clickhousePort: withClickhouse ? TEST_CLICKHOUSE_PORT : undefined,
 		clickhouseUser: withClickhouse ? TEST_CLICKHOUSE_USER : undefined,
 		isNeedCache: withCache,
-		withNotificationChannel,
 	});
 };
 
@@ -66,9 +61,6 @@ export const stopTestServices = async (): Promise<void> => {
 	if (clickhouseClient) {
 		await clickhouseClient.close();
 	}
-
-	const emailService = container.resolve(EmailService);
-	emailService.closeService();
 
 	try {
 		const { kafkaClient, restart } = handleKafkaClient();

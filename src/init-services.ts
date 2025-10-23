@@ -1,5 +1,3 @@
-import { notificationChannelInit } from '@app/notification/notification-channel-init';
-import NotificationManager from '@app/notification/notification-manager';
 import { cacheInitializer } from '@common/cache/service/cache-initializer';
 import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse';
 import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities';
@@ -9,7 +7,6 @@ import { configureConsumers } from '@config/configure-consumers';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { measurePerformance } from '@utils/measure-performance';
 import { defaultIfEmpty, lastValueFrom } from 'rxjs';
-import { container } from 'tsyringe';
 import z, { number, object, string, array, boolean } from 'zod/v4';
 
 const InitServicesSchema = object({
@@ -24,7 +21,6 @@ const InitServicesSchema = object({
 	clickhousePort: number().nonnegative().optional(),
 	clickhouseUser: string().nonempty().optional(),
 	isNeedCache: boolean().default(false).optional(),
-	withNotificationChannel: boolean().default(false).optional(),
 });
 
 type InitServicesSchema = z.infer<typeof InitServicesSchema>;
@@ -42,7 +38,6 @@ export const initServices = async (request: InitServicesSchema) => {
 		clickhousePort,
 		clickhouseUser,
 		isNeedCache,
-		withNotificationChannel,
 	} = InitServicesSchema.parse(request);
 
 	if (redisHost && redisPort) {
@@ -96,17 +91,6 @@ export const initServices = async (request: InitServicesSchema) => {
 				);
 			}
 		}, '[SYSTEM] (cacheInitializer) cache initialized in:');
-	}
-
-	if (withNotificationChannel) {
-		await new Promise(resolve => setTimeout(resolve, 500));
-		await measurePerformance(
-			() => notificationChannelInit(),
-			'[NOTIFICATION] (notificationChannelInit) channel initialized in:',
-		);
-
-		const notificationManager = container.resolve(NotificationManager);
-		await notificationManager.initialize();
 	}
 
 	if (kafkaBrokers && kafkaClientId && kafkaLogLevel) {

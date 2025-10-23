@@ -54,7 +54,16 @@ export default class DeviceCache
 						const deviceList: Device[] =
 							await getDeviceBatchFromRedis(keyBatch);
 
-						this.addMany(deviceList);
+						const deviceCleanList: Device[] = deviceList.map(device => ({
+							...device,
+							config: !device.config ? undefined : device.config,
+							setup: !device.setup ? undefined : device.setup,
+							states: !device.states ? undefined : device.states,
+							last: !device.last ? undefined : device.last,
+							vehicleData: !device.vehicleData ? undefined : device.vehicleData,
+						}));
+
+						this.addMany(deviceCleanList);
 
 						keyBatch = [];
 					}
