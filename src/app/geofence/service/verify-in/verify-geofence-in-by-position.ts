@@ -13,6 +13,8 @@ const VerifyGeofenceInByPositionSchema = object({
 	previousPositionCoords: array(number()).min(2).optional(),
 	geofenceCoords: PositionSchema,
 	radius: number().nonnegative(),
+	currentTimestamp: number().nonnegative(),
+	previousTimestamp: number().nonnegative(),
 });
 
 type VerifyGeofenceInByPositionSchema = z.infer<
@@ -28,7 +30,26 @@ export const verifyGeofenceInByPosition = (
 		geofenceCoords,
 		radius,
 		previousPositionCoords,
+		currentTimestamp,
+		previousTimestamp,
 	} = VerifyGeofenceInByPositionSchema.parse(request);
+	// if (
+	// 	previousPositionCoords &&
+	// 	positionCoords[0] === previousPositionCoords[0] &&
+	// 	positionCoords[1] == previousPositionCoords[1]
+	// ) {
+	// 	loggerDebug(
+	// 		`[GEOFENCE] (verifyGeofenceInByPosition) position not changed from previous, skipping...`,
+	// 	);
+
+	// 	return false;
+	// }
+
+	const secondsTranscurredFromPrevTimestamp =
+		getTotalSecondsTranscurredFromPreviousTimestamp(
+			currentTimestamp,
+			previousTimestamp,
+		);
 
 	const currentPosition: Feature<Point, GeoJsonProperties> =
 		turfPoint(positionCoords);
@@ -59,4 +80,12 @@ export const verifyGeofenceInByPosition = (
 			return false;
 		}
 	}
+};
+
+const getTotalSecondsTranscurredFromPreviousTimestamp = (
+	currentTimestamp: number,
+	previousTimestamp: number,
+): number => {
+	const timeDifference = currentTimestamp - previousTimestamp;
+	return Math.floor(timeDifference / 1000);
 };

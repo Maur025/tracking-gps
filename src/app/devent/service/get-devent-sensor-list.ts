@@ -93,7 +93,7 @@ const getSensorData = (sensorResponse?: SensorResponse): Sensor | undefined => {
 	const { id, name, description } = sensorResponse;
 
 	return {
-		id,
+		id: Number(id),
 		name: SensorName.parse(name),
 		description,
 	};

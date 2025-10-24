@@ -1,9 +1,9 @@
-import { BaseData } from '@maur025/core-model-data';
-import z, { number, string } from 'zod/v4';
+import z, { number, object, string } from 'zod/v4';
 import { SensorResponse } from './sensor-response';
 import { CalcTypeResponse } from './calc-type-response';
 
-export const DeventSensorResponse = BaseData.extend({
+export const DeventSensorResponse = object({
+	id: string(),
 	devent_id: string().nonempty(),
 	sensor_id: number().nonnegative(),
 	calctype_id: number().nonnegative(),

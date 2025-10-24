@@ -24,6 +24,22 @@ export const getGeofencesInByLocation = (
 		GetGeofencesInByLocationRequest.parse(request);
 
 	const { t: trackTimestamp = 0, lat = 0, lon = 0 } = deviceLastTrack;
+	const {
+		t: previousTrackTimestamp = 0,
+		lat: previousLat = 0,
+		lon: previousLon = 0,
+	} = previousDeviceTrack ?? {};
+
+	if (!previousLat && !previousLon && !lat && !lon) {
+		loggerDebug(
+			`[GEOFENCE] (getGeofencesInByLocation) device position prev and current are invalid, skipping...`,
+		);
+
+		return;
+	}
+
+	if (previousLat === lat && previousLon === lon) {
+	}
 
 	const geofenceCache = container.resolve(GeofenceCache);
 	const geofenceList: Geofence[] = geofenceCache.getAll();
@@ -78,6 +94,8 @@ export const getGeofencesInByLocation = (
 				previousDeviceTrack?.lat && previousDeviceTrack?.lon
 					? [previousDeviceTrack.lon, previousDeviceTrack.lat]
 					: undefined,
+			currentTimestamp: trackTimestamp,
+			previousTimestamp: previousTrackTimestamp,
 		});
 
 		if (isGeofenceInside) {

@@ -7,6 +7,8 @@ import { getNewGeofencesIn } from './get-new-geofences-in';
 import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
 import z, { object } from 'zod/v4';
 import { Track } from '@app/track/entity/track';
+import { container } from 'tsyringe';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
@@ -26,20 +28,31 @@ export const getGeofencesDeviceIn = async (
 			`[DEVICE] (getGeofencesDeviceIn) device id invalid or position not found, skipping...`,
 		);
 
-		return {
-			geofenceList: [],
-			geofenceInTotal: 0,
-			quantityNewIn: 0,
-			geofenceInNames: [],
-			newGeofenceInList: [],
-		};
+		return buildGeofencesDeviceInResponse([], []);
 	}
 
-	loggerDebug(`device current las track:`);
-	console.log(device.last);
+	const { lat = 0, lon = 0 } = device.last;
+	const { lat: previousLat = 0, lon: previousLon = 0 } =
+		previousDeviceTrack ?? {};
 
-	loggerDebug(`device previous las track:`);
-	console.log(previousDeviceTrack);
+	if (!previousLat && !previousLon && !lat && !lon) {
+		loggerDebug(
+			`[GEOFENCE] (getGeofencesInByLocation) device position prev and current are invalid, skipping...`,
+		);
+
+		const geofenceInList: GeofenceIn[] = recoveryGeofenceInFromCache(device.id);
+
+		return buildGeofencesDeviceInResponse(geofenceInList, []);
+	}
+
+	if (previousLat === lat && previousLon === lon) {
+		loggerDebug(
+			`[GEOFENCE] (getGeofencesInByLocation) device position not changed from previous, nothing to calculate, skipping...`,
+		);
+
+		const geofenceInList: GeofenceIn[] = recoveryGeofenceInFromCache(device.id);
+		return buildGeofencesDeviceInResponse(geofenceInList, []);
+	}
 
 	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation({
 		deviceLastTrack: device.last,
@@ -54,13 +67,27 @@ export const getGeofencesDeviceIn = async (
 
 	matchIsNewGeofenceIn(currentGeofencesIn, newGeofencesIn);
 
-	return {
-		geofenceList: currentGeofencesIn,
-		geofenceInTotal: currentGeofencesIn.length,
-		quantityNewIn: newGeofencesIn.length,
-		geofenceInNames: currentGeofencesIn.map(
-			({ geofenceName = '' }) => geofenceName,
-		),
-		newGeofenceInList: newGeofencesIn,
-	};
+	return buildGeofencesDeviceInResponse(currentGeofencesIn, newGeofencesIn);
 };
+
+const recoveryGeofenceInFromCache = (deviceId: string): GeofenceIn[] => {
+	const geofenceInCache = container.resolve(GeofenceInCache);
+
+	const geofenceIn = geofenceInCache.getCache();
+	const geofenceInOfDeviceMap = geofenceIn.get(deviceId);
+
+	return !geofenceInOfDeviceMap
+		? []
+		: Array.from(geofenceInOfDeviceMap.values()).map(geofenceIn => geofenceIn);
+};
+
+const buildGeofencesDeviceInResponse = (
+	geofenceInList: GeofenceIn[],
+	newGeofenceInList: GeofenceIn[],
+): DeviceGeofenceIn => ({
+	geofenceList: geofenceInList,
+	geofenceInTotal: geofenceInList.length,
+	quantityNewIn: newGeofenceInList.length,
+	newGeofenceInList,
+	geofenceInNames: geofenceInList.map(({ geofenceName }) => geofenceName),
+});

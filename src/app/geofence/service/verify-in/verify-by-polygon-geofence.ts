@@ -1,11 +1,7 @@
 import { PositionL3, PositionSchema } from '@common/schema/position.schema';
 import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled';
 import { Feature, GeoJsonProperties, Point, Polygon } from 'geojson';
-import {
-	polygon as turfPolygon,
-	booleanPointInPolygon,
-	lineString,
-} from '@turf/turf';
+import { polygon as turfPolygon, booleanPointInPolygon } from '@turf/turf';
 import z, { any, object } from 'zod/v4';
 
 const VerifyByPolygonGeofenceRequest = object({
@@ -41,12 +37,15 @@ export const verifyByPolygonGeofence = (
 
 	isInGeofence = booleanPointInPolygon(currentPosition, polygonGeofence);
 
-	if (isInGeofence || !previousPosition) {
-		return isInGeofence;
-	}
+	// if (isInGeofence || !previousPosition) {
+	// 	return isInGeofence;
+	// }
 
-	const route = lineString([previousPosition, currentPosition]);
-	console.log(route);
+	// const route = lineString([previousPosition, currentPosition]);
+	// console.log(route);
+
+	// const routeDistance = turfLength(route, { units: 'meters' });
+	// console.log(`routeDistance: ${routeDistance} meters`);
 
 	return isInGeofence;
 };
