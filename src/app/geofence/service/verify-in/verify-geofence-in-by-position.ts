@@ -1,76 +1,44 @@
 import { GeofenceType } from '@app/geofence/entity/geofence-type';
 import { PositionSchema } from '@common/schema/position.schema';
 import { Feature, GeoJsonProperties, Point } from 'geojson';
-import z, { array, number, object } from 'zod/v4';
-import { point as turfPoint } from '@turf/turf';
+import z, { any, number, object } from 'zod/v4';
 import { verifyByRadialGeofence } from './verify-by-radial-geofence';
 import { verifyByPolygonGeofence } from './verify-by-polygon-geofence';
 import { loggerDebug } from '@maur025/core-logger';
 
 const VerifyGeofenceInByPositionSchema = object({
 	geofenceType: GeofenceType,
-	positionCoords: array(number()).min(2),
-	previousPositionCoords: array(number()).min(2).optional(),
+	position: any(),
 	geofenceCoords: PositionSchema,
-	radius: number().nonnegative(),
-	currentTimestamp: number().nonnegative(),
-	previousTimestamp: number().nonnegative(),
+	geofenceRadius: number().nonnegative(),
 });
 
-type VerifyGeofenceInByPositionSchema = z.infer<
-	typeof VerifyGeofenceInByPositionSchema
->;
+type VerifyGeofenceInByPositionSchema = Omit<
+	z.infer<typeof VerifyGeofenceInByPositionSchema>,
+	'position'
+> & {
+	position: Feature<Point, GeoJsonProperties>;
+};
 
 export const verifyGeofenceInByPosition = (
 	request: VerifyGeofenceInByPositionSchema,
 ): boolean => {
-	const {
-		geofenceType,
-		positionCoords,
-		geofenceCoords,
-		radius,
-		previousPositionCoords,
-		currentTimestamp,
-		previousTimestamp,
-	} = VerifyGeofenceInByPositionSchema.parse(request);
-	// if (
-	// 	previousPositionCoords &&
-	// 	positionCoords[0] === previousPositionCoords[0] &&
-	// 	positionCoords[1] == previousPositionCoords[1]
-	// ) {
-	// 	loggerDebug(
-	// 		`[GEOFENCE] (verifyGeofenceInByPosition) position not changed from previous, skipping...`,
-	// 	);
-
-	// 	return false;
-	// }
-
-	const secondsTranscurredFromPrevTimestamp =
-		getTotalSecondsTranscurredFromPreviousTimestamp(
-			currentTimestamp,
-			previousTimestamp,
-		);
-
-	const currentPosition: Feature<Point, GeoJsonProperties> =
-		turfPoint(positionCoords);
-
-	const previousPosition: Feature<Point, GeoJsonProperties> | undefined =
-		previousPositionCoords &&
-		previousPositionCoords[1] != positionCoords[1] &&
-		previousPositionCoords[0] != positionCoords[0]
-			? turfPoint(previousPositionCoords)
-			: undefined;
+	const { geofenceType, position, geofenceCoords, geofenceRadius } =
+		VerifyGeofenceInByPositionSchema.parse(request);
 
 	switch (geofenceType) {
 		case 'POLYGONS': {
 			return verifyByPolygonGeofence({
-				currentPosition,
+				position,
 				geofenceCoords,
-				previousPosition,
 			});
 		}
 		case 'POINTS': {
-			return verifyByRadialGeofence(currentPosition, geofenceCoords, radius);
+			return verifyByRadialGeofence({
+				position,
+				geofenceCoords,
+				geofenceRadius,
+			});
 		}
 		default: {
 			loggerDebug(
@@ -80,12 +48,4 @@ export const verifyGeofenceInByPosition = (
 			return false;
 		}
 	}
-};
-
-const getTotalSecondsTranscurredFromPreviousTimestamp = (
-	currentTimestamp: number,
-	previousTimestamp: number,
-): number => {
-	const timeDifference = currentTimestamp - previousTimestamp;
-	return Math.floor(timeDifference / 1000);
 };

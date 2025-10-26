@@ -24,13 +24,16 @@ export const getNewGeofencesIn = async (
 		Map<string, GeofenceIn>
 	> = geofenceInCache.getCache();
 
-	console.log('cache', cache);
+	const geofenceOnlyInList = geofenceInFullList.filter(
+		geofenceInteraction => geofenceInteraction.finalState === 'IN',
+	);
 
 	if (!cache.has(deviceId)) {
 		loggerDebug(
 			`[GEOFENCE] (getNewGeofencesIn) no cache for deviceId ${deviceId}, init device id and adding all in list...`,
 		);
-		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
+
+		await addGeofenceInToCache({ geofenceInList: geofenceOnlyInList });
 
 		return changeIsNewToTrue(geofenceInFullList);
 	}
@@ -42,7 +45,7 @@ export const getNewGeofencesIn = async (
 		loggerDebug(
 			`[GEOFENCE] (getNewGeofencesIn) lastGeofenceInCache is void or undefined, adding all in list...`,
 		);
-		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
+		await addGeofenceInToCache({ geofenceInList: geofenceOnlyInList });
 
 		return changeIsNewToTrue(geofenceInFullList);
 	}
@@ -66,4 +69,10 @@ export const getNewGeofencesIn = async (
 };
 
 const changeIsNewToTrue = (geofenceInList: GeofenceIn[]): GeofenceIn[] =>
-	geofenceInList.map(geofenceIn => ({ ...geofenceIn, isNew: true }));
+	geofenceInList.map(geofenceIn => {
+		if (geofenceIn.finalState === 'IN') {
+			return { ...geofenceIn, isNew: true };
+		}
+
+		return geofenceIn;
+	});

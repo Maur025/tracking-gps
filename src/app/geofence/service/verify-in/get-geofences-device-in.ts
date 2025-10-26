@@ -9,6 +9,7 @@ import z, { object } from 'zod/v4';
 import { Track } from '@app/track/entity/track';
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
+import { getTotalSecondsElapsedSincePreviousTimestamp } from '@app/device/service/get-total-elapsed-since-previous-timestamp';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
@@ -16,6 +17,8 @@ const GetGeofencesDeviceInSchema = object({
 });
 
 type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
+
+const loggerAuxData: string = '[DEVICE] (getGeofencesDeviceIn)';
 
 export const getGeofencesDeviceIn = async (
 	request: GetGeofencesDeviceInSchema,
@@ -25,33 +28,53 @@ export const getGeofencesDeviceIn = async (
 
 	if (!device?.id || !device?.last?.lon || !device?.last?.lat) {
 		loggerDebug(
-			`[DEVICE] (getGeofencesDeviceIn) device id invalid or position not found, skipping...`,
+			`${loggerAuxData} device id invalid or position not found, skipping...`,
 		);
 
 		return buildGeofencesDeviceInResponse([], []);
 	}
 
-	const { lat = 0, lon = 0 } = device.last;
-	const { lat: previousLat = 0, lon: previousLon = 0 } =
-		previousDeviceTrack ?? {};
+	const { lat = 0, lon = 0, t: timestamp = 0 } = device.last;
+	const {
+		lat: previousLat = 0,
+		lon: previousLon = 0,
+		t: previousTimestamp = 0,
+	} = previousDeviceTrack ?? {};
 
 	if (!previousLat && !previousLon && !lat && !lon) {
 		loggerDebug(
-			`[GEOFENCE] (getGeofencesInByLocation) device position prev and current are invalid, skipping...`,
+			`${loggerAuxData} device position prev and current are invalid, loading lastest data...`,
 		);
 
-		const geofenceInList: GeofenceIn[] = recoveryGeofenceInFromCache(device.id);
+		return buildGeofencesDeviceInResponse(
+			recoveryGeofenceInFromCache(device.id),
+			[],
+		);
+	}
 
-		return buildGeofencesDeviceInResponse(geofenceInList, []);
+	const timeElapsedSincePreviousTrack =
+		getTotalSecondsElapsedSincePreviousTimestamp(timestamp, previousTimestamp);
+
+	if (timeElapsedSincePreviousTrack <= 0) {
+		loggerDebug(
+			`${loggerAuxData} device has not moved in time, same timestamp received, loading lastest data...`,
+		);
+
+		return buildGeofencesDeviceInResponse(
+			recoveryGeofenceInFromCache(device.id),
+			[],
+		);
 	}
 
 	if (previousLat === lat && previousLon === lon) {
 		loggerDebug(
-			`[GEOFENCE] (getGeofencesInByLocation) device position not changed from previous, nothing to calculate, skipping...`,
+			`${loggerAuxData} device position not changed from previous, nothing to calculate, loading lastest data...`,
 		);
 
-		const geofenceInList: GeofenceIn[] = recoveryGeofenceInFromCache(device.id);
-		return buildGeofencesDeviceInResponse(geofenceInList, []);
+		return buildGeofencesDeviceInResponse(
+			recoveryGeofenceInFromCache(device.id),
+			[],
+		);
 	}
 
 	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation({
@@ -76,9 +99,9 @@ const recoveryGeofenceInFromCache = (deviceId: string): GeofenceIn[] => {
 	const geofenceIn = geofenceInCache.getCache();
 	const geofenceInOfDeviceMap = geofenceIn.get(deviceId);
 
-	return !geofenceInOfDeviceMap
-		? []
-		: Array.from(geofenceInOfDeviceMap.values()).map(geofenceIn => geofenceIn);
+	return geofenceInOfDeviceMap
+		? Array.from(geofenceInOfDeviceMap.values()).map(geofenceIn => geofenceIn)
+		: [];
 };
 
 const buildGeofencesDeviceInResponse = (

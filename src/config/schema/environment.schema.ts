@@ -34,6 +34,7 @@ export const EnvironmentSchema = object({
 	TEST_CLICKHOUSE_PASSWORD: string(),
 
 	NOTIFICATION_URL: string().nonempty(),
+	GPS_RADIUS: number().nonnegative(),
 });
 
 export type EnvironmentSchema = z.infer<typeof EnvironmentSchema>;

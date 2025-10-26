@@ -53,11 +53,11 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToMail.length) {
-		// await handleEmailSend(notificationToMail, notificationData);
+		await handleEmailSend(notificationToMail, notificationData);
 	}
 
 	if (notificationToSms.length) {
-		// loggerDebug(`Method not implemented: SMS notifications`);
+		loggerDebug(`Method not implemented: SMS notifications`);
 	}
 
 	if (notificationToWhatsapp.length) {

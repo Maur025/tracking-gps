@@ -48,6 +48,7 @@ export const processDeviceData = async (
 		device,
 		geofenceInFullList: geofenceInData.geofenceList,
 		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
+		previousDeviceTrack: deviceInMapCache?.last,
 	});
 
 	const rulesAppliedList: string[] = await getDeviceRules({

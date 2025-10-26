@@ -6,6 +6,10 @@ import { Geofence } from '@app/geofence/entity/geofence';
 import { loggerDebug } from '@maur025/core-logger';
 import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position';
 import z, { object, string } from 'zod/v4';
+import { Feature, GeoJsonProperties, Point } from 'geojson';
+import { point as turfPoint } from '@turf/turf';
+import { GeofenceCalculateStates } from '../../entity/geofence-in';
+import { rebuildRouteBetweenTwoPoints } from '../rebuild-route-between-two-points';
 
 const GetGeofencesInByLocationRequest = object({
 	deviceLastTrack: Track,
@@ -30,21 +34,28 @@ export const getGeofencesInByLocation = (
 		lon: previousLon = 0,
 	} = previousDeviceTrack ?? {};
 
-	if (!previousLat && !previousLon && !lat && !lon) {
-		loggerDebug(
-			`[GEOFENCE] (getGeofencesInByLocation) device position prev and current are invalid, skipping...`,
-		);
-
-		return;
-	}
-
-	if (previousLat === lat && previousLon === lon) {
-	}
-
 	const geofenceCache = container.resolve(GeofenceCache);
 	const geofenceList: Geofence[] = geofenceCache.getAll();
 
 	const geofenceInsideList: GeofenceIn[] = [];
+	let pointOfLocation: Feature<Point, GeoJsonProperties>[] = [];
+
+	if (previousLat == 0 && previousLon == 0) {
+		loggerDebug(
+			`[GEOFENCE] (getGeofencesInByLocation) previous device track position not exists, nothing to rebuild... using current position only.`,
+		);
+		pointOfLocation.push(turfPoint([lon, lat]));
+	} else {
+		loggerDebug(
+			`[GEOFENCE] (getGeofencesInByLocation) rebuilding route between two points...`,
+		);
+		pointOfLocation = rebuildRouteBetweenTwoPoints({
+			coords: [lon, lat],
+			previousCoords: [previousLon, previousLat],
+			previousTimestamp: previousTrackTimestamp,
+			timestamp: trackTimestamp,
+		});
+	}
 
 	for (const geofence of geofenceList) {
 		const {
@@ -55,13 +66,13 @@ export const getGeofencesInByLocation = (
 
 		const {
 			type: geofenceType,
-			coords,
+			coords: geofenceCoords,
 			area = 0,
 			radius = 0,
 		} = geofence?.data ?? { coords: [] };
 		const { name: layerName = '' } = geofence?.layer ?? {};
 
-		if (!coords?.length || !geofenceType) {
+		if (!geofenceCoords?.length || !geofenceType) {
 			loggerDebug(
 				`[GEOFENCE] (getGeofencesInByLocation) geofence without coords or geofence without type, skipping...`,
 			);
@@ -83,25 +94,68 @@ export const getGeofencesInByLocation = (
 			radius,
 			type: geofenceType,
 			isNew: false,
+			initialState: 'NONE',
+			finalState: 'NONE',
 		};
 
-		const isGeofenceInside: boolean = verifyGeofenceInByPosition({
-			geofenceType,
-			radius,
-			positionCoords: [lon, lat],
-			geofenceCoords: coords,
-			previousPositionCoords:
-				previousDeviceTrack?.lat && previousDeviceTrack?.lon
-					? [previousDeviceTrack.lon, previousDeviceTrack.lat]
-					: undefined,
-			currentTimestamp: trackTimestamp,
-			previousTimestamp: previousTrackTimestamp,
-		});
-
-		if (isGeofenceInside) {
-			geofenceInsideList.push({ ...deviceInGeofence });
+		const routeSummary: boolean[] = [];
+		for (const point of pointOfLocation) {
+			routeSummary.push(
+				verifyGeofenceInByPosition({
+					geofenceType,
+					geofenceRadius: radius,
+					position: point,
+					geofenceCoords,
+				}),
+			);
 		}
+
+		deviceInGeofence.initialState = routeSummary[0] ? 'IN' : 'NONE';
+		deviceInGeofence.finalState = getFinalStateFromStates(
+			routeSummary,
+			deviceInGeofence.initialState,
+		);
+
+		if (
+			deviceInGeofence.initialState === 'NONE' &&
+			deviceInGeofence.finalState === 'NONE'
+		) {
+			loggerDebug(
+				`[GEOFENCE] (getGeofencesInByLocation) device never IN, OUT or IN_OUT this geofence`,
+			);
+
+			continue;
+		}
+
+		geofenceInsideList.push({ ...deviceInGeofence });
 	}
 
 	return geofenceInsideList;
+};
+
+const getFinalStateFromStates = (
+	stateList: boolean[],
+	initialState: GeofenceCalculateStates,
+) => {
+	let finalState: GeofenceCalculateStates = 'NONE';
+
+	for (const state of stateList) {
+		if (state && finalState === 'NONE' && initialState === 'NONE') {
+			finalState = 'IN';
+		}
+
+		if (!state && finalState === 'IN' && initialState === 'NONE') {
+			finalState = 'IN_OUT';
+		}
+
+		if (!state && finalState === 'NONE' && initialState === 'IN') {
+			finalState = 'OUT';
+		}
+
+		if (state && finalState === 'OUT' && initialState === 'IN') {
+			finalState = 'IN';
+		}
+	}
+
+	return finalState;
 };

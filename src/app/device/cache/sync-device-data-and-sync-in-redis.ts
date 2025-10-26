@@ -4,7 +4,7 @@ import DeviceCache from './device-cache';
 import { container } from 'tsyringe';
 import { getMinutesOfTimestamp } from '@utils/get-minutes-of-timestamp';
 
-export const syncDeviceInRedis = async (
+export const syncDeviceDataAndSyncInRedis = async (
 	deviceData: Device | null,
 ): Promise<void> => {
 	if (!deviceData?.id) {
@@ -34,5 +34,11 @@ export const syncDeviceInRedis = async (
 
 	if (sinceLastUpdate >= 12) {
 		await deviceCache.syncDataInRedisCache(deviceData);
+		return;
 	}
+
+	deviceCache.updateById(deviceData.id, {
+		...deviceData,
+		lastRedisUpdate: deviceDataMap.lastRedisUpdate,
+	});
 };

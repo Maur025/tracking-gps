@@ -88,7 +88,7 @@ describe('device tracking data consumer intergration test', () => {
 		mswServer.close();
 	});
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		deviceTrackingDataConsumerSpy.mockClear();
 		deviceEnrichPublisherSpy.mockClear();
 	});
@@ -111,8 +111,6 @@ describe('device tracking data consumer intergration test', () => {
 	test('should process device data and return enrich with geofences,rules,alerts, notificarios, vehicle', async () => {
 		let callNumber: number = 0;
 		let timestamp = Date.now();
-
-		console.log(`Initial timestamp: ${timestamp}`);
 
 		await sendPayloadTest({
 			coords: [-68.156003, -16.505851],

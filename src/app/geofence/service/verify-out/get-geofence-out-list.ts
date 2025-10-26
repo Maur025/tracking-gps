@@ -25,6 +25,8 @@ export const getGeofenceOutList = async (
 		geofenceInFullList.map(({ id }) => id ?? ''),
 	);
 
+	console.log(geofenceInBackupList);
+
 	for (const geofenceIn of geofenceInBackupList) {
 		if (!geofenceIn.id || geofenceInFullSet.has(geofenceIn.id)) {
 			continue;

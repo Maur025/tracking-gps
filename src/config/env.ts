@@ -26,6 +26,7 @@ const {
 	TEST_CLICKHOUSE_USER = 'clickhouse-user-test',
 	TEST_CLICKHOUSE_PASSWORD = 'password',
 	NOTIFICATION_URL = 'http://localhost:7768',
+	GPS_RADIUS = '2.5',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -54,6 +55,7 @@ const environment: EnvironmentSchema = {
 	TEST_CLICKHOUSE_USER,
 	TEST_CLICKHOUSE_PASSWORD,
 	NOTIFICATION_URL,
+	GPS_RADIUS: Number(GPS_RADIUS),
 };
 
 export default environment;
