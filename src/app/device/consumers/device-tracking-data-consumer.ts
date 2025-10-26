@@ -4,7 +4,7 @@ import { ZodSafeParseResult } from 'zod/v4';
 import { zodFailedValidationLog } from '@utils/zod-failed-validation-log';
 import { loggerWarn } from '@maur025/core-logger';
 import { processDeviceData } from '../service/process-device-data';
-import { syncDeviceInRedis } from '../cache/sync-device-in-redis';
+import { syncDeviceDataAndSyncInRedis } from '../cache/sync-device-data-and-sync-in-redis';
 import { deviceDataEnrichToMonitorPublisher } from '../publisher/device-data-enrich-to-monitor-publisher';
 
 export const deviceTrackingDataConsumer = async (
@@ -34,7 +34,7 @@ export const deviceTrackingDataConsumer = async (
 
 	console.log(deviceData);
 
-	await syncDeviceInRedis(deviceData);
+	await syncDeviceDataAndSyncInRedis(deviceData);
 
 	if (deviceData) {
 		await deviceDataEnrichToMonitorPublisher(deviceData);

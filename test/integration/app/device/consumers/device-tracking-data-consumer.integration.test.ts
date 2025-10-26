@@ -88,7 +88,7 @@ describe('device tracking data consumer intergration test', () => {
 		mswServer.close();
 	});
 
-	beforeEach(() => {
+	beforeEach(async () => {
 		deviceTrackingDataConsumerSpy.mockClear();
 		deviceEnrichPublisherSpy.mockClear();
 	});
@@ -110,20 +110,30 @@ describe('device tracking data consumer intergration test', () => {
 
 	test('should process device data and return enrich with geofences,rules,alerts, notificarios, vehicle', async () => {
 		let callNumber: number = 0;
+		let timestamp = Date.now();
 
-		await sendPayloadTest({ coords: [-68.156003, -16.505851] });
+		await sendPayloadTest({
+			coords: [-68.156003, -16.505851],
+			timestamp,
+		});
 		callNumber++;
 		await shouldNotInteractWithAnyGeofences(callNumber);
-
 		await simulateDelay(2);
 
-		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.06901, -16.529763],
+			timestamp,
+		});
 		callNumber++;
 		await shouldEnterSomeGeofences(callNumber);
-
 		await simulateDelay(2);
 
-		await sendPayloadTest({ coords: [-68.06901, -16.529763] });
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.06901, -16.529763],
+			timestamp,
+		});
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);
 	}, 30000);
@@ -218,8 +228,10 @@ describe('device tracking data consumer intergration test', () => {
 
 	const sendPayloadTest = async ({
 		coords,
+		timestamp,
 	}: {
 		coords: Position;
+		timestamp: number;
 	}): Promise<void> => {
 		await publishKafka({
 			topic: TRACKING_GPS_DEVICE,
@@ -227,7 +239,7 @@ describe('device tracking data consumer intergration test', () => {
 				...deviceTrackingDataPayloadFake,
 				last: {
 					...deviceTrackingDataPayloadFake.last,
-					t: Date.now(),
+					t: timestamp,
 					lat: coords[1],
 					lon: coords[0],
 				},

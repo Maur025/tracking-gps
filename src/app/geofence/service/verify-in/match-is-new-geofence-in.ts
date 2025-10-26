@@ -5,7 +5,7 @@ export const matchIsNewGeofenceIn = (
 	geofenceInAllList: GeofenceIn[],
 	geofenceInNewList: GeofenceIn[],
 ): void => {
-	if (!geofenceInAllList.length || geofenceInNewList.length) {
+	if (!geofenceInAllList.length || !geofenceInNewList.length) {
 		loggerDebug(
 			`[GEOFENCE] (matchIsNewGeofenceIn) nothing to match, skipping...`,
 		);

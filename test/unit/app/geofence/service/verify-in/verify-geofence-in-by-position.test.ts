@@ -1,18 +1,19 @@
 import { GeofenceType } from '@app/geofence/entity/geofence-type';
 import { verifyGeofenceInByPosition } from '@app/geofence/service/verify-in/verify-geofence-in-by-position';
+import { point } from '@turf/turf';
 import { describe, expect, test } from 'vitest';
 
 describe('verify geofence in by position test', () => {
-	const positionCoords: number[] = [-68.068619, -16.529871];
+	const positionPoint = point([-68.068619, -16.529871]);
 
 	test('should return true when point is inside of radial geofence', () => {
 		const geofenceCoords: number[] = [-68.068962, -16.529353];
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POINTS',
-			positionCoords,
+			position: positionPoint,
 			geofenceCoords,
-			radius: 75,
+			geofenceRadius: 75,
 		});
 
 		expect(isInside).toBeDefined();
@@ -24,9 +25,9 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POINTS',
-			positionCoords,
+			position: positionPoint,
 			geofenceCoords,
-			radius: 20,
+			geofenceRadius: 20,
 		});
 
 		expect(isInside).toBeDefined();
@@ -37,9 +38,9 @@ describe('verify geofence in by position test', () => {
 		expect(() =>
 			verifyGeofenceInByPosition({
 				geofenceType: 'NOT_SUPPORTED' as GeofenceType,
-				positionCoords,
+				position: positionPoint,
 				geofenceCoords: [-68.068962, -16.529353],
-				radius: 20,
+				geofenceRadius: 20,
 			}),
 		).toThrow();
 	});
@@ -57,9 +58,9 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POLYGONS',
-			positionCoords,
+			position: positionPoint,
 			geofenceCoords,
-			radius: 0,
+			geofenceRadius: 0,
 		});
 
 		expect(isInside).toBeDefined();
@@ -78,9 +79,9 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POLYGONS',
-			positionCoords,
+			position: positionPoint,
 			geofenceCoords,
-			radius: 0,
+			geofenceRadius: 0,
 		});
 
 		expect(isInside).toBeDefined();

@@ -2,14 +2,37 @@ import { loggerDebug } from '@maur025/core-logger';
 import { Feature, GeoJsonProperties, Point, Position } from 'geojson';
 import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled';
 import { PositionSchema } from '@common/schema/position.schema';
-import { distance as turfDistance } from '@turf/turf';
+import {
+	booleanIntersects,
+	circle,
+	point as turfPoint,
+	distance as turfDistance,
+} from '@turf/turf';
+import environment from '@config/env';
+import z, { any, number, object } from 'zod/v4';
+
+const { GPS_RADIUS } = environment;
+
+const VerifyByRadialGeofenceRequest = object({
+	position: any(),
+	geofenceRadius: number().nonnegative(),
+	geofenceCoords: PositionSchema,
+});
+
+type VerifyByRadialGeofenceRequest = Omit<
+	z.infer<typeof VerifyByRadialGeofenceRequest>,
+	'position'
+> & {
+	position: Feature<Point, GeoJsonProperties>;
+};
 
 export const verifyByRadialGeofence = (
-	currentPosition: Feature<Point, GeoJsonProperties>,
-	geofenceCoords: PositionSchema,
-	radius: number,
+	request: VerifyByRadialGeofenceRequest,
 ): boolean => {
-	if (!radius) {
+	const { position, geofenceRadius, geofenceCoords } =
+		VerifyByRadialGeofenceRequest.parse(request);
+
+	if (!geofenceRadius) {
 		loggerDebug(
 			`[GEOFENCE] (verifyByRadialGeofence) geofence without radius, skipping...`,
 		);
@@ -22,11 +45,29 @@ export const verifyByRadialGeofence = (
 		1,
 	) as Position;
 
-	const distanceBetweenPoints: number = turfDistance(
-		geofenceRadiusCoords,
-		currentPosition,
+	if (GPS_RADIUS <= 0) {
+		loggerDebug(
+			`[GEOFENCE] (verifyByRadialGeofence) GPS_RADIUS <= 0, using exact distance check.`,
+		);
+
+		const geofenceRadiusPoint = turfPoint(geofenceRadiusCoords);
+
+		const distanceBetweenPoints: number = turfDistance(
+			geofenceRadiusPoint,
+			position,
+			{ units: 'meters' },
+		);
+
+		return distanceBetweenPoints <= geofenceRadius;
+	}
+	const circleOfPrecision = circle(
+		position?.geometry?.coordinates,
+		GPS_RADIUS,
 		{ units: 'meters' },
 	);
+	const circleOfGeofence = circle(geofenceRadiusCoords, geofenceRadius, {
+		units: 'meters',
+	});
 
-	return distanceBetweenPoints <= radius;
+	return booleanIntersects(circleOfPrecision, circleOfGeofence);
 };

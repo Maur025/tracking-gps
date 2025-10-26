@@ -3,6 +3,7 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { container } from 'tsyringe';
 import z, { array, object, string } from 'zod/v4';
 import { addGeofenceInToCache } from './add-geofence-in-to-cache';
+import { loggerDebug } from '@maur025/core-logger';
 
 const GetNewGeofencesInSchema = object({
 	deviceId: string().nonempty(),
@@ -23,8 +24,16 @@ export const getNewGeofencesIn = async (
 		Map<string, GeofenceIn>
 	> = geofenceInCache.getCache();
 
+	const geofenceOnlyInList = geofenceInFullList.filter(
+		geofenceInteraction => geofenceInteraction.finalState === 'IN',
+	);
+
 	if (!cache.has(deviceId)) {
-		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
+		loggerDebug(
+			`[GEOFENCE] (getNewGeofencesIn) no cache for deviceId ${deviceId}, init device id and adding all in list...`,
+		);
+
+		await addGeofenceInToCache({ geofenceInList: geofenceOnlyInList });
 
 		return changeIsNewToTrue(geofenceInFullList);
 	}
@@ -33,10 +42,17 @@ export const getNewGeofencesIn = async (
 		cache.get(deviceId);
 
 	if (!lastGeofenceInCache) {
-		await addGeofenceInToCache({ geofenceInList: geofenceInFullList });
+		loggerDebug(
+			`[GEOFENCE] (getNewGeofencesIn) lastGeofenceInCache is void or undefined, adding all in list...`,
+		);
+		await addGeofenceInToCache({ geofenceInList: geofenceOnlyInList });
 
 		return changeIsNewToTrue(geofenceInFullList);
 	}
+
+	loggerDebug(
+		`[GEOFENCE] (getNewGeofencesIn) checking for new geofences in cache list, compare previous with current...`,
+	);
 
 	const newGeofenceInList: GeofenceIn[] = [];
 
@@ -53,4 +69,10 @@ export const getNewGeofencesIn = async (
 };
 
 const changeIsNewToTrue = (geofenceInList: GeofenceIn[]): GeofenceIn[] =>
-	geofenceInList.map(geofenceIn => ({ ...geofenceIn, isNew: true }));
+	geofenceInList.map(geofenceIn => {
+		if (geofenceIn.finalState === 'IN') {
+			return { ...geofenceIn, isNew: true };
+		}
+
+		return geofenceIn;
+	});
