@@ -1,5 +1,5 @@
 import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import { loggerWarn } from '@maur025/core-logger';
+import { loggerDebug, loggerWarn } from '@maur025/core-logger';
 import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
 import { Geofence } from '@app/geofence/entity/geofence';
 import { GeofenceData } from '@app/geofence/entity/geofence-data';
@@ -7,7 +7,6 @@ import { container } from 'tsyringe';
 import { LayerType } from '@app/layer/entity/layer-type';
 import { GeofenceType } from '../entity/geofence-type';
 import PointInterestCache from '../../point-interest/cache/point-interest-cache';
-import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
 import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
 import { addGeofenceBatchToRedis } from '../cache/add-geofence-batch-to-redis';
 
@@ -27,9 +26,6 @@ export const geofenceCacheInit = async (
 
 	geofenceCache.clear();
 	pointInterestCache.clear();
-
-	await deleteRedisIdx(geofenceCache.getIdxData());
-	await deleteRedisIdx(pointInterestCache.getIdxData());
 
 	const geofenceResponseList: GeofenceResponse[] = [];
 	const pointInterestResponseList: GeofenceResponse[] = [];
@@ -75,9 +71,11 @@ export const geofenceCacheInit = async (
 
 const getGeofenceOfGeofenceResponse = (
 	geofenceResponse: GeofenceResponse[],
-): Geofence[] =>
-	geofenceResponse.map(
-		({
+): Geofence[] => {
+	const geofenceList: Geofence[] = [];
+
+	for (const geofence of geofenceResponse) {
+		const {
 			id,
 			data,
 			layer_id,
@@ -87,7 +85,20 @@ const getGeofenceOfGeofenceResponse = (
 			icon,
 			coords,
 			layer,
-		}) => ({
+		} = geofence;
+
+		const dataInJson = getDataAsJson(data);
+		const geofenceData = GeofenceData.safeParse(dataInJson);
+
+		if (!geofenceData.success) {
+			loggerDebug(
+				`[GEOFENCE] (getGeofenceOfGeofenceResponse) geofence data parse error for geofence id: ${id}, skipping...`,
+			);
+
+			continue;
+		}
+
+		geofenceList.push({
 			id,
 			layerId: layer_id,
 			name,
@@ -95,14 +106,17 @@ const getGeofenceOfGeofenceResponse = (
 			color,
 			icon,
 			coords,
-			data: getDataAsJson(data),
+			data: geofenceData.data,
 			layer: {
 				...layer,
 				name: layer?.name ?? '',
 				type: LayerType.parse(layer?.type),
 			},
-		}),
-	);
+		});
+	}
+
+	return geofenceList;
+};
 
 const getDataAsJson = (data?: string): GeofenceData | undefined => {
 	if (!data) {

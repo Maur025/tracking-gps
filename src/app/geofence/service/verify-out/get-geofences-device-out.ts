@@ -5,7 +5,7 @@ import { loggerDebug } from '@maur025/core-logger';
 import z, { array, object, string, map } from 'zod/v4';
 import { getGeofenceOutList } from './get-geofence-out-list';
 import { Track } from '@app/track/entity/track';
-import { getTotalSecondsElapsedSincePreviousTimestamp } from '@app/device/service/get-total-elapsed-since-previous-timestamp';
+import { validateToIgnoreDevicePositionCalculate } from '@app/device/service/validate-to-ignore-device-position-calculate';
 
 const GetGeofencesDeviceOutSchema = object({
 	device: Device,
@@ -28,45 +28,17 @@ export const getGeofencesDeviceOut = async (
 		previousDeviceTrack,
 	} = GetGeofencesDeviceOutSchema.parse(request);
 
-	if (!device?.id || !device?.last?.lon || !device?.last?.lat) {
-		loggerDebug(
-			`${loggerAuxData} device id invalid or position not found, skipping...`,
-		);
+	const resultOfValidation =
+		validateToIgnoreDevicePositionCalculate<DeviceGeofenceOut>({
+			device,
+			previousDeviceTrack,
+			loggerAuxData,
+			noIdCallback: () => buildGeofencesDeviceOutResponse([]),
+			otherValidationsCallback: () => buildGeofencesDeviceOutResponse([]),
+		});
 
-		return buildGeofencesDeviceOutResponse([]);
-	}
-
-	const { lat = 0, lon = 0, t: timestamp = 0 } = device.last;
-	const {
-		lat: prevLat = 0,
-		lon: prevLon = 0,
-		t: prevTimestamp = 0,
-	} = previousDeviceTrack ?? {};
-
-	if (!prevLat && !prevLon && !lat && !lon) {
-		loggerDebug(
-			`${loggerAuxData} device position prev and current are invalid, loading lastest data...`,
-		);
-
-		return buildGeofencesDeviceOutResponse([]);
-	}
-
-	if (prevLat === lat && prevLon === lon) {
-		loggerDebug(
-			`${loggerAuxData} device has not moved in position, skipping...`,
-		);
-
-		return buildGeofencesDeviceOutResponse([]);
-	}
-
-	const timeElapsedSincePreviousTrack =
-		getTotalSecondsElapsedSincePreviousTimestamp(timestamp, prevTimestamp);
-
-	if (timeElapsedSincePreviousTrack <= 0) {
-		loggerDebug(
-			`${loggerAuxData} device has not moved in time, same timestamp received, skipping...`,
-		);
-		return buildGeofencesDeviceOutResponse([]);
+	if (resultOfValidation) {
+		return resultOfValidation;
 	}
 
 	const geofencesInOutList: GeofenceIn[] = geofenceInFullList.filter(

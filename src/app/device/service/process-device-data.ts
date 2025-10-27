@@ -15,6 +15,7 @@ import { getDeviceGroups } from './get-device-groups';
 import { getDeviceRules } from './get-device-rules';
 import { processRulesByDevice } from '@app/rule/service/process-rules-by-device';
 import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch';
+import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest';
 
 export const processDeviceData = async (
 	device: Device,
@@ -51,6 +52,12 @@ export const processDeviceData = async (
 		previousDeviceTrack: deviceInMapCache?.last,
 	});
 
+	const visitedOrNearbyPointsOfInterest =
+		await getVisitedOrNearbyPointsOfInterest({
+			device,
+			previousDeviceTrack: deviceInMapCache?.last,
+		});
+
 	const rulesAppliedList: string[] = await getDeviceRules({
 		vehicleData,
 		groups,
@@ -63,6 +70,7 @@ export const processDeviceData = async (
 		geofencesIn: geofenceInData,
 		geofencesOut: geofenceOutData,
 		rulesApplied: rulesAppliedList,
+		pointInterestVisited: visitedOrNearbyPointsOfInterest,
 	};
 
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =

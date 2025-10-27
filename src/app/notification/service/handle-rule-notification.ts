@@ -53,7 +53,7 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToMail.length) {
-		await handleEmailSend(notificationToMail, notificationData);
+		// await handleEmailSend(notificationToMail, notificationData);
 	}
 
 	if (notificationToSms.length) {
@@ -61,7 +61,7 @@ export const handleRuleNotification = async (
 	}
 
 	if (notificationToWhatsapp.length) {
-		await handleWhatsappSend(notificationToWhatsapp, notificationData);
+		// await handleWhatsappSend(notificationToWhatsapp, notificationData);
 	}
 
 	if (notificationToTelegram.length) {

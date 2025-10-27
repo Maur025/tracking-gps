@@ -10,6 +10,7 @@ import { DeviceGeofenceIn } from './device-geofence-in';
 import { DeviceGeofenceOut } from './device-geofence-out';
 import { DeviceGroup } from './device-group';
 import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch';
+import { DevicePointInterestVisited } from './device-point-interest-visited';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -27,6 +28,7 @@ export const Device = BaseData.extend({
 	geofencesOut: DeviceGeofenceOut.optional(),
 	rulesApplied: array(string()).default([]),
 	alertsToLaunch: array(DeviceRuleAlertToLaunch).default([]),
+	pointInterestVisited: DevicePointInterestVisited.optional(),
 });
 
 export type Device = z.infer<typeof Device>;

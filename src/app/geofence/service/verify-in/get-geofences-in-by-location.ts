@@ -8,8 +8,8 @@ import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position';
 import z, { object, string } from 'zod/v4';
 import { Feature, GeoJsonProperties, Point } from 'geojson';
 import { point as turfPoint } from '@turf/turf';
-import { GeofenceCalculateStates } from '../../entity/geofence-in';
 import { rebuildRouteBetweenTwoPoints } from '../rebuild-route-between-two-points';
+import { getFinalStateFromStates } from '../get-final-state-from-states';
 
 const GetGeofencesInByLocationRequest = object({
 	deviceLastTrack: Track,
@@ -38,18 +38,18 @@ export const getGeofencesInByLocation = (
 	const geofenceList: Geofence[] = geofenceCache.getAll();
 
 	const geofenceInsideList: GeofenceIn[] = [];
-	let pointOfLocation: Feature<Point, GeoJsonProperties>[] = [];
+	let pointsOfLocation: Feature<Point, GeoJsonProperties>[] = [];
 
 	if (previousLat == 0 && previousLon == 0) {
 		loggerDebug(
 			`[GEOFENCE] (getGeofencesInByLocation) previous device track position not exists, nothing to rebuild... using current position only.`,
 		);
-		pointOfLocation.push(turfPoint([lon, lat]));
+		pointsOfLocation.push(turfPoint([lon, lat]));
 	} else {
 		loggerDebug(
 			`[GEOFENCE] (getGeofencesInByLocation) rebuilding route between two points...`,
 		);
-		pointOfLocation = rebuildRouteBetweenTwoPoints({
+		pointsOfLocation = rebuildRouteBetweenTwoPoints({
 			coords: [lon, lat],
 			previousCoords: [previousLon, previousLat],
 			previousTimestamp: previousTrackTimestamp,
@@ -99,7 +99,7 @@ export const getGeofencesInByLocation = (
 		};
 
 		const routeSummary: boolean[] = [];
-		for (const point of pointOfLocation) {
+		for (const point of pointsOfLocation) {
 			routeSummary.push(
 				verifyGeofenceInByPosition({
 					geofenceType,
@@ -111,10 +111,10 @@ export const getGeofencesInByLocation = (
 		}
 
 		deviceInGeofence.initialState = routeSummary[0] ? 'IN' : 'NONE';
-		deviceInGeofence.finalState = getFinalStateFromStates(
-			routeSummary,
-			deviceInGeofence.initialState,
-		);
+		deviceInGeofence.finalState = getFinalStateFromStates({
+			stateList: routeSummary,
+			initialState: deviceInGeofence.initialState,
+		});
 
 		if (
 			deviceInGeofence.initialState === 'NONE' &&
@@ -131,31 +131,4 @@ export const getGeofencesInByLocation = (
 	}
 
 	return geofenceInsideList;
-};
-
-const getFinalStateFromStates = (
-	stateList: boolean[],
-	initialState: GeofenceCalculateStates,
-) => {
-	let finalState: GeofenceCalculateStates = 'NONE';
-
-	for (const state of stateList) {
-		if (state && finalState === 'NONE' && initialState === 'NONE') {
-			finalState = 'IN';
-		}
-
-		if (!state && finalState === 'IN' && initialState === 'NONE') {
-			finalState = 'IN_OUT';
-		}
-
-		if (!state && finalState === 'NONE' && initialState === 'IN') {
-			finalState = 'OUT';
-		}
-
-		if (state && finalState === 'OUT' && initialState === 'IN') {
-			finalState = 'IN';
-		}
-	}
-
-	return finalState;
 };
