@@ -1,11 +1,8 @@
 import { PositionL1 } from '@common/schema/position.schema';
 import { BaseData } from '@maur025/core-model-data';
-import z, { boolean, number, string, enum as enum_ } from 'zod/v4';
+import z, { boolean, number, string } from 'zod/v4';
 import { GeofenceType } from './geofence-type';
-
-export const GeofenceCalculateStates = enum_(['NONE', 'IN', 'OUT', 'IN_OUT']);
-
-export type GeofenceCalculateStates = z.infer<typeof GeofenceCalculateStates>;
+import { GeofenceCalculateStates } from './geofence-calculate-state';
 
 export const GeofenceIn = BaseData.extend({
 	deviceId: string().nonempty(),
