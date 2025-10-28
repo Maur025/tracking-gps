@@ -136,6 +136,30 @@ describe('device tracking data consumer intergration test', () => {
 		});
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);
+
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.070607, -16.529831],
+			timestamp,
+		});
+		callNumber++;
+		await shouldVisitPointOfInterest(callNumber);
+
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.070931, -16.530651],
+			timestamp,
+		});
+		callNumber++;
+		await shouldVisitPointOfInterest(callNumber);
+
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.070896, -16.531223],
+			timestamp,
+		});
+		callNumber++;
+		await shouldVisitPointOfInterest(callNumber);
 	}, 30000);
 
 	const shouldNotInteractWithAnyGeofences = async (
@@ -184,6 +208,10 @@ describe('device tracking data consumer intergration test', () => {
 	};
 
 	const shouldKeepInSameGeofence = async (call: number): Promise<void> => {
+		await expectCommon(call);
+	};
+
+	const shouldVisitPointOfInterest = async (call: number): Promise<void> => {
 		await expectCommon(call);
 	};
 

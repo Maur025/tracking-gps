@@ -10,11 +10,13 @@ import { Feature, GeoJsonProperties, Point } from 'geojson';
 import { point as turfPoint } from '@turf/turf';
 import { rebuildRouteBetweenTwoPoints } from '../rebuild-route-between-two-points';
 import { getFinalStateFromStates } from '../get-final-state-from-states';
+import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 
 const GetGeofencesInByLocationRequest = object({
 	deviceLastTrack: Track,
 	deviceId: string(),
 	previousDeviceTrack: Track.optional(),
+	movingDirection: DeviceMovingDirection,
 });
 
 type GetGeofencesInByLocationRequest = z.infer<
@@ -24,7 +26,7 @@ type GetGeofencesInByLocationRequest = z.infer<
 export const getGeofencesInByLocation = (
 	request: GetGeofencesInByLocationRequest,
 ): GeofenceIn[] => {
-	const { deviceLastTrack, deviceId, previousDeviceTrack } =
+	const { deviceLastTrack, deviceId, previousDeviceTrack, movingDirection } =
 		GetGeofencesInByLocationRequest.parse(request);
 
 	const { t: trackTimestamp = 0, lat = 0, lon = 0 } = deviceLastTrack;
@@ -54,6 +56,7 @@ export const getGeofencesInByLocation = (
 			previousCoords: [previousLon, previousLat],
 			previousTimestamp: previousTrackTimestamp,
 			timestamp: trackTimestamp,
+			movingDirection,
 		});
 	}
 

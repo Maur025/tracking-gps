@@ -60,6 +60,11 @@ export const verifyByRadialGeofence = (
 
 		return distanceBetweenPoints <= geofenceRadius;
 	}
+
+	// loggerDebug(
+	// 	`[GEOFENCE] (verifyByRadialGeofence) using circle intersection check.`,
+	// );
+
 	const circleOfPrecision = circle(
 		position?.geometry?.coordinates,
 		GPS_RADIUS,

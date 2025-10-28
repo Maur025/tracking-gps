@@ -9,10 +9,12 @@ import { Track } from '@app/track/entity/track';
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
 import { validateToIgnoreDevicePositionCalculate } from '@app/device/service/validate-to-ignore-device-position-calculate';
+import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
 	previousDeviceTrack: Track.optional(),
+	movingDirection: DeviceMovingDirection,
 });
 
 type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
@@ -22,7 +24,7 @@ const loggerAuxData: string = '[DEVICE] (getGeofencesDeviceIn)';
 export const getGeofencesDeviceIn = async (
 	request: GetGeofencesDeviceInSchema,
 ): Promise<DeviceGeofenceIn> => {
-	const { device, previousDeviceTrack } =
+	const { device, previousDeviceTrack, movingDirection } =
 		GetGeofencesDeviceInSchema.parse(request);
 
 	const resultOfValidation =
@@ -46,6 +48,7 @@ export const getGeofencesDeviceIn = async (
 		deviceLastTrack: device.last!,
 		deviceId: device.id!,
 		previousDeviceTrack,
+		movingDirection,
 	});
 
 	const newGeofencesIn: GeofenceIn[] = await getNewGeofencesIn({

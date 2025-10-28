@@ -9,11 +9,13 @@ import { rebuildRouteBetweenTwoPoints } from '@app/geofence/service/rebuild-rout
 import { verifyByRadialGeofence } from '@app/geofence/service/verify-in/verify-by-radial-geofence';
 import { getFinalStateFromStates } from '@app/geofence/service/get-final-state-from-states';
 import z, { object, string } from 'zod/v4';
+import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 
 const GetPointInterestListByLocationRequest = object({
 	deviceLastTrack: Track,
 	deviceId: string(),
 	previousDeviceTrack: Track.optional(),
+	movingDirection: DeviceMovingDirection,
 });
 
 type GetPointInterestListByLocationRequest = z.infer<
@@ -26,7 +28,7 @@ const loggerAuxData: string =
 export const getPointInterestListByLocation = (
 	request: GetPointInterestListByLocationRequest,
 ): VisitedPointInterest[] => {
-	const { deviceLastTrack, deviceId, previousDeviceTrack } =
+	const { deviceLastTrack, deviceId, previousDeviceTrack, movingDirection } =
 		GetPointInterestListByLocationRequest.parse(request);
 
 	const { t: trackTimestamp = 0, lat = 0, lon = 0 } = deviceLastTrack;
@@ -51,6 +53,7 @@ export const getPointInterestListByLocation = (
 			previousCoords: [previousLon, previousLat],
 			previousTimestamp: previousTrackTimestamp,
 			timestamp: trackTimestamp,
+			movingDirection,
 		});
 	}
 

@@ -16,6 +16,7 @@ import { getDeviceRules } from './get-device-rules';
 import { processRulesByDevice } from '@app/rule/service/process-rules-by-device';
 import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch';
 import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest';
+import { calculateGpsDirection } from './calculate-gps-direction';
 
 export const processDeviceData = async (
 	device: Device,
@@ -38,11 +39,19 @@ export const processDeviceData = async (
 
 	const groups: DeviceGroup[] = await getDeviceGroups(vehicleData);
 
+	const deviceMovingDirection = calculateGpsDirection({
+		deviceId: device.id,
+		previousTrack: deviceInMapCache?.last,
+		track: device.last,
+		previousDeviceMovingDirection: deviceInMapCache?.movingDirection,
+	});
+
 	const backupGeofenceInCacheMap = getBackupGeofenceInCacheMap(device.id);
 
 	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
 		device,
 		previousDeviceTrack: deviceInMapCache?.last,
+		movingDirection: deviceMovingDirection,
 	});
 
 	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({
@@ -56,6 +65,7 @@ export const processDeviceData = async (
 		await getVisitedOrNearbyPointsOfInterest({
 			device,
 			previousDeviceTrack: deviceInMapCache?.last,
+			movingDirection: deviceMovingDirection,
 		});
 
 	const rulesAppliedList: string[] = await getDeviceRules({
@@ -71,6 +81,7 @@ export const processDeviceData = async (
 		geofencesOut: geofenceOutData,
 		rulesApplied: rulesAppliedList,
 		pointInterestVisited: visitedOrNearbyPointsOfInterest,
+		movingDirection: deviceMovingDirection,
 	};
 
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =

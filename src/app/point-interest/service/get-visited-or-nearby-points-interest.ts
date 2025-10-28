@@ -5,10 +5,12 @@ import z, { object } from 'zod/v4';
 import { getPointInterestListByLocation } from './get-point-interest-list-by-location';
 import { DevicePointInterestVisited } from '@app/device/entity/device-point-interest-visited';
 import { VisitedPointInterest } from '../dto/visited-point-interest';
+import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 
 const GetVisitedOrNearbyPointsOfInterestRequest = object({
 	device: Device,
 	previousDeviceTrack: Track.optional(),
+	movingDirection: DeviceMovingDirection,
 });
 
 type GetVisitedOrNearbyPointsOfInterestRequest = z.infer<
@@ -20,7 +22,7 @@ const loggerAuxData: string = '[DEVICE] (getVisitedOrNearbyPointsOfInterest)';
 export const getVisitedOrNearbyPointsOfInterest = async (
 	request: GetVisitedOrNearbyPointsOfInterestRequest,
 ): Promise<DevicePointInterestVisited> => {
-	const { device, previousDeviceTrack } =
+	const { device, previousDeviceTrack, movingDirection } =
 		GetVisitedOrNearbyPointsOfInterestRequest.parse(request);
 
 	const resultOfValidation =
@@ -41,6 +43,7 @@ export const getVisitedOrNearbyPointsOfInterest = async (
 		deviceLastTrack: device.last!,
 		deviceId: device.id!,
 		previousDeviceTrack,
+		movingDirection,
 	});
 
 	const stayingPointInterests = pointInterestVisitedList.filter(
