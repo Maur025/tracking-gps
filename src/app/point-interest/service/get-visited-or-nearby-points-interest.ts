@@ -1,16 +1,18 @@
 import { Device } from '@app/device/entity/device';
-import { validateToIgnoreDevicePositionCalculate } from '@app/device/service/validate-to-ignore-device-position-calculate';
 import { Track } from '@app/track/entity/track';
 import z, { object } from 'zod/v4';
 import { getPointInterestListByLocation } from './get-point-interest-list-by-location';
 import { DevicePointInterestVisited } from '@app/device/entity/device-point-interest-visited';
 import { VisitedPointInterest } from '../dto/visited-point-interest';
 import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { loggerDebug } from '@maur025/core-logger';
 
 const GetVisitedOrNearbyPointsOfInterestRequest = object({
 	device: Device,
 	previousDeviceTrack: Track.optional(),
 	movingDirection: DeviceMovingDirection,
+	reconstructedRoad: DeviceReconstructedRoad,
 });
 
 type GetVisitedOrNearbyPointsOfInterestRequest = z.infer<
@@ -22,21 +24,14 @@ const loggerAuxData: string = '[DEVICE] (getVisitedOrNearbyPointsOfInterest)';
 export const getVisitedOrNearbyPointsOfInterest = async (
 	request: GetVisitedOrNearbyPointsOfInterestRequest,
 ): Promise<DevicePointInterestVisited> => {
-	const { device, previousDeviceTrack, movingDirection } =
+	const { device, previousDeviceTrack, movingDirection, reconstructedRoad } =
 		GetVisitedOrNearbyPointsOfInterestRequest.parse(request);
 
-	const resultOfValidation =
-		validateToIgnoreDevicePositionCalculate<DevicePointInterestVisited>({
-			device,
-			previousDeviceTrack,
-			loggerAuxData,
-			noIdCallback: () => buildDevicePointInterestVisitedResponse([], []),
-			otherValidationsCallback: () =>
-				buildDevicePointInterestVisitedResponse([], []),
-		});
-
-	if (resultOfValidation) {
-		return resultOfValidation;
+	if (reconstructedRoad.statusOfRebuildRoad !== 'REBUILD_SUCCESS') {
+		loggerDebug(
+			`${loggerAuxData} omitting calculation by ${reconstructedRoad.statusOfRebuildRoad}.`,
+		);
+		return buildDevicePointInterestVisitedResponse([], []);
 	}
 
 	const pointInterestVisitedList = getPointInterestListByLocation({

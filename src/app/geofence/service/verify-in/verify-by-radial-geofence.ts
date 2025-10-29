@@ -17,6 +17,7 @@ const VerifyByRadialGeofenceRequest = object({
 	position: any(),
 	geofenceRadius: number().nonnegative(),
 	geofenceCoords: PositionSchema,
+	positionRadiusCorrection: number().default(1).optional(),
 });
 
 type VerifyByRadialGeofenceRequest = Omit<
@@ -29,7 +30,7 @@ type VerifyByRadialGeofenceRequest = Omit<
 export const verifyByRadialGeofence = (
 	request: VerifyByRadialGeofenceRequest,
 ): boolean => {
-	const { position, geofenceRadius, geofenceCoords } =
+	const { position, geofenceRadius, geofenceCoords, positionRadiusCorrection } =
 		VerifyByRadialGeofenceRequest.parse(request);
 
 	if (!geofenceRadius) {
@@ -67,9 +68,10 @@ export const verifyByRadialGeofence = (
 
 	const circleOfPrecision = circle(
 		position?.geometry?.coordinates,
-		GPS_RADIUS,
+		GPS_RADIUS * (positionRadiusCorrection ?? 1),
 		{ units: 'meters' },
 	);
+
 	const circleOfGeofence = circle(geofenceRadiusCoords, geofenceRadius, {
 		units: 'meters',
 	});

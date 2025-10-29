@@ -122,7 +122,7 @@ describe('device tracking data consumer intergration test', () => {
 
 		timestamp += 15000;
 		await sendPayloadTest({
-			coords: [-68.06901, -16.529763],
+			coords: [-68.069219, -16.529027],
 			timestamp,
 		});
 		callNumber++;
@@ -131,11 +131,19 @@ describe('device tracking data consumer intergration test', () => {
 
 		timestamp += 15000;
 		await sendPayloadTest({
-			coords: [-68.06901, -16.529763],
+			coords: [-68.069219, -16.529027],
 			timestamp,
 		});
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);
+
+		timestamp += 15000;
+		await sendPayloadTest({
+			coords: [-68.07001545788228, -16.529479330902902],
+			timestamp,
+		});
+		callNumber++;
+		await shouldVisitPointOfInterest(callNumber);
 
 		timestamp += 15000;
 		await sendPayloadTest({

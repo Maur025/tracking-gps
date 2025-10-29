@@ -87,6 +87,7 @@ export const getPointInterestListByLocation = (
 					position: point,
 					geofenceCoords: pointInterestCoords,
 					geofenceRadius: pointInterestRadius,
+					positionRadiusCorrection: 2.5,
 				}),
 			);
 		}
@@ -114,9 +115,9 @@ export const getPointInterestListByLocation = (
 			visitedPointInterest.finalState === 'NONE' &&
 			visitedPointInterest.initialState === 'NONE'
 		) {
-			loggerDebug(
-				`[POINT OF INTEREST] (getPointInterestByLocation) point of interest ${pointInterestName} was not visited. Skipping...`,
-			);
+			// loggerDebug(
+			// 	`[POINT OF INTEREST] (getPointInterestByLocation) point of interest ${pointInterestName} was not visited. Skipping...`,
+			// );
 			continue;
 		}
 

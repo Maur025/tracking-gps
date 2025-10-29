@@ -27,6 +27,7 @@ const {
 	TEST_CLICKHOUSE_PASSWORD = 'password',
 	NOTIFICATION_URL = 'http://localhost:7768',
 	GPS_RADIUS = '2.5',
+	MAX_METERS_PER_SECOND = '80',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -56,6 +57,7 @@ const environment: EnvironmentSchema = {
 	TEST_CLICKHOUSE_PASSWORD,
 	NOTIFICATION_URL,
 	GPS_RADIUS: Number(GPS_RADIUS),
+	MAX_METERS_PER_SECOND: Number(MAX_METERS_PER_SECOND),
 };
 
 export default environment;

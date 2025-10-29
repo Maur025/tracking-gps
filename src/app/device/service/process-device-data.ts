@@ -17,6 +17,7 @@ import { processRulesByDevice } from '@app/rule/service/process-rules-by-device'
 import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch';
 import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest';
 import { calculateGpsDirection } from './calculate-gps-direction';
+import { rebuildRoadBetweenTracks } from './rebuild-road-between-tracks';
 
 export const processDeviceData = async (
 	device: Device,
@@ -46,25 +47,33 @@ export const processDeviceData = async (
 		previousDeviceMovingDirection: deviceInMapCache?.movingDirection,
 	});
 
+	const reconstructedRoad = await rebuildRoadBetweenTracks({
+		deviceId: device.id,
+		previousTrack: deviceInMapCache?.last,
+		currentTrack: device.last,
+		movingDirection: deviceMovingDirection,
+	});
+
 	const backupGeofenceInCacheMap = getBackupGeofenceInCacheMap(device.id);
 
 	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
 		device,
 		previousDeviceTrack: deviceInMapCache?.last,
+		reconstructedRoad,
 		movingDirection: deviceMovingDirection,
 	});
 
 	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({
-		device,
 		geofenceInFullList: geofenceInData.geofenceList,
 		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
-		previousDeviceTrack: deviceInMapCache?.last,
+		reconstructedRoad,
 	});
 
 	const visitedOrNearbyPointsOfInterest =
 		await getVisitedOrNearbyPointsOfInterest({
 			device,
 			previousDeviceTrack: deviceInMapCache?.last,
+			reconstructedRoad,
 			movingDirection: deviceMovingDirection,
 		});
 
@@ -77,11 +86,12 @@ export const processDeviceData = async (
 		...device,
 		vehicleData,
 		groups,
+		movingDirection: deviceMovingDirection,
+		reconstructedRoad,
 		geofencesIn: geofenceInData,
 		geofencesOut: geofenceOutData,
 		rulesApplied: rulesAppliedList,
 		pointInterestVisited: visitedOrNearbyPointsOfInterest,
-		movingDirection: deviceMovingDirection,
 	};
 
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =

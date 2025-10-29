@@ -123,9 +123,9 @@ export const getGeofencesInByLocation = (
 			deviceInGeofence.initialState === 'NONE' &&
 			deviceInGeofence.finalState === 'NONE'
 		) {
-			loggerDebug(
-				`[GEOFENCE] (getGeofencesInByLocation) device never IN, OUT or IN_OUT this geofence`,
-			);
+			// loggerDebug(
+			// 	`[GEOFENCE] (getGeofencesInByLocation) device never IN, OUT or IN_OUT this geofence`,
+			// );
 
 			continue;
 		}

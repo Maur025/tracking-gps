@@ -12,6 +12,7 @@ import { DeviceGroup } from './device-group';
 import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch';
 import { DevicePointInterestVisited } from './device-point-interest-visited';
 import { DeviceMovingDirection } from './device-moving-direction';
+import { DeviceReconstructedRoad } from './device-reconstructed-road';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -31,6 +32,7 @@ export const Device = BaseData.extend({
 	alertsToLaunch: array(DeviceRuleAlertToLaunch).default([]),
 	pointInterestVisited: DevicePointInterestVisited.optional(),
 	movingDirection: DeviceMovingDirection.optional(),
+	reconstructedRoad: DeviceReconstructedRoad.optional(),
 });
 
 export type Device = z.infer<typeof Device>;

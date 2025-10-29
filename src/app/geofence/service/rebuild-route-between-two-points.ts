@@ -5,10 +5,7 @@ import {
 	lineString as turfLineString,
 	length as turfLength,
 	along as turfAlong,
-	distance as turfDistance,
-	destination,
 } from '@turf/turf';
-import { loggerDebug } from '@maur025/core-logger';
 import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 
 const RebuildRouteBetweenTwoPointsRequest = object({
@@ -30,73 +27,58 @@ type RebuildRouteBetweenTwoPointsRequest = Omit<
 export const rebuildRouteBetweenTwoPoints = (
 	request: RebuildRouteBetweenTwoPointsRequest,
 ): Feature<Point, GeoJsonProperties>[] => {
-	const {
-		coords,
-		previousCoords,
-		previousTimestamp,
-		timestamp,
-		movingDirection,
-	} = RebuildRouteBetweenTwoPointsRequest.parse(request);
+	const { coords, previousCoords, previousTimestamp, timestamp } =
+		RebuildRouteBetweenTwoPointsRequest.parse(request);
 	const pointsOfRoute: Feature<Point, GeoJsonProperties>[] = [];
 
-	const distanceBetweenStartAndEnd = turfDistance(previousCoords, coords, {
-		units: 'meters',
-	});
+	// const distanceBetweenStartAndEnd = turfDistance(previousCoords, coords, {
+	// 	units: 'meters',
+	// });
 
-	loggerDebug(
-		`distance between previous and current point: ${distanceBetweenStartAndEnd} meters.`,
-	);
+	// if (
+	// 	movingDirection.directionInGrades &&
+	// 	movingDirection.previousDirectionInGrades &&
+	// 	movingDirection.differenceInGrades
+	// ) {
+	// 	loggerDebug(
+	// 		`moving direction in grades: ${movingDirection.directionInGrades}.`,
+	// 	);
 
-	if (
-		movingDirection.directionInGrades &&
-		movingDirection.previousDirectionInGrades &&
-		movingDirection.differenceInGrades
-	) {
-		loggerDebug(
-			`moving direction in grades: ${movingDirection.directionInGrades}.`,
-		);
+	// 	const steps = 30;
 
-		const steps = 15;
+	// 	const tentativePoints = [];
+	// 	for (let i = 0; i <= steps; i++) {
+	// 		const progress = i / steps;
+	// 		let deltaGrades = movingDirection.differenceInGrades;
 
-		const tentativePoints = [];
-		for (let i = 0; i <= steps; i++) {
-			const progress = i / steps;
-			let deltaGrades = movingDirection.differenceInGrades;
+	// 		if (
+	// 			movingDirection.previousDirectionInGrades > 0 &&
+	// 			movingDirection.directionInGrades < 0
+	// 		) {
+	// 			deltaGrades *= -1;
+	// 		}
 
-			if (
-				movingDirection.previousDirectionInGrades > 0 &&
-				movingDirection.directionInGrades < 0
-			) {
-				deltaGrades *= -1;
-			}
+	// 		if (
+	// 			movingDirection.previousDirectionInGrades < 0 &&
+	// 			movingDirection.directionInGrades > 0
+	// 		) {
+	// 			deltaGrades *= -1;
+	// 		}
 
-			if (
-				movingDirection.previousDirectionInGrades < 0 &&
-				movingDirection.directionInGrades > 0
-			) {
-				deltaGrades *= -1;
-			}
+	// 		const bearing =
+	// 			movingDirection.previousDirectionInGrades + progress * deltaGrades;
+	// 		const newPoint = destination(
+	// 			previousCoords,
+	// 			distanceBetweenStartAndEnd * progress,
+	// 			bearing,
+	// 			{ units: 'meters' },
+	// 		);
 
-			const bearing =
-				movingDirection.previousDirectionInGrades + progress * deltaGrades;
-			const newPoint = destination(
-				previousCoords,
-				distanceBetweenStartAndEnd * progress,
-				bearing,
-				{ units: 'meters' },
-			);
+	// 		tentativePoints.push(newPoint.geometry.coordinates);
+	// 	}
 
-			tentativePoints.push(newPoint.geometry.coordinates);
-		}
-		// const point = destination(
-		// 	previousCoords,
-		// 	distanceBetweenStartAndEnd / 2,
-		// 	movingDirection.directionInGrades -
-		// 		movingDirection.previousDirectionInGrades,
-		// 	{ units: 'meters' },
-		// );
-		console.log([previousCoords, ...tentativePoints, coords]);
-	}
+	// 	console.log([previousCoords, ...tentativePoints, coords]);
+	// }
 
 	const timeElapsedSincePreviousTrack =
 		getTotalSecondsElapsedSincePreviousTimestamp(timestamp, previousTimestamp);
@@ -109,7 +91,9 @@ export const rebuildRouteBetweenTwoPoints = (
 		timeElapsedSincePreviousTrack / numberOfSecondsToDivide,
 	);
 
-	const routeBetweenPoints = turfLineString([previousCoords, coords]);
+	const routeBetweenPoints = turfLineString([previousCoords, coords], {
+		units: 'meters',
+	});
 	const distanceRouteBetweenPoints = turfLength(routeBetweenPoints, {
 		units: 'meters',
 	});
@@ -133,9 +117,9 @@ export const rebuildRouteBetweenTwoPoints = (
 
 const getNumberOfSecondsToDivide = (timeInSeconds: number) => {
 	if (timeInSeconds <= 60) {
-		return 2;
+		return 1;
 	}
 
 	const minutes = Math.floor(timeInSeconds / 60);
-	return minutes + 2;
+	return minutes + 1;
 };

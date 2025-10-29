@@ -1,0 +1,34 @@
+Para instalar y usar el servidor de open street maps y obtener sus cálculos
+
+NOTA: cabe aclarar que el contenedor docker solo funciona en linux en el momento que escribo esto.
+
+1ro. Descarga el archivo de datos de tu país o region donde desees trabajar y calcular datos.
+
+ejemplo: descarga los datos del mapa de Bolivia con el siguiente comando
+
+wget https://download.geofabrik.de/south-america/bolivia-latest.osm.pbf
+
+2do. Crear la carpeta de data al lado del archivo docker-compose.yml
+
+3ro. Copiar el archivo con los datos del mapa en la carpeta /data
+
+4to. Revisar el archivo docker-compose.yml, si tiene 2 servicios comentados quitar los comentarios para ejecutar los siguientes 2 comandos.
+
+5to. Ejecutar el comando:
+    docker compose run osrm-extrac
+
+6to. Ejecutar el comando:
+    docker compose run osrm-contract
+
+7mo. Vuelve a comentar el código como lo encontraste ... y si no estaba previamente comentado, usa # para comentar las lineas del archivo que interactúen con osrm-extract y osrm-contract
+
+8vo. Ejecuta el comando para levantar el servidor:
+    docker compose run map-osrm-server
+
+Al finalizar con estos pasos ... ya deberías tener el servidor corriendo en el puerto 5000, intenta hacer un fetch o curl puedes usar este ejemplo ... sirve para obtener calcular la ruta mas probable entre 2 puntos y rellena los faltantes con los puntos necesarios en las intersecciones
+
+    http://127.0.0.1:5000/match/v1/driving/-68.070607,-16.529831;-68.070931,-16.530651?geometries=geojson
+
+Puedes modificar el archivo docker-compose.yml para que se comporte como quieras, el archivo actual es básico y fue creado rápidamente para realizar pruebas, puedes investigar mas sobre configuración en threads, uso de memoria, modificar puertos, etc
+
+puedes ver mas sobre la api en: https://project-osrm.org/docs/v5.24.0/api/#
