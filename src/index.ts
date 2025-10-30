@@ -39,3 +39,10 @@ await initServices({
 	clickhouseUser: CLICKHOUSE_USER,
 	isNeedCache: true,
 });
+
+setInterval(() => {
+	const used = process.memoryUsage();
+	console.log(
+		`Heap: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB / RSS: ${(used.rss / 1024 / 1024).toFixed(2)} MB`,
+	);
+}, 2000);

@@ -7,7 +7,7 @@
 		"node": ">=20"
 	},
 	"scripts": {
-		"dev": "tsx watch src/index.ts",
+		"dev": "NODE_OPTIONS='--inspect' tsx watch src/index.ts",
 		"build": "tsc -p tsconfig-build.json && tsc-alias",
 		"start": "node dist/index.js",
 		"lint": "eslint . --ext .js,.ts,.tsx --max-warnings=0",

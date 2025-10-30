@@ -28,6 +28,7 @@ const {
 	NOTIFICATION_URL = 'http://localhost:7768',
 	GPS_RADIUS = '2.5',
 	MAX_METERS_PER_SECOND = '80',
+	OSRM_URL = 'http://localhost:5000',
 } = process.env;
 
 const environment: EnvironmentSchema = {
@@ -58,6 +59,7 @@ const environment: EnvironmentSchema = {
 	NOTIFICATION_URL,
 	GPS_RADIUS: Number(GPS_RADIUS),
 	MAX_METERS_PER_SECOND: Number(MAX_METERS_PER_SECOND),
+	OSRM_URL,
 };
 
 export default environment;

@@ -5,13 +5,7 @@ import {
 } from '../entity/device-reconstructed-road';
 import { Track } from '@app/track/entity/track';
 import { loggerDebug } from '@maur025/core-logger';
-import {
-	Feature,
-	GeoJsonProperties,
-	LineString,
-	Point,
-	Position,
-} from 'geojson';
+import { Feature, GeoJsonProperties, LineString, Position } from 'geojson';
 import { DeviceMovingDirection } from '../entity/device-moving-direction';
 import { getTotalSecondsElapsedSincePreviousTimestamp } from './get-total-elapsed-since-previous-timestamp';
 import { StatusOfRebuildRoadEnum } from '../entity/device-reconstructed-road';
@@ -20,8 +14,9 @@ import {
 	distance as turfDistance,
 	lineString as turfLineString,
 	length as turfLength,
-	along as turfAlong,
 } from '@turf/turf';
+import { runComplexRebuildRoad } from './run-complex-rebuild-road';
+import { getReconstructedRoadCoordsList } from './get-reconstructed-road-list';
 
 const { MAX_METERS_PER_SECOND } = environment;
 
@@ -81,17 +76,25 @@ export const rebuildRoadBetweenTracks = async (
 		{ units: 'meters' },
 	);
 
+	if (distanceBetweenPointsInMeters < 1) {
+		loggerDebug(
+			`${loggerAuxData} Distance between points is less than 1 meter, using two points directly.`,
+		);
+
+		return buildDeviceReconstructedRoadResponse(
+			'REBUILD_SUCCESS',
+			[previousCoords, currentCoords],
+			'LineString',
+			1,
+		);
+	}
+
 	const distanceTraveledEachSecond =
 		distanceBetweenPointsInMeters / timeElapsedSincePreviousTrack;
 
-	const numberOfSecondsToDivide = getNumberOfSecondsToDivide(
-		timeElapsedSincePreviousTrack,
-	);
-	const quantityOfPointsToGenerate = Math.floor(
-		timeElapsedSincePreviousTrack / numberOfSecondsToDivide,
-	);
-
 	let reconstructedRoadFlatLine: Feature<LineString, GeoJsonProperties>;
+	let calculatedConfidence = 1;
+	let calculatedTracePoints: string[] = [];
 
 	if (
 		distanceTraveledEachSecond > MAX_METERS_PER_SECOND ||
@@ -101,38 +104,48 @@ export const rebuildRoadBetweenTracks = async (
 	) {
 		reconstructedRoadFlatLine = turfLineString([previousCoords, currentCoords]);
 	} else {
-		// add ... get complex rebuild
-		reconstructedRoadFlatLine = turfLineString([previousCoords, currentCoords]);
+		const complexRebuildResponse = await runComplexRebuildRoad({
+			coords: currentCoords,
+			previousCoords,
+		});
+
+		reconstructedRoadFlatLine =
+			complexRebuildResponse.reconstructedRoadFlatLine;
+
+		calculatedConfidence =
+			complexRebuildResponse.calculatedConfidence || calculatedConfidence;
+
+		calculatedTracePoints = complexRebuildResponse.calculatedTracePoints;
 	}
 
 	const reconstructedRoadFlatLength = turfLength(reconstructedRoadFlatLine, {
 		units: 'meters',
 	});
 
-	const distanceBetweenPoints =
-		reconstructedRoadFlatLength / quantityOfPointsToGenerate;
-
-	const reconstructedRoute: Position[] = [];
-
-	let distanceTraveled = 0;
-	while (distanceTraveled <= reconstructedRoadFlatLength) {
-		const generatedPoint = turfAlong(
-			reconstructedRoadFlatLine,
-			distanceTraveled,
-			{
-				units: 'meters',
-			},
+	if (reconstructedRoadFlatLength < 1) {
+		loggerDebug(
+			`${loggerAuxData} Reconstructed road length is less than 1 meter. Using two points directly.`,
 		);
 
-		reconstructedRoute.push(generatedPoint.geometry.coordinates);
-
-		distanceTraveled += distanceBetweenPoints;
+		return buildDeviceReconstructedRoadResponse(
+			'REBUILD_SUCCESS',
+			[previousCoords, currentCoords],
+			'LineString',
+			0.5,
+		);
 	}
+
+	const reconstructedRoadCoordList = getReconstructedRoadCoordsList(
+		reconstructedRoadFlatLine,
+		reconstructedRoadFlatLength,
+	);
 
 	return buildDeviceReconstructedRoadResponse(
 		'REBUILD_SUCCESS',
-		reconstructedRoute,
+		reconstructedRoadCoordList,
 		'LineString',
+		calculatedConfidence,
+		calculatedTracePoints,
 	);
 };
 
@@ -191,25 +204,16 @@ const validationDevice = (
 	}
 };
 
-const getNumberOfSecondsToDivide = (timeInSeconds: number) => {
-	if (timeInSeconds <= 60) {
-		return 1;
-	}
-
-	const minutes = Math.floor(timeInSeconds / 60);
-	return minutes + 1;
-};
-
 const buildDeviceReconstructedRoadResponse = (
 	statusOfRebuildRoad: StatusOfRebuildRoadEnum,
 	coords: Position[] = [],
 	typeEnum: ReconstructedRoadTypeEnum = 'LineString',
 	confidence: number = 0,
-	tracepoints: string[] = [],
+	tracePoints: string[] = [],
 ): DeviceReconstructedRoad => ({
 	type: typeEnum,
 	confidence,
 	coords,
-	tracepoints,
+	tracePoints,
 	statusOfRebuildRoad,
 });

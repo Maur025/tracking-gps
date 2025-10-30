@@ -36,6 +36,7 @@ export const EnvironmentSchema = object({
 	NOTIFICATION_URL: string().nonempty(),
 	GPS_RADIUS: number().nonnegative(),
 	MAX_METERS_PER_SECOND: number().nonnegative(),
+	OSRM_URL: string().nonempty(),
 });
 
 export type EnvironmentSchema = z.infer<typeof EnvironmentSchema>;

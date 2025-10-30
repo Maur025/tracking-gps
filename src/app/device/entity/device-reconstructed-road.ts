@@ -21,7 +21,7 @@ export const DeviceReconstructedRoad = object({
 	type: ReconstructedRoadTypeEnum,
 	distance: number().optional(),
 	duration: number().optional(),
-	tracepoints: array(string()).default([]),
+	tracePoints: array(string()).default([]),
 	statusOfRebuildRoad: StatusOfRebuildRoadEnum,
 });
 
