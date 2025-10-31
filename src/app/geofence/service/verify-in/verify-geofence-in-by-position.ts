@@ -1,24 +1,20 @@
 import { GeofenceType } from '@app/geofence/entity/geofence-type';
 import { PositionSchema } from '@common/schema/position.schema';
-import { Feature, GeoJsonProperties, Point } from 'geojson';
-import z, { any, number, object } from 'zod/v4';
+import z, { array, number, object } from 'zod/v4';
 import { verifyByRadialGeofence } from './verify-by-radial-geofence';
 import { verifyByPolygonGeofence } from './verify-by-polygon-geofence';
 import { loggerDebug } from '@maur025/core-logger';
 
 const VerifyGeofenceInByPositionSchema = object({
 	geofenceType: GeofenceType,
-	position: any(),
+	position: array(number()),
 	geofenceCoords: PositionSchema,
 	geofenceRadius: number().nonnegative(),
 });
 
-type VerifyGeofenceInByPositionSchema = Omit<
-	z.infer<typeof VerifyGeofenceInByPositionSchema>,
-	'position'
-> & {
-	position: Feature<Point, GeoJsonProperties>;
-};
+type VerifyGeofenceInByPositionSchema = z.infer<
+	typeof VerifyGeofenceInByPositionSchema
+>;
 
 export const verifyGeofenceInByPosition = (
 	request: VerifyGeofenceInByPositionSchema,

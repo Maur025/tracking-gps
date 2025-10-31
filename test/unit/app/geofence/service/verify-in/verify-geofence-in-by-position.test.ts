@@ -1,17 +1,16 @@
 import { GeofenceType } from '@app/geofence/entity/geofence-type';
 import { verifyGeofenceInByPosition } from '@app/geofence/service/verify-in/verify-geofence-in-by-position';
-import { point } from '@turf/turf';
 import { describe, expect, test } from 'vitest';
 
 describe('verify geofence in by position test', () => {
-	const positionPoint = point([-68.068619, -16.529871]);
+	const position = [-68.068619, -16.529871];
 
 	test('should return true when point is inside of radial geofence', () => {
 		const geofenceCoords: number[] = [-68.068962, -16.529353];
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POINTS',
-			position: positionPoint,
+			position: position,
 			geofenceCoords,
 			geofenceRadius: 75,
 		});
@@ -25,7 +24,7 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POINTS',
-			position: positionPoint,
+			position: position,
 			geofenceCoords,
 			geofenceRadius: 20,
 		});
@@ -38,7 +37,7 @@ describe('verify geofence in by position test', () => {
 		expect(() =>
 			verifyGeofenceInByPosition({
 				geofenceType: 'NOT_SUPPORTED' as GeofenceType,
-				position: positionPoint,
+				position: position,
 				geofenceCoords: [-68.068962, -16.529353],
 				geofenceRadius: 20,
 			}),
@@ -58,7 +57,7 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POLYGONS',
-			position: positionPoint,
+			position: position,
 			geofenceCoords,
 			geofenceRadius: 0,
 		});
@@ -79,7 +78,7 @@ describe('verify geofence in by position test', () => {
 
 		const isInside: boolean = verifyGeofenceInByPosition({
 			geofenceType: 'POLYGONS',
-			position: positionPoint,
+			position: position,
 			geofenceCoords,
 			geofenceRadius: 0,
 		});

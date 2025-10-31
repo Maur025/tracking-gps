@@ -6,6 +6,7 @@ import { loggerWarn } from '@maur025/core-logger';
 import { processDeviceData } from '../service/process-device-data';
 import { syncDeviceDataAndSyncInRedis } from '../cache/sync-device-data-and-sync-in-redis';
 import { deviceDataEnrichToMonitorPublisher } from '../publisher/device-data-enrich-to-monitor-publisher';
+import { measurePerformance } from '@utils/measure-performance';
 
 export const deviceTrackingDataConsumer = async (
 	record: KafkaRecordSchema<Device>,
@@ -30,9 +31,12 @@ export const deviceTrackingDataConsumer = async (
 		return;
 	}
 
-	const deviceData: Device | null = await processDeviceData(validate.data);
+	let deviceData: Device | null = null;
 
-	console.log(deviceData);
+	await measurePerformance(async () => {
+		deviceData = await processDeviceData(validate.data);
+		console.log(deviceData);
+	}, `[DEVICE] (deviceTrackingDataConsumer) device processed in:`);
 
 	await syncDeviceDataAndSyncInRedis(deviceData);
 

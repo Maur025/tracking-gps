@@ -5,14 +5,14 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { getNewGeofencesIn } from './get-new-geofences-in';
 import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
 import z, { object } from 'zod/v4';
-import { Track } from '@app/track/entity/track';
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { validateToIgnoreDevicePositionCalculate } from '@app/device/service/validate-to-ignore-device-position-calculate';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { loggerDebug } from '@maur025/core-logger';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
-	previousDeviceTrack: Track.optional(),
+	reconstructedRoad: DeviceReconstructedRoad,
 });
 
 type GetGeofencesDeviceInSchema = z.infer<typeof GetGeofencesDeviceInSchema>;
@@ -22,30 +22,28 @@ const loggerAuxData: string = '[DEVICE] (getGeofencesDeviceIn)';
 export const getGeofencesDeviceIn = async (
 	request: GetGeofencesDeviceInSchema,
 ): Promise<DeviceGeofenceIn> => {
-	const { device, previousDeviceTrack } =
+	const { device, reconstructedRoad } =
 		GetGeofencesDeviceInSchema.parse(request);
 
-	const resultOfValidation =
-		validateToIgnoreDevicePositionCalculate<DeviceGeofenceIn>({
-			device,
-			previousDeviceTrack,
-			loggerAuxData,
-			noIdCallback: () => buildGeofencesDeviceInResponse([], []),
-			otherValidationsCallback: () =>
-				buildGeofencesDeviceInResponse(
-					recoveryGeofenceInFromCache(device.id!),
-					[],
-				),
-		});
+	if (reconstructedRoad.statusOfRebuildRoad === 'DEVICE_ID_MISSING') {
+		loggerDebug(`${loggerAuxData} Device ID is missing.`);
+		return buildGeofencesDeviceInResponse([], []);
+	}
 
-	if (resultOfValidation) {
-		return resultOfValidation;
+	if (reconstructedRoad.statusOfRebuildRoad !== 'REBUILD_SUCCESS') {
+		loggerDebug(
+			`${loggerAuxData} omitting calculation by ${reconstructedRoad.statusOfRebuildRoad}.`,
+		);
+		return buildGeofencesDeviceInResponse(
+			recoveryGeofenceInFromCache(device.id!),
+			[],
+		);
 	}
 
 	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation({
 		deviceLastTrack: device.last!,
 		deviceId: device.id!,
-		previousDeviceTrack,
+		reconstructedRoad,
 	});
 
 	const newGeofencesIn: GeofenceIn[] = await getNewGeofencesIn({

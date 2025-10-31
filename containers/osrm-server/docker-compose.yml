@@ -1,0 +1,34 @@
+services:
+  # osrm-extract:
+  #   container_name: osrm-extract
+  #   image: osrm/osrm-backend
+  #   command: osrm-extract -p /opt/car.lua /data/bolivia-latest.osm.pbf
+  #   volumes:
+  #     - ./data:/data
+  #   networks:
+  #     - compose-net
+  
+  # osrm-contract:
+  #   container_name: osrm-contract
+  #   image: osrm/osrm-backend
+  #   command: osrm-contract /data/bolivia-latest.osrm
+  #   volumes:
+  #     - ./data:/data
+  #   networks:
+  #     - compose-net
+  #   depends_on:
+  #     - osrm-extract
+  map-osrm-server:
+    image: osrm/osrm-backend
+    container_name: map-osrm-server
+    command: osrm-routed --algorithm ch /data/bolivia-latest.osrm
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/data
+    networks:
+      - compose-net
+
+networks:
+  compose-net:
+    driver: bridge

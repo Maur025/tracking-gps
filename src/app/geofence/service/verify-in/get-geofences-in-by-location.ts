@@ -6,15 +6,13 @@ import { Geofence } from '@app/geofence/entity/geofence';
 import { loggerDebug } from '@maur025/core-logger';
 import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position';
 import z, { object, string } from 'zod/v4';
-import { Feature, GeoJsonProperties, Point } from 'geojson';
-import { point as turfPoint } from '@turf/turf';
-import { rebuildRouteBetweenTwoPoints } from '../rebuild-route-between-two-points';
 import { getFinalStateFromStates } from '../get-final-state-from-states';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
 
 const GetGeofencesInByLocationRequest = object({
 	deviceLastTrack: Track,
 	deviceId: string(),
-	previousDeviceTrack: Track.optional(),
+	reconstructedRoad: DeviceReconstructedRoad,
 });
 
 type GetGeofencesInByLocationRequest = z.infer<
@@ -24,38 +22,15 @@ type GetGeofencesInByLocationRequest = z.infer<
 export const getGeofencesInByLocation = (
 	request: GetGeofencesInByLocationRequest,
 ): GeofenceIn[] => {
-	const { deviceLastTrack, deviceId, previousDeviceTrack } =
+	const { deviceLastTrack, deviceId, reconstructedRoad } =
 		GetGeofencesInByLocationRequest.parse(request);
 
 	const { t: trackTimestamp = 0, lat = 0, lon = 0 } = deviceLastTrack;
-	const {
-		t: previousTrackTimestamp = 0,
-		lat: previousLat = 0,
-		lon: previousLon = 0,
-	} = previousDeviceTrack ?? {};
 
 	const geofenceCache = container.resolve(GeofenceCache);
 	const geofenceList: Geofence[] = geofenceCache.getAll();
 
 	const geofenceInsideList: GeofenceIn[] = [];
-	let pointsOfLocation: Feature<Point, GeoJsonProperties>[] = [];
-
-	if (previousLat == 0 && previousLon == 0) {
-		loggerDebug(
-			`[GEOFENCE] (getGeofencesInByLocation) previous device track position not exists, nothing to rebuild... using current position only.`,
-		);
-		pointsOfLocation.push(turfPoint([lon, lat]));
-	} else {
-		loggerDebug(
-			`[GEOFENCE] (getGeofencesInByLocation) rebuilding route between two points...`,
-		);
-		pointsOfLocation = rebuildRouteBetweenTwoPoints({
-			coords: [lon, lat],
-			previousCoords: [previousLon, previousLat],
-			previousTimestamp: previousTrackTimestamp,
-			timestamp: trackTimestamp,
-		});
-	}
 
 	for (const geofence of geofenceList) {
 		const {
@@ -99,7 +74,7 @@ export const getGeofencesInByLocation = (
 		};
 
 		const routeSummary: boolean[] = [];
-		for (const point of pointsOfLocation) {
+		for (const point of reconstructedRoad.coords) {
 			routeSummary.push(
 				verifyGeofenceInByPosition({
 					geofenceType,
@@ -120,9 +95,9 @@ export const getGeofencesInByLocation = (
 			deviceInGeofence.initialState === 'NONE' &&
 			deviceInGeofence.finalState === 'NONE'
 		) {
-			loggerDebug(
-				`[GEOFENCE] (getGeofencesInByLocation) device never IN, OUT or IN_OUT this geofence`,
-			);
+			// loggerDebug(
+			// 	`[GEOFENCE] (getGeofencesInByLocation) device never IN, OUT or IN_OUT this geofence`,
+			// );
 
 			continue;
 		}

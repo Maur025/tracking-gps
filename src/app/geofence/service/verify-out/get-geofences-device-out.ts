@@ -1,17 +1,14 @@
-import { Device } from '@app/device/entity/device';
 import { DeviceGeofenceOut } from '@app/device/entity/device-geofence-out';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { loggerDebug } from '@maur025/core-logger';
 import z, { array, object, string, map } from 'zod/v4';
 import { getGeofenceOutList } from './get-geofence-out-list';
-import { Track } from '@app/track/entity/track';
-import { validateToIgnoreDevicePositionCalculate } from '@app/device/service/validate-to-ignore-device-position-calculate';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
 
 const GetGeofencesDeviceOutSchema = object({
-	device: Device,
 	geofenceInFullList: array(GeofenceIn).default([]),
 	geofenceInPrevDataBackupMap: map(string(), GeofenceIn).default(new Map()),
-	previousDeviceTrack: Track.optional(),
+	reconstructedRoad: DeviceReconstructedRoad,
 });
 
 type GetGeofencesDeviceOutSchema = z.infer<typeof GetGeofencesDeviceOutSchema>;
@@ -21,24 +18,14 @@ const loggerAuxData: string = '[DEVICE] (getGeofencesDeviceOut)';
 export const getGeofencesDeviceOut = async (
 	request: GetGeofencesDeviceOutSchema,
 ): Promise<DeviceGeofenceOut> => {
-	const {
-		device,
-		geofenceInFullList,
-		geofenceInPrevDataBackupMap,
-		previousDeviceTrack,
-	} = GetGeofencesDeviceOutSchema.parse(request);
+	const { geofenceInFullList, geofenceInPrevDataBackupMap, reconstructedRoad } =
+		GetGeofencesDeviceOutSchema.parse(request);
 
-	const resultOfValidation =
-		validateToIgnoreDevicePositionCalculate<DeviceGeofenceOut>({
-			device,
-			previousDeviceTrack,
-			loggerAuxData,
-			noIdCallback: () => buildGeofencesDeviceOutResponse([]),
-			otherValidationsCallback: () => buildGeofencesDeviceOutResponse([]),
-		});
-
-	if (resultOfValidation) {
-		return resultOfValidation;
+	if (reconstructedRoad.statusOfRebuildRoad !== 'REBUILD_SUCCESS') {
+		loggerDebug(
+			`${loggerAuxData} omitting calculation by ${reconstructedRoad.statusOfRebuildRoad}.`,
+		);
+		return buildGeofencesDeviceOutResponse([]);
 	}
 
 	const geofencesInOutList: GeofenceIn[] = geofenceInFullList.filter(
