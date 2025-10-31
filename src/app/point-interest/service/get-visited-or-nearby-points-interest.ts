@@ -1,17 +1,13 @@
 import { Device } from '@app/device/entity/device';
-import { Track } from '@app/track/entity/track';
 import z, { object } from 'zod/v4';
 import { getPointInterestListByLocation } from './get-point-interest-list-by-location';
 import { DevicePointInterestVisited } from '@app/device/entity/device-point-interest-visited';
 import { VisitedPointInterest } from '../dto/visited-point-interest';
-import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
 import { loggerDebug } from '@maur025/core-logger';
 
 const GetVisitedOrNearbyPointsOfInterestRequest = object({
 	device: Device,
-	previousDeviceTrack: Track.optional(),
-	movingDirection: DeviceMovingDirection,
 	reconstructedRoad: DeviceReconstructedRoad,
 });
 
@@ -24,7 +20,7 @@ const loggerAuxData: string = '[DEVICE] (getVisitedOrNearbyPointsOfInterest)';
 export const getVisitedOrNearbyPointsOfInterest = async (
 	request: GetVisitedOrNearbyPointsOfInterestRequest,
 ): Promise<DevicePointInterestVisited> => {
-	const { device, previousDeviceTrack, movingDirection, reconstructedRoad } =
+	const { device, reconstructedRoad } =
 		GetVisitedOrNearbyPointsOfInterestRequest.parse(request);
 
 	if (reconstructedRoad.statusOfRebuildRoad !== 'REBUILD_SUCCESS') {
@@ -37,8 +33,7 @@ export const getVisitedOrNearbyPointsOfInterest = async (
 	const pointInterestVisitedList = getPointInterestListByLocation({
 		deviceLastTrack: device.last!,
 		deviceId: device.id!,
-		previousDeviceTrack,
-		movingDirection,
+		reconstructedRoad,
 	});
 
 	const stayingPointInterests = pointInterestVisitedList.filter(

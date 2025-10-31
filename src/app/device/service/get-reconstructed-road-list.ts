@@ -1,5 +1,8 @@
 import { Feature, GeoJsonProperties, LineString, Position } from 'geojson';
 import { along as turfAlong } from '@turf/turf';
+import environment from '@config/env';
+
+const { MAX_METERS_PER_SECOND } = environment;
 
 export const getReconstructedRoadCoordsList = (
 	lineString: Feature<LineString, GeoJsonProperties>,
@@ -8,6 +11,10 @@ export const getReconstructedRoadCoordsList = (
 	const reconstructedRoadList: Position[] = [];
 
 	const lineLengthSafe = Math.max(Math.floor(lineLength), 1);
+	const stepsLength = Math.max(
+		Math.floor(lineLengthSafe / MAX_METERS_PER_SECOND),
+		1,
+	);
 
 	let distanceTraveled = 0;
 	while (distanceTraveled <= lineLengthSafe) {
@@ -17,7 +24,7 @@ export const getReconstructedRoadCoordsList = (
 
 		reconstructedRoadList.push(generatedPoint.geometry.coordinates);
 
-		distanceTraveled += 1;
+		distanceTraveled += stepsLength;
 	}
 
 	return reconstructedRoadList;

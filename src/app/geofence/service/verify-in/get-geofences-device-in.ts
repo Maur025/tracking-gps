@@ -5,17 +5,13 @@ import { GeofenceIn } from '@app/geofence/entity/geofence-in';
 import { getNewGeofencesIn } from './get-new-geofences-in';
 import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
 import z, { object } from 'zod/v4';
-import { Track } from '@app/track/entity/track';
 import { container } from 'tsyringe';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { DeviceMovingDirection } from '@app/device/entity/device-moving-direction';
 import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
 import { loggerDebug } from '@maur025/core-logger';
 
 const GetGeofencesDeviceInSchema = object({
 	device: Device,
-	previousDeviceTrack: Track.optional(),
-	movingDirection: DeviceMovingDirection,
 	reconstructedRoad: DeviceReconstructedRoad,
 });
 
@@ -26,7 +22,7 @@ const loggerAuxData: string = '[DEVICE] (getGeofencesDeviceIn)';
 export const getGeofencesDeviceIn = async (
 	request: GetGeofencesDeviceInSchema,
 ): Promise<DeviceGeofenceIn> => {
-	const { device, previousDeviceTrack, movingDirection, reconstructedRoad } =
+	const { device, reconstructedRoad } =
 		GetGeofencesDeviceInSchema.parse(request);
 
 	if (reconstructedRoad.statusOfRebuildRoad === 'DEVICE_ID_MISSING') {
@@ -47,8 +43,7 @@ export const getGeofencesDeviceIn = async (
 	const currentGeofencesIn: GeofenceIn[] = getGeofencesInByLocation({
 		deviceLastTrack: device.last!,
 		deviceId: device.id!,
-		previousDeviceTrack,
-		movingDirection,
+		reconstructedRoad,
 	});
 
 	const newGeofencesIn: GeofenceIn[] = await getNewGeofencesIn({

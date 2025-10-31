@@ -5,6 +5,7 @@ import app from './app';
 import { measurePerformance } from '@utils/measure-performance';
 import { initServices } from './init-services';
 import environment from '@config/env';
+import { loggerDebug } from '@maur025/core-logger';
 
 const { getApp, start } = app;
 const {
@@ -42,7 +43,8 @@ await initServices({
 
 setInterval(() => {
 	const used = process.memoryUsage();
-	console.log(
-		`Heap: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB / RSS: ${(used.rss / 1024 / 1024).toFixed(2)} MB`,
+
+	loggerDebug(
+		`[MEMORY] HEAP: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB / RSS: ${(used.rss / 1024 / 1024).toFixed(2)} MB`,
 	);
-}, 2000);
+}, 5000);

@@ -1,5 +1,5 @@
 import { loggerDebug } from '@maur025/core-logger';
-import { Feature, GeoJsonProperties, Point, Position } from 'geojson';
+import { Position } from 'geojson';
 import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled';
 import { PositionSchema } from '@common/schema/position.schema';
 import {
@@ -9,23 +9,20 @@ import {
 	distance as turfDistance,
 } from '@turf/turf';
 import environment from '@config/env';
-import z, { any, number, object } from 'zod/v4';
+import z, { array, number, object } from 'zod/v4';
 
 const { GPS_RADIUS } = environment;
 
 const VerifyByRadialGeofenceRequest = object({
-	position: any(),
+	position: array(number()),
 	geofenceRadius: number().nonnegative(),
 	geofenceCoords: PositionSchema,
 	positionRadiusCorrection: number().default(1).optional(),
 });
 
-type VerifyByRadialGeofenceRequest = Omit<
-	z.infer<typeof VerifyByRadialGeofenceRequest>,
-	'position'
-> & {
-	position: Feature<Point, GeoJsonProperties>;
-};
+type VerifyByRadialGeofenceRequest = z.infer<
+	typeof VerifyByRadialGeofenceRequest
+>;
 
 export const verifyByRadialGeofence = (
 	request: VerifyByRadialGeofenceRequest,
@@ -52,10 +49,11 @@ export const verifyByRadialGeofence = (
 		);
 
 		const geofenceRadiusPoint = turfPoint(geofenceRadiusCoords);
+		const positionPoint = turfPoint(position);
 
 		const distanceBetweenPoints: number = turfDistance(
 			geofenceRadiusPoint,
-			position,
+			positionPoint,
 			{ units: 'meters' },
 		);
 
@@ -67,7 +65,7 @@ export const verifyByRadialGeofence = (
 	// );
 
 	const circleOfPrecision = circle(
-		position?.geometry?.coordinates,
+		position,
 		GPS_RADIUS * (positionRadiusCorrection ?? 1),
 		{ units: 'meters' },
 	);

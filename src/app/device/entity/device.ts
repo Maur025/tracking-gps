@@ -33,6 +33,8 @@ export const Device = BaseData.extend({
 	pointInterestVisited: DevicePointInterestVisited.optional(),
 	movingDirection: DeviceMovingDirection.optional(),
 	reconstructedRoad: DeviceReconstructedRoad.optional(),
+	trackReceivedAt: string().optional(),
+	previousTrack: Track.optional(),
 });
 
 export type Device = z.infer<typeof Device>;

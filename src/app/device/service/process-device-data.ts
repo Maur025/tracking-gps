@@ -58,9 +58,7 @@ export const processDeviceData = async (
 
 	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
 		device,
-		previousDeviceTrack: deviceInMapCache?.last,
 		reconstructedRoad,
-		movingDirection: deviceMovingDirection,
 	});
 
 	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({
@@ -72,9 +70,7 @@ export const processDeviceData = async (
 	const visitedOrNearbyPointsOfInterest =
 		await getVisitedOrNearbyPointsOfInterest({
 			device,
-			previousDeviceTrack: deviceInMapCache?.last,
 			reconstructedRoad,
-			movingDirection: deviceMovingDirection,
 		});
 
 	const rulesAppliedList: string[] = await getDeviceRules({
@@ -92,6 +88,7 @@ export const processDeviceData = async (
 		geofencesOut: geofenceOutData,
 		rulesApplied: rulesAppliedList,
 		pointInterestVisited: visitedOrNearbyPointsOfInterest,
+		previousTrack: deviceInMapCache?.last,
 	};
 
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =
@@ -100,7 +97,13 @@ export const processDeviceData = async (
 			rulesToApply: rulesAppliedList,
 		});
 
-	return { ...deviceUpdated, alertsToLaunch: deviceRuleAlertToLaunchList };
+	return {
+		...deviceUpdated,
+		alertsToLaunch: deviceRuleAlertToLaunchList,
+		trackReceivedAt: deviceUpdated.last?.t
+			? new Date(deviceUpdated.last.t).toISOString()
+			: 'N/A',
+	};
 };
 
 const getBackupGeofenceInCacheMap = (

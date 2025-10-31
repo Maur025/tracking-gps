@@ -47,6 +47,10 @@ export const rebuildRoadBetweenTracks = async (
 			previousTrack?.t ?? 0,
 		);
 
+	loggerDebug(
+		`${loggerAuxData} timeElapsedSincePreviousTrack: ${timeElapsedSincePreviousTrack} seconds.`,
+	);
+
 	const resultValidation = validationDevice(
 		deviceId,
 		previousCoords,
@@ -91,6 +95,10 @@ export const rebuildRoadBetweenTracks = async (
 
 	const distanceTraveledEachSecond =
 		distanceBetweenPointsInMeters / timeElapsedSincePreviousTrack;
+
+	loggerDebug(
+		`${loggerAuxData} distanceTraveledEachSecond: ${distanceTraveledEachSecond} m/s.`,
+	);
 
 	let reconstructedRoadFlatLine: Feature<LineString, GeoJsonProperties>;
 	let calculatedConfidence = 1;
