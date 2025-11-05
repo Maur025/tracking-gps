@@ -11,7 +11,7 @@ import { v4 as uuid4 } from 'uuid';
 let producerInstance: Producer | null = null;
 let isProducerReady: boolean = false;
 
-export const kakfaProducer = (
+export const kafkaProducer = (
 	request?: HandleKafkaClientSchema,
 ): {
 	publish: <V>(kafkaPublishSchema: KafkaPublishSchema<V>) => Promise<void>;

@@ -20,7 +20,7 @@ vi.mock('@common/kafka/handle-kafka-client', () => ({
 }));
 
 import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
-import { kakfaProducer } from '@common/kafka/kafka-producer';
+import { kafkaProducer } from '@common/kafka/kafka-producer';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { Partitioners } from 'kafkajs';
 import { v4 as uuidv4 } from 'uuid';
@@ -62,12 +62,12 @@ describe('kafka producer test', () => {
 			kafkaClient: new mockKafkaClient(),
 		});
 
-		const { restart } = kakfaProducer();
+		const { restart } = kafkaProducer();
 		restart();
 	});
 
 	test('should publish payload in kafka with key', async () => {
-		const { publish } = kakfaProducer();
+		const { publish } = kafkaProducer();
 
 		await publish<TestingProducer>({
 			topic: 'test1',
@@ -100,7 +100,7 @@ describe('kafka producer test', () => {
 	});
 
 	test('should publish payload in kafka without key', async () => {
-		const { publish } = kakfaProducer();
+		const { publish } = kafkaProducer();
 
 		await publish<TestingProducer>({
 			topic: 'test1',
@@ -133,7 +133,7 @@ describe('kafka producer test', () => {
 	});
 
 	test('should publish failure when topic is empty', async () => {
-		const { publish } = kakfaProducer();
+		const { publish } = kafkaProducer();
 
 		await publish<TestingProducer>({ topic: '', value: { name: 'test' } });
 
@@ -154,14 +154,14 @@ describe('kafka producer test', () => {
 	});
 
 	test('should be reused producer to publish', async () => {
-		const { publish: publisOne } = kakfaProducer();
+		const { publish: publisOne } = kafkaProducer();
 
 		await publisOne<TestingProducer>({
 			topic: 'topic1',
 			value: { name: 'test' },
 		});
 
-		const { publish: publishTwo } = kakfaProducer();
+		const { publish: publishTwo } = kafkaProducer();
 
 		await publishTwo<TestingProducer>({
 			topic: 'topic-testing',
@@ -202,7 +202,7 @@ describe('kafka producer test', () => {
 	});
 
 	test('should redefine when producer be restarted', async () => {
-		const { publish: publisOne, restart } = kakfaProducer();
+		const { publish: publisOne, restart } = kafkaProducer();
 
 		await publisOne<TestingProducer>({
 			topic: 'topic1',
@@ -211,7 +211,7 @@ describe('kafka producer test', () => {
 
 		restart();
 
-		const { publish: publishTwo } = kakfaProducer();
+		const { publish: publishTwo } = kafkaProducer();
 
 		await publishTwo<TestingProducer>({
 			topic: 'topic-testing',

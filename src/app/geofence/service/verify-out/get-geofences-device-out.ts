@@ -33,7 +33,9 @@ export const getGeofencesDeviceOut = async (
 	);
 
 	if (!geofenceInPrevDataBackupMap.size) {
-		loggerDebug(`${loggerAuxData} no data to compare, skipping...`);
+		loggerDebug(
+			`${loggerAuxData} no data previous in cache to compare, skipping...`,
+		);
 
 		return buildGeofencesDeviceOutResponse([...geofencesInOutList]);
 	}
@@ -42,6 +44,8 @@ export const getGeofencesDeviceOut = async (
 		geofenceInFullList,
 		geofenceInBackupList: Array.from(geofenceInPrevDataBackupMap.values()),
 	});
+
+	loggerDebug(`${loggerAuxData} geofence OUT interactions processed.`);
 
 	return buildGeofencesDeviceOutResponse([
 		...geofencesInOutList,

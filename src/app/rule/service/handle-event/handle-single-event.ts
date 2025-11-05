@@ -1,7 +1,7 @@
 import DeventCache from '@app/devent/cache/devent-cache';
 import { Devent } from '@app/devent/entity/devent';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { RuleResultEventComparation } from '@app/rule/dto/rule-result-event-comparation';
+import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison';
 import { container } from 'tsyringe';
 import { processEventSelector } from './process-event-selector';
 import { loggerDebug } from '@maur025/core-logger';
@@ -36,14 +36,14 @@ export const handleSingleEvent = async (
 		return [];
 	}
 
-	const resultOfComparation: RuleResultEventComparation =
+	const resultOfComparison: RuleResultEventComparison =
 		await processEventSelector({
 			rule,
 			devent,
 			device,
 		});
 
-	if (!resultOfComparation.wasTriggered) {
+	if (!resultOfComparison.wasTriggered) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
 
 		return [];
@@ -52,7 +52,7 @@ export const handleSingleEvent = async (
 	if (rule?.notifications?.length) {
 		const notificationData: DeviceNotificationSchema =
 			notificationBuildByAlertList({
-				deviceAlertToLaunchList: resultOfComparation.alertToLaunchList,
+				deviceAlertToLaunchList: resultOfComparison.alertToLaunchList,
 				device,
 				rule,
 			});
@@ -63,5 +63,5 @@ export const handleSingleEvent = async (
 		});
 	}
 
-	return rule?.alerts?.length ? resultOfComparation.alertToLaunchList : [];
+	return rule?.alerts?.length ? resultOfComparison.alertToLaunchList : [];
 };

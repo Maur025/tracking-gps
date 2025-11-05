@@ -21,7 +21,7 @@ const {
 	CLICKHOUSE_PASSWORD,
 } = environment;
 
-getApp().get('/', (req, res) => {
+getApp().get('/', (_req, res) => {
 	res.send('Running project tracking gps!');
 });
 

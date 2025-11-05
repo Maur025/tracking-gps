@@ -33,6 +33,9 @@ export const processRulesByDevice = async (
 	const ruleCache = container.resolve(RuleCache);
 	let deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] = [];
 
+	const weeklyDay = getWeeklyDay();
+	const ruleInFrequencyApplyList: Rule[] = [];
+
 	for (const ruleId of rulesToApply) {
 		const rule: Rule | undefined = ruleCache.getById(ruleId);
 
@@ -48,33 +51,36 @@ export const processRulesByDevice = async (
 			continue;
 		}
 
-		let isRuleToProcess: boolean = false;
+		const shouldApplyRule = rule.frequencies.some(
+			frequency =>
+				weeklyDay === getRuleFrequencyInDay(frequency.frequency) &&
+				isRuleFrequencyBetweenAvailableHours({ frequency }),
+		);
 
-		for (const frequency of rule.frequencies) {
-			if (getWeeklyDay() !== getRuleFrequencyInDay(frequency.frequency)) {
-				continue;
-			}
-
-			if (!isRuleFrequencyBetweenAvailableHours({ frequency })) {
-				continue;
-			}
-
-			isRuleToProcess = true;
-			break;
-		}
-
-		if (isRuleToProcess) {
-			const alertToLaunchList: DeviceRuleAlertToLaunch[] = await processRule({
-				device,
-				rule: { ...rule, deleted: !!rule?.deleted },
-			});
-
-			deviceRuleAlertToLaunchList = [
-				...deviceRuleAlertToLaunchList,
-				...alertToLaunchList,
-			];
+		if (shouldApplyRule) {
+			ruleInFrequencyApplyList.push(rule);
 		}
 	}
 
+	if (!ruleInFrequencyApplyList.length) {
+		loggerDebug(`${loggerAuxMessage} no rules in frequency to apply.`);
+		return [];
+	}
+
+	for (const rule of ruleInFrequencyApplyList) {
+		const alertToLaunchList: DeviceRuleAlertToLaunch[] = await processRule({
+			device,
+			rule: { ...rule, deleted: !!rule?.deleted },
+		});
+
+		deviceRuleAlertToLaunchList = [
+			...deviceRuleAlertToLaunchList,
+			...alertToLaunchList,
+		];
+	}
+
+	loggerDebug(
+		`${loggerAuxMessage} rules processed, total alerts to launch: ${deviceRuleAlertToLaunchList.length}`,
+	);
 	return deviceRuleAlertToLaunchList;
 };

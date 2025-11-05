@@ -1,3 +1,5 @@
+import { loggerDebug } from '@maur025/core-logger';
+
 export const waitForAssert = async (
 	assertFn: () => void | Promise<void>,
 	intervalMs: number = 1000,
@@ -13,24 +15,29 @@ export const waitForAssert = async (
 			return;
 		} catch (error) {
 			if (!(error instanceof Error)) {
+				loggerDebug(`Non-error caught in waitForAssert: ${error}`);
 				throw error;
 			}
 
 			if (error.name !== 'AssertionError') {
+				loggerDebug(
+					`Non-assertion error caught in waitForAssert: ${error.message}`,
+				);
+
 				throw error;
 			}
 
-			console.log(error.message);
-
 			if (!error.message.includes('expected')) {
-				console.log("ENTRO AQUI POR QUE MESSSAGE NO INCLUYE 'to be called'");
+				loggerDebug(
+					`Non-assertion error caught in waitForAssert: ${error.message}`,
+				);
 
 				throw error;
 			}
 
 			lastError = error;
-			console.log(`Still waiting for assert, trying again...`);
 
+			loggerDebug(`Assertion error caught in waitForAssert: ${lastError}`);
 			await new Promise(resolve => setTimeout(resolve, intervalMs));
 		}
 
@@ -38,6 +45,9 @@ export const waitForAssert = async (
 	}
 
 	if (!isSuccessFull) {
+		loggerDebug(
+			`waitForAssert failed after all retries, throwing last error: ${lastError}`,
+		);
 		throw lastError;
 	}
 };

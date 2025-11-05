@@ -47,10 +47,6 @@ export const rebuildRoadBetweenTracks = async (
 			previousTrack?.t ?? 0,
 		);
 
-	loggerDebug(
-		`${loggerAuxData} timeElapsedSincePreviousTrack: ${timeElapsedSincePreviousTrack} seconds.`,
-	);
-
 	const resultValidation = validationDevice(
 		deviceId,
 		previousCoords,
@@ -66,6 +62,7 @@ export const rebuildRoadBetweenTracks = async (
 		loggerDebug(
 			`${loggerAuxData} Previous coordinates are invalid, using current position only.`,
 		);
+
 		return buildDeviceReconstructedRoadResponse(
 			'REBUILD_SUCCESS',
 			[currentCoords],
@@ -96,10 +93,6 @@ export const rebuildRoadBetweenTracks = async (
 	const distanceTraveledEachSecond =
 		distanceBetweenPointsInMeters / timeElapsedSincePreviousTrack;
 
-	loggerDebug(
-		`${loggerAuxData} distanceTraveledEachSecond: ${distanceTraveledEachSecond} m/s.`,
-	);
-
 	let reconstructedRoadFlatLine: Feature<LineString, GeoJsonProperties>;
 	let calculatedConfidence = 1;
 	let calculatedTracePoints: string[] = [];
@@ -121,7 +114,7 @@ export const rebuildRoadBetweenTracks = async (
 			complexRebuildResponse.reconstructedRoadFlatLine;
 
 		calculatedConfidence =
-			complexRebuildResponse.calculatedConfidence || calculatedConfidence;
+			complexRebuildResponse.calculatedConfidence ?? calculatedConfidence;
 
 		calculatedTracePoints = complexRebuildResponse.calculatedTracePoints;
 	}
@@ -146,6 +139,12 @@ export const rebuildRoadBetweenTracks = async (
 	const reconstructedRoadCoordList = getReconstructedRoadCoordsList(
 		reconstructedRoadFlatLine,
 		reconstructedRoadFlatLength,
+	);
+
+	loggerDebug(
+		`${loggerAuxData} Reconstructed road with ${
+			reconstructedRoadCoordList.length
+		} points.`,
 	);
 
 	return buildDeviceReconstructedRoadResponse(

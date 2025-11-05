@@ -17,6 +17,8 @@ const GetDeviceRulesRequest = object({
 
 type GetDeviceRulesRequest = z.infer<typeof GetDeviceRulesRequest>;
 
+const loggerAuxPrefix = `[DEVICE] (getDeviceRules)`;
+
 export const getDeviceRules = async (
 	request: GetDeviceRulesRequest,
 ): Promise<string[]> => {
@@ -41,7 +43,7 @@ export const getDeviceRules = async (
 
 		if (!result?.total) {
 			loggerDebug(
-				`[DEVICE] (getDeviceRules) rules not founded for vehicle ${vehicleData.id}`,
+				`${loggerAuxPrefix} rules not founded for vehicle ${vehicleData.id}`,
 			);
 		} else {
 			addRulesOfDocuments(ruleSet, result.documents);
@@ -59,13 +61,15 @@ export const getDeviceRules = async (
 
 		for (const result of searchResults) {
 			if (!result?.total) {
-				loggerDebug(`[DEVICE] (getDeviceRules) rules not founded for group`);
+				loggerDebug(`${loggerAuxPrefix} rules not founded for group`);
 				continue;
 			}
 
 			addRulesOfDocuments(ruleSet, result.documents);
 		}
 	}
+
+	loggerDebug(`${loggerAuxPrefix} quantity of rules founded: ${ruleSet.size}`);
 
 	return [...ruleSet.values()];
 };
