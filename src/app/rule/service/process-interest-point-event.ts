@@ -1,6 +1,6 @@
-import { RuleResultEventComparation } from '../dto/rule-result-event-comparison';
+import { RuleResultEventComparison } from '../dto/rule-result-event-comparison';
 
 export const processInterestPointEvent =
-	async (): Promise<RuleResultEventComparation> => {
+	async (): Promise<RuleResultEventComparison> => {
 		return { alertToLaunchList: [], wasTriggered: false };
 	};
