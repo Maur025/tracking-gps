@@ -1,7 +1,7 @@
-import environment from '@config/env';
-import AbstractApiService from '@src/api-client/service/abstract-api-service';
+import environment from '@config/env.js';
+import AbstractApiService from '@src/api-client/service/abstract-api-service.js';
 import { singleton } from 'tsyringe';
-import { GroupResponse } from '../dto/response/group-response';
+import { GroupResponse } from '../dto/response/group-response.js';
 
 @singleton()
 export default class GroupService extends AbstractApiService<GroupResponse> {

@@ -1,23 +1,23 @@
 import { loggerWarn } from '@maur025/core-logger';
-import { Device } from '../entity/device';
+import { Device } from '../entity/device.js';
 import { container } from 'tsyringe';
-import DeviceCache from '../cache/device-cache';
-import { Vehicle } from '@app/vehicle/entity/vehicle';
-import { getDeviceVehicleData } from './get-device-vehicle-data';
-import { getGeofencesDeviceIn } from '@app/geofence/service/verify-in/get-geofences-device-in';
-import { DeviceGeofenceOut } from '../entity/device-geofence-out';
-import { getGeofencesDeviceOut } from '@app/geofence/service/verify-out/get-geofences-device-out';
-import { DeviceGeofenceIn } from '../entity/device-geofence-in';
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
-import { DeviceGroup } from '../entity/device-group';
-import { getDeviceGroups } from './get-device-groups';
-import { getDeviceRules } from './get-device-rules';
-import { processRulesByDevice } from '@app/rule/service/process-rules-by-device';
-import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch';
-import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest';
-import { calculateGpsDirection } from './calculate-gps-direction';
-import { rebuildRoadBetweenTracks } from './rebuild-road-between-tracks';
+import DeviceCache from '../cache/device-cache.js';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
+import { getDeviceVehicleData } from './get-device-vehicle-data.js';
+import { getGeofencesDeviceIn } from '@app/geofence/service/verify-in/get-geofences-device-in.js';
+import { DeviceGeofenceOut } from '../entity/device-geofence-out.js';
+import { getGeofencesDeviceOut } from '@app/geofence/service/verify-out/get-geofences-device-out.js';
+import { DeviceGeofenceIn } from '../entity/device-geofence-in.js';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
+import { DeviceGroup } from '../entity/device-group.js';
+import { getDeviceGroups } from './get-device-groups.js';
+import { getDeviceRules } from './get-device-rules.js';
+import { processRulesByDevice } from '@app/rule/service/process-rules-by-device.js';
+import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch.js';
+import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest.js';
+import { calculateGpsDirection } from './calculate-gps-direction.js';
+import { rebuildRoadBetweenTracks } from './rebuild-road-between-tracks.js';
 
 export const processDeviceData = async (
 	device: Device,

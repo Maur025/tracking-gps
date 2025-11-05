@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import RuleCache from './cache/rule-cache';
+import RuleCache from './cache/rule-cache.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

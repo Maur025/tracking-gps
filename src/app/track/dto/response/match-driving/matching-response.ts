@@ -1,6 +1,6 @@
 import z, { array, number, object, string } from 'zod/v4';
-import { GeometryResponse } from './geometry-response';
-import { LegResponse } from './leg-response';
+import { GeometryResponse } from './geometry-response.js';
+import { LegResponse } from './leg-response.js';
 
 export const MatchingResponse = object({
 	confidence: number().nonnegative(),

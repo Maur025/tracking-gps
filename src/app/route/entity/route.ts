@@ -1,8 +1,8 @@
 import { BaseDataAudit } from '@maur025/core-model-data';
 import z, { array, number, string } from 'zod/v4';
-import { District } from './district';
-import { Point } from './Point';
-import { RouteSection } from './route-section';
+import { District } from './district.js';
+import { Point } from './point.js';
+import { RouteSection } from './route-section.js';
 
 export const Route = BaseDataAudit.extend({
 	name: string().nonempty().optional(),

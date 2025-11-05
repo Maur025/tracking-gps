@@ -1,5 +1,5 @@
 import { loggerError } from '@maur025/core-logger';
-import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface';
+import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface.js';
 import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { flattenError, prettifyError, z } from 'zod/v4';

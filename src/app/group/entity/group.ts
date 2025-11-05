@@ -1,4 +1,4 @@
-import { Vehicle } from '@app/vehicle/entity/vehicle';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, string } from 'zod/v4';
 

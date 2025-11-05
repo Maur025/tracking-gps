@@ -1,13 +1,13 @@
-import TestController from '@app/test-app/test.controller';
-import { TestSchema } from '@app/test-app/schema/test.schema';
+import TestController from '@app/test-app/test.controller.js';
+import { TestSchema } from '@app/test-app/schema/test.schema.js';
 import { Router } from 'express';
 import { container } from 'tsyringe';
-import { testPaths } from './test-paths';
-import { zodValidator } from './middlewares/zod-validator';
+import { testPaths } from './test-paths.js';
+import { zodValidator } from './middlewares/zod-validator.js';
 
 const { DEFAULT, ZOD_VALIDATION, KAFKA } = testPaths;
 
-const router = Router();
+const testRouter: Router = Router();
 const {
 	getTest,
 	getTestTwo,
@@ -19,17 +19,17 @@ const {
 	kafkaTestExample,
 } = container.resolve(TestController);
 
-router.get(DEFAULT, getTest);
-router.get('/two', getTestTwo);
-router.get('/current/devices', currentDevices);
-router.get('/current/routes', currentRoutes);
-router.get(
+testRouter.get(DEFAULT, getTest);
+testRouter.get('/two', getTestTwo);
+testRouter.get('/current/devices', currentDevices);
+testRouter.get('/current/routes', currentRoutes);
+testRouter.get(
 	ZOD_VALIDATION,
 	zodValidator<TestSchema>(TestSchema, 'query'),
 	zodTestValidationAndInheritance,
 );
-router.get('/view/swagger/config', viewJsonConfigSwagger);
-router.get('/pdf/test', testingPdf);
-router.post(KAFKA, kafkaTestExample);
+testRouter.get('/view/swagger/config', viewJsonConfigSwagger);
+testRouter.get('/pdf/test', testingPdf);
+testRouter.post(KAFKA, kafkaTestExample);
 
-export default router;
+export { testRouter };

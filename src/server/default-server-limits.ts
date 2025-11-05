@@ -1,4 +1,4 @@
-import { DefaultServerLimitsSchema } from './schema/default-server-limits.schema';
+import { DefaultServerLimitsSchema } from './schema/default-server-limits.schema.js';
 
 const DEFAULT_LIMITS: DefaultServerLimitsSchema = {
 	LIMIT_TEXT: '25mb',

@@ -1,5 +1,5 @@
 import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi';
-import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
 import { z } from 'zod/v4';
 

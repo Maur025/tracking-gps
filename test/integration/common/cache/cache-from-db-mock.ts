@@ -1,9 +1,9 @@
 import { setupServer, SetupServerApi } from 'msw/node';
 import { http, HttpResponse } from 'msw';
-import environment from '@config/env';
-import { vehicleDataFakeDb } from './vehicle-data-fake-db';
-import { geofenceDataFakeDb } from './geofence-data-fake-db';
-import { groupDataFakeDb } from './group-data-fake-db';
+import environment from '@config/env.js';
+import { vehicleDataFakeDb } from './vehicle-data-fake-db.js';
+import { geofenceDataFakeDb } from './geofence-data-fake-db.js';
+import { groupDataFakeDb } from './group-data-fake-db.js';
 import {
 	vehicle_137f1081_4502_48c6_93ae_7f6d7d1a28fd,
 	vehicle_515d3e35_6afd_49ec_bb36_a2190dfc7713,
@@ -11,10 +11,10 @@ import {
 	vehicle_71cf8bf3_dfdf_4519_8449_efd9314ef3e4,
 	vehicle_86296a8e_cc66_45c4_9e74_350c6432302c,
 	vehicle_f10b7799_d38c_4a2b_a781_08b8f19a8db8,
-} from './vehicle-id-data-fake-db';
-import { ruleDataFakeDb } from './rule-data-fake-db';
-import { deventDataFakeDb } from './devent-data-fake-db';
-import { channelDataFakeDb } from './channel-data-fake-db';
+} from './vehicle-id-data-fake-db.js';
+import { ruleDataFakeDb } from './rule-data-fake-db.js';
+import { deventDataFakeDb } from './devent-data-fake-db.js';
+import { channelDataFakeDb } from './channel-data-fake-db.js';
 import {
 	deventSensor_052767e2_8cf0_4f23_8333_fdf96bfbbbfd,
 	deventSensor_12b3bb66_d2b9_4b30_adac_79b12be8304b,
@@ -27,7 +27,7 @@ import {
 	deventSensor_b35ec7f2_75ad_45ab_924b_a82535674b3b,
 	deventSensor_c100b10b_9712_411e_b059_4ad82a20d590,
 	deventSensor_fd759611_7ede_4e87_bcd4_63dbce06e156,
-} from './devent-sensor-id-data-fake-db';
+} from './devent-sensor-id-data-fake-db.js';
 
 const { BACKEND_URL } = environment;
 

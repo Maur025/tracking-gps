@@ -1,7 +1,7 @@
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
 import { singleton } from 'tsyringe';
-import { Channel } from '../entity/channel';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
+import { Channel } from '../entity/channel.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
 
 @singleton()
 export default class ChannelCache

@@ -1,10 +1,10 @@
-import { Vehicle } from '@app/vehicle/entity/vehicle';
-import { Device } from '../entity/device';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
+import { Device } from '../entity/device.js';
 import { container } from 'tsyringe';
-import VehicleCache from '@app/vehicle/cache/vehicle-cache';
+import VehicleCache from '@app/vehicle/cache/vehicle-cache.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
-import { isInvalidId } from '@utils/is-invalid-id';
-import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
+import { isInvalidId } from '@utils/is-invalid-id.js';
+import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis.js';
 
 export const getDeviceVehicleData = async (
 	device: Device,

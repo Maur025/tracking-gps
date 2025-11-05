@@ -1,8 +1,8 @@
-import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
-import { getVehicleMetadata } from './get-vehicle-metadata';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response.js';
+import { getVehicleMetadata } from './get-vehicle-metadata.js';
 import { loggerError } from '@maur025/core-logger';
-import { Vehicle } from '../entity/vehicle';
-import { getVehicleDeviceMap } from './get-vehicle-device-map';
+import { Vehicle } from '../entity/vehicle.js';
+import { getVehicleDeviceMap } from './get-vehicle-device-map.js';
 
 export const getVehiclesOfGroup = async (
 	groupVehicles?: GroupVehicleResponse[],

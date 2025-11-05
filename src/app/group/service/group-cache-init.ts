@@ -1,11 +1,11 @@
 import { loggerError } from '@maur025/core-logger';
 import { container } from 'tsyringe';
-import { getVehiclesOfGroup } from '../../vehicle/service/get-vehicles-of-group';
-import { GroupCache } from '../cache/group-cache';
-import { Group } from '../entity/group';
-import { GroupResponse } from '../dto/response/group-response';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
-import { addGroupBatchToRedis } from '../cache/add-group-batch-to-redis';
+import { getVehiclesOfGroup } from '../../vehicle/service/get-vehicles-of-group.js';
+import { GroupCache } from '../cache/group-cache.js';
+import { Group } from '../entity/group.js';
+import { GroupResponse } from '../dto/response/group-response.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
+import { addGroupBatchToRedis } from '../cache/add-group-batch-to-redis.js';
 
 export const groupCacheInit = async (
 	groupResponseList?: GroupResponse[],

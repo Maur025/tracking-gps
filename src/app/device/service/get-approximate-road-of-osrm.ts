@@ -1,7 +1,7 @@
-import environment from '@config/env';
+import environment from '@config/env.js';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
 import z, { array, number, object } from 'zod/v4';
-import { MatchDrivingResponse } from '@app/track/dto/response/match-driving/match-driving-response';
+import { MatchDrivingResponse } from '@app/track/dto/response/match-driving/match-driving-response.js';
 
 const { OSRM_URL } = environment;
 

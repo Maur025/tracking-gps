@@ -1,6 +1,6 @@
 import { Feature, GeoJsonProperties, LineString, Position } from 'geojson';
 import { along as turfAlong } from '@turf/turf';
-import environment from '@config/env';
+import environment from '@config/env.js';
 
 const { MAX_METERS_PER_SECOND } = environment;
 

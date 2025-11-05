@@ -12,11 +12,11 @@ vi.mock('@app/vehicle/service/get-vehicle-device-map', () => ({
 	getVehicleDeviceMap: vi.fn(() => new Map<string, string>()),
 }));
 
-import { getVehicleMetadata } from '@app/vehicle/service/get-vehicle-metadata';
-import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
+import { getVehicleMetadata } from '@app/vehicle/service/get-vehicle-metadata.js';
+import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group.js';
 import { loggerError } from '@maur025/core-logger';
-import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
-import { getVehicleDeviceMap } from '@app/vehicle/service/get-vehicle-device-map';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response.js';
+import { getVehicleDeviceMap } from '@app/vehicle/service/get-vehicle-device-map.js';
 
 describe('get vehicles of group test', () => {
 	const groupVehicleResponse = [

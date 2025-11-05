@@ -1,8 +1,8 @@
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import { container } from 'tsyringe';
 import z, { array, object, string } from 'zod/v4';
-import { addGeofenceInToCache } from './add-geofence-in-to-cache';
+import { addGeofenceInToCache } from './add-geofence-in-to-cache.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const GetNewGeofencesInSchema = object({

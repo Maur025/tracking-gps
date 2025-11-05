@@ -1,9 +1,9 @@
-import { Device } from '@app/device/entity/device';
+import { Device } from '@app/device/entity/device.js';
 import z, { object } from 'zod/v4';
-import { getPointInterestListByLocation } from './get-point-interest-list-by-location';
-import { DevicePointInterestVisited } from '@app/device/entity/device-point-interest-visited';
-import { VisitedPointInterest } from '../dto/visited-point-interest';
-import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { getPointInterestListByLocation } from './get-point-interest-list-by-location.js';
+import { DevicePointInterestVisited } from '@app/device/entity/device-point-interest-visited.js';
+import { VisitedPointInterest } from '../dto/visited-point-interest.js';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const GetVisitedOrNearbyPointsOfInterestRequest = object({

@@ -38,12 +38,12 @@ vi.mock('@common/redis/service/add-data-in-batch', () => ({
 }));
 
 import { loggerError } from '@maur025/core-logger';
-import { groupCacheInit } from '@app/group/service/group-cache-init';
+import { groupCacheInit } from '@app/group/service/group-cache-init.js';
 import { container } from 'tsyringe';
-import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group';
-import { GroupResponse } from '@app/group/dto/response/group-response';
-import { GroupCache } from '@app/group/cache/group-cache';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
+import { getVehiclesOfGroup } from '@app/vehicle/service/get-vehicles-of-group.js';
+import { GroupResponse } from '@app/group/dto/response/group-response.js';
+import { GroupCache } from '@app/group/cache/group-cache.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
 
 describe('Group cache init test', () => {
 	const groupResponse = [

@@ -1,5 +1,5 @@
 import { loggerWarn } from '@maur025/core-logger';
-import { kafkaLogger } from '@common/kafka/util/kafka-logger';
+import { kafkaLogger } from '@common/kafka/util/kafka-logger.js';
 import { Kafka, logLevel } from 'kafkajs';
 import z, { array, object, string } from 'zod/v4';
 

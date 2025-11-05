@@ -1,12 +1,12 @@
-import { Device } from '@app/device/entity/device';
+import { Device } from '@app/device/entity/device.js';
 import z, { array, object, set, string } from 'zod/v4';
-import { Rule } from '../entity/rule';
-import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry';
-import { RuleInoutSchema } from '../entity/rule-inout-schema';
-import { RuleGeofence } from '../entity/rule-geofence';
-import { ruleGeofenceRegistryCreate } from './rule-geofence-registry-create';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { RuleResultEventComparison } from '../dto/rule-result-event-comparison';
+import { Rule } from '../entity/rule.js';
+import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry.js';
+import { RuleInoutSchema } from '../entity/rule-inout-schema.js';
+import { RuleGeofence } from '../entity/rule-geofence.js';
+import { ruleGeofenceRegistryCreate } from './rule-geofence-registry-create.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import { RuleResultEventComparison } from '../dto/rule-result-event-comparison.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const ProcessGeofenceEventRequest = object({

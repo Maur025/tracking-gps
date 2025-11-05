@@ -1,14 +1,14 @@
-import { testSwagger } from '@app/test-app/test.swagger';
+import { testSwagger } from '@app/test-app/test.swagger.js';
 import { container } from 'tsyringe';
-import ZodSwaggerGenerator from './swagger/zod-swagger-generator';
-import { groupSwagger } from '@app/group/group.swagger';
-import { geofenceSwagger } from '@app/geofence/geofence.swagger';
-import { deviceSwagger } from '@app/device/device.swagger';
-import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
-import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
-import { ruleSwagger } from '@app/rule/rule.swagger';
-import { deventSwagger } from '@app/devent/devent.swagger';
-import { channelSwagger } from '@app/channel/channel.swagger';
+import ZodSwaggerGenerator from './swagger/zod-swagger-generator.js';
+import { groupSwagger } from '@app/group/group.swagger.js';
+import { geofenceSwagger } from '@app/geofence/geofence.swagger.js';
+import { deviceSwagger } from '@app/device/device.swagger.js';
+import { vehicleSwagger } from '@app/vehicle/vehicle.swagger.js';
+import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger.js';
+import { ruleSwagger } from '@app/rule/rule.swagger.js';
+import { deventSwagger } from '@app/devent/devent.swagger.js';
+import { channelSwagger } from '@app/channel/channel.swagger.js';
 
 const TAGS = {
 	TEST: 'TEST',

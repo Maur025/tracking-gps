@@ -1,7 +1,7 @@
-import { Device } from '@app/device/entity/device';
-import { GroupCache } from '@app/group/cache/group-cache';
+import { Device } from '@app/device/entity/device.js';
+import { GroupCache } from '@app/group/cache/group-cache.js';
 import { container } from 'tsyringe';
-import { Vehicle } from '../entity/vehicle';
+import { Vehicle } from '../entity/vehicle.js';
 
 export const groupVehiclePairing = (payload: Device[]) => {
 	const groupCache = container.resolve(GroupCache);

@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import VehicleCache from './cache/vehicle-cache';
+import VehicleCache from './cache/vehicle-cache.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

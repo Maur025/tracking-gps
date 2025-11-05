@@ -2,8 +2,8 @@ import { Partitioners, Producer } from 'kafkajs';
 import {
 	handleKafkaClient,
 	HandleKafkaClientSchema,
-} from './handle-kafka-client';
-import { KafkaPublishSchema } from './schema/kafka-publish.schema';
+} from './handle-kafka-client.js';
+import { KafkaPublishSchema } from './schema/kafka-publish.schema.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { prettifyError } from 'zod/v4';
 import { v4 as uuid4 } from 'uuid';

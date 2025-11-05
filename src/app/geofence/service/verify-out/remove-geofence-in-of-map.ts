@@ -1,5 +1,5 @@
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import { loggerDebug } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 

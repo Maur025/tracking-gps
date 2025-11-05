@@ -1,10 +1,10 @@
-import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
-import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
+import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema.js';
+import SwaggerRegisterPath from '@docs/swagger/swagger-register-path.js';
+import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
-import { pointInterestPaths } from './point-interest-paths';
+import { pointInterestPaths } from './point-interest-paths.js';
 import { array } from 'zod/v4';
-import { Geofence } from '@app/geofence/entity/geofence';
+import { Geofence } from '@app/geofence/entity/geofence.js';
 
 const { DEFAULT } = pointInterestPaths;
 

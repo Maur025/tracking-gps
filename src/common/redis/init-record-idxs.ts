@@ -1,14 +1,14 @@
-import DeviceCache from '@app/device/cache/device-cache';
-import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import VehicleCache from '@app/vehicle/cache/vehicle-cache';
+import DeviceCache from '@app/device/cache/device-cache.js';
+import GeofenceCache from '@app/geofence/cache/geofence-cache.js';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import VehicleCache from '@app/vehicle/cache/vehicle-cache.js';
 import { container } from 'tsyringe';
-import { addRedisIdx } from './service/add-redis-idx';
+import { addRedisIdx } from './service/add-redis-idx.js';
 import { RediSearchSchema } from 'redis';
-import PointInterestCache from '@app/point-interest/cache/point-interest-cache';
-import RuleCache from '@app/rule/cache/rule-cache';
-import { GroupCache } from '@app/group/cache/group-cache';
-import DeventCache from '@app/devent/cache/devent-cache';
+import PointInterestCache from '@app/point-interest/cache/point-interest-cache.js';
+import RuleCache from '@app/rule/cache/rule-cache.js';
+import { GroupCache } from '@app/group/cache/group-cache.js';
+import DeventCache from '@app/devent/cache/devent-cache.js';
 
 export const initRecordIdxs = async (): Promise<void> => {
 	const deviceCache = container.resolve(DeviceCache);

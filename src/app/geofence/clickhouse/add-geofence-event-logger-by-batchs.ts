@@ -1,7 +1,7 @@
-import { clickhouseClient } from '@common/log-db/connect-to-clickhouse';
-import { GeofenceEventLoggerEventType } from '../entity/geofence-event-logger-event-type';
-import { GeofenceEventLoggerSchema } from '../entity/geofence-event-logger-schema';
-import { GeofenceIn } from '../entity/geofence-in';
+import { clickhouseClient } from '@common/log-db/connect-to-clickhouse.js';
+import { GeofenceEventLoggerEventType } from '../entity/geofence-event-logger-event-type.js';
+import { GeofenceEventLoggerSchema } from '../entity/geofence-event-logger-schema.js';
+import { GeofenceIn } from '../entity/geofence-in.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export const addGeofenceEventLoggerByBatchs = async (

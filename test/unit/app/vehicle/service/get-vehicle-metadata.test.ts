@@ -5,8 +5,8 @@ vi.mock('@maur025/core-logger', () => ({
 }));
 
 import { loggerWarn } from '@maur025/core-logger';
-import { getVehicleMetadata } from '@app/vehicle/service/get-vehicle-metadata';
-import { VehicleMetadata } from '@app/vehicle/entity/vehicle-metadata';
+import { getVehicleMetadata } from '@app/vehicle/service/get-vehicle-metadata.js';
+import { VehicleMetadata } from '@app/vehicle/entity/vehicle-metadata.js';
 
 describe('get vehicle metadata', () => {
 	beforeEach(() => {

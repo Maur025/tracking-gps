@@ -1,7 +1,7 @@
-import AbstractApiService from '@api-client/service/abstract-api-service';
+import AbstractApiService from '@api-client/service/abstract-api-service.js';
 import { singleton } from 'tsyringe';
-import { ChannelResponse } from '../dto/response/channel-response';
-import environment from '@config/env';
+import { ChannelResponse } from '../dto/response/channel-response.js';
+import environment from '@config/env.js';
 
 @singleton()
 export default class ChannelService extends AbstractApiService<ChannelResponse> {

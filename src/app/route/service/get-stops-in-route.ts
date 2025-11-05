@@ -1,5 +1,5 @@
-import { Track } from '@app/track/entity/track';
-import { TrackStop } from '@app/track/entity/track-stop';
+import { Track } from '@app/track/entity/track.js';
+import { TrackStop } from '@app/track/entity/track-stop.js';
 
 export const getStopsInRoute = (trackList: Track[]): TrackStop[] => {
 	const stopList: TrackStop[] = [];

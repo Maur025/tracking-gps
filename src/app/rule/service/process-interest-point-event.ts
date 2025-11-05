@@ -1,4 +1,4 @@
-import { RuleResultEventComparison } from '../dto/rule-result-event-comparison';
+import { RuleResultEventComparison } from '../dto/rule-result-event-comparison.js';
 
 export const processInterestPointEvent =
 	async (): Promise<RuleResultEventComparison> => {

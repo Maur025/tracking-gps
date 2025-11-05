@@ -1,8 +1,8 @@
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import {
 	startTestServices,
 	stopTestServices,
-} from 'test/integration/test-services.setup';
+} from 'test/integration/test-services.setup.js';
 import {
 	afterAll,
 	beforeAll,

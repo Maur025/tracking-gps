@@ -1,5 +1,5 @@
 import { inject, injectable } from 'tsyringe';
-import DeviceCache from './cache/device-cache';
+import DeviceCache from './cache/device-cache.js';
 import { StatusCodes } from 'http-status-codes';
 import { Request, Response } from 'express';
 

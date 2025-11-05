@@ -1,6 +1,6 @@
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
-import { Devent } from '../entity/devent';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
+import { Devent } from '../entity/devent.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
 import { singleton } from 'tsyringe';
 
 @singleton()

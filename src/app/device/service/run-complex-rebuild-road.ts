@@ -1,9 +1,9 @@
 import { Feature, GeoJsonProperties, LineString } from 'geojson';
 import z, { any, array, number, object, string } from 'zod/v4';
-import { getApproximateRoadOfOsrm } from './get-approximate-road-of-osrm';
+import { getApproximateRoadOfOsrm } from './get-approximate-road-of-osrm.js';
 import { lineString as turfLineString } from '@turf/turf';
 import { loggerDebug } from '@maur025/core-logger';
-import { MatchingResponse } from '@app/track/dto/response/match-driving/matching-response';
+import { MatchingResponse } from '@app/track/dto/response/match-driving/matching-response.js';
 
 const RunComplexRebuildRoadReq = object({
 	coords: array(number()),

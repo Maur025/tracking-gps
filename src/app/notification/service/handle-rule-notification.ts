@@ -1,11 +1,11 @@
-import { RuleNotification } from '@app/rule/entity/rule-notification';
+import { RuleNotification } from '@app/rule/entity/rule-notification.js';
 import z, { array, object } from 'zod/v4';
-import { DeviceNotificationSchema } from '../schema/device-notification.schema';
+import { DeviceNotificationSchema } from '../schema/device-notification.schema.js';
 import { loggerDebug } from '@maur025/core-logger';
-import { getDeviceNotificationTitle } from '@app/device/service/notification/get-device-notification-title';
-import { getDeviceNotificationMessage } from '@app/device/service/notification/get-device-notification-message';
-import { addEmailToQueue } from './email/add-email-to-queue';
-import { addWhatsappToQueue } from './whatsapp/add-whatsapp-to-queue';
+import { getDeviceNotificationTitle } from '@app/device/service/notification/get-device-notification-title.js';
+import { getDeviceNotificationMessage } from '@app/device/service/notification/get-device-notification-message.js';
+import { addEmailToQueue } from './email/add-email-to-queue.js';
+import { addWhatsappToQueue } from './whatsapp/add-whatsapp-to-queue.js';
 
 const HandleRuleNotificationRequest = object({
 	notifications: array(RuleNotification).default([]),

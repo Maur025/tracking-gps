@@ -1,4 +1,4 @@
-import { KafkaRecordSchema } from '@common/kafka/schema/kafka-record.schema';
+import { KafkaRecordSchema } from '@common/kafka/schema/kafka-record.schema.js';
 
 export interface TestKafkaInterface {
 	name: string;

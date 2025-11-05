@@ -1,16 +1,16 @@
 import z, { array, object } from 'zod/v4';
 import { container } from 'tsyringe';
-import RuleGeofenceRegistryService from './rule-geofence-registry.service';
+import RuleGeofenceRegistryService from './rule-geofence-registry.service.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
-import { RuleGeofenceRegistryCreateRequest } from '../dto/request/rule-geofence-registry-create-request';
+import { RuleGeofenceRegistryCreateRequest } from '../dto/request/rule-geofence-registry-create-request.js';
 import { forkJoin, lastValueFrom } from 'rxjs';
-import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry';
+import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry.js';
 import { ApiResponse } from '@maur025/core-model-data';
-import { RuleGeofenceRegistryResponse } from '../dto/response/rule-geofence-registry-response';
-import { handleAsObject } from '@api-client/service/handle-response';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { Alert } from '@app/alert/entity/alert';
-import { DeviceRuleAlertToLaunchType } from '@app/device/entity/device-rule-alert-to-launch-type';
+import { RuleGeofenceRegistryResponse } from '../dto/response/rule-geofence-registry-response.js';
+import { handleAsObject } from '@api-client/service/handle-response.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import { Alert } from '@app/alert/entity/alert.js';
+import { DeviceRuleAlertToLaunchType } from '@app/device/entity/device-rule-alert-to-launch-type.js';
 
 const RuleGeofenceRegistryCreateReq = object({
 	ruleGeofenceToRegistryList: array(RuleGeofenceToRegistry).default([]),

@@ -1,4 +1,4 @@
-import { PositionL2 } from '@common/schema/position.schema';
+import { PositionL2 } from '@common/schema/position.schema.js';
 import z, { object, uuid } from 'zod/v4';
 
 export const RouteSection = object({

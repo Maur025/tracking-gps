@@ -36,18 +36,18 @@ vi.mock('@app/channel/channel.swagger', () => ({
 	channelSwagger: vi.fn(),
 }));
 
-import { testSwagger } from '@app/test-app/test.swagger';
-import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
-import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
+import { testSwagger } from '@app/test-app/test.swagger.js';
+import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs.js';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
-import { groupSwagger } from '@app/group/group.swagger';
-import { geofenceSwagger } from '@app/geofence/geofence.swagger';
-import { deviceSwagger } from '@app/device/device.swagger';
-import { vehicleSwagger } from '@app/vehicle/vehicle.swagger';
-import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger';
-import { ruleSwagger } from '@app/rule/rule.swagger';
-import { deventSwagger } from '@app/devent/devent.swagger';
-import { channelSwagger } from '@app/channel/channel.swagger';
+import { groupSwagger } from '@app/group/group.swagger.js';
+import { geofenceSwagger } from '@app/geofence/geofence.swagger.js';
+import { deviceSwagger } from '@app/device/device.swagger.js';
+import { vehicleSwagger } from '@app/vehicle/vehicle.swagger.js';
+import { pointInterestSwagger } from '@app/point-interest/point-interest.swagger.js';
+import { ruleSwagger } from '@app/rule/rule.swagger.js';
+import { deventSwagger } from '@app/devent/devent.swagger.js';
+import { channelSwagger } from '@app/channel/channel.swagger.js';
 
 describe('load all swagger docs test', () => {
 	const BASE_PATH: string = '/api/v1';

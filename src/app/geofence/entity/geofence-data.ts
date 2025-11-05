@@ -1,7 +1,7 @@
 import { BaseData } from '@maur025/core-model-data';
-import { PositionSchema } from '@common/schema/position.schema';
+import { PositionSchema } from '@common/schema/position.schema.js';
 import z, { number, string } from 'zod/v4';
-import { GeofenceType } from './geofence-type';
+import { GeofenceType } from './geofence-type.js';
 
 export const GeofenceData = BaseData.extend({
 	area: number().nonnegative().optional(),

@@ -1,4 +1,4 @@
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 export const deleteRedisIdx = async (idx?: string): Promise<void> => {

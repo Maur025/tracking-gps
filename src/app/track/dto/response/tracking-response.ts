@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { any, array } from 'zod/v4';
-import { TrackResponse } from './track-response';
+import { TrackResponse } from './track-response.js';
 
 export const TrackingResponse = BaseData.extend({
 	trackb64: array(any()).optional(),

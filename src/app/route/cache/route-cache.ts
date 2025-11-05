@@ -1,5 +1,5 @@
 import { singleton } from 'tsyringe';
-import { Route } from '../entity/route';
+import { Route } from '../entity/route.js';
 
 @singleton()
 export default class RouteCache {

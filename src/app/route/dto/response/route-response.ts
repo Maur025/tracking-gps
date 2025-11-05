@@ -1,8 +1,8 @@
 import { BaseDataAudit } from '@maur025/core-model-data';
 import z, { any, array, number, string } from 'zod/v4';
-import { DistrictResponse } from './district-response';
-import { PointResponse } from './point-response';
-import { RouteSectionResponse } from './route-section-response';
+import { DistrictResponse } from './district-response.js';
+import { PointResponse } from './point-response.js';
+import { RouteSectionResponse } from './route-section-response.js';
 
 export const RouteResponse = BaseDataAudit.extend({
 	name: string().nonempty().optional(),

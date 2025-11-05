@@ -1,7 +1,7 @@
-import { groupBySection } from './group-by-section';
-import { getCoordsByPointSection } from './get-coords-by-point-section';
-import { RouteResponse } from '../dto/response/route-response';
-import { Point } from '../entity/Point';
+import { groupBySection } from './group-by-section.js';
+import { getCoordsByPointSection } from './get-coords-by-point-section.js';
+import { RouteResponse } from '../dto/response/route-response.js';
+import { Point } from '../entity/point.js';
 
 export const setupSections = (route: RouteResponse) => {
 	route.tracksIn = [];

@@ -1,8 +1,8 @@
-import environment from '@config/env';
-import ServerBuilder from '@server/server-builder';
-import ServerBuilderResponse from '@server/interface/server-builder-response.interface';
-import { installCache } from '@config/dns-cache';
-import routes from '@routes/index.routes';
+import environment from '@config/env.js';
+import ServerBuilder from '@server/server-builder.js';
+import ServerBuilderResponse from '@server/interface/server-builder-response.interface.js';
+import { installCache } from '@config/dns-cache.js';
+import routes from '@routes/index.routes.js';
 
 installCache();
 

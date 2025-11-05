@@ -1,14 +1,14 @@
-import GroupController from '@app/group/group.controller';
+import GroupController from '@app/group/group.controller.js';
 import { Router } from 'express';
 import { container } from 'tsyringe';
-import { groupPaths } from './group-paths';
+import { groupPaths } from './group-paths.js';
 
 const { DEFAULT } = groupPaths;
 
-const router = Router();
+const groupRouter: Router = Router();
 
 const groupController = container.resolve(GroupController);
 
-router.get(DEFAULT, groupController.getAllInCache);
+groupRouter.get(DEFAULT, groupController.getAllInCache);
 
-export default router;
+export { groupRouter };

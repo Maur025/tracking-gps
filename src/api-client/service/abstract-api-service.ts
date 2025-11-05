@@ -1,12 +1,12 @@
-import { delet, get, post, put } from '../api-client';
+import { delet, get, post, put } from '../api-client.js';
 import { Observable } from 'rxjs';
 import { ApiResponse, BaseData } from '@maur025/core-model-data';
-import { ApiServiceRequestSchema } from '../schema/api-service-request.schema';
-import { GetAllPaginatedRequest } from '../dto/get-all-paginated-request';
-import { GetByIdRequest } from '../dto/get-by-id-request';
-import { CreateRequest } from '../dto/create-request';
-import { UpdateRequest } from '../dto/update-request';
-import { DeleteRequest } from '../dto/delete-request';
+import { ApiServiceRequestSchema } from '../schema/api-service-request.schema.js';
+import { GetAllPaginatedRequest } from '../dto/get-all-paginated-request.js';
+import { GetByIdRequest } from '../dto/get-by-id-request.js';
+import { CreateRequest } from '../dto/create-request.js';
+import { UpdateRequest } from '../dto/update-request.js';
+import { DeleteRequest } from '../dto/delete-request.js';
 
 export default abstract class AbstractApiService<R extends BaseData> {
 	constructor(protected readonly apiRequest: ApiServiceRequestSchema) {}

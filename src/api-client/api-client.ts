@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { fromFetch } from 'rxjs/fetch';
-import { getAgentByUrl } from '../config/dns-cache';
+import { getAgentByUrl } from '../config/dns-cache.js';
 import {
 	catchError,
 	from,
@@ -9,8 +9,8 @@ import {
 	throwError,
 	timeout,
 } from 'rxjs';
-import { ApiException } from './api-exception';
-import { HttpMethodSchema } from './schema/http-method.schema';
+import { ApiException } from './api-exception.js';
+import { HttpMethodSchema } from './schema/http-method.schema.js';
 
 const options: RequestInit = {
 	headers: { 'content-type': 'application/json' },

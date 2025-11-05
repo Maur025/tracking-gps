@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { channelPaths } from './channel-paths';
+import { channelPaths } from './channel-paths.js';
 import { container } from 'tsyringe';
-import ChannelController from './channel.controller';
+import ChannelController from './channel.controller.js';
 
 const { DEFAULT } = channelPaths;
-const channelRouter = Router();
+const channelRouter: Router = Router();
 
 const { getAllInCache } = container.resolve(ChannelController);
 

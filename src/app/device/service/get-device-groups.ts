@@ -1,11 +1,11 @@
-import { Vehicle } from '@app/vehicle/entity/vehicle';
-import { DeviceGroup } from '../entity/device-group';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
+import { DeviceGroup } from '../entity/device-group.js';
 import { loggerDebug } from '@maur025/core-logger';
-import { isInvalidId } from '@utils/is-invalid-id';
+import { isInvalidId } from '@utils/is-invalid-id.js';
 import { container } from 'tsyringe';
-import { GroupCache } from '@app/group/cache/group-cache';
-import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
-import { Group } from '@app/group/entity/group';
+import { GroupCache } from '@app/group/cache/group-cache.js';
+import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis.js';
+import { Group } from '@app/group/entity/group.js';
 
 export const getDeviceGroups = async (
 	vehicleData?: Vehicle,

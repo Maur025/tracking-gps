@@ -1,10 +1,10 @@
-import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import { deventPaths } from './devent-paths';
+import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema.js';
+import { deventPaths } from './devent-paths.js';
 import { container } from 'tsyringe';
-import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
-import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
+import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator.js';
+import SwaggerRegisterPath from '@docs/swagger/swagger-register-path.js';
 import { array } from 'zod/v4';
-import { Devent } from './entity/devent';
+import { Devent } from './entity/devent.js';
 
 const { DEFAULT } = deventPaths;
 

@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Group } from '../entity/group';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Group } from '../entity/group.js';
 
 export const addGroupBatchToRedis = async (
 	groupBatch: Group[],

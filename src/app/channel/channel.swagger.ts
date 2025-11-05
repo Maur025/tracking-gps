@@ -1,10 +1,10 @@
-import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import { channelPaths } from './channel-paths';
+import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema.js';
+import { channelPaths } from './channel-paths.js';
 import { container } from 'tsyringe';
-import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
-import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
+import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator.js';
+import SwaggerRegisterPath from '@docs/swagger/swagger-register-path.js';
 import { array } from 'zod/v4';
-import { Channel } from './entity/channel';
+import { Channel } from './entity/channel.js';
 
 const { DEFAULT } = channelPaths;
 

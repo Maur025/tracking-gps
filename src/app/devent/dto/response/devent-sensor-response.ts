@@ -1,6 +1,6 @@
 import z, { number, object, string } from 'zod/v4';
-import { SensorResponse } from './sensor-response';
-import { CalcTypeResponse } from './calc-type-response';
+import { SensorResponse } from './sensor-response.js';
+import { CalcTypeResponse } from './calc-type-response.js';
 
 export const DeventSensorResponse = object({
 	id: string(),

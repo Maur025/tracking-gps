@@ -1,6 +1,6 @@
-import { Device } from '@app/device/entity/device';
+import { Device } from '@app/device/entity/device.js';
 import z, { boolean, object } from 'zod/v4';
-import { RuleGeofence } from '../entity/rule-geofence';
+import { RuleGeofence } from '../entity/rule-geofence.js';
 
 export const RuleGeofenceToRegistry = object({
 	device: Device,

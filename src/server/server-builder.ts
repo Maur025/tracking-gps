@@ -1,18 +1,18 @@
-import ServerBuilderResponse from '@server/interface/server-builder-response.interface';
-import IServerBuilder from '@server/interface/server-builder.interface';
+import ServerBuilderResponse from '@server/interface/server-builder-response.interface.js';
+import IServerBuilder from '@server/interface/server-builder.interface.js';
 import express, { Application, Router } from 'express';
 import { Server } from 'http';
 import cors from 'cors';
 import compression from 'compression';
-import DEFAULT_LIMITS from './default-server-limits';
+import DEFAULT_LIMITS from './default-server-limits.js';
 import { container, inject, injectable } from 'tsyringe';
-import { TOKENS } from '../config/ioc/token';
+import { TOKENS } from '../config/ioc/token.js';
 import {
 	ServerBuilderRequest,
 	ServerBuilderSchema,
-} from '@server/schema/server-builder-schema';
-import { errorValidate } from '@utils/zod-exception';
-import { swaggerConfig } from '../config/swagger-config';
+} from '@server/schema/server-builder-schema.js';
+import { errorValidate } from '@utils/zod-exception.js';
+import { swaggerConfig } from '../config/swagger-config.js';
 import { loggerInfo } from '@maur025/core-logger';
 @injectable()
 export default class ServerBuilder implements IServerBuilder {

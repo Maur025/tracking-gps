@@ -1,13 +1,13 @@
-import { Alert } from '@app/alert/entity/alert';
+import { Alert } from '@app/alert/entity/alert.js';
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, number, string } from 'zod/v4';
-import { RuleFrequency } from './rule-frequency';
-import { RuleEvent } from './rule-event';
-import { RuleGroup } from './rule-group';
-import { RuleVehicle } from './rule-vehicle';
-import { RuleGeofence } from './rule-geofence';
-import { RuleNotification } from './rule-notification';
-import { RuleInoutSchema } from './rule-inout-schema';
+import { RuleFrequency } from './rule-frequency.js';
+import { RuleEvent } from './rule-event.js';
+import { RuleGroup } from './rule-group.js';
+import { RuleVehicle } from './rule-vehicle.js';
+import { RuleGeofence } from './rule-geofence.js';
+import { RuleNotification } from './rule-notification.js';
+import { RuleInoutSchema } from './rule-inout-schema.js';
 
 export const Rule = BaseData.extend({
 	name: string().nonempty(),

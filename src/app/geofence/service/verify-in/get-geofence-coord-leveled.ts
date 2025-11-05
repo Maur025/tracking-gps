@@ -1,5 +1,5 @@
 import { loggerDebug } from '@maur025/core-logger';
-import { getArrayDeepLevel } from '@utils/get-array-deep-level';
+import { getArrayDeepLevel } from '@utils/get-array-deep-level.js';
 
 export const getGeofenceCoordLeveled = (
 	geofenceCoords: unknown,

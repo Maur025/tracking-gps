@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import ChannelCache from './cache/channel-cache';
+import ChannelCache from './cache/channel-cache.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

@@ -1,7 +1,7 @@
 import z, { number, string } from 'zod/v4';
-import { DeventSensorOperator } from './devent-sensor-operator';
-import { Sensor } from './sensor';
-import { CalcType } from './calc-type';
+import { DeventSensorOperator } from './devent-sensor-operator.js';
+import { Sensor } from './sensor.js';
+import { CalcType } from './calc-type.js';
 import { BaseData } from '@maur025/core-model-data';
 
 export const DeventSensor = BaseData.extend({

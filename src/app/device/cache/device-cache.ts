@@ -1,13 +1,13 @@
 import { singleton } from 'tsyringe';
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
-import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
-import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
-import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
-import { Device } from '../entity/device';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
-import { addDeviceBatchToRedis } from './add-device-batch-to-redis';
+import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data.js';
+import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx.js';
+import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis.js';
+import { Device } from '../entity/device.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
+import { addDeviceBatchToRedis } from './add-device-batch-to-redis.js';
 
 @singleton()
 export default class DeviceCache

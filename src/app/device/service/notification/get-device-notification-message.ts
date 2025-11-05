@@ -1,5 +1,5 @@
-import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema';
-import { replaceDataInTemplate } from '@utils/replace-data-in-template';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
+import { replaceDataInTemplate } from '@utils/replace-data-in-template.js';
 import z, { object, string } from 'zod/v4';
 
 const GetDeviceNotificationMessageRequest = object({

@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
-import { GeofenceIn } from '../entity/geofence-in';
-import GeofenceInCache from './geofence-in-cache';
+import { GeofenceIn } from '../entity/geofence-in.js';
+import GeofenceInCache from './geofence-in-cache.js';
 
 export const addGeofenceInToMap = (geofenceInList: GeofenceIn[]): void => {
 	const geofenceInCache = container.resolve(GeofenceInCache);

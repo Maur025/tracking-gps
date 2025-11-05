@@ -1,6 +1,6 @@
-import { kafkaProducer } from '@common/kafka/kafka-producer';
-import { Device } from '../entity/device';
-import { kafkaTopics } from '@src/kafka-topics';
+import { kafkaProducer } from '@common/kafka/kafka-producer.js';
+import { Device } from '../entity/device.js';
+import { kafkaTopics } from '@src/kafka-topics.js';
 
 const { TRACKING_VEHICLE_DEVICE } = kafkaTopics;
 

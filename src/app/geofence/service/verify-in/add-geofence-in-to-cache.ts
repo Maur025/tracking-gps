@@ -1,9 +1,9 @@
-import { addGeofenceInBatchToRedis } from '@app/geofence/cache/add-geofence-in-batch-to-redis';
-import { addGeofenceInToMap } from '@app/geofence/cache/add-geofence-in-to-map';
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { addGeofenceEventLoggerByBatchs } from '@app/geofence/clickhouse/add-geofence-event-logger-by-batchs';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
+import { addGeofenceInBatchToRedis } from '@app/geofence/cache/add-geofence-in-batch-to-redis.js';
+import { addGeofenceInToMap } from '@app/geofence/cache/add-geofence-in-to-map.js';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { addGeofenceEventLoggerByBatchs } from '@app/geofence/clickhouse/add-geofence-event-logger-by-batchs.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
 import { loggerDebug } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 import z, { object, array } from 'zod/v4';

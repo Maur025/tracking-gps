@@ -1,10 +1,10 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import '@config/ioc/dependency-injection';
-import app from './app';
-import { measurePerformance } from '@utils/measure-performance';
-import { initServices } from './init-services';
-import environment from '@config/env';
+import '@config/ioc/dependency-injection.js';
+import app from './app.js';
+import { measurePerformance } from '@utils/measure-performance.js';
+import { initServices } from './init-services.js';
+import environment from '@config/env.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const { getApp, start } = app;

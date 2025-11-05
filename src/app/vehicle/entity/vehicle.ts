@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, string } from 'zod/v4';
-import { VehicleMetadata } from './vehicle-metadata';
+import { VehicleMetadata } from './vehicle-metadata.js';
 
 export const Vehicle = BaseData.extend({
 	name: string().nonempty(),

@@ -1,7 +1,7 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { string } from 'zod/v4';
-import { GeofenceData } from './geofence-data';
-import { Layer } from '@app/layer/entity/layer';
+import { GeofenceData } from './geofence-data.js';
+import { Layer } from '@app/layer/entity/layer.js';
 
 export const Geofence = BaseData.extend({
 	layerId: string().nonempty().optional(),

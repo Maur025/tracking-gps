@@ -1,8 +1,8 @@
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
 import { singleton } from 'tsyringe';
-import { Vehicle } from '../entity/vehicle';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
-import { redisClient } from '@common/redis/create-redis-client';
+import { Vehicle } from '../entity/vehicle.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerError } from '@maur025/core-logger';
 
 @singleton()

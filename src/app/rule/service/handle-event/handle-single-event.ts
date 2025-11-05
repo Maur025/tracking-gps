@@ -1,16 +1,16 @@
-import DeventCache from '@app/devent/cache/devent-cache';
-import { Devent } from '@app/devent/entity/devent';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison';
+import DeventCache from '@app/devent/cache/devent-cache.js';
+import { Devent } from '@app/devent/entity/devent.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison.js';
 import { container } from 'tsyringe';
-import { processEventSelector } from './process-event-selector';
+import { processEventSelector } from './process-event-selector.js';
 import { loggerDebug } from '@maur025/core-logger';
 import z, { object } from 'zod/v4';
-import { Rule } from '@app/rule/entity/rule';
-import { Device } from '@app/device/entity/device';
-import { handleRuleNotification } from '@app/notification/service/handle-rule-notification';
-import { notificationBuildByAlertList } from './notification-build-by-alert-list';
-import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema';
+import { Rule } from '@app/rule/entity/rule.js';
+import { Device } from '@app/device/entity/device.js';
+import { handleRuleNotification } from '@app/notification/service/handle-rule-notification.js';
+import { notificationBuildByAlertList } from './notification-build-by-alert-list.js';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
 
 const loggerAuxMessage: string = `[RULE] (handleSingleEvent)`;
 

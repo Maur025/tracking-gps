@@ -1,10 +1,10 @@
-import { Track } from '@app/track/entity/track';
+import { Track } from '@app/track/entity/track.js';
 import z, { object, string } from 'zod/v4';
 import { bearing, distance as turfDistance } from '@turf/turf';
 import {
 	DeviceMovingDirection,
 	DirectionEnum,
-} from '../entity/device-moving-direction';
+} from '../entity/device-moving-direction.js';
 import { Position } from 'geojson';
 import { loggerDebug } from '@maur025/core-logger';
 

@@ -1,11 +1,11 @@
 import { loggerError } from '@maur025/core-logger';
-import { VehicleResponse } from '../dto/response/vehicle-response';
+import { VehicleResponse } from '../dto/response/vehicle-response.js';
 import { container } from 'tsyringe';
-import VehicleCache from '../cache/vehicle-cache';
-import { Vehicle } from '../entity/vehicle';
-import { getVehicleMetadata } from './get-vehicle-metadata';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
-import { addVehicleBatchToRedis } from '../cache/add-vehicle-batch-to-redis';
+import VehicleCache from '../cache/vehicle-cache.js';
+import { Vehicle } from '../entity/vehicle.js';
+import { getVehicleMetadata } from './get-vehicle-metadata.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
+import { addVehicleBatchToRedis } from '../cache/add-vehicle-batch-to-redis.js';
 
 export const vehicleCacheInit = async (
 	vehicleResponseList: VehicleResponse[],

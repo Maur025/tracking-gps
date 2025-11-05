@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Device } from '../entity/device';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Device } from '../entity/device.js';
 
 export const getDeviceBatchFromRedis = async (
 	deviceKeyBatch: string[],

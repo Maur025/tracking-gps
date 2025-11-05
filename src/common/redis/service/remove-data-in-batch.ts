@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
-import { RemoveDataInBatchSchema } from '../schema/remove-data-in-batch.schema';
-import { deleteDataInBatch } from './delete-data-in-batch';
+import { RemoveDataInBatchSchema } from '../schema/remove-data-in-batch.schema.js';
+import { deleteDataInBatch } from './delete-data-in-batch.js';
 
 export const removeDataInBatch = async <E extends BaseData>(
 	request: RemoveDataInBatchSchema<E>,

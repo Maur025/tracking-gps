@@ -1,4 +1,4 @@
-import { EnvironmentSchema } from './schema/environment.schema';
+import { EnvironmentSchema } from './schema/environment.schema.js';
 
 const {
 	HOST,

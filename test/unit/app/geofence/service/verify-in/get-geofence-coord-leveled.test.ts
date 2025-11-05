@@ -4,8 +4,8 @@ vi.mock('@maur025/core-logger', () => ({
 	loggerDebug: vi.fn(),
 }));
 
-import { getGeofenceCoordLeveled } from '@app/geofence/service/verify-in/get-geofence-coord-leveled';
-import { getArrayDeepLevel } from '@utils/get-array-deep-level';
+import { getGeofenceCoordLeveled } from '@app/geofence/service/verify-in/get-geofence-coord-leveled.js';
+import { getArrayDeepLevel } from '@utils/get-array-deep-level.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 describe('get geofence coord leveled test', () => {

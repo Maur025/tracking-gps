@@ -1,11 +1,11 @@
-import { cacheInitializer } from '@common/cache/service/cache-initializer';
-import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse';
-import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities';
-import { initRedisClient } from '@common/redis/create-redis-client';
-import { initRecordIdxs } from '@common/redis/init-record-idxs';
-import { configureConsumers } from '@config/configure-consumers';
+import { cacheInitializer } from '@common/cache/service/cache-initializer.js';
+import { connectToClickhouse } from '@common/log-db/connect-to-clickhouse.js';
+import { initCLickhouseEntities } from '@common/log-db/init-clickhouse-entities.js';
+import { initRedisClient } from '@common/redis/create-redis-client.js';
+import { initRecordIdxs } from '@common/redis/init-record-idxs.js';
+import { configureConsumers } from '@config/configure-consumers.js';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
-import { measurePerformance } from '@utils/measure-performance';
+import { measurePerformance } from '@utils/measure-performance.js';
 import { defaultIfEmpty, lastValueFrom } from 'rxjs';
 import z, { number, object, string, array, boolean } from 'zod/v4';
 

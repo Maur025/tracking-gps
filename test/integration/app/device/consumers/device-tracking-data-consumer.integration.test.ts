@@ -19,24 +19,24 @@ vi.mock('@maur025/core-logger', async importOriginal => {
 	};
 });
 
-import { kafkaProducer } from '@common/kafka/kafka-producer';
-import { KafkaPublishSchema } from '@common/kafka/schema/kafka-publish.schema';
+import { kafkaProducer } from '@common/kafka/kafka-producer.js';
+import { KafkaPublishSchema } from '@common/kafka/schema/kafka-publish.schema.js';
 import {
 	startTestServices,
 	stopTestServices,
-} from 'test/integration/test-services.setup';
-import * as deviceConsumer from '@app/device/consumers/device-tracking-data-consumer';
-import { waitForAssert } from 'test/integration/util/wait-for-assert';
-import app from '@src/app';
+} from 'test/integration/test-services.setup.js';
+import * as deviceConsumer from '@app/device/consumers/device-tracking-data-consumer.js';
+import { waitForAssert } from 'test/integration/util/wait-for-assert.js';
+import app from '@src/app.js';
 import { loggerError } from '@maur025/core-logger';
-import { deviceTrackingDataPayloadFake } from '../payload-fake-data/device-tracking-data-payload-fake';
+import { deviceTrackingDataPayloadFake } from '../payload-fake-data/device-tracking-data-payload-fake.js';
 import { Position } from 'geojson';
-import * as deviceEnrichPublisherModule from '@app/device/publisher/device-data-enrich-to-monitor-publisher';
+import * as deviceEnrichPublisherModule from '@app/device/publisher/device-data-enrich-to-monitor-publisher.js';
 import { container } from 'tsyringe';
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { kafkaTopics } from '@src/kafka-topics';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { kafkaTopics } from '@src/kafka-topics.js';
 import { SetupServerApi } from 'msw/node';
-import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock';
+import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock.js';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 

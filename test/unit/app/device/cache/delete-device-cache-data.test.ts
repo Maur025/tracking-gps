@@ -6,8 +6,8 @@ vi.mock('@common/redis/create-redis-client', () => ({
 	},
 }));
 
-import { redisClient } from '@common/redis/create-redis-client';
-import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data.js';
 
 const KEY_TEST: string = 'key-test:';
 

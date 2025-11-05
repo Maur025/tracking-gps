@@ -3,8 +3,8 @@ import {
 	OpenApiGeneratorV31,
 	OpenAPIRegistry,
 } from '@asteasolutions/zod-to-openapi';
-import { OpenAPIObject } from '@asteasolutions/zod-to-openapi/dist/types';
-import environment from '@config/env';
+import { OpenAPIObject } from '@asteasolutions/zod-to-openapi/dist/types.js';
+import environment from '@config/env.js';
 
 @singleton()
 export default class ZodSwaggerGenerator {

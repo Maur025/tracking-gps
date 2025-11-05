@@ -1,17 +1,17 @@
 import { forkJoin, lastValueFrom, Observable } from 'rxjs';
-import { DeventSensorResponse } from '../dto/response/devent-sensor-response';
-import { DeventSensor } from '../entity/devent-sensor';
+import { DeventSensorResponse } from '../dto/response/devent-sensor-response.js';
+import { DeventSensor } from '../entity/devent-sensor.js';
 import { ApiResponse } from '@maur025/core-model-data';
 import { container } from 'tsyringe';
-import DeventSensorService from './devent-sensor.service';
+import DeventSensorService from './devent-sensor.service.js';
 import { loggerError } from '@maur025/core-logger';
-import { handleAsObject } from '@api-client/service/handle-response';
-import { DeventSensorOperator } from '../entity/devent-sensor-operator';
-import { SensorResponse } from '../dto/response/sensor-response';
-import { Sensor } from '../entity/sensor';
-import { SensorName } from '../entity/sensor-name';
-import { CalcTypeResponse } from '../dto/response/calc-type-response';
-import { CalcType } from '../entity/calc-type';
+import { handleAsObject } from '@api-client/service/handle-response.js';
+import { DeventSensorOperator } from '../entity/devent-sensor-operator.js';
+import { SensorResponse } from '../dto/response/sensor-response.js';
+import { Sensor } from '../entity/sensor.js';
+import { SensorName } from '../entity/sensor-name.js';
+import { CalcTypeResponse } from '../dto/response/calc-type-response.js';
+import { CalcType } from '../entity/calc-type.js';
 
 export const getDeventSensorList = async (
 	sensorResponseList: DeventSensorResponse[],

@@ -1,10 +1,10 @@
-import { Device } from '@app/device/entity/device';
+import { Device } from '@app/device/entity/device.js';
 import z, { object } from 'zod/v4';
-import { Rule } from '../entity/rule';
+import { Rule } from '../entity/rule.js';
 import { loggerDebug } from '@maur025/core-logger';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { handleSingleEvent } from './handle-event/handle-single-event';
-import { handleMultiEvent } from './handle-event/handle-multi-event';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import { handleSingleEvent } from './handle-event/handle-single-event.js';
+import { handleMultiEvent } from './handle-event/handle-multi-event.js';
 
 const ProcessRuleRequest = object({
 	device: Device,
