@@ -1,12 +1,12 @@
-import environment from '@config/env';
+import environment from '@config/env.js';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
-import AbstractApiService from '@src/api-client/service/abstract-api-service';
-import { get } from '@src/api-client/api-client';
-import { handleAsArray } from '@src/api-client/service/handle-response';
+import AbstractApiService from '@src/api-client/service/abstract-api-service.js';
+import { get } from '@src/api-client/api-client.js';
+import { handleAsArray } from '@src/api-client/service/handle-response.js';
 import { catchError, map, Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
-import { setupSections } from './setup-sections';
-import { RouteResponse } from '../dto/response/route-response';
+import { setupSections } from './setup-sections.js';
+import { RouteResponse } from '../dto/response/route-response.js';
 
 @singleton()
 export default class RouteService extends AbstractApiService<RouteResponse> {

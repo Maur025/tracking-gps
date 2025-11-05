@@ -1,3 +1,3 @@
 import 'dotenv/config';
 import 'reflect-metadata';
-import '@config/ioc/dependency-injection';
+import '@config/ioc/dependency-injection.js';

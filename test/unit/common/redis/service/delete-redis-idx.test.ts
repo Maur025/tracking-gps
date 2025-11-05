@@ -6,8 +6,8 @@ vi.mock('@common/redis/create-redis-client', () => ({
 	},
 }));
 
-import { redisClient } from '@common/redis/create-redis-client';
-import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { deleteRedisIdx } from '@common/redis/service/delete-redis-idx.js';
 
 describe('delete redis idx test', () => {
 	beforeEach(() => {

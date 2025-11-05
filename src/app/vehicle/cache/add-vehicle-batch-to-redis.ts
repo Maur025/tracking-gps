@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Vehicle } from '../entity/vehicle';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Vehicle } from '../entity/vehicle.js';
 
 export const addVehicleBatchToRedis = async (
 	vehicleBatch: Vehicle[],

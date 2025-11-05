@@ -1,14 +1,14 @@
 import { loggerDebug } from '@maur025/core-logger';
 import { Position } from 'geojson';
-import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled';
-import { PositionSchema } from '@common/schema/position.schema';
+import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled.js';
+import { PositionSchema } from '@common/schema/position.schema.js';
 import {
 	booleanIntersects,
 	circle,
 	point as turfPoint,
 	distance as turfDistance,
 } from '@turf/turf';
-import environment from '@config/env';
+import environment from '@config/env.js';
 import z, { array, number, object } from 'zod/v4';
 
 const { GPS_RADIUS } = environment;

@@ -1,4 +1,4 @@
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 
 export const deleteDeviceCacheData = async (
 	deviceKeyBatch: string[],

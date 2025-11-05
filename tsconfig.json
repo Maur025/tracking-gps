@@ -1,12 +1,11 @@
 {
 	"compilerOptions": {
 		"target": "ES2022",
-		"lib": ["ES2022"],
 		"experimentalDecorators": true,
 		"emitDecoratorMetadata": true,
-		"module": "ES2022",
+		"module": "nodenext",
 		"rootDir": ".",
-		"moduleResolution": "node",
+		"moduleResolution": "nodenext",
 		"baseUrl": ".",
 		"paths": {
 			"@api-client/*": ["src/api-client/*"],

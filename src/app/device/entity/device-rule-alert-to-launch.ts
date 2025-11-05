@@ -1,5 +1,5 @@
 import z, { boolean, number, object, string } from 'zod/v4';
-import { DeviceRuleAlertToLaunchType } from './device-rule-alert-to-launch-type';
+import { DeviceRuleAlertToLaunchType } from './device-rule-alert-to-launch-type.js';
 
 export const DeviceRuleAlertToLaunch = object({
 	ruleGeofenceRegistryId: string().nonempty().optional(),

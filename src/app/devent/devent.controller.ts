@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import DeventCache from './cache/devent-cache';
+import DeventCache from './cache/devent-cache.js';
 import { Response, Request } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

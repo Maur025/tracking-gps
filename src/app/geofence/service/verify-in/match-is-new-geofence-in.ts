@@ -1,4 +1,4 @@
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 export const matchIsNewGeofenceIn = (

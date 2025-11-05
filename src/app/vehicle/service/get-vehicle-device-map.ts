@@ -1,7 +1,7 @@
-import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response.js';
 import { container } from 'tsyringe';
 import z, { array, object } from 'zod/v4';
-import VehicleService from './vehicle.service';
+import VehicleService from './vehicle.service.js';
 import {
 	forkJoin,
 	from,
@@ -11,9 +11,9 @@ import {
 	Observable,
 	toArray,
 } from 'rxjs';
-import { VehicleResponse } from '../dto/response/vehicle-response';
+import { VehicleResponse } from '../dto/response/vehicle-response.js';
 import { ApiResponse } from '@maur025/core-model-data';
-import { handleAsArray } from '@api-client/service/handle-response';
+import { handleAsArray } from '@api-client/service/handle-response.js';
 
 const Request = object({
 	groupVehicles: array(GroupVehicleResponse),

@@ -1,12 +1,12 @@
-import { Track } from '@app/track/entity/track';
-import { VisitedPointInterest } from '../dto/visited-point-interest';
+import { Track } from '@app/track/entity/track.js';
+import { VisitedPointInterest } from '../dto/visited-point-interest.js';
 import { loggerDebug } from '@maur025/core-logger';
 import { container } from 'tsyringe';
-import PointInterestCache from '../cache/point-interest-cache';
-import { verifyByRadialGeofence } from '@app/geofence/service/verify-in/verify-by-radial-geofence';
-import { getFinalStateFromStates } from '@app/geofence/service/get-final-state-from-states';
+import PointInterestCache from '../cache/point-interest-cache.js';
+import { verifyByRadialGeofence } from '@app/geofence/service/verify-in/verify-by-radial-geofence.js';
+import { getFinalStateFromStates } from '@app/geofence/service/get-final-state-from-states.js';
 import z, { object, string } from 'zod/v4';
-import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road.js';
 
 const GetPointInterestListByLocationRequest = object({
 	deviceLastTrack: Track,

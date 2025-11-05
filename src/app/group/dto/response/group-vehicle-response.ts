@@ -1,4 +1,4 @@
-import { VehicleResponse } from '@app/vehicle/dto/response/vehicle-response';
+import { VehicleResponse } from '@app/vehicle/dto/response/vehicle-response.js';
 import { BaseData } from '@maur025/core-model-data';
 import z, { string } from 'zod/v4';
 

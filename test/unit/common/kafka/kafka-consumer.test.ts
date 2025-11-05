@@ -17,9 +17,9 @@ vi.mock('@common/kafka/handle-kafka-client', () => ({
 	handleKafkaClient: vi.fn(),
 }));
 
-import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
-import { kafkaConsumer } from '@common/kafka/kafka-consumer';
-import { KafkaRecordSchema } from '@common/kafka/schema/kafka-record.schema';
+import { handleKafkaClient } from '@common/kafka/handle-kafka-client.js';
+import { kafkaConsumer } from '@common/kafka/kafka-consumer.js';
+import { KafkaRecordSchema } from '@common/kafka/schema/kafka-record.schema.js';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 import { EachMessagePayload, Kafka } from 'kafkajs';
 

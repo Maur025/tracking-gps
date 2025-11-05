@@ -1,19 +1,19 @@
 import z, { array, object } from 'zod/v4';
-import { ChannelResponse } from '../dto/response/channel-response';
+import { ChannelResponse } from '../dto/response/channel-response.js';
 import { loggerError } from '@maur025/core-logger';
 import { container } from 'tsyringe';
-import ChannelCache from '../cache/channel-cache';
-import { Channel } from '../entity/channel';
-import { CProtocol } from '../entity/c-protocol';
-import { CProtocolResponse } from '../dto/response/c-protocol-response';
-import { CProtocolName } from '../entity/c-protocol-name';
-import { getObjectOfString } from '@utils/get-object-of-string';
-import { fixCommasInJsonString } from '@utils/fix-commas-in-json-string';
-import { ChannelData } from '../entity/channel-data';
-import { ChannelDataParams } from '../entity/channel-data-params';
-import { ChannelDataUserParams } from '../entity/channel-data-user-params';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
-import { addChannelBatchToRedis } from '../cache/add-channel-batch-to-redis';
+import ChannelCache from '../cache/channel-cache.js';
+import { Channel } from '../entity/channel.js';
+import { CProtocol } from '../entity/c-protocol.js';
+import { CProtocolResponse } from '../dto/response/c-protocol-response.js';
+import { CProtocolName } from '../entity/c-protocol-name.js';
+import { getObjectOfString } from '@utils/get-object-of-string.js';
+import { fixCommasInJsonString } from '@utils/fix-commas-in-json-string.js';
+import { ChannelData } from '../entity/channel-data.js';
+import { ChannelDataParams } from '../entity/channel-data-params.js';
+import { ChannelDataUserParams } from '../entity/channel-data-user-params.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
+import { addChannelBatchToRedis } from '../cache/add-channel-batch-to-redis.js';
 
 const ChannelCacheInitRequest = object({
 	channelResponseList: array(ChannelResponse).default([]),

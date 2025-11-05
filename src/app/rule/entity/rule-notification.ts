@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { string } from 'zod/v4';
-import { RuleNotificationChannelData } from './rule-notification-channel-data';
+import { RuleNotificationChannelData } from './rule-notification-channel-data.js';
 
 export const RuleNotification = BaseData.extend({
 	ruleId: string().nonempty(),

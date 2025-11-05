@@ -1,5 +1,5 @@
 import { BaseData } from '@maur025/core-model-data';
-import { CProtocolName } from './c-protocol-name';
+import { CProtocolName } from './c-protocol-name.js';
 import z, { string } from 'zod/v4';
 
 export const CProtocol = BaseData.extend({

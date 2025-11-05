@@ -1,5 +1,5 @@
 import { ZodError } from 'zod';
-import commonException from './common-exception';
+import commonException from './common-exception.js';
 
 export const errorValidate = (
 	error: ZodError,

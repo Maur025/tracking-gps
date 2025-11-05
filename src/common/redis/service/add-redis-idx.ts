@@ -1,4 +1,4 @@
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerDebug, loggerWarn } from '@maur025/core-logger';
 import { RediSearchSchema } from 'redis';
 

@@ -20,8 +20,8 @@ vi.mock('swagger-ui-express', () => ({
 	},
 }));
 
-import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
-import { swaggerConfig } from '@config/swagger-config';
+import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs.js';
+import { swaggerConfig } from '@config/swagger-config.js';
 import type { Application } from 'express';
 import swaggerUiExpress from 'swagger-ui-express';
 

@@ -1,7 +1,7 @@
 import { singleton } from 'tsyringe';
-import { GeofenceIn } from '../entity/geofence-in';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
-import { redisClient } from '@common/redis/create-redis-client';
+import { GeofenceIn } from '../entity/geofence-in.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerError } from '@maur025/core-logger';
 
 @singleton()

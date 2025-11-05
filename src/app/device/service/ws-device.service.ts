@@ -1,10 +1,10 @@
-import { WsTrackResponse } from '@app/track/dto/response/ws-track-response';
-import environment from '@config/env';
-import AbstractApiService from '@src/api-client/service/abstract-api-service';
-import { get } from '@src/api-client/api-client';
+import { WsTrackResponse } from '@app/track/dto/response/ws-track-response.js';
+import environment from '@config/env.js';
+import AbstractApiService from '@src/api-client/service/abstract-api-service.js';
+import { get } from '@src/api-client/api-client.js';
 import { Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
-import { Device } from '../entity/device';
+import { Device } from '../entity/device.js';
 
 @singleton()
 export default class WsDeviceService extends AbstractApiService<Device> {

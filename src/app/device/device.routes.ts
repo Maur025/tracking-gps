@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { devicePaths } from './device-paths';
+import { devicePaths } from './device-paths.js';
 import { container } from 'tsyringe';
-import DeviceController from './device.controller';
+import DeviceController from './device.controller.js';
 
 const { DEFAULT } = devicePaths;
-const router = Router();
+const deviceRouter: Router = Router();
 
 const { getAllInCache } = container.resolve(DeviceController);
 
-router.get(DEFAULT, getAllInCache);
+deviceRouter.get(DEFAULT, getAllInCache);
 
-export default router;
+export { deviceRouter };

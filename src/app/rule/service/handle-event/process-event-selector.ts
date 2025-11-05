@@ -1,11 +1,11 @@
-import { Devent } from '@app/devent/entity/devent';
-import { Device } from '@app/device/entity/device';
-import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison';
-import { Rule } from '@app/rule/entity/rule';
+import { Devent } from '@app/devent/entity/devent.js';
+import { Device } from '@app/device/entity/device.js';
+import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison.js';
+import { Rule } from '@app/rule/entity/rule.js';
 import z, { object } from 'zod/v4';
-import { processGeofenceEvent } from '../process-geofence-event';
-import { processInterestPointEvent } from '../process-interest-point-event';
-import { processSensorEvent } from '../process-sensor-event';
+import { processGeofenceEvent } from '../process-geofence-event.js';
+import { processInterestPointEvent } from '../process-interest-point-event.js';
+import { processSensorEvent } from '../process-sensor-event.js';
 import { loggerWarn } from '@maur025/core-logger';
 
 const ProcessEventRequest = object({

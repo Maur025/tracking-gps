@@ -1,6 +1,6 @@
-import { kafkaProducer } from '@common/kafka/kafka-producer';
-import { TestKafkaInterface } from '../consumers/example-test-consumer';
-import { kafkaTopics } from '@src/kafka-topics';
+import { kafkaProducer } from '@common/kafka/kafka-producer.js';
+import { TestKafkaInterface } from '../consumers/example-test-consumer.js';
+import { kafkaTopics } from '@src/kafka-topics.js';
 
 const { EXAMPLE } = kafkaTopics;
 

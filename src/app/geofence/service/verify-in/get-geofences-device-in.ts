@@ -1,13 +1,13 @@
-import { Device } from '@app/device/entity/device';
-import { DeviceGeofenceIn } from '../../../device/entity/device-geofence-in';
-import { getGeofencesInByLocation } from './get-geofences-in-by-location';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
-import { getNewGeofencesIn } from './get-new-geofences-in';
-import { matchIsNewGeofenceIn } from './match-is-new-geofence-in';
+import { Device } from '@app/device/entity/device.js';
+import { DeviceGeofenceIn } from '../../../device/entity/device-geofence-in.js';
+import { getGeofencesInByLocation } from './get-geofences-in-by-location.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
+import { getNewGeofencesIn } from './get-new-geofences-in.js';
+import { matchIsNewGeofenceIn } from './match-is-new-geofence-in.js';
 import z, { object } from 'zod/v4';
 import { container } from 'tsyringe';
-import GeofenceInCache from '@app/geofence/cache/geofence-in-cache';
-import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const GetGeofencesDeviceInSchema = object({

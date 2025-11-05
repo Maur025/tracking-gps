@@ -22,12 +22,12 @@ vi.mock('@app/device/cache/get-device-batch-from-redis', () => ({
 
 import { container } from 'tsyringe';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { redisClient } from '@common/redis/create-redis-client';
-import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data';
-import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
-import { Device } from '@app/device/entity/device';
-import DeviceCache from '@app/device/cache/device-cache';
-import { cacheSingleCommonTest } from 'test/unit/common/cache/cache-single-common-test';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { deleteDeviceCacheData } from '@app/device/cache/delete-device-cache-data.js';
+import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis.js';
+import { Device } from '@app/device/entity/device.js';
+import DeviceCache from '@app/device/cache/device-cache.js';
+import { cacheSingleCommonTest } from 'test/unit/common/cache/cache-single-common-test.js';
 
 describe('Device Cache Tests', () => {
 	const deviceList = [
@@ -35,7 +35,7 @@ describe('Device Cache Tests', () => {
 		{ id: '2', isReady: false },
 		{ id: '3', isReady: false },
 		{ id: '4', isReady: true },
-	] as Device[];
+	] as unknown as Device[];
 
 	const cache: DeviceCache = container.resolve(DeviceCache);
 

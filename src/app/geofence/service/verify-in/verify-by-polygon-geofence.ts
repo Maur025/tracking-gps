@@ -1,5 +1,5 @@
-import { PositionL3, PositionSchema } from '@common/schema/position.schema';
-import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled';
+import { PositionL3, PositionSchema } from '@common/schema/position.schema.js';
+import { getGeofenceCoordLeveled } from './get-geofence-coord-leveled.js';
 import { Feature, GeoJsonProperties, Polygon } from 'geojson';
 import {
 	polygon as turfPolygon,
@@ -9,7 +9,7 @@ import {
 	point as turfPoint,
 } from '@turf/turf';
 import z, { array, number, object } from 'zod/v4';
-import environment from '@config/env';
+import environment from '@config/env.js';
 import { loggerDebug } from '@maur025/core-logger';
 
 const { GPS_RADIUS } = environment;

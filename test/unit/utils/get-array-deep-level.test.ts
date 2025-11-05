@@ -1,4 +1,4 @@
-import { getArrayDeepLevel } from '@utils/get-array-deep-level';
+import { getArrayDeepLevel } from '@utils/get-array-deep-level.js';
 import { describe, expect, test } from 'vitest';
 
 describe('get array deep level test', () => {

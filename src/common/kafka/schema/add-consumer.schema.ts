@@ -1,5 +1,5 @@
 import z, { array, object, string, boolean, any } from 'zod/v4';
-import { KafkaRecordSchema } from './kafka-record.schema';
+import { KafkaRecordSchema } from './kafka-record.schema.js';
 
 export const AddConsumerSchema = object({
 	topics: array(string().nonempty()).nonempty(),

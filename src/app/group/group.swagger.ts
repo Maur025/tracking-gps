@@ -1,10 +1,10 @@
-import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
-import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
+import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema.js';
+import SwaggerRegisterPath from '@docs/swagger/swagger-register-path.js';
+import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
-import { groupPaths } from './group-paths';
+import { groupPaths } from './group-paths.js';
 import { array } from 'zod/v4';
-import { Group } from './entity/group';
+import { Group } from './entity/group.js';
 
 const { DEFAULT } = groupPaths;
 

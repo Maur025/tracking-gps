@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { number, string } from 'zod/v4';
-import { GeofenceEventLoggerEventType } from './geofence-event-logger-event-type';
+import { GeofenceEventLoggerEventType } from './geofence-event-logger-event-type.js';
 
 export const GeofenceEventLoggerSchema = BaseData.extend({
 	geofence_id: string().nonempty(),

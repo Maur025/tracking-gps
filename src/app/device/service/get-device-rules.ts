@@ -1,14 +1,14 @@
-import { Vehicle } from '@app/vehicle/entity/vehicle';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
 import z, { array, object } from 'zod/v4';
-import { DeviceGroup } from '../entity/device-group';
+import { DeviceGroup } from '../entity/device-group.js';
 import { loggerDebug } from '@maur025/core-logger';
 import {
 	searchByIndexInRedis,
 	searchManyByIndexInRedis,
-} from '@common/redis/service/search-by-index-in-redis';
+} from '@common/redis/service/search-by-index-in-redis.js';
 import { container } from 'tsyringe';
-import RuleCache from '@app/rule/cache/rule-cache';
-import { Rule } from '@app/rule/entity/rule';
+import RuleCache from '@app/rule/cache/rule-cache.js';
+import { Rule } from '@app/rule/entity/rule.js';
 
 const GetDeviceRulesRequest = object({
 	vehicleData: Vehicle.optional(),

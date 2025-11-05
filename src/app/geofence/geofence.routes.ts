@@ -1,16 +1,16 @@
-import GeofenceController from '@app/geofence/geofence.controller';
+import GeofenceController from '@app/geofence/geofence.controller.js';
 import { Router } from 'express';
 import { container } from 'tsyringe';
-import { geofencePaths } from './geofence-paths';
+import { geofencePaths } from './geofence-paths.js';
 
 const { DEFAULT } = geofencePaths;
 
-const router = Router();
+const geofenceRouter: Router = Router();
 
 const geofenceController = container.resolve(GeofenceController);
 
-router.get(DEFAULT, geofenceController.getAllInCache);
-router.get('/report', geofenceController.getReport);
-router.get('/report/pdfmake', geofenceController.getReportPdfMake);
+geofenceRouter.get(DEFAULT, geofenceController.getAllInCache);
+geofenceRouter.get('/report', geofenceController.getReport);
+geofenceRouter.get('/report/pdfmake', geofenceController.getReportPdfMake);
 
-export default router;
+export { geofenceRouter };

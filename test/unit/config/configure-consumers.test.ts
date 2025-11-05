@@ -4,9 +4,9 @@ vi.mock('@common/kafka/kafka-consumer', () => ({
 	kafkaConsumer: vi.fn(),
 }));
 
-import { configureConsumers } from '@config/configure-consumers';
-import { kafkaConsumer } from '@common/kafka/kafka-consumer';
-import { kafkaTopics } from '@src/kafka-topics';
+import { configureConsumers } from '@config/configure-consumers.js';
+import { kafkaConsumer } from '@common/kafka/kafka-consumer.js';
+import { kafkaTopics } from '@src/kafka-topics.js';
 
 const { EXAMPLE } = kafkaTopics;
 

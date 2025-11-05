@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
 import { BaseData } from '@maur025/core-model-data';
 import { expect, test } from 'vitest';
 

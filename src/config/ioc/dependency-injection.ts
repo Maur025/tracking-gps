@@ -1,6 +1,6 @@
 import { container } from 'tsyringe';
 import express, { Application } from 'express';
-import { TOKENS } from './token';
+import { TOKENS } from './token.js';
 import CacheableLookup from 'cacheable-lookup';
 
 // Libraries

@@ -1,8 +1,8 @@
 import { loggerWarn } from '@maur025/core-logger';
-import { Device } from '../entity/device';
-import DeviceCache from './device-cache';
+import { Device } from '../entity/device.js';
+import DeviceCache from './device-cache.js';
 import { container } from 'tsyringe';
-import { getMinutesOfTimestamp } from '@utils/get-minutes-of-timestamp';
+import { getMinutesOfTimestamp } from '@utils/get-minutes-of-timestamp.js';
 
 export const syncDeviceDataAndSyncInRedis = async (
 	deviceData: Device | null,

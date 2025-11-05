@@ -1,6 +1,6 @@
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import z, { array, object } from 'zod/v4';
-import { removeGeofenceOutOfCache } from './remove-geofence-out-of-cache';
+import { removeGeofenceOutOfCache } from './remove-geofence-out-of-cache.js';
 
 const GetGeofenceOutListSchema = object({
 	geofenceInFullList: array(GeofenceIn).default([]),

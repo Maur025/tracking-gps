@@ -1,4 +1,4 @@
-import { AddDataInBatchSchema } from '../schema/add-data-in-batch.schema';
+import { AddDataInBatchSchema } from '../schema/add-data-in-batch.schema.js';
 
 export const addDataInBatch = async <E>(
 	request: AddDataInBatchSchema<E>,

@@ -1,5 +1,5 @@
 import z, { object, string, number, array, any } from 'zod/v4';
-import { redisClient } from '../create-redis-client';
+import { redisClient } from '../create-redis-client.js';
 import { loggerError } from '@maur025/core-logger';
 
 export const SearchByIndexInRedisRequest = object({

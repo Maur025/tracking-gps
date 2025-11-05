@@ -1,5 +1,5 @@
 import { BaseData } from '@maur025/core-model-data';
-import { PositionL2 } from '@common/schema/position.schema';
+import { PositionL2 } from '@common/schema/position.schema.js';
 import z, { uuid } from 'zod/v4';
 
 export const RouteSectionResponse = BaseData.extend({

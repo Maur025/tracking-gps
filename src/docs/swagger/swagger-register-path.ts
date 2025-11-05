@@ -1,5 +1,5 @@
 import { OpenAPIRegistry, RouteConfig } from '@asteasolutions/zod-to-openapi';
-import { SwaggerRegisterPathSchema } from './swagger-register-path.schema';
+import { SwaggerRegisterPathSchema } from './swagger-register-path.schema.js';
 import { loggerError } from '@maur025/core-logger';
 
 export default class SwaggerRegisterPath {

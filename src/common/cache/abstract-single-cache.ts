@@ -1,5 +1,5 @@
 import { BaseData } from '@maur025/core-model-data';
-import AbstractCache from './abstract-cache';
+import AbstractCache from './abstract-cache.js';
 import { loggerWarn } from '@maur025/core-logger';
 
 export default abstract class AbstractSingleCache<

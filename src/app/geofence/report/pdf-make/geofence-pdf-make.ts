@@ -1,13 +1,13 @@
 import { loggerError } from '@maur025/core-logger';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
-import GeofenceService from '@app/geofence/service/geofence.service';
-import { handleAsArray } from '@src/api-client/service/handle-response';
+import GeofenceService from '@app/geofence/service/geofence.service.js';
+import { handleAsArray } from '@src/api-client/service/handle-response.js';
 import { Response } from 'express';
 import path from 'node:path';
 import pdfPrinter from 'pdfmake';
-import { Content, TDocumentDefinitions } from 'pdfmake/interfaces';
+import { Content, TDocumentDefinitions } from 'pdfmake/interfaces.js';
 import { container } from 'tsyringe';
-import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response.js';
 
 export const geofencePdfMake = (res: Response): void => {
 	const geofenceService = container.resolve(GeofenceService);

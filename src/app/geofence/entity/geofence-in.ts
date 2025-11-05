@@ -1,8 +1,8 @@
-import { PositionL1 } from '@common/schema/position.schema';
+import { PositionL1 } from '@common/schema/position.schema.js';
 import { BaseData } from '@maur025/core-model-data';
 import z, { boolean, number, string } from 'zod/v4';
-import { GeofenceType } from './geofence-type';
-import { GeofenceCalculateStates } from './geofence-calculate-state';
+import { GeofenceType } from './geofence-type.js';
+import { GeofenceCalculateStates } from './geofence-calculate-state.js';
 
 export const GeofenceIn = BaseData.extend({
 	deviceId: string().nonempty(),

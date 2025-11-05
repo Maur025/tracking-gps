@@ -1,18 +1,18 @@
 import { BaseData } from '@maur025/core-model-data';
-import { DeviceConfig } from './device-config';
+import { DeviceConfig } from './device-config.js';
 import z, { array, number, string } from 'zod/v4';
-import { DeviceSetup } from './device-setup';
-import { DeviceState } from './device-state';
-import { Track } from '@app/track/entity/track';
-import { DeviceSpec } from './device-spec';
-import { Vehicle } from '@app/vehicle/entity/vehicle';
-import { DeviceGeofenceIn } from './device-geofence-in';
-import { DeviceGeofenceOut } from './device-geofence-out';
-import { DeviceGroup } from './device-group';
-import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch';
-import { DevicePointInterestVisited } from './device-point-interest-visited';
-import { DeviceMovingDirection } from './device-moving-direction';
-import { DeviceReconstructedRoad } from './device-reconstructed-road';
+import { DeviceSetup } from './device-setup.js';
+import { DeviceState } from './device-state.js';
+import { Track } from '@app/track/entity/track.js';
+import { DeviceSpec } from './device-spec.js';
+import { Vehicle } from '@app/vehicle/entity/vehicle.js';
+import { DeviceGeofenceIn } from './device-geofence-in.js';
+import { DeviceGeofenceOut } from './device-geofence-out.js';
+import { DeviceGroup } from './device-group.js';
+import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch.js';
+import { DevicePointInterestVisited } from './device-point-interest-visited.js';
+import { DeviceMovingDirection } from './device-moving-direction.js';
+import { DeviceReconstructedRoad } from './device-reconstructed-road.js';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,

@@ -1,4 +1,4 @@
-import { clickhouseClient } from '../../../common/log-db/connect-to-clickhouse';
+import { clickhouseClient } from '@common/log-db/connect-to-clickhouse.js';
 
 export const geofenceEventLoggerEntity = async (): Promise<void> => {
 	await clickhouseClient.command({

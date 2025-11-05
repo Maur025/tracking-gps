@@ -1,8 +1,8 @@
 import { Application } from 'express';
-import ZodSwaggerGenerator from '../docs/swagger/zod-swagger-generator';
+import ZodSwaggerGenerator from '../docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
 import swaggerUiExpress from 'swagger-ui-express';
-import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs';
+import { loadAllSwaggerDocs } from '@src/docs/load-all-swagger-docs.js';
 
 export const swaggerConfig = (app: Application) => {
 	loadAllSwaggerDocs();

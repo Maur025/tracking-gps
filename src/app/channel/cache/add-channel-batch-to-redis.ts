@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Channel } from '../entity/channel';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Channel } from '../entity/channel.js';
 
 export const addChannelBatchToRedis = async (
 	channelBatch: Channel[],

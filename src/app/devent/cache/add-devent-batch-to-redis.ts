@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Devent } from '../entity/devent';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Devent } from '../entity/devent.js';
 
 export const addDeventBatchToRedis = async (
 	deventBatch: Devent[],

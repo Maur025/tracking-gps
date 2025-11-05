@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, string } from 'zod/v4';
-import { DeventSensorResponse } from './devent-sensor-response';
+import { DeventSensorResponse } from './devent-sensor-response.js';
 
 export const DeventResponse = BaseData.extend({
 	name: string().nonempty(),

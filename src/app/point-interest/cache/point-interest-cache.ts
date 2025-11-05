@@ -1,7 +1,7 @@
-import { Geofence } from '@app/geofence/entity/geofence';
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
-import { redisClient } from '@common/redis/create-redis-client';
+import { Geofence } from '@app/geofence/entity/geofence.js';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerError } from '@maur025/core-logger';
 import { singleton } from 'tsyringe';
 

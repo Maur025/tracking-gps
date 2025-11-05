@@ -1,26 +1,26 @@
 import { concatMap, forkJoin, from, Observable, of, tap } from 'rxjs';
 import { container } from 'tsyringe';
-import { handleAsArray } from '@src/api-client/service/handle-response';
-import GeofenceService from '../../../app/geofence/service/geofence.service';
+import { handleAsArray } from '@src/api-client/service/handle-response.js';
+import GeofenceService from '../../../app/geofence/service/geofence.service.js';
 import { ApiResponse } from '@maur025/core-model-data';
-import { geofenceCacheInit } from '../../../app/geofence/service/geofence-cache-init';
-import GroupService from '../../../app/group/service/group.service';
-import { groupCacheInit } from '../../../app/group/service/group-cache-init';
-import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
-import { GroupResponse } from '@app/group/dto/response/group-response';
-import DeviceCache from '@app/device/cache/device-cache';
-import VehicleService from '@app/vehicle/service/vehicle.service';
-import { vehicleCacheInit } from '@app/vehicle/service/vehicle-cache-init';
-import { VehicleResponse } from '@app/vehicle/dto/response/vehicle-response';
-import RuleService from '@app/rule/service/rule.service';
-import { RuleResponse } from '@app/rule/dto/response/rule-response';
-import { ruleCacheInit } from '@app/rule/service/rule-cache-init';
-import DeventService from '@app/devent/service/devent.service';
-import { DeventResponse } from '@app/devent/dto/response/devent-response';
-import { deventCacheInit } from '@app/devent/service/devent-cache-init';
-import ChannelService from '@app/channel/service/channel.service';
-import { ChannelResponse } from '@app/channel/dto/response/channel-response';
-import { channelCacheInit } from '@app/channel/service/channel-cache-init';
+import { geofenceCacheInit } from '../../../app/geofence/service/geofence-cache-init.js';
+import GroupService from '../../../app/group/service/group.service.js';
+import { groupCacheInit } from '../../../app/group/service/group-cache-init.js';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response.js';
+import { GroupResponse } from '@app/group/dto/response/group-response.js';
+import DeviceCache from '@app/device/cache/device-cache.js';
+import VehicleService from '@app/vehicle/service/vehicle.service.js';
+import { vehicleCacheInit } from '@app/vehicle/service/vehicle-cache-init.js';
+import { VehicleResponse } from '@app/vehicle/dto/response/vehicle-response.js';
+import RuleService from '@app/rule/service/rule.service.js';
+import { RuleResponse } from '@app/rule/dto/response/rule-response.js';
+import { ruleCacheInit } from '@app/rule/service/rule-cache-init.js';
+import DeventService from '@app/devent/service/devent.service.js';
+import { DeventResponse } from '@app/devent/dto/response/devent-response.js';
+import { deventCacheInit } from '@app/devent/service/devent-cache-init.js';
+import ChannelService from '@app/channel/service/channel.service.js';
+import { ChannelResponse } from '@app/channel/dto/response/channel-response.js';
+import { channelCacheInit } from '@app/channel/service/channel-cache-init.js';
 
 export const cacheInitializer = (): Observable<unknown> => {
 	return of(null).pipe(

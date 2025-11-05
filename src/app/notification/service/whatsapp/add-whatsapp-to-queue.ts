@@ -1,5 +1,5 @@
-import { AddWhatsappToQueueSchema } from '@app/notification/schema/add-whatsapp-to-queue.schema';
-import environment from '@config/env';
+import { AddWhatsappToQueueSchema } from '@app/notification/schema/add-whatsapp-to-queue.schema.js';
+import environment from '@config/env.js';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 
 const { NOTIFICATION_URL } = environment;

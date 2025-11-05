@@ -1,12 +1,12 @@
-import { AlertResponse } from '@app/alert/dto/response/alert-response';
+import { AlertResponse } from '@app/alert/dto/response/alert-response.js';
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, number, string } from 'zod/v4';
-import { RuleEventResponse } from './rule-event-response';
-import { RuleFrequencyResponse } from './rule-frequency-response';
-import { RuleGroupResponse } from './rule-group-response';
-import { RuleVehicleResponse } from './rule-vehicle-response';
-import { RuleGeofenceResponse } from './rule-geofence-response';
-import { RuleNotificationResponse } from './rule-notification-response';
+import { RuleEventResponse } from './rule-event-response.js';
+import { RuleFrequencyResponse } from './rule-frequency-response.js';
+import { RuleGroupResponse } from './rule-group-response.js';
+import { RuleVehicleResponse } from './rule-vehicle-response.js';
+import { RuleGeofenceResponse } from './rule-geofence-response.js';
+import { RuleNotificationResponse } from './rule-notification-response.js';
 
 export const RuleResponse = BaseData.extend({
 	name: string(),

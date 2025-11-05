@@ -1,9 +1,9 @@
-import { LoadSwaggerDocsSchema } from '@src/docs/load-swagger-docs.schema';
-import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
-import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
+import { LoadSwaggerDocsSchema } from '@src/docs/load-swagger-docs.schema.js';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator.js';
+import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path.js';
 import { container } from 'tsyringe';
-import { testPaths } from './test-paths';
-import { TestSchema } from '@app/test-app/schema/test.schema';
+import { testPaths } from './test-paths.js';
+import { TestSchema } from '@app/test-app/schema/test.schema.js';
 import { object, string } from 'zod/v4';
 
 const { ZOD_VALIDATION, KAFKA } = testPaths;

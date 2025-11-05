@@ -1,5 +1,5 @@
-import { GeofenceType } from '@app/geofence/entity/geofence-type';
-import { verifyGeofenceInByPosition } from '@app/geofence/service/verify-in/verify-geofence-in-by-position';
+import { GeofenceType } from '@app/geofence/entity/geofence-type.js';
+import { verifyGeofenceInByPosition } from '@app/geofence/service/verify-in/verify-geofence-in-by-position.js';
 import { describe, expect, test } from 'vitest';
 
 describe('verify geofence in by position test', () => {

@@ -1,7 +1,7 @@
-import AbstractApiService from '@api-client/service/abstract-api-service';
+import AbstractApiService from '@api-client/service/abstract-api-service.js';
 import { singleton } from 'tsyringe';
-import { DeventSensorResponse } from '../dto/response/devent-sensor-response';
-import environment from '@config/env';
+import { DeventSensorResponse } from '../dto/response/devent-sensor-response.js';
+import environment from '@config/env.js';
 
 @singleton()
 export default class DeventSensorService extends AbstractApiService<DeventSensorResponse> {

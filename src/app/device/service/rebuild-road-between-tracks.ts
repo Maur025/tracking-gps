@@ -2,21 +2,21 @@ import z, { object, string } from 'zod/v4';
 import {
 	DeviceReconstructedRoad,
 	ReconstructedRoadTypeEnum,
-} from '../entity/device-reconstructed-road';
-import { Track } from '@app/track/entity/track';
+} from '../entity/device-reconstructed-road.js';
+import { Track } from '@app/track/entity/track.js';
 import { loggerDebug } from '@maur025/core-logger';
 import { Feature, GeoJsonProperties, LineString, Position } from 'geojson';
-import { DeviceMovingDirection } from '../entity/device-moving-direction';
-import { getTotalSecondsElapsedSincePreviousTimestamp } from './get-total-elapsed-since-previous-timestamp';
-import { StatusOfRebuildRoadEnum } from '../entity/device-reconstructed-road';
-import environment from '@config/env';
+import { DeviceMovingDirection } from '../entity/device-moving-direction.js';
+import { getTotalSecondsElapsedSincePreviousTimestamp } from './get-total-elapsed-since-previous-timestamp.js';
+import { StatusOfRebuildRoadEnum } from '../entity/device-reconstructed-road.js';
+import environment from '@config/env.js';
 import {
 	distance as turfDistance,
 	lineString as turfLineString,
 	length as turfLength,
 } from '@turf/turf';
-import { runComplexRebuildRoad } from './run-complex-rebuild-road';
-import { getReconstructedRoadCoordsList } from './get-reconstructed-road-list';
+import { runComplexRebuildRoad } from './run-complex-rebuild-road.js';
+import { getReconstructedRoadCoordsList } from './get-reconstructed-road-list.js';
 
 const { MAX_METERS_PER_SECOND } = environment;
 

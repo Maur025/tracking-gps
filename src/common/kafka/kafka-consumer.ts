@@ -2,15 +2,15 @@ import { Consumer, EachMessagePayload } from 'kafkajs';
 import {
 	handleKafkaClient,
 	HandleKafkaClientSchema,
-} from './handle-kafka-client';
+} from './handle-kafka-client.js';
 import {
 	AddConsumerRequest,
 	AddConsumerSchema,
-} from './schema/add-consumer.schema';
+} from './schema/add-consumer.schema.js';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
-import { KafkaRecordSchema } from './schema/kafka-record.schema';
-import { getObjectOfString } from '@utils/get-object-of-string';
-import { zodFailedValidationLog } from '@utils/zod-failed-validation-log';
+import { KafkaRecordSchema } from './schema/kafka-record.schema.js';
+import { getObjectOfString } from '@utils/get-object-of-string.js';
+import { zodFailedValidationLog } from '@utils/zod-failed-validation-log.js';
 
 const currentConsumers: Consumer[] = [];
 

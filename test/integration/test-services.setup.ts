@@ -1,10 +1,10 @@
-import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
-import { kafkaConsumer } from '@common/kafka/kafka-consumer';
-import { kafkaProducer } from '@common/kafka/kafka-producer';
-import { clickhouseClient } from '@common/log-db/connect-to-clickhouse';
-import { redisClient } from '@common/redis/create-redis-client';
-import environment from '@config/env';
-import { initServices } from '@src/init-services';
+import { handleKafkaClient } from '@common/kafka/handle-kafka-client.js';
+import { kafkaConsumer } from '@common/kafka/kafka-consumer.js';
+import { kafkaProducer } from '@common/kafka/kafka-producer.js';
+import { clickhouseClient } from '@common/log-db/connect-to-clickhouse.js';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import environment from '@config/env.js';
+import { initServices } from '@src/init-services.js';
 import z, { boolean, object } from 'zod/v4';
 
 const {

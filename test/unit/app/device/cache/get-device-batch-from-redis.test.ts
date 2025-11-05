@@ -6,9 +6,9 @@ vi.mock('@common/redis/create-redis-client', () => ({
 	},
 }));
 
-import { redisClient } from '@common/redis/create-redis-client';
-import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis';
-import { Device } from '@app/device/entity/device';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { getDeviceBatchFromRedis } from '@app/device/cache/get-device-batch-from-redis.js';
+import { Device } from '@app/device/entity/device.js';
 
 describe('get device batch from redis test', () => {
 	const mockJsonGet = vi.fn();

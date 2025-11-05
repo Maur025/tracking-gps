@@ -1,13 +1,13 @@
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
-import { Track } from '../../../track/entity/track';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
+import { Track } from '../../../track/entity/track.js';
 import { container } from 'tsyringe';
-import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import { Geofence } from '@app/geofence/entity/geofence';
+import GeofenceCache from '@app/geofence/cache/geofence-cache.js';
+import { Geofence } from '@app/geofence/entity/geofence.js';
 import { loggerDebug } from '@maur025/core-logger';
-import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position';
+import { verifyGeofenceInByPosition } from './verify-geofence-in-by-position.js';
 import z, { object, string } from 'zod/v4';
-import { getFinalStateFromStates } from '../get-final-state-from-states';
-import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { getFinalStateFromStates } from '../get-final-state-from-states.js';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road.js';
 
 const GetGeofencesInByLocationRequest = object({
 	deviceLastTrack: Track,

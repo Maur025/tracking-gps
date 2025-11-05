@@ -1,4 +1,4 @@
-import { VisitedPointInterest } from '@app/point-interest/dto/visited-point-interest';
+import { VisitedPointInterest } from '@app/point-interest/dto/visited-point-interest.js';
 import z, { array, number, object } from 'zod/v4';
 
 export const DevicePointInterestVisited = object({

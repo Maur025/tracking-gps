@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Geofence } from '../entity/geofence';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Geofence } from '../entity/geofence.js';
 
 export const addGeofenceBatchToRedis = async (
 	geofenceBatch: Geofence[],

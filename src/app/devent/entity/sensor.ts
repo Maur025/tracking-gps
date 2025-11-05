@@ -1,5 +1,5 @@
 import z, { number, object, string } from 'zod/v4';
-import { SensorName } from './sensor-name';
+import { SensorName } from './sensor-name.js';
 
 export const Sensor = object({
 	id: number(),

@@ -1,5 +1,5 @@
-import { redisClient } from '@common/redis/create-redis-client';
-import { Rule } from '../entity/rule';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { Rule } from '../entity/rule.js';
 
 export const addRuleBatchToRedis = async (
 	ruleBatch: Rule[],

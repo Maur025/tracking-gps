@@ -1,14 +1,14 @@
-import { Device } from '@app/device/entity/device';
+import { Device } from '@app/device/entity/device.js';
 import { loggerDebug } from '@maur025/core-logger';
 import { container } from 'tsyringe';
 import z, { array, object, string } from 'zod/v4';
-import RuleCache from '../cache/rule-cache';
-import { Rule } from '../entity/rule';
-import { getWeeklyDay } from '@utils/get-weekly-day';
-import { getRuleFrequencyInDay } from './get-rule-frequency-in-day';
-import { isRuleFrequencyBetweenAvailableHours } from './is-rule-frequency-between-available-hours';
-import { processRule } from './process-rule';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
+import RuleCache from '../cache/rule-cache.js';
+import { Rule } from '../entity/rule.js';
+import { getWeeklyDay } from '@utils/get-weekly-day.js';
+import { getRuleFrequencyInDay } from './get-rule-frequency-in-day.js';
+import { isRuleFrequencyBetweenAvailableHours } from './is-rule-frequency-between-available-hours.js';
+import { processRule } from './process-rule.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
 
 const ProcessRulesByDeviceRequest = object({
 	device: Device,

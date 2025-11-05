@@ -1,4 +1,4 @@
-import { Point } from '../entity/Point';
+import { Point } from '../entity/point.js';
 
 export const groupBySection = (pointList: Point[]): Map<number, Point[]> => {
 	const groupsBySectionMap: Map<number, Point[]> = new Map();

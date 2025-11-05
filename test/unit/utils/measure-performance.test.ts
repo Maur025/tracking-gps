@@ -4,7 +4,7 @@ vi.mock('@maur025/core-logger', () => ({
 }));
 
 import { loggerInfo } from '@maur025/core-logger';
-import { measurePerformance } from '@utils/measure-performance';
+import { measurePerformance } from '@utils/measure-performance.js';
 
 describe('Measure performance test', () => {
 	beforeEach(() => {

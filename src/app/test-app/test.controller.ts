@@ -1,4 +1,4 @@
-import TrackService from '@app/track/service/track.service';
+import TrackService from '@app/track/service/track.service.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'tsyringe';
@@ -7,14 +7,14 @@ import {
 	ErrorResponse,
 	MultiResponseBuilder,
 } from '@maur025/core-model-data';
-import RouteCache from '@app/route/cache/route-cache';
-import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface';
-import type { TestSchema } from '@app/test-app/schema/test.schema';
-import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator';
-import { testPdfKit } from '@app/test-app/report/test-pdfkit';
-import { TrackingResponse } from '@app/track/dto/response/tracking-response';
-import DeviceCache from '@app/device/cache/device-cache';
-import { exampleTestPublisher } from './publishers/example-test-publisher';
+import RouteCache from '@app/route/cache/route-cache.js';
+import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface.js';
+import type { TestSchema } from '@app/test-app/schema/test.schema.js';
+import ZodSwaggerGenerator from '@src/docs/swagger/zod-swagger-generator.js';
+import { testPdfKit } from '@app/test-app/report/test-pdfkit.js';
+import { TrackingResponse } from '@app/track/dto/response/tracking-response.js';
+import DeviceCache from '@app/device/cache/device-cache.js';
+import { exampleTestPublisher } from './publishers/example-test-publisher.js';
 
 @injectable()
 export default class TestController {

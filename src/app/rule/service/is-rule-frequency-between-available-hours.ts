@@ -1,5 +1,5 @@
 import z, { object } from 'zod/v4';
-import { RuleFrequency } from '../entity/rule-frequency';
+import { RuleFrequency } from '../entity/rule-frequency.js';
 
 const IsRuleFrequencybetweenAvailableHoursSchema = object({
 	frequency: RuleFrequency,

@@ -1,9 +1,9 @@
-import { DeviceGeofenceOut } from '@app/device/entity/device-geofence-out';
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { DeviceGeofenceOut } from '@app/device/entity/device-geofence-out.js';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import { loggerDebug } from '@maur025/core-logger';
 import z, { array, object, string, map } from 'zod/v4';
-import { getGeofenceOutList } from './get-geofence-out-list';
-import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road';
+import { getGeofenceOutList } from './get-geofence-out-list.js';
+import { DeviceReconstructedRoad } from '@app/device/entity/device-reconstructed-road.js';
 
 const GetGeofencesDeviceOutSchema = object({
 	geofenceInFullList: array(GeofenceIn).default([]),

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 
 vi.mock('kafkajs', () => ({ Kafka: vi.fn(), logLevel: { INFO: 4 } }));
 
-import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
+import { handleKafkaClient } from '@common/kafka/handle-kafka-client.js';
 import { Kafka } from 'kafkajs';
 
 describe('handle kafka client test', () => {

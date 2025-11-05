@@ -1,5 +1,5 @@
-import { AddEmailToQueueSchema } from '@app/notification/schema/add-email-to-queue.schema';
-import environment from '@config/env';
+import { AddEmailToQueueSchema } from '@app/notification/schema/add-email-to-queue.schema.js';
+import environment from '@config/env.js';
 import { loggerError, loggerInfo } from '@maur025/core-logger';
 
 const { NOTIFICATION_URL } = environment;

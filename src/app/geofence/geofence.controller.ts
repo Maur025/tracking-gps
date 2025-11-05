@@ -1,9 +1,9 @@
-import GeofenceCache from '@app/geofence/cache/geofence-cache';
+import GeofenceCache from '@app/geofence/cache/geofence-cache.js';
 import { inject, injectable } from 'tsyringe';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { geofenceReport } from '@app/geofence/report/pdf-kit/geofence-report';
-import { geofencePdfMake } from '@app/geofence/report/pdf-make/geofence-pdf-make';
+import { geofenceReport } from '@app/geofence/report/pdf-kit/geofence-report.js';
+import { geofencePdfMake } from '@app/geofence/report/pdf-make/geofence-pdf-make.js';
 
 @injectable()
 export default class GeofenceController {

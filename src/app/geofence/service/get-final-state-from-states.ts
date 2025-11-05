@@ -1,5 +1,5 @@
 import z, { array, boolean, object } from 'zod/v4';
-import { GeofenceCalculateStates } from '../entity/geofence-calculate-state';
+import { GeofenceCalculateStates } from '../entity/geofence-calculate-state.js';
 
 const GetFinalStateFromStatesRequest = object({
 	stateList: array(boolean()),

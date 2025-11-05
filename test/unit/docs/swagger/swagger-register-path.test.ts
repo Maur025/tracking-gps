@@ -4,10 +4,10 @@ vi.mock('@maur025/core-logger', () => ({
 	loggerError: vi.fn(),
 }));
 
-import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path';
+import SwaggerRegisterPath from '@src/docs/swagger/swagger-register-path.js';
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi';
 import { loggerError } from '@maur025/core-logger';
-import { SwaggerRegisterPathSchema } from '@src/docs/swagger/swagger-register-path.schema';
+import { SwaggerRegisterPathSchema } from '@src/docs/swagger/swagger-register-path.schema.js';
 
 describe('swagger register path test', () => {
 	let mockRegister: OpenAPIRegistry;

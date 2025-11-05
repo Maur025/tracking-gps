@@ -1,9 +1,9 @@
-import { Device } from '@app/device/entity/device';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import GeofenceCache from '@app/geofence/cache/geofence-cache';
-import { Geofence } from '@app/geofence/entity/geofence';
-import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema';
-import { Rule } from '@app/rule/entity/rule';
+import { Device } from '@app/device/entity/device.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import GeofenceCache from '@app/geofence/cache/geofence-cache.js';
+import { Geofence } from '@app/geofence/entity/geofence.js';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
+import { Rule } from '@app/rule/entity/rule.js';
 import { container } from 'tsyringe';
 import z, { object } from 'zod/v4';
 

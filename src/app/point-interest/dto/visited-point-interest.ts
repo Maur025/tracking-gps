@@ -1,4 +1,4 @@
-import { GeofenceCalculateStates } from '@app/geofence/entity/geofence-calculate-state';
+import { GeofenceCalculateStates } from '@app/geofence/entity/geofence-calculate-state.js';
 import z, { array, number, object, string } from 'zod/v4';
 
 export const VisitedPointInterest = object({

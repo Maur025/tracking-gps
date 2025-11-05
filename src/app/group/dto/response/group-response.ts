@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import z, { array, string } from 'zod/v4';
-import { GroupVehicleResponse } from './group-vehicle-response';
+import { GroupVehicleResponse } from './group-vehicle-response.js';
 
 export const GroupResponse = BaseData.extend({
 	name: string().nonempty().optional(),

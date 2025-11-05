@@ -1,10 +1,10 @@
-import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema';
-import SwaggerRegisterPath from '@docs/swagger/swagger-register-path';
-import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator';
+import { LoadSwaggerDocsSchema } from '@docs/load-swagger-docs.schema.js';
+import SwaggerRegisterPath from '@docs/swagger/swagger-register-path.js';
+import ZodSwaggerGenerator from '@docs/swagger/zod-swagger-generator.js';
 import { container } from 'tsyringe';
-import { devicePaths } from './device-paths';
+import { devicePaths } from './device-paths.js';
 import { array } from 'zod/v4';
-import { Device } from './entity/device';
+import { Device } from './entity/device.js';
 
 const { DEFAULT } = devicePaths;
 

@@ -1,8 +1,8 @@
 import { beforeAll, beforeEach, describe, expect, test, vi } from 'vitest';
 
-import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response';
-import { getVehicleDeviceMap } from '@app/vehicle/service/get-vehicle-device-map';
-import VehicleService from '@app/vehicle/service/vehicle.service';
+import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-response.js';
+import { getVehicleDeviceMap } from '@app/vehicle/service/get-vehicle-device-map.js';
+import VehicleService from '@app/vehicle/service/vehicle.service.js';
 import { container } from 'tsyringe';
 
 describe('get vehicle device map test', () => {

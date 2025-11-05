@@ -6,9 +6,9 @@ vi.mock('@common/redis/create-redis-client', () => ({
 	},
 }));
 
-import { redisClient } from '@common/redis/create-redis-client';
-import { addDeviceBatchToRedis } from '@app/device/cache/add-device-batch-to-redis';
-import { Device } from '@app/device/entity/device';
+import { redisClient } from '@common/redis/create-redis-client.js';
+import { addDeviceBatchToRedis } from '@app/device/cache/add-device-batch-to-redis.js';
+import { Device } from '@app/device/entity/device.js';
 
 const TEST_KEY: string = 'test-key';
 

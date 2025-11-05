@@ -19,8 +19,8 @@ vi.mock('@common/kafka/handle-kafka-client', () => ({
 	handleKafkaClient: vi.fn(),
 }));
 
-import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
-import { kafkaProducer } from '@common/kafka/kafka-producer';
+import { handleKafkaClient } from '@common/kafka/handle-kafka-client.js';
+import { kafkaProducer } from '@common/kafka/kafka-producer.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { Partitioners } from 'kafkajs';
 import { v4 as uuidv4 } from 'uuid';

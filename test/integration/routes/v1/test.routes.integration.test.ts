@@ -1,7 +1,6 @@
+import app from '@src/app.js';
 import request from 'supertest';
 import { describe, expect, test } from 'vitest';
-
-import app from '../../../../src/app';
 
 const { getApp } = app;
 

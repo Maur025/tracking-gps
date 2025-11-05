@@ -1,9 +1,9 @@
 import { singleton } from 'tsyringe';
-import { Group } from '../entity/group';
-import AbstractSingleCache from '@common/cache/abstract-single-cache';
-import { CacheUseRedis } from '@common/cache/cache-use-redis';
+import { Group } from '../entity/group.js';
+import AbstractSingleCache from '@common/cache/abstract-single-cache.js';
+import { CacheUseRedis } from '@common/cache/cache-use-redis.js';
 import { loggerError } from '@maur025/core-logger';
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 
 @singleton()
 export class GroupCache

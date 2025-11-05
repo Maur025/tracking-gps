@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { deventPaths } from './devent-paths';
+import { deventPaths } from './devent-paths.js';
 import { container } from 'tsyringe';
-import DeventController from './devent.controller';
+import DeventController from './devent.controller.js';
 
 const { DEFAULT } = deventPaths;
-const deventRouter = Router();
+const deventRouter: Router = Router();
 
 const { getAllInCache } = container.resolve(DeventController);
 

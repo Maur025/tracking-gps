@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import PointInterestCache from './cache/point-interest-cache';
+import PointInterestCache from './cache/point-interest-cache.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 

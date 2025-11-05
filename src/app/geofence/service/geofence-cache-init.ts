@@ -1,14 +1,14 @@
-import GeofenceCache from '@app/geofence/cache/geofence-cache';
+import GeofenceCache from '@app/geofence/cache/geofence-cache.js';
 import { loggerDebug, loggerWarn } from '@maur025/core-logger';
-import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response';
-import { Geofence } from '@app/geofence/entity/geofence';
-import { GeofenceData } from '@app/geofence/entity/geofence-data';
+import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response.js';
+import { Geofence } from '@app/geofence/entity/geofence.js';
+import { GeofenceData } from '@app/geofence/entity/geofence-data.js';
 import { container } from 'tsyringe';
-import { LayerType } from '@app/layer/entity/layer-type';
-import { GeofenceType } from '../entity/geofence-type';
-import PointInterestCache from '../../point-interest/cache/point-interest-cache';
-import { addDataInBatch } from '@common/redis/service/add-data-in-batch';
-import { addGeofenceBatchToRedis } from '../cache/add-geofence-batch-to-redis';
+import { LayerType } from '@app/layer/entity/layer-type.js';
+import { GeofenceType } from '../entity/geofence-type.js';
+import PointInterestCache from '../../point-interest/cache/point-interest-cache.js';
+import { addDataInBatch } from '@common/redis/service/add-data-in-batch.js';
+import { addGeofenceBatchToRedis } from '../cache/add-geofence-batch-to-redis.js';
 
 export const geofenceCacheInit = async (
 	responseList: GeofenceResponse[],

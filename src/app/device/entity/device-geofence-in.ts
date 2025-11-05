@@ -1,4 +1,4 @@
-import { GeofenceIn } from '@app/geofence/entity/geofence-in';
+import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
 import z, { array, number, object, string } from 'zod/v4';
 
 export const DeviceGeofenceIn = object({

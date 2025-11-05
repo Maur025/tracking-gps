@@ -14,9 +14,9 @@ vi.mock('@maur025/core-logger', () => ({
 	loggerDebug: vi.fn(),
 }));
 
-import { redisClient } from '@common/redis/create-redis-client';
+import { redisClient } from '@common/redis/create-redis-client.js';
 import { loggerWarn, loggerDebug } from '@maur025/core-logger';
-import { addRedisIdx } from '@common/redis/service/add-redis-idx';
+import { addRedisIdx } from '@common/redis/service/add-redis-idx.js';
 
 describe('add redis idx test', () => {
 	beforeEach(() => {

@@ -1,5 +1,5 @@
 import { loggerDebug } from '@maur025/core-logger';
-import { redisClient } from '../create-redis-client';
+import { redisClient } from '../create-redis-client.js';
 
 export const deleteDataInBatch = async (
 	keyBatch: string[],
