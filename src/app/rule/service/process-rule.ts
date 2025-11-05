@@ -27,8 +27,10 @@ export const processRule = async (
 	}
 
 	if (rule.events?.length === 1) {
+		loggerDebug(`${loggerAuxMessage} handling single event.`);
 		return await handleSingleEvent({ rule, device });
 	}
 
+	loggerDebug(`${loggerAuxMessage} handling multi event.`);
 	return await handleMultiEvent({ device, rule });
 };

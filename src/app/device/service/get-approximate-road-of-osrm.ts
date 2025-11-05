@@ -30,7 +30,15 @@ export const getApproximateRoadOfOsrm = async (
 				'Content-Type': 'application/json',
 			},
 		},
-	);
+	).catch(() => undefined);
+
+	if (!response) {
+		loggerError(
+			`${loggerAuxData} - Network error fetching OSRM data, or service not available.`,
+		);
+
+		return undefined;
+	}
 
 	if (!response.ok) {
 		loggerError(

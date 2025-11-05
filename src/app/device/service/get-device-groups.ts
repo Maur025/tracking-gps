@@ -49,5 +49,8 @@ export const getDeviceGroups = async (
 		});
 	}
 
+	loggerDebug(
+		`[DEVICE] (getDeviceGroups) found ${deviceGroupList.length} groups.`,
+	);
 	return deviceGroupList;
 };

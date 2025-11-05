@@ -53,6 +53,8 @@ export const getGeofencesDeviceIn = async (
 
 	matchIsNewGeofenceIn(currentGeofencesIn, newGeofencesIn);
 
+	loggerDebug(`${loggerAuxData} geofence IN interactions processed.`);
+
 	return buildGeofencesDeviceInResponse(currentGeofencesIn, newGeofencesIn);
 };
 

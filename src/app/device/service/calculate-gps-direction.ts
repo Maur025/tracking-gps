@@ -44,6 +44,10 @@ export const calculateGpsDirection = (
 		? bearingOfTwoPoints
 		: previousDirectionInGrades;
 
+	loggerDebug(
+		`[DIRECTION] (calculateGpsDirection) Calculated directionInGrades successfully`,
+	);
+
 	return {
 		direction: getDirectionEnumFromGrades(directionInGrades),
 		directionInGrades,

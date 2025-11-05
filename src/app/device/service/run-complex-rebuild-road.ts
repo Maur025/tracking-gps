@@ -42,7 +42,9 @@ export const runComplexRebuildRoad = async (
 	});
 
 	if (!matchingRoadResponse?.matchings?.length) {
-		loggerDebug(`${loggerAuxData} fail fetch, no matching road found`);
+		loggerDebug(
+			`${loggerAuxData} fail fetch to OSRM server, no matching road found, using flat line.`,
+		);
 
 		return {
 			...complexRebuildResponse,

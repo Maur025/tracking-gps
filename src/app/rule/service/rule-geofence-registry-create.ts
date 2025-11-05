@@ -64,7 +64,7 @@ export const ruleGeofenceRegistryCreate = async (
 		dataSaveList.map(dataSave => [dataSave.rule_geofence_id, dataSave]),
 	);
 
-	const responseList: ApiResponse<RuleGeofenceRegistryResponse>[] =
+	const responseList: ApiResponse<RuleGeofenceRegistryResponse>[] | void =
 		await lastValueFrom(
 			forkJoin(
 				dataSaveList.map(data =>
@@ -75,34 +75,40 @@ export const ruleGeofenceRegistryCreate = async (
 					),
 				),
 			),
-		);
+		).catch(error => {
+			loggerError(`${loggerAuxMessage} error in forkJoin`, error);
+			loggerDebug(`${loggerAuxMessage} error in forkJoin: ${error}`);
+		});
 
-	return responseList
-		.map(response => {
-			const ruleGeofenceRegistryResponse:
-				| RuleGeofenceRegistryResponse
-				| undefined = handleAsObject<RuleGeofenceRegistryResponse>(response);
+	return !responseList
+		? []
+		: responseList
+				?.map(response => {
+					const ruleGeofenceRegistryResponse:
+						| RuleGeofenceRegistryResponse
+						| undefined =
+						handleAsObject<RuleGeofenceRegistryResponse>(response);
 
-			if (!ruleGeofenceRegistryResponse?.id) {
-				return undefined;
-			}
+					if (!ruleGeofenceRegistryResponse?.id) {
+						return undefined;
+					}
 
-			const dataSave = dataSaveMap.get(
-				ruleGeofenceRegistryResponse.rule_geofence_id,
-			);
+					const dataSave = dataSaveMap.get(
+						ruleGeofenceRegistryResponse.rule_geofence_id,
+					);
 
-			return {
-				ruleGeofenceRegistryId: ruleGeofenceRegistryResponse.id,
-				alertId: alert?.id ?? null,
-				ruleId: alert?.ruleId ?? '',
-				deviceId: dataSave?.device_id,
-				geofenceId: dataSave?.geofence_id,
-				alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
-				isGeofenceIn: !!ruleGeofenceRegistryResponse.inout,
-				timestamp: dataSave?.timestamp,
-				lat: dataSave?.lat,
-				lon: dataSave?.lon,
-			};
-		})
-		.filter(value => value !== undefined);
+					return {
+						ruleGeofenceRegistryId: ruleGeofenceRegistryResponse.id,
+						alertId: alert?.id ?? null,
+						ruleId: alert?.ruleId ?? '',
+						deviceId: dataSave?.device_id,
+						geofenceId: dataSave?.geofence_id,
+						alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
+						isGeofenceIn: !!ruleGeofenceRegistryResponse.inout,
+						timestamp: dataSave?.timestamp,
+						lat: dataSave?.lat,
+						lon: dataSave?.lon,
+					};
+				})
+				.filter(value => value !== undefined);
 };

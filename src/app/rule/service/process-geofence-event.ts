@@ -6,7 +6,7 @@ import { RuleInoutSchema } from '../entity/rule-inout-schema';
 import { RuleGeofence } from '../entity/rule-geofence';
 import { ruleGeofenceRegistryCreate } from './rule-geofence-registry-create';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { RuleResultEventComparation } from '../dto/rule-result-event-comparation';
+import { RuleResultEventComparison } from '../dto/rule-result-event-comparison';
 import { loggerDebug } from '@maur025/core-logger';
 
 const ProcessGeofenceEventRequest = object({
@@ -16,12 +16,15 @@ const ProcessGeofenceEventRequest = object({
 
 type ProcessGeofenceEventRequest = z.infer<typeof ProcessGeofenceEventRequest>;
 
+const loggerAuxMessage: string = `[RULE] (processGeofenceEvent)`;
+
 export const processGeofenceEvent = async (
 	request: ProcessGeofenceEventRequest,
-): Promise<RuleResultEventComparation> => {
+): Promise<RuleResultEventComparison> => {
 	const { device, rule } = ProcessGeofenceEventRequest.parse(request);
 
 	if (!rule.geofences?.length) {
+		loggerDebug(`${loggerAuxMessage} no geofences defined in rule.`);
 		return {
 			alertToLaunchList: [],
 			wasTriggered: false,
@@ -47,7 +50,7 @@ export const processGeofenceEvent = async (
 
 	if (!ruleGeofenceToRegistryList?.length) {
 		loggerDebug(
-			`[RULE] (processGeofenceEvent) no data to registry, skipping...`,
+			`${loggerAuxMessage} no data geofence IN,OUT or INOUT to registry, skipping...`,
 		);
 
 		return {
@@ -62,7 +65,10 @@ export const processGeofenceEvent = async (
 			alert: rule?.alerts[0],
 		});
 
-	return { alertToLaunchList: deviceRuleAlertToLaunchList, wasTriggered: true };
+	return {
+		alertToLaunchList: deviceRuleAlertToLaunchList,
+		wasTriggered: !!deviceRuleAlertToLaunchList.length,
+	};
 };
 
 const GetRuleGeofenceToRegistryListRequest = object({

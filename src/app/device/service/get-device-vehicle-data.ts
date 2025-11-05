@@ -2,7 +2,7 @@ import { Vehicle } from '@app/vehicle/entity/vehicle';
 import { Device } from '../entity/device';
 import { container } from 'tsyringe';
 import VehicleCache from '@app/vehicle/cache/vehicle-cache';
-import { loggerError } from '@maur025/core-logger';
+import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { isInvalidId } from '@utils/is-invalid-id';
 import { searchByIndexInRedis } from '@common/redis/service/search-by-index-in-redis';
 
@@ -11,6 +11,8 @@ export const getDeviceVehicleData = async (
 	deviceInMapCache: Device | undefined,
 ): Promise<Vehicle | undefined> => {
 	if (deviceInMapCache?.vehicleData) {
+		loggerDebug(`[DEVICE] (getDeviceVehicleData) vehicle data found in cache.`);
+
 		return deviceInMapCache.vehicleData;
 	}
 
@@ -48,5 +50,8 @@ export const getDeviceVehicleData = async (
 		...vehicleValue,
 	};
 
+	loggerDebug(
+		`[DEVICE] (getDeviceVehicleData) vehicle data found: ${vehicleData.id}`,
+	);
 	return vehicleData;
 };

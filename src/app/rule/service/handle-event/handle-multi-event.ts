@@ -2,7 +2,7 @@ import DeventCache from '@app/devent/cache/devent-cache';
 import { Devent } from '@app/devent/entity/devent';
 import { Device } from '@app/device/entity/device';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch';
-import { RuleResultEventComparation } from '@app/rule/dto/rule-result-event-comparation';
+import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison';
 import { Rule } from '@app/rule/entity/rule';
 import { container } from 'tsyringe';
 import z, { object } from 'zod/v4';
@@ -28,8 +28,8 @@ export const handleMultiEvent = async (
 
 	const deventCache = container.resolve(DeventCache);
 
-	const resultAndEvents: RuleResultEventComparation[] = [];
-	const resultOrEvents: RuleResultEventComparation[] = [];
+	const resultAndEvents: RuleResultEventComparison[] = [];
+	const resultOrEvents: RuleResultEventComparison[] = [];
 
 	for (const event of rule.events) {
 		const devent: Devent | undefined = deventCache.getById(event.deventId);
@@ -49,11 +49,11 @@ export const handleMultiEvent = async (
 		resultOrEvents.push(await processEventSelector({ rule, devent, device }));
 	}
 
-	const resultOfComparation: boolean =
+	const resultOfComparison: boolean =
 		resultAndEvents.every(value => value.wasTriggered) &&
 		resultOrEvents.some(value => value.wasTriggered);
 
-	if (!resultOfComparation) {
+	if (!resultOfComparison) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
 		return [];
 	}

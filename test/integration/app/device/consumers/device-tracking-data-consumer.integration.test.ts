@@ -1,5 +1,6 @@
 import {
 	afterAll,
+	afterEach,
 	beforeAll,
 	beforeEach,
 	describe,
@@ -18,7 +19,7 @@ vi.mock('@maur025/core-logger', async importOriginal => {
 	};
 });
 
-import { kakfaProducer } from '@common/kafka/kafka-producer';
+import { kafkaProducer } from '@common/kafka/kafka-producer';
 import { KafkaPublishSchema } from '@common/kafka/schema/kafka-publish.schema';
 import {
 	startTestServices,
@@ -72,7 +73,7 @@ describe('device tracking data consumer intergration test', () => {
 			withCache: true,
 		});
 
-		const { publish } = kakfaProducer();
+		const { publish } = kafkaProducer();
 
 		publishKafka = publish;
 
@@ -82,15 +83,19 @@ describe('device tracking data consumer intergration test', () => {
 		);
 	}, 20000);
 
+	beforeEach(async () => {
+		deviceTrackingDataConsumerSpy.mockClear();
+		deviceEnrichPublisherSpy.mockClear();
+	});
+
 	afterAll(async () => {
 		await stopTestServices();
 		geofenceInCache.getCache().clear();
 		mswServer.close();
 	});
 
-	beforeEach(async () => {
-		deviceTrackingDataConsumerSpy.mockClear();
-		deviceEnrichPublisherSpy.mockClear();
+	afterEach(() => {
+		mswServer.resetHandlers();
 	});
 
 	test('should do early return when payload is invalid', async () => {

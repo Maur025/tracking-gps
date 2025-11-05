@@ -1,6 +1,6 @@
 import { handleKafkaClient } from '@common/kafka/handle-kafka-client';
 import { kafkaConsumer } from '@common/kafka/kafka-consumer';
-import { kakfaProducer } from '@common/kafka/kafka-producer';
+import { kafkaProducer } from '@common/kafka/kafka-producer';
 import { clickhouseClient } from '@common/log-db/connect-to-clickhouse';
 import { redisClient } from '@common/redis/create-redis-client';
 import environment from '@config/env';
@@ -67,7 +67,7 @@ export const stopTestServices = async (): Promise<void> => {
 
 		if (kafkaClient) {
 			const { disconnectAll } = kafkaConsumer();
-			const { disconnect } = kakfaProducer();
+			const { disconnect } = kafkaProducer();
 
 			await disconnectAll();
 			await disconnect();

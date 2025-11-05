@@ -44,6 +44,8 @@ export const getVisitedOrNearbyPointsOfInterest = async (
 		pointInterest => pointInterest.finalState === 'IN_OUT',
 	);
 
+	loggerDebug(`${loggerAuxData} point interests interactions processed.`);
+
 	return buildDevicePointInterestVisitedResponse(
 		stayingPointInterests,
 		passingPointInterests,
