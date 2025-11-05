@@ -37,6 +37,7 @@ import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
 import { kafkaTopics } from '@src/kafka-topics.js';
 import { SetupServerApi } from 'msw/node';
 import { cacheFromDbMock } from 'test/integration/common/cache/cache-from-db-mock.js';
+import { DeviceState } from '@app/device/entity/device-state.js';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
@@ -120,6 +121,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.156003, -16.505851],
 			timestamp,
+			replaceStates: { SPEED: '0', IGNITION: 'IGNITION_OFF' },
 		});
 		callNumber++;
 		await shouldNotInteractWithAnyGeofences(callNumber);
@@ -129,6 +131,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.069219, -16.529027],
 			timestamp,
+			replaceStates: { SPEED: '30', IGNITION: 'IGNITION_ON', DIRECTION: '105' },
 		});
 		callNumber++;
 		await shouldEnterSomeGeofences(callNumber);
@@ -138,6 +141,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.069219, -16.529027],
 			timestamp,
+			replaceStates: { SPEED: '0', IGNITION: 'IGNITION_ON', DIRECTION: '105' },
 		});
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);
@@ -146,6 +150,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.07001545788228, -16.529479330902902],
 			timestamp,
+			replaceStates: { SPEED: '20', IGNITION: 'IGNITION_ON', DIRECTION: '240' },
 		});
 		callNumber++;
 		await shouldVisitPointOfInterest(callNumber);
@@ -154,6 +159,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.070607, -16.529831],
 			timestamp,
+			replaceStates: { SPEED: '22', IGNITION: 'IGNITION_ON', DIRECTION: '239' },
 		});
 		callNumber++;
 		await shouldVisitPointOfInterest(callNumber);
@@ -162,6 +168,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.070931, -16.530651],
 			timestamp,
+			replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '201' },
 		});
 		callNumber++;
 		await shouldVisitPointOfInterest(callNumber);
@@ -170,6 +177,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.070896, -16.531223],
 			timestamp,
+			replaceStates: { SPEED: '23', IGNITION: 'IGNITION_ON', DIRECTION: '176' },
 		});
 		callNumber++;
 		await shouldVisitPointOfInterest(callNumber);
@@ -270,14 +278,20 @@ describe('device tracking data consumer intergration test', () => {
 	const sendPayloadTest = async ({
 		coords,
 		timestamp,
+		replaceStates = {},
 	}: {
 		coords: Position;
 		timestamp: number;
+		replaceStates?: DeviceState;
 	}): Promise<void> => {
 		await publishKafka({
 			topic: TRACKING_GPS_DEVICE,
 			value: {
 				...deviceTrackingDataPayloadFake,
+				states: {
+					...deviceTrackingDataPayloadFake.states,
+					...replaceStates,
+				},
 				last: {
 					...deviceTrackingDataPayloadFake.last,
 					t: timestamp,

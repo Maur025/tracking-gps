@@ -18,6 +18,7 @@ import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch.j
 import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest.js';
 import { calculateGpsDirection } from './calculate-gps-direction.js';
 import { rebuildRoadBetweenTracks } from './rebuild-road-between-tracks.js';
+import { getChangesInDeviceStates } from '@app/devent/service/get-changes-in-device-states.js';
 
 export const processDeviceData = async (
 	device: Device,
@@ -73,6 +74,11 @@ export const processDeviceData = async (
 			reconstructedRoad,
 		});
 
+	const differenceStates = getChangesInDeviceStates({
+		states: device.states,
+		previousDifferenceStateList: deviceInMapCache?.differenceStates ?? [],
+	});
+
 	const rulesAppliedList: string[] = await getDeviceRules({
 		vehicleData,
 		groups,
@@ -89,6 +95,7 @@ export const processDeviceData = async (
 		rulesApplied: rulesAppliedList,
 		pointInterestVisited: visitedOrNearbyPointsOfInterest,
 		previousTrack: deviceInMapCache?.last,
+		differenceStates,
 	};
 
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =
