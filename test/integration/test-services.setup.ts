@@ -8,15 +8,16 @@ import { initServices } from '@src/init-services.js';
 import z, { boolean, object } from 'zod/v4';
 
 const {
-	TEST_REDIS_HOST,
-	TEST_REDIS_PORT,
-	TEST_KAFKA_BROKER,
-	TEST_KAFKA_CLIENT_ID,
-	TEST_CLICKHOUSE_DB,
-	TEST_CLICKHOUSE_HOST,
-	TEST_CLICKHOUSE_PORT,
-	TEST_CLICKHOUSE_USER,
-	TEST_CLICKHOUSE_PASSWORD,
+	REDIS_HOST,
+	REDIS_PORT,
+	KAFKA_BROKER,
+	KAFKA_CLIENT_ID,
+	KAFKA_LOG_LEVEL,
+	CLICKHOUSE_DB,
+	CLICKHOUSE_HOST,
+	CLICKHOUSE_PORT,
+	CLICKHOUSE_USER,
+	CLICKHOUSE_PASSWORD,
 } = environment;
 
 const StartTestServicesSchema = object({
@@ -39,16 +40,16 @@ export const startTestServices = async (
 	} = StartTestServicesSchema.parse(request);
 
 	await initServices({
-		redisHost: withRedis ? TEST_REDIS_HOST : undefined,
-		redisPort: withRedis ? TEST_REDIS_PORT : undefined,
-		kafkaBrokers: withKafka ? [TEST_KAFKA_BROKER] : undefined,
-		kafkaClientId: withKafka ? TEST_KAFKA_CLIENT_ID : undefined,
-		kafkaLogLevel: withKafka ? 'ERROR' : undefined,
-		clickhouseDb: withClickhouse ? TEST_CLICKHOUSE_DB : undefined,
-		clickhouseHost: withClickhouse ? TEST_CLICKHOUSE_HOST : undefined,
-		clickhousePassword: withClickhouse ? TEST_CLICKHOUSE_PASSWORD : undefined,
-		clickhousePort: withClickhouse ? TEST_CLICKHOUSE_PORT : undefined,
-		clickhouseUser: withClickhouse ? TEST_CLICKHOUSE_USER : undefined,
+		redisHost: withRedis ? REDIS_HOST : undefined,
+		redisPort: withRedis ? REDIS_PORT : undefined,
+		kafkaBrokers: withKafka ? [KAFKA_BROKER] : undefined,
+		kafkaClientId: withKafka ? KAFKA_CLIENT_ID : undefined,
+		kafkaLogLevel: withKafka ? KAFKA_LOG_LEVEL : undefined,
+		clickhouseDb: withClickhouse ? CLICKHOUSE_DB : undefined,
+		clickhouseHost: withClickhouse ? CLICKHOUSE_HOST : undefined,
+		clickhousePassword: withClickhouse ? CLICKHOUSE_PASSWORD : undefined,
+		clickhousePort: withClickhouse ? CLICKHOUSE_PORT : undefined,
+		clickhouseUser: withClickhouse ? CLICKHOUSE_USER : undefined,
 		isNeedCache: withCache,
 	});
 };
