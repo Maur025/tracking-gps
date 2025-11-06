@@ -1,6 +1,6 @@
 import { BaseData } from '@maur025/core-model-data';
 import { DeviceConfig } from './device-config.js';
-import z, { array, number, string } from 'zod/v4';
+import z, { array, number, string } from 'zod';
 import { DeviceSetup } from './device-setup.js';
 import { DeviceState } from './device-state.js';
 import { Track } from '@app/track/entity/track.js';
@@ -13,6 +13,7 @@ import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch.js';
 import { DevicePointInterestVisited } from './device-point-interest-visited.js';
 import { DeviceMovingDirection } from './device-moving-direction.js';
 import { DeviceReconstructedRoad } from './device-reconstructed-road.js';
+import { DeviceStateDifference } from './device-state-difference.js';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -35,6 +36,7 @@ export const Device = BaseData.extend({
 	reconstructedRoad: DeviceReconstructedRoad.optional(),
 	trackReceivedAt: string().optional(),
 	previousTrack: Track.optional(),
+	differenceStates: array(DeviceStateDifference).default([]).optional(),
 });
 
 export type Device = z.infer<typeof Device>;

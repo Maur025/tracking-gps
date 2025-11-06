@@ -16,7 +16,15 @@ export const addEmailToQueue = async (
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify(payload),
-	});
+	}).catch(() => undefined);
+
+	if (!response) {
+		loggerError(
+			`[EMAIL] (addEmailToQueue) No response from notification service`,
+		);
+
+		return;
+	}
 
 	if (!response.ok) {
 		loggerError(
@@ -25,6 +33,5 @@ export const addEmailToQueue = async (
 
 		return;
 	}
-
 	loggerInfo('[EMAIL] (addEmailToQueue) Email added to queue successfully');
 };

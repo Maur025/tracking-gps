@@ -23,14 +23,14 @@
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
-	"packageManager": "pnpm@10.19.0",
+	"packageManager": "pnpm@10.20.0",
 	"dependencies": {
-		"@asteasolutions/zod-to-openapi": "8.0.0-beta.4",
+		"@asteasolutions/zod-to-openapi": "^8.1.0",
 		"@clickhouse/client": "^1.12.0",
 		"@maur025/core-commands": "^1.0.1",
 		"@maur025/core-common": "^1.0.1",
 		"@maur025/core-logger": "^1.0.0",
-		"@maur025/core-model-data": "^2.1.1",
+		"@maur025/core-model-data": "^2.2.1",
 		"@turf/turf": "^7.2.0",
 		"cacheable-lookup": "^7.0.0",
 		"compression": "^1.8.0",
@@ -48,7 +48,7 @@
 		"rxjs": "^7.8.2",
 		"tsyringe": "^4.9.1",
 		"uuid": "^11.1.0",
-		"zod": "^3.25.67"
+		"zod": "^4.1.12"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.29.0",
