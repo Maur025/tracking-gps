@@ -11,11 +11,14 @@ import {
 } from 'vitest';
 
 vi.mock('@maur025/core-logger', async importOriginal => {
-	const logger: object = await importOriginal();
+	const originalLogger =
+		await importOriginal<typeof import('@maur025/core-logger')>();
 
 	return {
-		...logger,
-		loggerError: vi.fn(),
+		...originalLogger,
+		loggerError: vi.fn((message: string, error?: Error) => {
+			originalLogger.loggerError(message, error);
+		}),
 	};
 });
 
@@ -62,6 +65,7 @@ describe('device tracking data consumer intergration test', () => {
 		start();
 
 		vi.clearAllMocks();
+
 		deviceTrackingDataConsumerSpy = vi.spyOn(
 			deviceConsumer,
 			'deviceTrackingDataConsumer',
@@ -114,7 +118,7 @@ describe('device tracking data consumer intergration test', () => {
 		);
 	});
 
-	test('should process device data and return enrich with geofences,rules,alerts, notificarios, vehicle', async () => {
+	test('should process device data and return enrich with geofences,rules,alerts, notifications, vehicle', async () => {
 		let callNumber: number = 0;
 		let timestamp = Date.now();
 
@@ -177,7 +181,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.070896, -16.531223],
 			timestamp,
-			replaceStates: { SPEED: '23', IGNITION: 'IGNITION_ON', DIRECTION: '176' },
+			replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '176' },
 		});
 		callNumber++;
 		await shouldVisitPointOfInterest(callNumber);

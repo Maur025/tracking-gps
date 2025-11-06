@@ -76,7 +76,7 @@ export const processDeviceData = async (
 
 	const differenceStates = getChangesInDeviceStates({
 		states: device.states,
-		previousDifferenceStateList: deviceInMapCache?.differenceStates ?? [],
+		previousStates: deviceInMapCache?.states,
 	});
 
 	const rulesAppliedList: string[] = await getDeviceRules({

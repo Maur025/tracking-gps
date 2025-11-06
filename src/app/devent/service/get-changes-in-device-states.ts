@@ -1,11 +1,11 @@
 import { DeviceStateDifference } from '@app/device/entity/device-state-difference.js';
 import { DeviceState } from '@app/device/entity/device-state.js';
 import { loggerDebug } from '@maur025/core-logger';
-import z, { array, object } from 'zod';
+import z, { object } from 'zod';
 
 const GetChangesInDeviceStatesRequest = object({
 	states: DeviceState.optional(),
-	previousDifferenceStateList: array(DeviceStateDifference).default([]),
+	previousStates: DeviceState.optional(),
 });
 
 type GetChangesInDeviceStatesRequest = z.infer<
@@ -17,7 +17,7 @@ const loggerAuxMessage = `[DEVENT] (getChangesInDeviceStates)`;
 export const getChangesInDeviceStates = (
 	request: GetChangesInDeviceStatesRequest,
 ): DeviceStateDifference[] => {
-	const { states, previousDifferenceStateList } =
+	const { states, previousStates } =
 		GetChangesInDeviceStatesRequest.parse(request);
 
 	if (!states) {
@@ -26,18 +26,29 @@ export const getChangesInDeviceStates = (
 		return [];
 	}
 
-	const previousDifferenceStateMap = new Map<string, DeviceStateDifference>(
-		previousDifferenceStateList.map(previous => [previous.stateName, previous]),
-	);
+	if (!previousStates) {
+		loggerDebug(
+			`${loggerAuxMessage} no previous device states provided. returning all as different.`,
+		);
+
+		return Object.entries(states).map(([name, value]) => ({
+			currentValue: String(value),
+			stateName: name,
+			isDifferent: true,
+		}));
+	}
+
+	const flexiblePreviousStates = previousStates as Record<
+		string,
+		boolean | string | number | undefined
+	>;
 
 	const differenceStates: DeviceStateDifference[] = [];
 
 	for (const [stateName, currentValue] of Object.entries(states)) {
-		if (stateName !== 'SPEED') {
-			continue;
-		}
+		const previousValue = flexiblePreviousStates[stateName];
 
-		if (!previousDifferenceStateMap.has(stateName)) {
+		if (previousValue === undefined && currentValue !== undefined) {
 			differenceStates.push({
 				currentValue: String(currentValue),
 				stateName,
@@ -47,22 +58,15 @@ export const getChangesInDeviceStates = (
 			continue;
 		}
 
-		const previousDifferenceState = previousDifferenceStateMap.get(stateName);
+		const previousValueStr = String(previousValue);
+		const isDifferent = previousValueStr !== String(currentValue);
 
-		if (!previousDifferenceState) {
-			differenceStates.push({
-				currentValue: String(currentValue),
-				stateName,
-				isDifferent: true,
-			});
+		if (!isDifferent) {
 			continue;
 		}
-
-		const isDifferent =
-			previousDifferenceState.currentValue !== String(currentValue);
 
 		differenceStates.push({
-			previousValue: previousDifferenceState.currentValue,
+			previousValue: previousValueStr,
 			currentValue: String(currentValue),
 			stateName,
 			isDifferent,

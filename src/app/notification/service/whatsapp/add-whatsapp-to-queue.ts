@@ -19,7 +19,15 @@ export const addWhatsappToQueue = async (
 			},
 			body: JSON.stringify(payload),
 		},
-	);
+	).catch(() => undefined);
+
+	if (!response) {
+		loggerError(
+			`[WHATSAPP] (addWhatsappToQueue) No response from notification service`,
+		);
+
+		return;
+	}
 
 	if (!response.ok) {
 		loggerError(
