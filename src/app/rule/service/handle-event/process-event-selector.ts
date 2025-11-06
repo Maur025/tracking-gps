@@ -26,14 +26,14 @@ export const processEventSelector = async (
 			return processGeofenceEvent({ device, rule });
 		}
 		case 'INTEREST_POINTS': {
-			return processInterestPointEvent();
+			return processInterestPointEvent({ device, rule });
 		}
 		case 'SENSORS': {
 			return processSensorEvent();
 		}
 		default: {
 			loggerWarn(
-				`[RULE] (processEventSelector) devent type unknowned, skipping...`,
+				`[RULE] (processEventSelector) devent type unknown, skipping...`,
 			);
 
 			return { alertToLaunchList: [], wasTriggered: false };

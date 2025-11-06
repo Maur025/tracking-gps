@@ -33,6 +33,7 @@ export const handleSingleEvent = async (
 	);
 
 	if (!devent) {
+		loggerDebug(`${loggerAuxMessage} devent not found in cache.`);
 		return [];
 	}
 

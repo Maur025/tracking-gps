@@ -27,6 +27,7 @@ export const addRuleBatchToRedis = async (
 			vehicles = [],
 			notifications = [],
 			geofences = [],
+			ipoints = [],
 		}) =>
 			multi.json.set(`${baseKey}${id}`, '$', {
 				id,
@@ -43,6 +44,7 @@ export const addRuleBatchToRedis = async (
 				vehicles,
 				notifications,
 				geofences,
+				ipoints,
 			}),
 	);
 
