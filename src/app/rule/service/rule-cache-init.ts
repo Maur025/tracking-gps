@@ -52,6 +52,7 @@ export const ruleCacheInit = async (
 			vehicles,
 			notifications,
 			geofences,
+			ipoints,
 		}) => ({
 			id,
 			name,
@@ -67,6 +68,7 @@ export const ruleCacheInit = async (
 			vehicles: getRuleVehicles(vehicles),
 			notifications: getRuleNotifications(notifications),
 			geofences: getRuleGeofences(geofences),
+			ipoints: getRuleGeofences(ipoints),
 		}),
 	);
 

@@ -22,6 +22,7 @@ export const Rule = BaseData.extend({
 	vehicles: array(RuleVehicle).default([]),
 	notifications: array(RuleNotification).default([]),
 	geofences: array(RuleGeofence).default([]),
+	ipoints: array(RuleGeofence).default([]),
 });
 
 export type Rule = z.infer<typeof Rule>;
