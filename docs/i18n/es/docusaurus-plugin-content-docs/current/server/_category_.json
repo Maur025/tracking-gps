@@ -1,0 +1,8 @@
+{
+	"label": "Servidor",
+	"position": 4,
+	"link": {
+		"type": "generated-index",
+		"description": "Estructura del servidor"
+	}
+}
