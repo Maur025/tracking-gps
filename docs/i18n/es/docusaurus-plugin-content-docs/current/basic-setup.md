@@ -86,6 +86,7 @@ Te dejare un archivo docker-compose.yml en la carpeta `containers/kafka` para qu
 Puedes usar el archivo como lo encuentres o puedes modificar lo básico, como los puertos y lo que se te ocurra, luego ejecuta el comando:
 
 ```bash
+cd containers/kafka
 docker-compose up -d
 ```
 
@@ -96,6 +97,7 @@ Si todo va bien tendrás disponible kafka en `localhost:9092`, o el puerto que d
 Para correr redis usa el contenedor que te deje en `containers/redis`, con este notarás que también existe `containers/redis-test`, lo deje listo para las pruebas de integración, esto es mas sencillo, solo navega a la carpeta y ejecuta el comando:
 
 ```bash
+cd containers/redis
 docker-compose up -d
 ```
 
@@ -106,6 +108,7 @@ Redis si lo puedes levantar por tu cuenta, pero necesitarás datos para llenarlo
 En la versión actual del proyecto, debes tener clickhouse corriendo, ya que forma parte del proceso de control de reglas, hacer que funcione será fácil, te deje 2 contenedores en `containers/clickhouse` y `containers/clickhouse-test`, debes hacer lo mismo que con los otros contenedores, navega a la carpeta y ejecuta:
 
 ```bash
+cd containers/clickhouse
 docker-compose up -d
 ```
 
