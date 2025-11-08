@@ -146,8 +146,6 @@ dist
 
 # files
 **/*.jpg
-**/*.png
-**/*.jpeg
 **/*.pdf
 **/*.gif
 **/*.xls
