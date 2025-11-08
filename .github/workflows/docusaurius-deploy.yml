@@ -3,6 +3,9 @@ name: Deploy Docusaurus site in GitHub Pages
 on:
   push:
     branches: [main, develop]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/docusaurius-deploy.yml'
 
 permissions:
   contents: read
