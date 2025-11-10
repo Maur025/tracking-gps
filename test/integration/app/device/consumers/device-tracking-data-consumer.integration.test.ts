@@ -236,9 +236,9 @@ describe('device tracking data consumer intergration test', () => {
 		await expectCommon(call);
 	};
 
-	const shouldVisitPointOfInterest = async (call: number): Promise<void> => {
-		await expectCommon(call);
-	};
+	// const shouldVisitPointOfInterest = async (call: number): Promise<void> => {
+	// 	await expectCommon(call);
+	// };
 
 	const shouldHaveVehicle = (): void => {
 		expect(deviceEnrichPublisherSpy).toHaveBeenCalledWith(

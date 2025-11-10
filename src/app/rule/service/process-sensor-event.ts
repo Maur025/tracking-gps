@@ -22,8 +22,7 @@ const loggerAuxMessage: string = `[RULE] (processSensorEvent)`;
 export const processSensorEvent = async (
 	request: ProcessSensorEventRequest,
 ): Promise<RuleResultEventComparison> => {
-	const { rule, device, devent, event } =
-		ProcessSensorEventRequest.parse(request);
+	const { device, devent, event } = ProcessSensorEventRequest.parse(request);
 
 	if (!device.differenceStates?.length) {
 		loggerDebug(`${loggerAuxMessage} device has no detected change states.`);
