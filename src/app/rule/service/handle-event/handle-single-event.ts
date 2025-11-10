@@ -42,6 +42,7 @@ export const handleSingleEvent = async (
 			rule,
 			devent,
 			device,
+			event: rule.events[0],
 		});
 
 	if (!resultOfComparison.wasTriggered) {

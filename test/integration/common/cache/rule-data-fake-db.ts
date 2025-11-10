@@ -521,6 +521,20 @@ export const ruleDataFakeDb = {
 					operator: '',
 					value: '',
 				},
+				{
+					id: 'c03e8bfb-cea5-442a-92dc-7505dc37536f',
+					rule_id: '10c8b170-6ef4-4965-afc1-b9b974194015',
+					devent_id: 'a06e470a-ae25-4a06-a17f-eeb472558e4d',
+					operator: '>',
+					value: 24,
+				},
+				{
+					id: '9773aa72-d831-4381-ab0b-7c8bddb33dcd',
+					rule_id: '8ce32c5e-13f1-46d6-a705-c8911ff400bf',
+					devent_id: 'a4b6cb38-cec5-4059-a6f3-b6294728445f',
+					operator: '<',
+					value: 25,
+				},
 			],
 			groups: [],
 			vehicles: [

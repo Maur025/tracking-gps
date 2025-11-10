@@ -82,5 +82,6 @@ export const processRulesByDevice = async (
 	loggerDebug(
 		`${loggerAuxMessage} rules processed, total alerts to launch: ${deviceRuleAlertToLaunchList.length}`,
 	);
+
 	return deviceRuleAlertToLaunchList;
 };
