@@ -7,11 +7,13 @@ import { processGeofenceEvent } from '../process-geofence-event.js';
 import { processInterestPointEvent } from '../process-interest-point-event.js';
 import { processSensorEvent } from '../process-sensor-event.js';
 import { loggerWarn } from '@maur025/core-logger';
+import { RuleEvent } from '@app/rule/entity/rule-event.js';
 
 const ProcessEventRequest = object({
 	device: Device,
 	devent: Devent,
 	rule: Rule,
+	event: RuleEvent,
 });
 
 type ProcessEventRequest = z.infer<typeof ProcessEventRequest>;
@@ -19,7 +21,7 @@ type ProcessEventRequest = z.infer<typeof ProcessEventRequest>;
 export const processEventSelector = async (
 	request: ProcessEventRequest,
 ): Promise<RuleResultEventComparison> => {
-	const { devent, device, rule } = ProcessEventRequest.parse(request);
+	const { devent, device, rule, event } = ProcessEventRequest.parse(request);
 
 	switch (devent.deventType) {
 		case 'GEOFENCES': {
@@ -29,7 +31,7 @@ export const processEventSelector = async (
 			return processInterestPointEvent({ device, rule });
 		}
 		case 'SENSORS': {
-			return processSensorEvent();
+			return processSensorEvent({ devent, device, rule, event });
 		}
 		default: {
 			loggerWarn(

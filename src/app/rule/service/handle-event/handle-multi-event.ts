@@ -40,13 +40,15 @@ export const handleMultiEvent = async (
 
 		if (devent.condition === 'AND') {
 			resultAndEvents.push(
-				await processEventSelector({ rule, devent, device }),
+				await processEventSelector({ rule, devent, device, event }),
 			);
 
 			continue;
 		}
 
-		resultOrEvents.push(await processEventSelector({ rule, devent, device }));
+		resultOrEvents.push(
+			await processEventSelector({ rule, devent, device, event }),
+		);
 	}
 
 	const resultOfComparison: boolean =

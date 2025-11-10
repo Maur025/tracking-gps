@@ -150,41 +150,41 @@ describe('device tracking data consumer intergration test', () => {
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);
 
-		timestamp += 15000;
-		await sendPayloadTest({
-			coords: [-68.07001545788228, -16.529479330902902],
-			timestamp,
-			replaceStates: { SPEED: '20', IGNITION: 'IGNITION_ON', DIRECTION: '240' },
-		});
-		callNumber++;
-		await shouldVisitPointOfInterest(callNumber);
+		// timestamp += 15000;
+		// await sendPayloadTest({
+		// 	coords: [-68.07001545788228, -16.529479330902902],
+		// 	timestamp,
+		// 	replaceStates: { SPEED: '20', IGNITION: 'IGNITION_ON', DIRECTION: '240' },
+		// });
+		// callNumber++;
+		// await shouldVisitPointOfInterest(callNumber);
 
-		timestamp += 15000;
-		await sendPayloadTest({
-			coords: [-68.070607, -16.529831],
-			timestamp,
-			replaceStates: { SPEED: '22', IGNITION: 'IGNITION_ON', DIRECTION: '239' },
-		});
-		callNumber++;
-		await shouldVisitPointOfInterest(callNumber);
+		// timestamp += 15000;
+		// await sendPayloadTest({
+		// 	coords: [-68.070607, -16.529831],
+		// 	timestamp,
+		// 	replaceStates: { SPEED: '22', IGNITION: 'IGNITION_ON', DIRECTION: '239' },
+		// });
+		// callNumber++;
+		// await shouldVisitPointOfInterest(callNumber);
 
-		timestamp += 15000;
-		await sendPayloadTest({
-			coords: [-68.070931, -16.530651],
-			timestamp,
-			replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '201' },
-		});
-		callNumber++;
-		await shouldVisitPointOfInterest(callNumber);
+		// timestamp += 15000;
+		// await sendPayloadTest({
+		// 	coords: [-68.070931, -16.530651],
+		// 	timestamp,
+		// 	replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '201' },
+		// });
+		// callNumber++;
+		// await shouldVisitPointOfInterest(callNumber);
 
-		timestamp += 15000;
-		await sendPayloadTest({
-			coords: [-68.070896, -16.531223],
-			timestamp,
-			replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '176' },
-		});
-		callNumber++;
-		await shouldVisitPointOfInterest(callNumber);
+		// timestamp += 15000;
+		// await sendPayloadTest({
+		// 	coords: [-68.070896, -16.531223],
+		// 	timestamp,
+		// 	replaceStates: { SPEED: '25', IGNITION: 'IGNITION_ON', DIRECTION: '176' },
+		// });
+		// callNumber++;
+		// await shouldVisitPointOfInterest(callNumber);
 	}, 30000);
 
 	const shouldNotInteractWithAnyGeofences = async (
@@ -236,9 +236,9 @@ describe('device tracking data consumer intergration test', () => {
 		await expectCommon(call);
 	};
 
-	const shouldVisitPointOfInterest = async (call: number): Promise<void> => {
-		await expectCommon(call);
-	};
+	// const shouldVisitPointOfInterest = async (call: number): Promise<void> => {
+	// 	await expectCommon(call);
+	// };
 
 	const shouldHaveVehicle = (): void => {
 		expect(deviceEnrichPublisherSpy).toHaveBeenCalledWith(

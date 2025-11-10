@@ -5,16 +5,12 @@ import DeviceCache from '../cache/device-cache.js';
 import { Vehicle } from '@app/vehicle/entity/vehicle.js';
 import { getDeviceVehicleData } from './get-device-vehicle-data.js';
 import { getGeofencesDeviceIn } from '@app/geofence/service/verify-in/get-geofences-device-in.js';
-import { DeviceGeofenceOut } from '../entity/device-geofence-out.js';
 import { getGeofencesDeviceOut } from '@app/geofence/service/verify-out/get-geofences-device-out.js';
-import { DeviceGeofenceIn } from '../entity/device-geofence-in.js';
 import GeofenceInCache from '@app/geofence/cache/geofence-in-cache.js';
 import { GeofenceIn } from '@app/geofence/entity/geofence-in.js';
-import { DeviceGroup } from '../entity/device-group.js';
 import { getDeviceGroups } from './get-device-groups.js';
 import { getDeviceRules } from './get-device-rules.js';
 import { processRulesByDevice } from '@app/rule/service/process-rules-by-device.js';
-import { DeviceRuleAlertToLaunch } from '../entity/device-rule-alert-to-launch.js';
 import { getVisitedOrNearbyPointsOfInterest } from '@app/point-interest/service/get-visited-or-nearby-points-interest.js';
 import { calculateGpsDirection } from './calculate-gps-direction.js';
 import { rebuildRoadBetweenTracks } from './rebuild-road-between-tracks.js';
@@ -39,7 +35,7 @@ export const processDeviceData = async (
 		deviceInMapCache,
 	);
 
-	const groups: DeviceGroup[] = await getDeviceGroups(vehicleData);
+	const groups = await getDeviceGroups(vehicleData);
 
 	const deviceMovingDirection = calculateGpsDirection({
 		deviceId: device.id,
@@ -57,12 +53,12 @@ export const processDeviceData = async (
 
 	const backupGeofenceInCacheMap = getBackupGeofenceInCacheMap(device.id);
 
-	const geofenceInData: DeviceGeofenceIn = await getGeofencesDeviceIn({
+	const geofenceInData = await getGeofencesDeviceIn({
 		device,
 		reconstructedRoad,
 	});
 
-	const geofenceOutData: DeviceGeofenceOut = await getGeofencesDeviceOut({
+	const geofenceOutData = await getGeofencesDeviceOut({
 		geofenceInFullList: geofenceInData.geofenceList,
 		geofenceInPrevDataBackupMap: backupGeofenceInCacheMap,
 		reconstructedRoad,
@@ -79,7 +75,7 @@ export const processDeviceData = async (
 		previousStates: deviceInMapCache?.states,
 	});
 
-	const rulesAppliedList: string[] = await getDeviceRules({
+	const rulesAppliedList = await getDeviceRules({
 		vehicleData,
 		groups,
 	});
@@ -98,11 +94,10 @@ export const processDeviceData = async (
 		differenceStates,
 	};
 
-	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =
-		await processRulesByDevice({
-			device: deviceUpdated,
-			rulesToApply: rulesAppliedList,
-		});
+	const deviceRuleAlertToLaunchList = await processRulesByDevice({
+		device: deviceUpdated,
+		rulesToApply: rulesAppliedList,
+	});
 
 	return {
 		...deviceUpdated,
