@@ -2,23 +2,27 @@ import { Response } from 'express';
 import path from 'node:path';
 import GeofenceService from '@app/geofence/service/geofence.service.js';
 import { container } from 'tsyringe';
-import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
-import { loggerError } from '@maur025/core-logger';
+import { ErrorResponse } from '@maur025/core-model-data';
+import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { handleAsArray } from '@src/api-client/service/handle-response.js';
 import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response.js';
 import { generatePdf } from '@common/report/generate-pdf.js';
 
-export const geofenceReport = (res: Response): void => {
+export const geofenceReport = async (res: Response): Promise<void> => {
 	const geofenceService = container.resolve(GeofenceService);
-
-	geofenceService.getAllPaginated({ size: 1000 }).subscribe({
-		next: (apiResponse: ApiResponse<GeofenceResponse>) => {
-			renderBody(res, handleAsArray<GeofenceResponse>(apiResponse));
-		},
-		error: (error: ErrorResponse) => {
+	const response = await geofenceService
+		.getAllPaginated({ size: 1000 })
+		.catch((error: ErrorResponse) => {
 			loggerError(`Can't get geofence data: `, error as Error);
-		},
-	});
+			return undefined;
+		});
+
+	if (!response) {
+		loggerDebug(`No geofence data found for report`);
+		return;
+	}
+
+	renderBody(res, handleAsArray<GeofenceResponse>(response));
 };
 
 const renderBody = (res: Response, geofenceList: GeofenceResponse[]): void => {

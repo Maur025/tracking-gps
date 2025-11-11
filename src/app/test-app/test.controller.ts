@@ -2,11 +2,7 @@ import TrackService from '@app/track/service/track.service.js';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { inject, injectable } from 'tsyringe';
-import {
-	ApiResponse,
-	ErrorResponse,
-	MultiResponseBuilder,
-} from '@maur025/core-model-data';
+import { ErrorResponse, MultiResponseBuilder } from '@maur025/core-model-data';
 import RouteCache from '@app/route/cache/route-cache.js';
 import { RequestValidate } from '@app/test-app/middlewares/request-validate.interface.js';
 import type { TestSchema } from '@app/test-app/schema/test.schema.js';
@@ -26,25 +22,31 @@ export default class TestController {
 		private readonly zodSwaggerGenerator: ZodSwaggerGenerator,
 	) {}
 
-	public getTest = (req: Request, res: Response): void => {
-		this.trackService.getAllPaginated({ size: 10 }).subscribe({
-			next: (response: ApiResponse<TrackingResponse>) =>
-				MultiResponseBuilder.builder<TrackingResponse>()
-					.res(res)
-					.withResponse({
-						code: StatusCodes.OK,
-						message: 'SUCCESS',
-						data: response.content as TrackingResponse[],
-					})
-					.send(),
-			error: (error: ErrorResponse) => {
+	public getTest = async (req: Request, res: Response): Promise<void> => {
+		const response = await this.trackService
+			.getAllPaginated({ size: 10 })
+			.catch((error: ErrorResponse) => {
 				res.status(StatusCodes.REQUEST_TIMEOUT).json({
 					detail: error.status ?? error.cause?.code,
 					message: error.cause?.message ?? error.message,
 					code: StatusCodes.INTERNAL_SERVER_ERROR,
 				});
-			},
-		});
+
+				return undefined;
+			});
+
+		if (!response) {
+			return;
+		}
+
+		MultiResponseBuilder.builder<TrackingResponse>()
+			.res(res)
+			.withResponse({
+				code: StatusCodes.OK,
+				message: 'SUCCESS',
+				data: response.content as TrackingResponse[],
+			})
+			.send();
 	};
 
 	public readonly getTestTwo = (req: Request, res: Response): void => {

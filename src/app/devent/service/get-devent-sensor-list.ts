@@ -1,4 +1,3 @@
-import { forkJoin, lastValueFrom, Observable } from 'rxjs';
 import { DeventSensorResponse } from '../dto/response/devent-sensor-response.js';
 import { DeventSensor } from '../entity/devent-sensor.js';
 import { ApiResponse } from '@maur025/core-model-data';
@@ -20,8 +19,7 @@ export const getDeventSensorList = async (
 		return [];
 	}
 
-	const deventSensorBatch$: Observable<ApiResponse<DeventSensorResponse>>[] =
-		[];
+	const deventSensorBatch: Promise<ApiResponse<DeventSensorResponse>>[] = [];
 
 	const deventSensorService = container.resolve(DeventSensorService);
 
@@ -30,18 +28,16 @@ export const getDeventSensorList = async (
 			continue;
 		}
 
-		deventSensorBatch$.push(
+		deventSensorBatch.push(
 			deventSensorService.getById({ id: sensorResponse.id }),
 		);
 	}
 
-	if (!deventSensorBatch$.length) {
+	if (!deventSensorBatch.length) {
 		return [];
 	}
 
-	const batchResponse = await lastValueFrom(
-		forkJoin<ApiResponse<DeventSensorResponse>[]>(deventSensorBatch$),
-	).catch(error => {
+	const batchResponse = await Promise.all(deventSensorBatch).catch(error => {
 		loggerError(
 			`[DEVENT] (getDeventSensorList) error fetching devent sensors: ${error}`,
 		);

@@ -2,15 +2,6 @@ import { GroupVehicleResponse } from '@app/group/dto/response/group-vehicle-resp
 import { container } from 'tsyringe';
 import z, { array, object } from 'zod/v4';
 import VehicleService from './vehicle.service.js';
-import {
-	forkJoin,
-	from,
-	lastValueFrom,
-	map,
-	mergeMap,
-	Observable,
-	toArray,
-} from 'rxjs';
 import { VehicleResponse } from '../dto/response/vehicle-response.js';
 import { ApiResponse } from '@maur025/core-model-data';
 import { handleAsArray } from '@api-client/service/handle-response.js';
@@ -27,45 +18,36 @@ export const getVehicleDeviceMap = async ({ groupVehicles }: Request) => {
 	const batchSize: number = 50;
 	const vehicleService = container.resolve(VehicleService);
 
-	const vehicleQueries$: Observable<ApiResponse<VehicleResponse>>[] =
+	const vehicleQueries: Promise<ApiResponse<VehicleResponse>>[] =
 		groupVehicles.map(({ vehicle: { id = '' } }) =>
 			vehicleService.getById({ id }),
 		);
 
-	const batches$: Observable<ApiResponse<VehicleResponse>>[][] = [];
+	const batches: Promise<ApiResponse<VehicleResponse>>[][] = [];
 
 	const vehicleDeviceMap: Map<string, string> = new Map<string, string>();
 
-	for (let index = 0; index < vehicleQueries$.length; index += batchSize) {
-		batches$.push(vehicleQueries$.slice(index, index + batchSize));
+	for (let index = 0; index < vehicleQueries.length; index += batchSize) {
+		batches.push(vehicleQueries.slice(index, index + batchSize));
 	}
 
-	await lastValueFrom(
-		from(batches$).pipe(
-			mergeMap(batch => forkJoin(batch)),
-			toArray(),
-			map((responseBatchList: ApiResponse<VehicleResponse>[][]) => {
-				for (const responseBatch of responseBatchList) {
-					for (const response of responseBatch) {
-						const responseDataList = handleAsArray(response);
+	for (const batch of batches) {
+		const responseBatch = await Promise.all(batch);
 
-						if (!responseDataList[0]?.device?.length) {
-							continue;
-						}
+		for (const response of responseBatch) {
+			const responseDataList = handleAsArray(response);
 
-						const deviceId: string =
-							responseDataList[0]?.device[0]?.device_id || '';
-						const vehicleId: string =
-							responseDataList[0]?.device[0]?.vehicle_id || '';
+			if (!responseDataList[0]?.device?.length) {
+				continue;
+			}
 
-						vehicleDeviceMap.set(vehicleId, deviceId);
-					}
-				}
+			const deviceId: string = responseDataList[0]?.device[0]?.device_id || '';
+			const vehicleId: string =
+				responseDataList[0]?.device[0]?.vehicle_id || '';
 
-				return;
-			}),
-		),
-	);
+			vehicleDeviceMap.set(vehicleId, deviceId);
+		}
+	}
 
 	return vehicleDeviceMap;
 };
