@@ -1,10 +1,9 @@
 import environment from '@config/env.js';
 import { singleton } from 'tsyringe';
-import { Observable } from 'rxjs';
-import { get } from '@src/api-client/api-client.js';
 import { ApiResponse } from '@maur025/core-model-data';
 import { TrackingResponse } from '../dto/response/tracking-response.js';
 import AbstractApiService from '@api-client/service/abstract-api-service.js';
+import { get } from '@api-client/fetch-api.js';
 
 @singleton()
 export default class TrackService extends AbstractApiService<TrackingResponse> {
@@ -15,7 +14,7 @@ export default class TrackService extends AbstractApiService<TrackingResponse> {
 		});
 	}
 
-	public readonly getAllCustom = (): Observable<
+	public readonly getAllCustom = async (): Promise<
 		ApiResponse<TrackingResponse>
 	> =>
 		get<ApiResponse<TrackingResponse>>(

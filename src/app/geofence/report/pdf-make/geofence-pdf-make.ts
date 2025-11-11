@@ -1,5 +1,5 @@
 import { loggerError } from '@maur025/core-logger';
-import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
+import { ErrorResponse } from '@maur025/core-model-data';
 import GeofenceService from '@app/geofence/service/geofence.service.js';
 import { handleAsArray } from '@src/api-client/service/handle-response.js';
 import { Response } from 'express';
@@ -9,17 +9,20 @@ import { Content, TDocumentDefinitions } from 'pdfmake/interfaces.js';
 import { container } from 'tsyringe';
 import { GeofenceResponse } from '@app/geofence/dto/response/geofence-response.js';
 
-export const geofencePdfMake = (res: Response): void => {
+export const geofencePdfMake = async (res: Response): Promise<void> => {
 	const geofenceService = container.resolve(GeofenceService);
 
-	geofenceService.getAllPaginated({ size: 1000 }).subscribe({
-		next: (apiResponse: ApiResponse<GeofenceResponse>) => {
-			generatePdf(res, handleAsArray<GeofenceResponse>(apiResponse));
-		},
-		error: (error: ErrorResponse) => {
+	const response = await geofenceService
+		.getAllPaginated({ size: 1000 })
+		.catch((error: ErrorResponse) => {
 			loggerError(`Can't get geofence data: `, error as Error);
-		},
-	});
+		});
+
+	if (!response) {
+		return;
+	}
+
+	generatePdf(res, handleAsArray<GeofenceResponse>(response));
 };
 
 const generatePdf = (res: Response, geofenceList: GeofenceResponse[]) => {

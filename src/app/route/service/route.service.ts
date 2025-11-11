@@ -1,12 +1,11 @@
 import environment from '@config/env.js';
 import { ApiResponse, ErrorResponse } from '@maur025/core-model-data';
 import AbstractApiService from '@src/api-client/service/abstract-api-service.js';
-import { get } from '@src/api-client/api-client.js';
 import { handleAsArray } from '@src/api-client/service/handle-response.js';
-import { catchError, map, Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { setupSections } from './setup-sections.js';
 import { RouteResponse } from '../dto/response/route-response.js';
+import { get } from '@api-client/fetch-api.js';
 
 @singleton()
 export default class RouteService extends AbstractApiService<RouteResponse> {
@@ -17,30 +16,28 @@ export default class RouteService extends AbstractApiService<RouteResponse> {
 		});
 	}
 
-	public readonly getAll = (): Observable<ApiResponse<RouteResponse>> =>
-		get<ApiResponse<RouteResponse>>(
+	public readonly getAll = async (): Promise<ApiResponse<RouteResponse>> => {
+		const response = await get<ApiResponse<RouteResponse>>(
 			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}`,
-		).pipe(
-			map((response: ApiResponse<RouteResponse>) => {
-				const routeResponseList: RouteResponse[] = handleAsArray(response);
+		).catch((error: ErrorResponse) => {
+			throw new Error(
+				`Error occurred in query getAll routes: ${
+					typeof error?.cause === 'object'
+						? JSON.stringify(error.cause)
+						: error?.cause
+				}`,
+			);
+		});
 
-				for (const routeResponse of routeResponseList) {
-					setupSections(routeResponse);
-				}
+		const routeResponseList: RouteResponse[] = handleAsArray(response);
 
-				response.content = routeResponseList;
-				response.data = routeResponseList;
+		for (const routeResponse of routeResponseList) {
+			setupSections(routeResponse);
+		}
 
-				return response;
-			}),
-			catchError((error: ErrorResponse) => {
-				throw new Error(
-					`Error ocurred in query getAll routes: ${
-						typeof error?.cause === 'object'
-							? JSON.stringify(error.cause)
-							: error?.cause
-					}`,
-				);
-			}),
-		);
+		response.content = routeResponseList;
+		response.data = routeResponseList;
+
+		return response;
+	};
 }

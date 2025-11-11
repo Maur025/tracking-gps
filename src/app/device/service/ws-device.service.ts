@@ -1,10 +1,9 @@
 import { WsTrackResponse } from '@app/track/dto/response/ws-track-response.js';
 import environment from '@config/env.js';
 import AbstractApiService from '@src/api-client/service/abstract-api-service.js';
-import { get } from '@src/api-client/api-client.js';
-import { Observable } from 'rxjs';
 import { singleton } from 'tsyringe';
 import { Device } from '../entity/device.js';
+import { get } from '@api-client/fetch-api.js';
 
 @singleton()
 export default class WsDeviceService extends AbstractApiService<Device> {
@@ -12,20 +11,20 @@ export default class WsDeviceService extends AbstractApiService<Device> {
 		super({ baseUrl: `${environment.TRACK_URL}`, resource: 'device' });
 	}
 
-	public readonly getTracks = ({
+	public readonly getTracks = async ({
 		deviceId,
 	}: {
 		deviceId: string;
-	}): Observable<WsTrackResponse> =>
+	}): Promise<WsTrackResponse> =>
 		get<WsTrackResponse>(
 			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracks`,
 		);
 
-	public readonly getHistoryTracks = ({
+	public readonly getHistoryTracks = async ({
 		deviceId,
 	}: {
 		deviceId: string;
-	}): Observable<WsTrackResponse> =>
+	}): Promise<WsTrackResponse> =>
 		get<WsTrackResponse>(
 			`${this.apiRequest?.baseUrl}/${this.apiRequest?.resource}/${deviceId}/tracksHistory`,
 		);

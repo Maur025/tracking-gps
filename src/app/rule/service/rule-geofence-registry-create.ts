@@ -3,9 +3,7 @@ import { container } from 'tsyringe';
 import RuleGeofenceRegistryService from './rule-geofence-registry.service.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { RuleGeofenceRegistryCreateRequest } from '../dto/request/rule-geofence-registry-create-request.js';
-import { forkJoin, lastValueFrom } from 'rxjs';
 import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry.js';
-import { ApiResponse } from '@maur025/core-model-data';
 import { RuleGeofenceRegistryResponse } from '../dto/response/rule-geofence-registry-response.js';
 import { handleAsObject } from '@api-client/service/handle-response.js';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
@@ -64,21 +62,16 @@ export const ruleGeofenceRegistryCreate = async (
 		dataSaveList.map(dataSave => [dataSave.rule_geofence_id, dataSave]),
 	);
 
-	const responseList: ApiResponse<RuleGeofenceRegistryResponse>[] | void =
-		await lastValueFrom(
-			forkJoin(
-				dataSaveList.map(data =>
-					ruleGeofenceRegistryService.create<RuleGeofenceRegistryCreateRequest>(
-						{
-							data,
-						},
-					),
-				),
-			),
-		).catch(error => {
-			loggerError(`${loggerAuxMessage} error in forkJoin`, error);
-			loggerDebug(`${loggerAuxMessage} error in forkJoin: ${error}`);
-		});
+	const responseList = await Promise.all(
+		dataSaveList.map(data =>
+			ruleGeofenceRegistryService.create<RuleGeofenceRegistryCreateRequest>({
+				data,
+			}),
+		),
+	).catch(error => {
+		loggerError(`${loggerAuxMessage} error in forkJoin`, error);
+		return undefined;
+	});
 
 	return !responseList
 		? []

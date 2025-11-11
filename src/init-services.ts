@@ -6,7 +6,6 @@ import { initRecordIdxs } from '@common/redis/init-record-idxs.js';
 import { configureConsumers } from '@config/configure-consumers.js';
 import { loggerError, loggerWarn } from '@maur025/core-logger';
 import { measurePerformance } from '@utils/measure-performance.js';
-import { defaultIfEmpty, lastValueFrom } from 'rxjs';
 import z, { number, object, string, array, boolean } from 'zod/v4';
 
 const InitServicesSchema = object({
@@ -80,7 +79,7 @@ export const initServices = async (request: InitServicesSchema) => {
 	if (isNeedCache) {
 		await measurePerformance(async () => {
 			try {
-				await lastValueFrom(cacheInitializer().pipe(defaultIfEmpty(null)));
+				await cacheInitializer();
 			} catch (error: unknown) {
 				loggerError(
 					`[SYSTEM] (cacheInitializer) error occurred while initializing cache -> `,
