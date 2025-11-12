@@ -11,6 +11,7 @@ import { loggerDebug } from '@maur025/core-logger';
 import { handleRuleNotification } from '@app/notification/service/handle-rule-notification.js';
 import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
 import { notificationBuildByAlertList } from './notification-build-by-alert-list.js';
+import { saveAllAlerts } from '../save-all-alerts.js';
 
 const loggerAuxMessage: string = `[RULE] (handleMultiEvent)`;
 
@@ -23,7 +24,7 @@ type HandleMultiEventRequest = z.infer<typeof HandleMultiEventRequest>;
 
 export const handleMultiEvent = async (
 	request: HandleMultiEventRequest,
-): Promise<DeviceRuleAlertToLaunch[]> => {
+): Promise<DeviceNotificationSchema | undefined> => {
 	const { rule, device } = HandleMultiEventRequest.parse(request);
 
 	const deventCache = container.resolve(DeventCache);
@@ -52,12 +53,12 @@ export const handleMultiEvent = async (
 	}
 
 	const resultOfComparison: boolean =
-		resultAndEvents.every(value => value.wasTriggered) &&
+		resultAndEvents.every(value => value.wasTriggered) ||
 		resultOrEvents.some(value => value.wasTriggered);
 
 	if (!resultOfComparison) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
-		return [];
+		return undefined;
 	}
 
 	const andAlertLaunchList: DeviceRuleAlertToLaunch[] = resultAndEvents.flatMap(
@@ -73,19 +74,22 @@ export const handleMultiEvent = async (
 		...orAlertLaunchList,
 	];
 
-	if (rule?.notifications?.length) {
-		const notificationData: DeviceNotificationSchema =
-			notificationBuildByAlertList({
-				deviceAlertToLaunchList: allAlertLaunchList,
-				device,
-				rule,
-			});
+	const alertToLaunchSavedList = await saveAllAlerts({
+		alertToSaveList: allAlertLaunchList,
+	});
 
+	const notificationData = notificationBuildByAlertList({
+		deviceAlertToLaunchList: alertToLaunchSavedList,
+		device,
+		rule,
+	});
+
+	if (rule?.notifications?.length) {
 		await handleRuleNotification({
 			notifications: rule.notifications,
 			notificationData,
 		});
 	}
 
-	return rule?.alerts?.length ? allAlertLaunchList : [];
+	return rule?.alerts?.length ? notificationData : undefined;
 };

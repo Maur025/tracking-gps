@@ -4,10 +4,10 @@ import { Rule } from '../entity/rule.js';
 import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry.js';
 import { RuleInoutSchema } from '../entity/rule-inout-schema.js';
 import { RuleGeofence } from '../entity/rule-geofence.js';
-import { ruleGeofenceRegistryCreate } from './rule-geofence-registry-create.js';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
 import { RuleResultEventComparison } from '../dto/rule-result-event-comparison.js';
 import { loggerDebug } from '@maur025/core-logger';
+import { DeviceRuleAlertToLaunchType } from '@app/device/entity/device-rule-alert-to-launch-type.js';
 
 const ProcessGeofenceEventRequest = object({
 	device: Device,
@@ -18,9 +18,9 @@ type ProcessGeofenceEventRequest = z.infer<typeof ProcessGeofenceEventRequest>;
 
 const loggerAuxMessage: string = `[RULE] (processGeofenceEvent)`;
 
-export const processGeofenceEvent = async (
+export const processGeofenceEvent = (
 	request: ProcessGeofenceEventRequest,
-): Promise<RuleResultEventComparison> => {
+): RuleResultEventComparison => {
 	const { device, rule } = ProcessGeofenceEventRequest.parse(request);
 
 	if (!rule.geofences?.length) {
@@ -59,11 +59,21 @@ export const processGeofenceEvent = async (
 		};
 	}
 
+	const { lat, lon, t: timestamp } = device.last ?? {};
+
 	const deviceRuleAlertToLaunchList: DeviceRuleAlertToLaunch[] =
-		await ruleGeofenceRegistryCreate({
-			ruleGeofenceToRegistryList,
-			alert: rule?.alerts[0],
-		});
+		ruleGeofenceToRegistryList.map(({ ruleGeofence, isIn }) => ({
+			ruleId: rule.id ?? '',
+			alertId: rule.alerts?.[0]?.id ?? '',
+			alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
+			deviceId: device.id,
+			geofenceId: ruleGeofence.geofenceId,
+			ruleGeofenceId: ruleGeofence.id,
+			isGeofenceIn: isIn,
+			timestamp,
+			lat,
+			lon,
+		}));
 
 	return {
 		alertToLaunchList: deviceRuleAlertToLaunchList,

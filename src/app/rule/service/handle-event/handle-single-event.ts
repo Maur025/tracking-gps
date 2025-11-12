@@ -1,6 +1,5 @@
 import DeventCache from '@app/devent/cache/devent-cache.js';
 import { Devent } from '@app/devent/entity/devent.js';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
 import { RuleResultEventComparison } from '@app/rule/dto/rule-result-event-comparison.js';
 import { container } from 'tsyringe';
 import { processEventSelector } from './process-event-selector.js';
@@ -10,6 +9,7 @@ import { Rule } from '@app/rule/entity/rule.js';
 import { Device } from '@app/device/entity/device.js';
 import { handleRuleNotification } from '@app/notification/service/handle-rule-notification.js';
 import { notificationBuildByAlertList } from './notification-build-by-alert-list.js';
+import { saveAllAlerts } from '../save-all-alerts.js';
 import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
 
 const loggerAuxMessage: string = `[RULE] (handleSingleEvent)`;
@@ -23,7 +23,7 @@ type HandleSingleEventRequest = z.infer<typeof HandleSingleEventRequest>;
 
 export const handleSingleEvent = async (
 	request: HandleSingleEventRequest,
-): Promise<DeviceRuleAlertToLaunch[]> => {
+): Promise<DeviceNotificationSchema | undefined> => {
 	const { rule, device } = HandleSingleEventRequest.parse(request);
 
 	const deventCache = container.resolve(DeventCache);
@@ -34,7 +34,7 @@ export const handleSingleEvent = async (
 
 	if (!devent) {
 		loggerDebug(`${loggerAuxMessage} devent not found in cache.`);
-		return [];
+		return undefined;
 	}
 
 	const resultOfComparison: RuleResultEventComparison =
@@ -48,22 +48,25 @@ export const handleSingleEvent = async (
 	if (!resultOfComparison.wasTriggered) {
 		loggerDebug(`${loggerAuxMessage} rule not triggered.`);
 
-		return [];
+		return undefined;
 	}
 
-	if (rule?.notifications?.length) {
-		const notificationData: DeviceNotificationSchema =
-			notificationBuildByAlertList({
-				deviceAlertToLaunchList: resultOfComparison.alertToLaunchList,
-				device,
-				rule,
-			});
+	const alertToLaunchSavedList = await saveAllAlerts({
+		alertToSaveList: resultOfComparison.alertToLaunchList,
+	});
 
+	const notificationData = notificationBuildByAlertList({
+		deviceAlertToLaunchList: alertToLaunchSavedList,
+		device,
+		rule,
+	});
+
+	if (rule?.notifications?.length) {
 		await handleRuleNotification({
 			notifications: rule.notifications,
 			notificationData,
 		});
 	}
 
-	return rule?.alerts?.length ? resultOfComparison.alertToLaunchList : [];
+	return rule?.alerts?.length ? notificationData : undefined;
 };

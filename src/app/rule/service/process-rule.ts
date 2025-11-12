@@ -2,9 +2,9 @@ import { Device } from '@app/device/entity/device.js';
 import z, { object } from 'zod/v4';
 import { Rule } from '../entity/rule.js';
 import { loggerDebug } from '@maur025/core-logger';
-import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
 import { handleSingleEvent } from './handle-event/handle-single-event.js';
 import { handleMultiEvent } from './handle-event/handle-multi-event.js';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
 
 const ProcessRuleRequest = object({
 	device: Device,
@@ -17,13 +17,13 @@ const loggerAuxMessage: string = `[RULE] (processRule)`;
 
 export const processRule = async (
 	request: ProcessRuleRequest,
-): Promise<DeviceRuleAlertToLaunch[]> => {
+): Promise<DeviceNotificationSchema | undefined> => {
 	const { rule, device } = ProcessRuleRequest.parse(request);
 
 	if (!rule.events?.length) {
 		loggerDebug(`${loggerAuxMessage} rule has no events.`);
 
-		return [];
+		return undefined;
 	}
 
 	if (rule.events?.length === 1) {
