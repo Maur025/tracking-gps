@@ -3,16 +3,12 @@ import { container } from 'tsyringe';
 import RuleGeofenceRegistryService from './rule-geofence-registry.service.js';
 import { loggerDebug, loggerError } from '@maur025/core-logger';
 import { RuleGeofenceRegistryCreateRequest } from '../dto/request/rule-geofence-registry-create-request.js';
-import { RuleGeofenceToRegistry } from '../dto/rule-geofence-to-registry.js';
 import { RuleGeofenceRegistryResponse } from '../dto/response/rule-geofence-registry-response.js';
 import { handleAsObject } from '@api-client/service/handle-response.js';
 import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
-import { Alert } from '@app/alert/entity/alert.js';
-import { DeviceRuleAlertToLaunchType } from '@app/device/entity/device-rule-alert-to-launch-type.js';
 
 const RuleGeofenceRegistryCreateReq = object({
-	ruleGeofenceToRegistryList: array(RuleGeofenceToRegistry).default([]),
-	alert: Alert.optional(),
+	ruleGeofenceAlertList: array(DeviceRuleAlertToLaunch).default([]),
 });
 
 type RuleGeofenceRegistryCreateReq = z.infer<
@@ -24,84 +20,61 @@ const loggerAuxMessage: string = `[RULE] (ruleGeofenceRegistryCreate)`;
 export const ruleGeofenceRegistryCreate = async (
 	request: RuleGeofenceRegistryCreateReq,
 ): Promise<DeviceRuleAlertToLaunch[]> => {
-	const { ruleGeofenceToRegistryList, alert } =
+	const { ruleGeofenceAlertList } =
 		RuleGeofenceRegistryCreateReq.parse(request);
 
-	if (!ruleGeofenceToRegistryList?.length) {
+	if (!ruleGeofenceAlertList?.length) {
 		loggerDebug(`${loggerAuxMessage} no data to registry, skipping...`);
 
 		return [];
 	}
 
-	const dataSaveList: RuleGeofenceRegistryCreateRequest[] = [];
 	const ruleGeofenceRegistryService = container.resolve(
 		RuleGeofenceRegistryService,
 	);
 
-	for (const { ruleGeofence, device, isIn } of ruleGeofenceToRegistryList) {
-		if (!ruleGeofence.id || !device.id) {
-			loggerError(`${loggerAuxMessage} required data not founded`);
-
-			continue;
-		}
-
-		const { t = 0, lat = 0, lon = 0 } = device?.last || {};
-
-		dataSaveList.push({
-			rule_geofence_id: ruleGeofence.id,
-			geofence_id: ruleGeofence.geofenceId,
-			device_id: device.id,
-			inout: isIn ? 1 : 0,
-			timestamp: t,
-			lat,
-			lon,
-		});
-	}
-
-	const dataSaveMap = new Map<string, RuleGeofenceRegistryCreateRequest>(
-		dataSaveList.map(dataSave => [dataSave.rule_geofence_id, dataSave]),
-	);
-
 	const responseList = await Promise.all(
-		dataSaveList.map(data =>
+		ruleGeofenceAlertList.map(ruleGeofenceAlert =>
 			ruleGeofenceRegistryService.create<RuleGeofenceRegistryCreateRequest>({
-				data,
+				data: {
+					rule_geofence_id: ruleGeofenceAlert.ruleGeofenceId ?? '',
+					geofence_id: ruleGeofenceAlert.geofenceId ?? '',
+					device_id: ruleGeofenceAlert.deviceId ?? '',
+					inout: ruleGeofenceAlert.isGeofenceIn ? 1 : 0,
+					timestamp: ruleGeofenceAlert.timestamp ?? 0,
+					lat: ruleGeofenceAlert.lat ?? 0,
+					lon: ruleGeofenceAlert.lon ?? 0,
+				},
 			}),
 		),
 	).catch(error => {
-		loggerError(`${loggerAuxMessage} error in forkJoin`, error);
+		loggerError(`${loggerAuxMessage} error in fetch all geofences`, error);
+
 		return undefined;
 	});
 
-	return !responseList
-		? []
-		: responseList
-				?.map(response => {
-					const ruleGeofenceRegistryResponse:
-						| RuleGeofenceRegistryResponse
-						| undefined =
-						handleAsObject<RuleGeofenceRegistryResponse>(response);
+	if (!responseList) {
+		loggerDebug(
+			`${loggerAuxMessage} no response from rule geofence registry create.`,
+		);
 
-					if (!ruleGeofenceRegistryResponse?.id) {
-						return undefined;
-					}
+		return [];
+	}
 
-					const dataSave = dataSaveMap.get(
-						ruleGeofenceRegistryResponse.rule_geofence_id,
-					);
+	return ruleGeofenceAlertList
+		.map((ruleGeofenceAlert, index) => {
+			if (responseList[index] === undefined) {
+				return undefined;
+			}
 
-					return {
-						ruleGeofenceRegistryId: ruleGeofenceRegistryResponse.id,
-						alertId: alert?.id ?? null,
-						ruleId: alert?.ruleId ?? '',
-						deviceId: dataSave?.device_id,
-						geofenceId: dataSave?.geofence_id,
-						alertType: DeviceRuleAlertToLaunchType.enum.GEOFENCE,
-						isGeofenceIn: !!ruleGeofenceRegistryResponse.inout,
-						timestamp: dataSave?.timestamp,
-						lat: dataSave?.lat,
-						lon: dataSave?.lon,
-					};
-				})
-				.filter(value => value !== undefined);
+			const responseData = handleAsObject<RuleGeofenceRegistryResponse>(
+				responseList[index],
+			);
+
+			return {
+				...ruleGeofenceAlert,
+				ruleGeofenceRegistryId: responseData?.id,
+			};
+		})
+		.filter(ruleGeofenceAlert => ruleGeofenceAlert !== undefined);
 };

@@ -18,9 +18,9 @@ const ProcessEventRequest = object({
 
 type ProcessEventRequest = z.infer<typeof ProcessEventRequest>;
 
-export const processEventSelector = async (
+export const processEventSelector = (
 	request: ProcessEventRequest,
-): Promise<RuleResultEventComparison> => {
+): RuleResultEventComparison => {
 	const { devent, device, rule, event } = ProcessEventRequest.parse(request);
 
 	switch (devent.deventType) {

@@ -44,7 +44,7 @@ import { DeviceState } from '@app/device/entity/device-state.js';
 
 const { TRACKING_GPS_DEVICE } = kafkaTopics;
 
-describe('device tracking data consumer intergration test', () => {
+describe('device tracking data consumer integration test', () => {
 	let publishKafka: <V>(
 		kafkaPublishSchema: KafkaPublishSchema<V>,
 	) => Promise<void>;
@@ -125,7 +125,7 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.156003, -16.505851],
 			timestamp,
-			replaceStates: { SPEED: '0', IGNITION: 'IGNITION_OFF' },
+			replaceStates: { SPEED: '0', IGNITION: 'IGNITION_OFF', FUEL_LEVEL: 35 },
 		});
 		callNumber++;
 		await shouldNotInteractWithAnyGeofences(callNumber);
@@ -135,7 +135,12 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.069219, -16.529027],
 			timestamp,
-			replaceStates: { SPEED: '30', IGNITION: 'IGNITION_ON', DIRECTION: '105' },
+			replaceStates: {
+				SPEED: '30',
+				IGNITION: 'IGNITION_ON',
+				DIRECTION: '105',
+				FUEL_LEVEL: 20,
+			},
 		});
 		callNumber++;
 		await shouldEnterSomeGeofences(callNumber);
@@ -145,7 +150,12 @@ describe('device tracking data consumer intergration test', () => {
 		await sendPayloadTest({
 			coords: [-68.069219, -16.529027],
 			timestamp,
-			replaceStates: { SPEED: '0', IGNITION: 'IGNITION_ON', DIRECTION: '105' },
+			replaceStates: {
+				SPEED: '0',
+				IGNITION: 'IGNITION_ON',
+				DIRECTION: '105',
+				FUEL_LEVEL: 15,
+			},
 		});
 		callNumber++;
 		await shouldKeepInSameGeofence(callNumber);

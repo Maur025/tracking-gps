@@ -7,6 +7,8 @@ import { loggerDebug } from '@maur025/core-logger';
 import { RuleEvent } from '../entity/rule-event.js';
 import { DeviceStateDifference } from '@app/device/entity/device-state-difference.js';
 import { DeventSensorOperator } from '@app/devent/entity/devent-sensor-operator.js';
+import { DeviceRuleAlertToLaunch } from '@app/device/entity/device-rule-alert-to-launch.js';
+import { DeviceRuleAlertToLaunchType } from '@app/device/entity/device-rule-alert-to-launch-type.js';
 
 const ProcessSensorEventRequest = object({
 	rule: Rule,
@@ -19,10 +21,11 @@ type ProcessSensorEventRequest = z.infer<typeof ProcessSensorEventRequest>;
 
 const loggerAuxMessage: string = `[RULE] (processSensorEvent)`;
 
-export const processSensorEvent = async (
+export const processSensorEvent = (
 	request: ProcessSensorEventRequest,
-): Promise<RuleResultEventComparison> => {
-	const { device, devent, event } = ProcessSensorEventRequest.parse(request);
+): RuleResultEventComparison => {
+	const { rule, device, devent, event } =
+		ProcessSensorEventRequest.parse(request);
 
 	if (!device.differenceStates?.length) {
 		loggerDebug(`${loggerAuxMessage} device has no detected change states.`);
@@ -52,6 +55,10 @@ export const processSensorEvent = async (
 		return { alertToLaunchList: [], wasTriggered: false };
 	}
 
+	const registryStateCreateList: DeviceRuleAlertToLaunch[] = [];
+
+	const { lat = 0, lon = 0, t: lastTimestamp = 0 } = device.last ?? {};
+
 	for (const sensor of sensorMatchList) {
 		const differenceState = differentStateMap.get(sensor.sensor!.name);
 
@@ -64,27 +71,44 @@ export const processSensorEvent = async (
 		}
 
 		const wasTriggered = processByOperator(
-			sensor.operator,
+			DeventSensorOperator.parse(event.operator),
 			Number(differenceState.currentValue),
 			event.value,
+			differenceState.previousValue
+				? Number(differenceState.previousValue)
+				: undefined,
 		);
 
-		console.log({ resultOfComparison: wasTriggered });
+		if (!wasTriggered) {
+			continue;
+		}
+
+		registryStateCreateList.push({
+			ruleId: rule.id ?? '',
+			alertId: rule.alerts?.[0]?.id ?? '',
+			alertType: DeviceRuleAlertToLaunchType.enum.STATE,
+			deviceId: device.id,
+			ruleDeventId: event.id,
+			sensorName: sensor.sensor!.name,
+			sensorId: sensor.sensorId,
+			sensorValue: differenceState.currentValue,
+			timestamp: lastTimestamp,
+			lat,
+			lon,
+		});
 	}
 
-	// console.log(devent);
-	// console.log(devent.sensors);
-	// console.log(event);
-
-	// console.log(sensorMatchList);
-
-	return { alertToLaunchList: [], wasTriggered: false };
+	return {
+		alertToLaunchList: registryStateCreateList,
+		wasTriggered: !!registryStateCreateList.length,
+	};
 };
 
 const processByOperator = (
 	operator: DeventSensorOperator,
 	valueToCompare: number,
 	eventValue: string,
+	previousValue?: number,
 ) => {
 	let resultOfComparison: boolean = false;
 	let ruleValue: number = 0;
@@ -100,32 +124,48 @@ const processByOperator = (
 
 	switch (operator) {
 		case '>=': {
-			resultOfComparison = valueToCompare >= ruleValue;
+			resultOfComparison =
+				valueToCompare >= ruleValue &&
+				(previousValue === undefined || previousValue < ruleValue);
 			break;
 		}
 		case '<=': {
-			resultOfComparison = valueToCompare <= ruleValue;
+			resultOfComparison =
+				valueToCompare <= ruleValue &&
+				(previousValue === undefined || previousValue > ruleValue);
 			break;
 		}
 		case '<': {
-			resultOfComparison = valueToCompare < ruleValue;
+			resultOfComparison =
+				valueToCompare < ruleValue &&
+				(previousValue === undefined || previousValue >= ruleValue);
 			break;
 		}
 		case '>': {
-			resultOfComparison = valueToCompare > ruleValue;
+			resultOfComparison =
+				valueToCompare > ruleValue &&
+				(previousValue === undefined || previousValue <= ruleValue);
 			break;
 		}
 		case '=': {
-			resultOfComparison = valueToCompare === ruleValue;
+			resultOfComparison =
+				valueToCompare === ruleValue &&
+				(previousValue === undefined || previousValue !== ruleValue);
 			break;
 		}
 		case '!=': {
-			resultOfComparison = valueToCompare !== ruleValue;
+			resultOfComparison =
+				valueToCompare !== ruleValue &&
+				(previousValue === undefined || previousValue === ruleValue);
 			break;
 		}
 		case '<>': {
 			resultOfComparison =
-				valueToCompare > ruleValue && valueToCompare < ruleValueAux;
+				valueToCompare > ruleValue &&
+				valueToCompare < ruleValueAux &&
+				(previousValue === undefined ||
+					previousValue <= ruleValue ||
+					previousValue >= ruleValueAux);
 			break;
 		}
 		default: {

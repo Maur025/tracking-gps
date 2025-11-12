@@ -9,11 +9,11 @@ import { Vehicle } from '@app/vehicle/entity/vehicle.js';
 import { DeviceGeofenceIn } from './device-geofence-in.js';
 import { DeviceGeofenceOut } from './device-geofence-out.js';
 import { DeviceGroup } from './device-group.js';
-import { DeviceRuleAlertToLaunch } from './device-rule-alert-to-launch.js';
 import { DevicePointInterestVisited } from './device-point-interest-visited.js';
 import { DeviceMovingDirection } from './device-moving-direction.js';
 import { DeviceReconstructedRoad } from './device-reconstructed-road.js';
 import { DeviceStateDifference } from './device-state-difference.js';
+import { DeviceNotificationSchema } from '@app/notification/schema/device-notification.schema.js';
 
 export const Device = BaseData.extend({
 	spec: DeviceSpec,
@@ -30,7 +30,7 @@ export const Device = BaseData.extend({
 	geofencesIn: DeviceGeofenceIn.optional(),
 	geofencesOut: DeviceGeofenceOut.optional(),
 	rulesApplied: array(string()).default([]),
-	alertsToLaunch: array(DeviceRuleAlertToLaunch).default([]),
+	alertsToLaunch: array(DeviceNotificationSchema).default([]),
 	pointInterestVisited: DevicePointInterestVisited.optional(),
 	movingDirection: DeviceMovingDirection.optional(),
 	reconstructedRoad: DeviceReconstructedRoad.optional(),
